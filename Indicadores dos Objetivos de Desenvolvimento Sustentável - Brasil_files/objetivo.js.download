@@ -1,0 +1,248 @@
+
+
+
+$(document).ready(function () {
+    var urlDadosPesquisa = "https://sidra.ibge.gov.br/geratabela/DescritivoTabelaPorPesquisaODS?meses=3";
+    var objetivos = [
+        "Erradicação da Pobreza",
+        "Fome Zero",
+        "Saúde e Bem-Estar",
+        "Educação de Qualidade",
+        "Igualdade de Gênero",
+        "Água Limpa e Saneamento",
+        "Energia Acessível e Limpa",
+        "Emprego Dígno e Crescimento Econômico",
+        "Indústria Inovação e Infraestrutura",
+        "Reduçao das Desigualdades",
+        "Cidades e Comunidades Sustentáveis",
+        "Consumo e Produção Responsáveis",
+        "Combate às Alterações Climáticas",
+        "Vida Debaixo D'Água",
+        "Vida sobre a Terra",
+        "Paz, Justiça e Instituições Fortes",
+        "Parcerias e Meios de Implementação",
+        "Igualdade Étnico-Racial"
+    ];
+    var descricaoObjetivos = [
+        "Acabar com a pobreza em todas as suas formas, em todos os lugares",
+        "Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição e promover a agricultura sustentável",
+        "Assegurar uma vida saudável e promover o bem-estar para todos, em todas as idades",
+        "Assegurar a educação inclusiva e equitativa e de qualidade, e promover oportunidades de aprendizagem ao longo da vida para todos",
+        "Alcançar a igualdade de gênero e empoderar todas as mulheres e meninas",
+        "Garantir disponibilidade e manejo sustentável da água e saneamento para todos",
+        "Garantir acesso à energia barata, confiável, sustentável e renovável para todos",
+        "Promover o crescimento econômico sustentado, inclusivo e sustentável, emprego pleno e produtivo, e trabalho decente para todos",
+        "Construir infraestrutura resiliente, promover a industrialização inclusiva e sustentável, e fomentar a inovação",
+        "Reduzir a desigualdade dentro dos países e entre eles",
+        "Tornar as cidades e os assentamentos humanos inclusivos, seguros, resilientes e sustentáveis",
+        "Assegurar padrões de produção e de consumo sustentáveis",
+        "Tomar medidas urgentes para combater a mudança do clima e seus impactos (reconhecendo que a Convenção Quadro das Nações Unidas sobre Mudança do Clima [UNFCCC] é o fórum internacional intergovernamental primário para negociar a resposta global à mudança do clima)",
+        "Conservação e uso sustentável dos oceanos, dos mares e dos recursos marinhos para o desenvolvimento sustentável",
+        "Proteger, recuperar e promover o uso sustentável dos ecossistemas terrestres, gerir de forma sustentável as florestas, combater a desertificação, deter e reverter a degradação da terra e deter a perda de biodiversidade",
+        "Promover sociedades pacíficas e inclusivas para o desenvolvimento sustentável, proporcionar o acesso à justiça para todos e construir instituições eficazes, responsáveis e inclusivas em todos os níveis",
+        "Fortalecer os meios de implementação e revitalizar a parceria global para o desenvolvimento sustentável",
+        "Eliminar o racismo e a discriminação étnico-racial contra povos indígenas e afrodescendentes, especialmente grupos populacionais afetados por múltiplas formas de discriminação."
+    ];
+
+    var ul = $(".lista-indicadores");
+    var objetivo = ul.data('objetivo');
+    nome_objetivo = $("#descricao-objetivo").text();
+    $("#descricao-objetivo").html("<h2>" + nome_objetivo + " " + descricaoObjetivos[objetivo - 1] + "</h2>")
+    var urlMetas = "/objetivo/MetadadosAPIMeta?n=" + objetivo;
+    var urlRotas = "/objetivo/RotasValidas?n=" + objetivo;
+
+    ul.loading('Carregando');
+
+
+
+
+    jQuery.ajax({
+        type: "GET",
+        url: urlMetas
+    }).fail(function () {
+        alert('Erro ao fazer download dos dados');
+    }).done(function (data) {
+        ul.loading('close');
+        //Ordena as metas recebidas
+        data = JSON.parse(data);
+        data = ordenarIndicadores(data);
+
+        $divAccordion = $("<div>").attr("id", "accordion")
+        $divAccordion.appendTo(ul)
+
+
+        for (var i = 0; i < data.length; i++) {
+            var d = data[i];
+
+            //Nome da meta
+            var nomeMeta = d.numero + " - " + d.nome;
+
+            //Card
+            $card = $("<div>").addClass("card").addClass("mb-3")
+
+            //CardHeader
+            $cardHeader = $("<div>").addClass("card-header background-metas")
+
+            //Texto Meta
+            $textoMeta = $("<p>").addClass("layout-header-metas").html(nomeMeta)
+            $textoMeta.addClass("font-pequena m-1").appendTo($cardHeader)
+
+            //Finalizando o Card
+            $card.appendTo($divAccordion)
+            $cardHeader.appendTo($card)
+
+
+            //Listagem Indicadores
+            if (d.indicadores != null && d.indicadores.length > 0) {
+                //Corpo do Card, onde serão listados os indicadores    
+                $cardBody = $("<div>")
+                //Conteúdo do card
+                $cardBodyConteudo = $("<div>").addClass("card-body")
+                $cardBodyConteudo.appendTo($cardBody)
+                //Atrelar conteúdo ao corpo
+                $cardBody.appendTo($card)
+
+                //Vamos adicionar os indicadores ao conteúdo, ou seja, ao $cardBodyConteudo
+                var indicadores = ordenarIndicadores(d.indicadores);
+
+                for (var j = 0; j < +indicadores.length; j++) {
+
+
+                    var indicador = indicadores[j];
+                    var $indicador = $("<li>").appendTo($cardBodyConteudo)
+
+                    /*
+
+                    if (indicador.possui_ficha === true && indicador.status == 'Produzido') {
+                        $("<a>")
+                            .attr('href', url)
+                            .html(indicador.numero + " - " + indicador.nome)
+                            .appendTo(liIndicador);
+                    } else {
+                        liIndicador.html(indicador.numero + " - " + indicador.nome);
+                    }*/
+
+                    //Definir o status do indicador aqui - aqui volta do metadados, podendo ser: verde, amarelo, cinza, vermelho, laranja
+                    var statusIndicador = null;
+
+                    //1 Produzido (verde)
+                    //2	Em análise/construção (amarelo)
+                    //3	Sem dados (laranja)
+                    //4	Sem metodologia (vermelho)
+                    //5	Não se aplica ao Brasil (cinza)
+
+                    if (indicador.status == 'Produzido') {
+                        statusIndicador = "verde";
+                    } else if (indicador.status == 'Em análise/construção') {
+                        statusIndicador = "amarelo";
+                    } else if (indicador.status == 'Sem dados') {
+                        statusIndicador = "sem-dados";
+                    } else if (indicador.status == 'Sem metodologia') {
+                        statusIndicador = "vermelho";
+                    } else if (indicador.status == 'Não se aplica ao Brasil') {
+                        statusIndicador = "cinza";
+                    }
+
+                    //Status do indicador aqui - concatenar a cor do indicador para obter a classe correta. 
+                    //Verificar se a cor recebida é a mesma da classe : verde, amarelo, cinza, vermelho, laranja
+                    $indicador.addClass("indicador-link");
+
+                    if (statusIndicador) {
+                        $indicador.addClass("indicador-texto indicador-link-" + statusIndicador).attr("indicador", indicador.numero).attr("status", indicador.status);
+                    }
+
+                    //Adiciona o conte
+                    if (indicador.possui_ficha === true && indicador.status == 'Produzido') {
+                        var nobj = indicador.numero.split(".")[0].replace(/[a-zA-Z]/gi, '');
+                        var url = "/objetivo" + nobj + "/indicador" + indicador.numero.split(".").join("");
+
+                        $("<a>")
+                            .attr("href", url)
+                            .html(indicador.numero + " - " + indicador.nome)
+                            .appendTo($indicador);
+                    } else {
+                        $indicador.html(indicador.numero + " - " + indicador.nome);
+                    }
+                }
+
+            }
+        }
+        jQuery.ajax({
+            type: "GET",
+            url: urlDadosPesquisa,
+        }).fail(function () {
+        }).done(function (data) {
+            hsh = {}
+
+            for (index = 0; index < data.length; index++) {
+                var reg = new RegExp(/\d{1,2}\.[0-9a-z]{1,2}\.\d{1,2}/gm);
+                var result;
+                while (result = reg.exec(data[index].Nome)) {
+                    hsh[result] = [data[index].DataAtualizacao, data[index].Recente]
+                }
+            }
+
+          
+        }
+
+        )
+    });
+
+
+});
+
+function mostrarCloneLegenda() {
+    if ($("#legenda-cores-clone").length != 0)
+        return;
+
+    $("<div>")
+        .attr("id", "legenda-cores-clone")
+        .addClass("legenda-cores-fixed")
+        .append($("<div>")
+            .addClass("container")
+            .append($("#legenda-cores").clone())
+        ).appendTo("body")
+
+    $("#legenda-cores").css("visibility", "hidden");
+}
+
+function esconderCloneLegenda() {
+    var legClone = $("#legenda-cores-clone");
+
+    if (legClone.length == 0)
+        return;
+
+    $("#legenda-cores").css("visibility", "visible");
+    legClone.remove();
+}
+
+
+$(window).on('scroll', function () {
+    var leg = $("#legenda-cores");
+
+    setTimeout(function () {
+        var pos = $(window).scrollTop();
+        if (pos > leg.offset().top)
+            mostrarCloneLegenda();
+        else
+            esconderCloneLegenda();
+    }, 0);
+});
+
+function parteOrdenador(t) {
+    return (t.length < 2 || t[t.length - 1] <= '9') ? ("000" + t).slice(-3) + "0" : ("0000" + t).slice(-4);
+}
+
+function gerarOrdenador(item) {
+    var partes = item.numero.split(".");
+    for (var i = partes.length; i--;)
+        partes[i] = parteOrdenador(partes[i]);
+    item.ordem = partes.join(".");
+}
+
+function ordenarIndicadores(lista) {
+    for (var i = 0, l = lista.length; i < l; i++)
+        gerarOrdenador(lista[i]);
+    lista = lista.sort(function (a, b) { return a.ordem.localeCompare(b.ordem); });
+    return lista;
+}

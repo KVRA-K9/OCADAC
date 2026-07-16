@@ -1,0 +1,122 @@
+/**
+ * JavaScript para frontend do plugin Galeria de Aniversarios
+ */
+
+(function () {
+  "use strict";
+
+  if (window.gaLightboxInitialized) {
+    return;
+  }
+
+  window.gaLightboxInitialized = true;
+
+  let lightbox = null;
+  let lightboxImage = null;
+  let isOpen = false;
+
+  function cacheElements() {
+    lightbox = document.getElementById("ga-lightbox");
+    lightboxImage = lightbox ? lightbox.querySelector(".ga-lightbox-image") : null;
+  }
+
+  function ensureLightbox() {
+    if (!lightbox || !lightboxImage) {
+      cacheElements();
+    }
+
+    if (!lightbox || !lightboxImage) {
+      console.warn("Galeria Aniversarios: modal global nao encontrado no DOM.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function openLightbox(src, alt) {
+    if (!src || !ensureLightbox()) {
+      return;
+    }
+
+    lightboxImage.src = src;
+    lightboxImage.alt = alt || "";
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    isOpen = true;
+  }
+
+  function closeLightbox() {
+    if (!ensureLightbox()) {
+      return;
+    }
+
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImage.src = "";
+    lightboxImage.alt = "";
+    document.body.style.overflow = "";
+    isOpen = false;
+  }
+
+  function handleTriggerClick(event, trigger) {
+    const src = trigger.getAttribute("data-image-full");
+    const alt = trigger.getAttribute("data-image-alt") || "";
+
+    if (!src) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    openLightbox(src, alt);
+  }
+
+  function handleAccordionClick(event, button) {
+    const item = button.closest(".ga-item");
+    if (!item) {
+      return;
+    }
+
+    event.preventDefault();
+    item.classList.toggle("open");
+  }
+
+  function onDocumentClick(event) {
+    const trigger = event.target.closest(".ga-lightbox-trigger");
+    if (trigger) {
+      handleTriggerClick(event, trigger);
+      return;
+    }
+
+    if (event.target.closest("[data-ga-lightbox-close=\"true\"]")) {
+      event.preventDefault();
+      closeLightbox();
+      return;
+    }
+
+    const accordionButton = event.target.closest(".ga-button");
+    if (accordionButton) {
+      handleAccordionClick(event, accordionButton);
+    }
+  }
+
+  function onDocumentKeydown(event) {
+    if (event.key === "Escape" && isOpen) {
+      closeLightbox();
+    }
+  }
+
+  function init() {
+    cacheElements();
+    document.addEventListener("click", onDocumentClick, true);
+    document.addEventListener("keydown", onDocumentKeydown);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+})();

@@ -1,0 +1,461 @@
+﻿$.editor = {};
+
+var idPagina = "noname";
+var USA_CACHE = false;
+var TIMEOUT_AJAX = 600000;  // 60 segundos de timeout
+
+
+
+
+// mensagens padrão (seria interessante o servidor enviar essas strings com base no idioma de visualização da página?)
+var mensagens = {
+    limite: "Mais {0} elemento{1}. Clique aqui caso deseje exibí-los (pode ocasionar lentidão no navegador).",
+    nenhum: "Nenhum registro encontrado",
+    download: "Realizando download dos dados",
+    preenchendo: "Preenchendo lista",
+    //
+    erroProcessamento: "Erro processando dados.\nPor favor, atualize a página.",
+    erroServidor: "Não foi possível conectar ao servidor.\nVerifique sua conexão ou entre em contato com o suporte.",
+    erroRequisicao: "Erro na requisição.\nPor favor, atualize a página.",
+    erroTimeout: "Servidor não responde.\nVerifique sua conexão e tente novamente.",
+    erroDados: "Dados inconsistentes. Tente novamente.",
+    erroConsulta: "Erro executando consulta.",
+    erroDesconhecido: "Erro desconhecido.\nVerifique sua conexão ou entre em contato com o suporte."
+};
+
+
+function storageGet(id) {
+    var id = idPagina + ",CONTENT:" + id;
+    return $.jStorage.get(id);
+}
+
+function storageSet(id, data) {
+    var id = idPagina + ",CONTENT:" + id;
+    return $.jStorage.set(id, data);
+}
+
+function storageRemove(id, data) {
+    var id = idPagina + ",CONTENT:" + id;
+    return $.jStorage.deleteKey(id);
+}
+
+
+function carregando(elemento, _) {
+    var method = elemento.loading;
+    return method.call.apply(method, arguments);
+}
+
+function removeCarregando(elemento) {
+    if (elemento.loading("hasLoading"))
+        elemento.loading("close");
+    return elemento;
+}
+
+function erroCarregando(elemento, texto, excecao) {
+    elemento.loading("error", texto || mensagens.erroProcessamento);
+    $.sidra.debugErro(texto, excecao);
+    return elemento;
+}
+
+var elementosPersistentes = {
+    "input": "value",
+    "select": "selectedIndex",
+    "input[type=checkbox]": "checked"
+};
+
+function getEstadoInputs(container) {
+    var estado = {};
+    //
+    $(container || "body").find("[data-opcoes*='persistente']").each(function () {
+        var elemento = $(this);
+        var id = elemento.attr("id");
+        if (!id)
+            console.log('Atributo "id" é obrigatório para elementos persistentes. Ignorando.', this);
+        else {
+            var prop = null;
+            for (var seletor in elementosPersistentes)
+                if (elemento.is(seletor))
+                    prop = elementosPersistentes[seletor];
+            //
+            if (!prop)
+                console.log('Elemento não suportado para persistência: ', this);
+            else {
+                var val = estado["#" + id] = {};
+                val[prop] = elemento.prop(prop);
+            }
+        }
+    });
+
+    //
+    return estado;
+}
+
+function setEstadoInputs(estado) {
+    if (typeof estado === "object")
+        for (var id in estado) {
+            var elemento = $(id);
+            var props = estado[id];
+
+            for (var p in props)
+                elemento.prop(p, props[p]);
+
+            if (elemento.is("[data-opcoes*='input-toggle']"))
+                processarToggle(elemento);
+        }
+}
+
+
+var EditorBase = $.sidra.criarClasse(null, {
+    parametrosJanela: {},
+    inicializar: function (id, container) {
+        this.id = id;
+        this.container = container;
+        this.carregar();
+        this._criarJanela();
+        this._preencherJanela();
+        this._atualizarTitulo();
+    },
+    _criarJanela: function () {
+        var params = $.extend({}, this.parametrosJanela, {
+            context: this,
+            onMaximize: this.evtMaximizar,
+            onMinimize: this.evtMinimizar,
+            onResize: this.evtRedimensionar
+        });
+        //
+        var janela = criarJanela(this.container, "panel-" + this.id, params);
+        this.htmlJanela = janela.panel;
+        this.htmlCorpo = janela.corpo;
+    },
+    titulo: function () {
+        return this.htmlJanela.janela("title").text();
+    },
+    _titulo: function (titulo) {
+        var possuiErro = this._possuiErros();
+        //var notificacao = (possuiErro ? "<i class='glyphicon glyphicon-exclamation-sign'></i>&nbsp;" : "");
+        //
+        var $titulo = $("<span>" + titulo + "</span>")
+            .toggleClass("erro", possuiErro)
+            //.prepend(notificacao);
+        //
+        this.htmlJanela.janela("title", $titulo);
+        return this;
+    },
+    // o parâmetro de alvo é sempre opcional
+    // _carregando(alvo, false): remove o overlay
+    // _carregando(alvo, texto, percentual): todos os parâmetros opcionais, identificados pelo tipo
+    _carregando: function (arg1, arg2) {
+        // processa os parâmetros, incluindo o elemento alvo padrão se este não estiver definido
+        var params = [].slice.call(arguments, 0);
+        if (!(arg1 instanceof $))
+            params.unshift(this.htmlCorpo);
+        //
+        if (params[1] === false)
+            removeCarregando(params[0]);
+        else
+            carregando.apply(this, params);
+        //
+        return this;
+    },
+    _abstractLog: function (mensagem) {
+        console.log(mensagem + ": " + this.id);
+    },
+    _erroCarregando: function (arg1, arg2) {
+        if (arguments.length > 1)
+            erroCarregando(arg1, arg2);
+        else
+            erroCarregando(this.htmlCorpo, arg1);
+    },
+    remover: function () {
+        this._remover();
+        this.htmlJanela.remove();
+        for (var key in this)
+            this[key] = null;
+    },
+    show: function (instantaneo) {
+        this._onShow();
+        this.htmlJanela.janela("show", !!instantaneo);
+        return this.atualizar();
+    },
+    hide: function (instantaneo) {
+        this.htmlJanela.janela("hide", !!instantaneo);
+        this._onHide();
+        return this;
+    },
+    // toggle()
+    // toggle(mostrar)
+    // toggle(mostrar, instantaneo)
+    toggle: function (mostrar, instantaneo) {
+        var isVisivel = this.htmlJanela.janela("isVisible");
+        var delay = (instantaneo ? 0 : 400);
+        var mostrar = !(mostrar === undefined ? isVisivel : !mostrar);
+        this[mostrar ? "show" : "hide"](delay);
+        return this;
+    },
+    carregar: function () {
+        var estado = storageGet(this.id);
+        if (estado)
+            this.estado(estado);
+        else
+            this.reiniciar();
+        return this;
+    },
+    salvar: function () {
+        storageSet(this.id, this.estado());
+        return this;
+    },
+    // get/set
+    estado: function (estado) {
+        // getter
+        if (!arguments.length)
+            return JSON.stringify(this._getEstado());
+        // setter
+        try {
+            this._setEstado(JSON.parse(estado));
+            this.atualizar();
+        }
+        catch (e) {
+            $.sidra.debugErro(e, "Erro carregando estado. Definindo estado padrão.");
+            this.reiniciar();
+        }
+        return this;
+    },
+    reiniciar: function () {
+        this._reiniciar();
+        return this.atualizar();
+    },
+    limpar: function () {
+        this._limpar();
+        return this.atualizar();
+    },
+    atualizar: function () {
+        if (this.inicializado) {
+            this._atualizarConteudo();
+            this._atualizarInterface();
+            this._atualizarTitulo();
+        }
+        return this;
+    },
+    _estadoInicial: function (params) {
+        //
+    },
+    _remover: function () {
+        //
+    },
+    _onShow: function () {
+        //
+    },
+    _onHide: function () {
+        //
+    },
+    _possuiErros: function () {
+        return false;
+    },
+    _atualizarConteudo: function () {
+        this._abstractLog("atualizar conteúdo");
+    },
+    _atualizarTitulo: function () {
+        this._abstractLog("atualizar título");
+    },
+    _atualizarInterface: function () {
+        this._abstractLog("atualizar interface");
+    },
+    _reiniciar: function () {
+        this._abstractLog("reiniciar");
+    },
+    _getEstado: function () {
+        this._abstractLog("get estado");
+    },
+    _setEstado: function () {
+        this._abstractLog("set estado");
+    },
+    _preencherJanela: function () {
+        this._abstractLog("preencher janela");
+    },
+    // usado para lidar com concorrência de eventos assíncronos disparados pela interface de usuário.
+    // considera no máximo 2 eventos concorrentes (o overlay busca evitar novos disparos na UI)
+    executarAsync: function (alvo, executar, abortar) {
+        var asyncField = "__async";
+        var that = this;
+        //
+        setTimeout(function () {
+            var handler = alvo.data(asyncField);
+            if (!handler)
+                alvo.data(asyncField, handler = []);
+            //
+            handler.push({
+                executar: executar,
+                abortar: abortar
+            });
+            //
+            if (handler.length === 1) {
+                if (executar() == true)
+                    that.terminarAsync(alvo);
+            }
+            else {
+                that._carregando(alvo, "Aguarde");
+                handler[0].abortar();
+            }
+        }, 0);
+        //
+        return this;
+    },
+    terminarAsync: function (alvo) {
+        var asyncField = "__async";
+        var that = this;
+        //
+        setTimeout(function () {
+            var handler = alvo.data(asyncField);
+            if (!handler)
+                console.log("elemento não possui métodos assíncronos");
+            //
+            handler.shift();
+            //
+            if (!handler.length)
+                that._carregando(alvo, false)
+            else {
+                if (handler[0].executar() == true)
+                    that.terminarAsync(alvo);
+            }
+        }, 0);
+        //
+        return this;
+    },
+    //    
+    evtMaximizar: function () {
+        // 
+    },
+    // editor em "this"
+    evtMinimizar: function () {
+        //
+    },
+    // editor em "this"
+    evtRedimensionar: function (janela, largura, altura) {
+        //
+    }
+});
+
+
+var defaultJanela = {
+    "titulo": "",
+    "maximizedMode": "fixed",
+    "titleMode": "nowrap",
+    "onHeaderLoad": null,
+    "onMaximize": null,
+    "onMinimize": null,
+    "onResize": null,
+    "onCollapse": null
+};
+
+
+// cria o html da janela, retornando o elemento com algumas referências principais
+function criarJanela(container, id, opcoes) {
+    // cria o elemento que será base da janela
+    var elemento = $("<div>")
+        .attr("id", id)
+        .appendTo(container);
+    // define os parâmetros
+    var parametros = $.extend({}, defaultJanela, opcoes);
+    // cria o panel e retorna seu objeto do panel
+    return {
+        "panel": elemento.janela(parametros),
+        "corpo": elemento.janela("contents")
+    };
+}
+
+// encapsula o método de requisição de dados por ajax, padronizando a mensagem de erro
+function executarAjax(caminho, sucesso, falha) {
+    $.ajax({
+        url: caminho,
+        cache: USA_CACHE,
+        ifModified: true,
+        timeout: TIMEOUT_AJAX,
+        success: sucesso,
+        error: function (xhr, status, msg) {
+            $.sidra.debugErro(xhr, status, msg);
+            var mensagem;
+            if (status === "timeout")
+                mensagem = mensagens.erroTimeout;
+            else switch (xhr.status) {
+                case 400:
+                    mensagem = (xhr.responseJSON || msg);
+                    break;
+                case 404:
+                    mensagem = mensagens.erroServidor;
+                    break;
+                default:
+                    mensagem = mensagens.erroRequisicao;
+            }
+            //
+            if (falha)
+                falha(mensagem);
+            else
+                throw mensagem;
+        }
+    });
+}
+
+// método que centraliza a execução método de botão de editor
+var comandosPagina = null;
+
+function evtComandoPagina(e) {
+    var elemento = $(this);
+    //
+    var comando = elemento.attr("data-cmd");
+    if (!comando)
+        console.log("Nenhum comando especificado");
+    else
+        executarComandoPagina.call(elemento[0], comando);
+
+    if (elemento.is("a,li")) {
+        elemento.closest(".open").removeClass("open");
+        e.preventDefault();
+        return false;
+    }
+}
+
+function executarComandoPagina(comando) {
+    if (!comandosPagina)
+        throw 'O mapeamento de comandos da página ("comandosPagina") não está definido.';
+
+    if (typeof comandosPagina === "function")
+        comandosPagina.call(this, comando);
+    else {
+        var metodo = (comando && comandosPagina[comando]);
+        if (!metodo)
+            console.log('Método inexistente: "' + comando + '"');
+        else
+            metodo.call(this);
+    }
+}
+
+function evtToggleClasse(e) {
+    var elemento = this;
+    var classe = elemento.getAttribute("data-toggle");
+    var alvo = elemento.getAttribute("data-target");
+    $(alvo).toggleClass(classe);
+}
+
+function processarToggle(elemento) {
+    var marcado = elemento.prop("checked");
+    var alvo = $(elemento.attr("data-alvo"));
+    alvo.find("input,select").prop("disabled", !marcado);
+}
+
+function evtEventoInput(e) {
+    var elemento = $(this);
+    var opcoes = elemento.attr("data-opcoes");
+
+    if (!opcoes)
+        return;
+
+    if (opcoes.indexOf("input-toggle") >= 0)
+        processarToggle(elemento);
+}
+
+$(document).ready(function () {
+    $(document)
+        .on("click", ".cmd-editor", evtComandoPagina)
+        .on("click", ".cmd-toggle", evtToggleClasse)
+        .on("click", "input", evtEventoInput);
+});

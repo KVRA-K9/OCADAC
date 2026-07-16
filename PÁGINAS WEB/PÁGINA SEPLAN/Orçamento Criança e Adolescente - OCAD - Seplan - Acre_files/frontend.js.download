@@ -1,0 +1,1121 @@
+document.addEventListener("DOMContentLoaded", () => {
+  initAxisSubgroupAccordions();
+  document.querySelectorAll("[data-home-search]").forEach((root) => {
+    initHomeSearch(root);
+  });
+  document.querySelectorAll(".wp-csv-table-wrap").forEach((root) => {
+    syncThemeContainerWidth(root);
+    initCsvTable(root);
+  });
+});
+
+window.addEventListener("resize", () => {
+  document.querySelectorAll(".wp-csv-table-wrap").forEach((root) => {
+    syncThemeContainerWidth(root);
+  });
+});
+
+function cleanValue(value) {
+  return String(value ?? "")
+    .replace(/[\u200B-\u200D\uFEFF]/g, "") // caracteres invisíveis
+    .replace(/\r\n|\r|\n/g, " ") // normaliza quebras de linha para espaço
+    .replace(/\s+/g, " ") // espaços múltiplos para um único
+    .replace(/^"|"$/g, "") // aspas simples/removíveis
+    .replace(/^'|'$/g, "")
+    .trim();
+}
+
+function normalizeText(text) {
+  return cleanValue(text)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function slugifyFilename(text) {
+  const normalized = normalizeText(text)
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return normalized || "tabela";
+}
+
+function triggerDownload(blob, filename) {
+  const link = document.createElement("a");
+  const url = URL.createObjectURL(blob);
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  setTimeout(() => {
+    URL.revokeObjectURL(url);
+  }, 1000);
+}
+
+function getItemsPerPageValue(value) {
+  const allowedValues = [10, 15, 25, 50, 100];
+  const parsedValue = Number.parseInt(value, 10);
+
+  return allowedValues.includes(parsedValue) ? parsedValue : 25;
+}
+
+function syncThemeContainerWidth(root) {
+  if (!root || !root.classList.contains("wp-csv-table-wrap")) {
+    return;
+  }
+
+  const container = root.closest(
+    ".single-post-container, .container, .neve-main > .single-post-container, .nv-single-post-wrap, .content-area",
+  );
+
+  if (!container) {
+    root.style.setProperty("--wp-csv-theme-container-width", "100%");
+    return;
+  }
+
+  const containerRect = container.getBoundingClientRect();
+  const containerWidth = Math.max(0, Math.round(containerRect.width));
+
+  if (!containerWidth) {
+    root.style.setProperty("--wp-csv-theme-container-width", "100%");
+    return;
+  }
+
+  root.style.setProperty("--wp-csv-theme-container-width", `${containerWidth}px`);
+}
+
+function initAxisSubgroupAccordions() {
+  const groups = document.querySelectorAll("[data-axis-subgroup]");
+
+  if (!groups.length) {
+    return;
+  }
+
+  const prefersReducedMotion =
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const syncGroupState = (group, expanded, shouldAnimate = false) => {
+    const toggle = group.querySelector("[data-axis-subgroup-toggle]");
+    const panel = group.querySelector("[data-axis-subgroup-panel]");
+
+    if (!toggle || !panel) {
+      return;
+    }
+
+    if (typeof panel._wpCsvAccordionCleanup === "function") {
+      panel._wpCsvAccordionCleanup();
+    }
+
+    toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+    panel.setAttribute("aria-hidden", expanded ? "false" : "true");
+    group.classList.toggle("is-open", expanded);
+
+    if (!shouldAnimate || prefersReducedMotion) {
+      panel.hidden = !expanded;
+      panel.style.transition = "";
+      panel.style.height = expanded ? "auto" : "0px";
+      panel.style.overflow = expanded ? "visible" : "hidden";
+      panel._wpCsvAccordionCleanup = null;
+      return;
+    }
+
+    const currentHeight = panel.hidden ? 0 : panel.getBoundingClientRect().height;
+
+    panel.hidden = false;
+    panel.style.overflow = "hidden";
+    panel.style.height = `${currentHeight}px`;
+    void panel.offsetHeight;
+
+    const targetHeight = expanded ? panel.scrollHeight : 0;
+    panel.style.transition = "height 220ms ease";
+    panel.style.height = `${targetHeight}px`;
+
+    const handleTransitionEnd = (event) => {
+      if (event.target !== panel || event.propertyName !== "height") {
+        return;
+      }
+
+      cleanup();
+    };
+
+    const cleanup = () => {
+      panel.removeEventListener("transitionend", handleTransitionEnd);
+      panel._wpCsvAccordionCleanup = null;
+      panel.style.transition = "";
+      panel.hidden = !expanded;
+      panel.style.height = expanded ? "auto" : "0px";
+      panel.style.overflow = expanded ? "visible" : "hidden";
+    };
+
+    panel._wpCsvAccordionCleanup = cleanup;
+    panel.addEventListener("transitionend", handleTransitionEnd);
+  };
+
+  groups.forEach((group) => {
+    const toggle = group.querySelector("[data-axis-subgroup-toggle]");
+
+    if (!toggle) {
+      return;
+    }
+
+    const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+    syncGroupState(group, isExpanded, false);
+
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      syncGroupState(group, !isOpen, true);
+    });
+  });
+}
+
+function initHomeSearch(root) {
+  if (!root) {
+    return;
+  }
+
+  const input = root.querySelector(".wp-csv-home-search-input");
+  const results = root.querySelector("[data-home-search-results]");
+
+  if (!input || !results) {
+    return;
+  }
+
+  let items = [];
+
+  try {
+    const rawItems = JSON.parse(root.dataset.searchItems || "[]");
+    items = Array.isArray(rawItems)
+      ? rawItems
+          .map((item) => ({
+            title: cleanValue(item?.title ?? ""),
+            description: cleanValue(item?.description ?? ""),
+            axis: cleanValue(item?.axis ?? ""),
+            url: String(item?.url ?? "").trim(),
+          }))
+          .filter((item) => item.title && item.url)
+      : [];
+  } catch (error) {
+    console.warn("Erro ao inicializar busca da home:", error);
+    return;
+  }
+
+  if (!items.length) {
+    root.hidden = true;
+    return;
+  }
+
+  const hideResults = () => {
+    results.hidden = true;
+    results.classList.add("is-hidden");
+    results.innerHTML = "";
+    root.classList.remove("is-open");
+  };
+
+  const renderResults = (query) => {
+    const normalizedQuery = normalizeText(query);
+
+    if (!normalizedQuery) {
+      hideResults();
+      return;
+    }
+
+    const matchedItems = items
+      .filter((item) => {
+        const haystack = [item.title, item.description, item.axis].map(normalizeText).join(" ");
+        return haystack.includes(normalizedQuery);
+      })
+      .slice(0, 8);
+
+    results.innerHTML = "";
+    root.classList.add("is-open");
+
+    if (!matchedItems.length) {
+      hideResults();
+      return;
+    }
+
+    results.hidden = false;
+    results.classList.remove("is-hidden");
+
+    matchedItems.forEach((item) => {
+      const link = document.createElement("a");
+      link.className = "wp-csv-home-search-result";
+      link.href = item.url;
+
+      const title = document.createElement("span");
+      title.className = "wp-csv-home-search-result-title";
+      title.textContent = item.title;
+      link.appendChild(title);
+
+      if (item.axis) {
+        const meta = document.createElement("span");
+        meta.className = "wp-csv-home-search-result-meta";
+        meta.textContent = item.axis;
+        link.appendChild(meta);
+      }
+
+      results.appendChild(link);
+    });
+  };
+
+  input.addEventListener("input", () => {
+    renderResults(input.value);
+  });
+
+  input.addEventListener("focus", () => {
+    if (input.value.trim()) {
+      renderResults(input.value);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) {
+      hideResults();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && root.classList.contains("is-open")) {
+      hideResults();
+      input.blur();
+    }
+  });
+
+  hideResults();
+}
+
+function initCsvTable(root) {
+  const config = JSON.parse(root.dataset.config || "{}");
+  const filtersDisplay = config.filtersDisplay === "modal" ? "modal" : "inline";
+
+  let allRows = [];
+  let filteredRows = [];
+  let columns = [];
+  let currentPage = 1;
+  let itemsPerPage = 25;
+
+  const searchInput = root.querySelector(".wp-csv-search");
+  const inlineFiltersPanel = root.querySelector(".wp-csv-filters-panel-inline");
+  const modalFiltersPanel = root.querySelector(".wp-csv-filters-panel-modal");
+  const modalEl = root.querySelector(".wp-csv-filters-modal");
+  const modalCloseBtn = root.querySelector(".wp-csv-close-filters-modal");
+  const toggleFiltersBtn = root.querySelector(".wp-csv-toggle-filters");
+  const exportExcelBtn = root.querySelector(".wp-csv-export-excel");
+  const exportPdfBtn = root.querySelector(".wp-csv-export-pdf");
+  const itemsPerPageSelect = root.querySelector(".wp-csv-items-per-page");
+  const tableHead = root.querySelector(".wp-csv-table thead");
+  const tableBody = root.querySelector(".wp-csv-table tbody");
+  const paginationTopEl = root.querySelector(".wp-csv-pagination-top");
+  const paginationBottomEl = root.querySelector(".wp-csv-pagination-bottom");
+  const paginationEls = [paginationTopEl, paginationBottomEl].filter(Boolean);
+  const activeFiltersPanel = filtersDisplay === "modal" ? modalFiltersPanel : inlineFiltersPanel;
+
+  if (itemsPerPageSelect) {
+    itemsPerPageSelect.value = String(itemsPerPage);
+    itemsPerPageSelect.addEventListener("change", () => {
+      itemsPerPage = getItemsPerPageValue(itemsPerPageSelect.value);
+      itemsPerPageSelect.value = String(itemsPerPage);
+      currentPage = 1;
+      renderTable();
+      renderPagination();
+    });
+  }
+
+  const closeModal = () => {
+    if (!modalEl) return;
+    modalEl.classList.remove("is-open");
+    modalEl.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  };
+
+  const openModal = () => {
+    if (!modalEl) return;
+    modalEl.classList.add("is-open");
+    modalEl.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  };
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+  }
+
+  if (activeFiltersPanel) {
+    activeFiltersPanel.addEventListener("input", applyFilters);
+    activeFiltersPanel.addEventListener("change", applyFilters);
+  }
+
+  if (toggleFiltersBtn && modalEl) {
+    toggleFiltersBtn.addEventListener("click", openModal);
+  }
+
+  if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", closeModal);
+  }
+
+  if (modalEl) {
+    modalEl.addEventListener("click", (event) => {
+      if (
+        event.target.classList.contains("wp-csv-filters-modal") ||
+        event.target.classList.contains("wp-csv-filters-modal-backdrop")
+      ) {
+        closeModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modalEl?.classList.contains("is-open")) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (root.contains(event.target) || event.target.closest(".multiselect-dropdown")) {
+      return;
+    }
+
+    closeAllMultiselects();
+  });
+
+  window.addEventListener("resize", closeAllMultiselects);
+  window.addEventListener("scroll", closeAllMultiselects, true);
+
+  if (exportPdfBtn) {
+    exportPdfBtn.addEventListener("click", () =>
+      exportPDF({
+        title: config.title,
+        description: config.description,
+        note: config.note,
+        columns,
+        rows: filteredRows,
+        logo: config.exportLogo,
+      }),
+    );
+  }
+
+  if (exportExcelBtn) {
+    exportExcelBtn.addEventListener("click", () =>
+      exportExcel({
+        title: config.title,
+        description: config.description,
+        note: config.note,
+        columns,
+        rows: filteredRows,
+      }),
+    );
+  }
+
+  fetch(config.csvUrl)
+    .then((response) => response.text())
+    .then((csvText) => {
+      Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+        complete(results) {
+          columns = Array.isArray(results.meta?.fields) ? results.meta.fields.filter(Boolean) : [];
+          allRows = Array.isArray(results.data) ? results.data : [];
+          filteredRows = [...allRows];
+
+          if (!columns.length && allRows.length) {
+            columns = Object.keys(allRows[0]);
+          }
+
+          renderFilters();
+          applyFilters();
+        },
+        error() {
+          renderStatusMessage("Erro ao processar CSV.");
+        },
+      });
+    })
+    .catch(() => {
+      renderStatusMessage("Erro ao carregar dados.");
+    });
+
+  function renderStatusMessage(message) {
+    tableHead.innerHTML = "";
+    tableBody.innerHTML = `<tr><td class="wp-csv-table-status">${escapeHtml(message)}</td></tr>`;
+    paginationEls.forEach((paginationEl) => {
+      paginationEl.innerHTML = "";
+    });
+  }
+
+  function renderFilters() {
+    if (inlineFiltersPanel) {
+      inlineFiltersPanel.innerHTML = "";
+    }
+
+    if (modalFiltersPanel) {
+      modalFiltersPanel.innerHTML = "";
+    }
+
+    if (!activeFiltersPanel || !Array.isArray(config.filters) || !config.filters.length) {
+      return;
+    }
+
+    config.filters.forEach((filter, index) => {
+      const column = filter.column;
+      if (!column) return;
+
+      const fieldWrap = document.createElement("div");
+      fieldWrap.className = "wp-csv-filter-field";
+
+      const label = document.createElement("label");
+      const inputId = `wp-csv-filter-${config.id}-${index}`;
+      label.setAttribute("for", inputId);
+      label.textContent = filter.label || column;
+
+      let field;
+
+      if (filter.type === "select") {
+        field = document.createElement("select");
+        field.id = inputId;
+        field.innerHTML = `<option value="">Todos</option>`;
+
+        getUniqueValues(column).forEach((value) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = value;
+          field.appendChild(option);
+        });
+      } else if (filter.type === "multiselect") {
+        field = createCustomMultiselect(inputId, getUniqueValues(column));
+      } else if (filter.type === "checkbox") {
+        field = document.createElement("div");
+        field.id = inputId;
+        field.className = "wp-csv-checkbox-group";
+
+        getUniqueValues(column).forEach((value, valueIndex) => {
+          const item = document.createElement("label");
+          item.className = "wp-csv-checkbox-item";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = value;
+          checkbox.id = `${inputId}-${valueIndex}`;
+
+          const text = document.createElement("span");
+          text.textContent = value;
+
+          item.appendChild(checkbox);
+          item.appendChild(text);
+          field.appendChild(item);
+        });
+      } else {
+        field = document.createElement("input");
+        field.type = "text";
+        field.id = inputId;
+        field.placeholder = filter.placeholder || "Pesquisar livremente...";
+      }
+
+      field.classList.add("wp-csv-filter-input");
+      field.dataset.column = column;
+      field.dataset.type = filter.type || "text";
+
+      fieldWrap.appendChild(label);
+      fieldWrap.appendChild(field);
+      activeFiltersPanel.appendChild(fieldWrap);
+    });
+  }
+
+  function getUniqueValues(column) {
+    return [...new Set(allRows.map((row) => cleanValue(row[column] ?? "")).filter(Boolean))].sort(
+      (a, b) => a.localeCompare(b, "pt-BR", { sensitivity: "base" }),
+    );
+  }
+
+  function closeAllMultiselects() {
+    if (!activeFiltersPanel) {
+      return;
+    }
+
+    activeFiltersPanel.querySelectorAll(".custom-multiselect").forEach((multiselect) => {
+      multiselect.classList.remove("is-open");
+      const dropdown =
+        multiselect._portalDropdown || multiselect.querySelector(".multiselect-dropdown");
+      if (dropdown) {
+        dropdown.classList.remove("active");
+        dropdown.classList.remove("direction-up");
+        dropdown.classList.add("hidden");
+        dropdown.style.visibility = "";
+        dropdown.style.left = "";
+        dropdown.style.top = "";
+        dropdown.style.width = "";
+        dropdown.style.minWidth = "";
+        dropdown.style.maxHeight = "";
+
+        if (dropdown.parentNode === document.body) {
+          document.body.removeChild(dropdown);
+        }
+      }
+    });
+  }
+
+  function createCustomMultiselect(inputId, values) {
+    const multiselect = document.createElement("div");
+    multiselect.id = inputId;
+    multiselect.className = "custom-multiselect";
+    multiselect.tabIndex = 0;
+    multiselect.dataset.selected = "[]";
+
+    const tags = document.createElement("div");
+    tags.className = "multiselect-tags";
+
+    const placeholder = document.createElement("span");
+    placeholder.className = "multiselect-placeholder";
+    placeholder.textContent = "Selecione opções";
+    tags.appendChild(placeholder);
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "multiselect-dropdown hidden";
+    multiselect._portalDropdown = dropdown;
+
+    values.forEach((value) => {
+      const option = document.createElement("div");
+      option.textContent = value;
+      option.dataset.value = value;
+
+      option.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        const selected = JSON.parse(multiselect.dataset.selected || "[]");
+        const nextSelected = selected.includes(value)
+          ? selected.filter((item) => item !== value)
+          : [...selected, value];
+
+        multiselect.dataset.selected = JSON.stringify(nextSelected);
+        renderMultiselectTags(multiselect);
+        updateMultiselectOptions(multiselect);
+        multiselect.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+
+      dropdown.appendChild(option);
+    });
+
+    multiselect.appendChild(tags);
+    multiselect.appendChild(dropdown);
+
+    multiselect.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen = multiselect.classList.contains("is-open");
+
+      closeAllMultiselects();
+
+      if (!isOpen) {
+        multiselect.classList.add("is-open");
+        openMultiselectDropdown(multiselect);
+      }
+    });
+
+    multiselect.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        multiselect.click();
+      }
+
+      if (event.key === "Escape") {
+        closeAllMultiselects();
+      }
+    });
+
+    renderMultiselectTags(multiselect);
+    updateMultiselectOptions(multiselect);
+
+    return multiselect;
+  }
+
+  function openMultiselectDropdown(multiselect) {
+    const dropdown = multiselect._portalDropdown;
+    if (!dropdown) {
+      return;
+    }
+
+    dropdown.classList.remove("hidden", "active", "direction-up");
+    dropdown.style.visibility = "hidden";
+    dropdown.style.position = "fixed";
+    dropdown.style.left = "0px";
+    dropdown.style.top = "0px";
+
+    document.body.appendChild(dropdown);
+
+    const triggerRect = multiselect.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const dropdownHeight = Math.min(dropdown.scrollHeight, 200);
+    const spaceBelow = viewportHeight - triggerRect.bottom - 12;
+    const spaceAbove = triggerRect.top - 12;
+    const openUp = spaceBelow < dropdownHeight && spaceAbove > spaceBelow;
+
+    dropdown.style.minWidth = `${triggerRect.width}px`;
+    dropdown.style.width = `${triggerRect.width}px`;
+    dropdown.style.left = `${triggerRect.left}px`;
+    dropdown.style.top = openUp
+      ? `${Math.max(12, triggerRect.top - dropdownHeight - 6)}px`
+      : `${Math.min(viewportHeight - dropdownHeight - 12, triggerRect.bottom + 6)}px`;
+    dropdown.style.maxHeight = `${Math.max(120, openUp ? spaceAbove : spaceBelow)}px`;
+    dropdown.style.visibility = "visible";
+    dropdown.classList.add("active");
+
+    if (openUp) {
+      dropdown.classList.add("direction-up");
+    }
+  }
+
+  function renderMultiselectTags(multiselect) {
+    const tags = multiselect.querySelector(".multiselect-tags");
+    const selected = JSON.parse(multiselect.dataset.selected || "[]");
+
+    tags.innerHTML = "";
+
+    if (!selected.length) {
+      const placeholder = document.createElement("span");
+      placeholder.className = "multiselect-placeholder";
+      placeholder.textContent = "Selecione opções";
+      tags.appendChild(placeholder);
+      return;
+    }
+
+    selected.forEach((value) => {
+      const tag = document.createElement("span");
+      tag.className = "multiselect-tag";
+      tag.textContent = value;
+      tags.appendChild(tag);
+    });
+  }
+
+  function updateMultiselectOptions(multiselect) {
+    const selected = JSON.parse(multiselect.dataset.selected || "[]");
+    const dropdown =
+      multiselect._portalDropdown || multiselect.querySelector(".multiselect-dropdown");
+
+    if (!dropdown) {
+      return;
+    }
+
+    dropdown.querySelectorAll("div").forEach((option) => {
+      option.classList.toggle("selected", selected.includes(option.dataset.value));
+    });
+  }
+
+  function applyFilters() {
+    const searchValue = searchInput ? normalizeText(searchInput.value) : "";
+    const fields = activeFiltersPanel
+      ? Array.from(activeFiltersPanel.querySelectorAll(".wp-csv-filter-input"))
+      : [];
+
+    filteredRows = allRows.filter((row) => {
+      const matchesSearch = !searchValue
+        ? true
+        : columns.some((column) => normalizeText(row[column]).includes(searchValue));
+
+      if (!matchesSearch) {
+        return false;
+      }
+
+      return fields.every((field) => {
+        const column = field.dataset.column;
+        const type = field.dataset.type;
+        const rawCellValue = String(row[column] ?? "");
+        const normalizedCellValue = normalizeText(rawCellValue);
+
+        if (type === "text") {
+          const typedValue = normalizeText(field.value);
+          return !typedValue || normalizedCellValue.includes(typedValue);
+        }
+
+        if (type === "select") {
+          const selectedValue = cleanValue(field.value);
+          const normalizedSelected = normalizeText(selectedValue);
+          return !selectedValue || normalizedCellValue === normalizedSelected;
+        }
+
+        if (type === "multiselect") {
+          const selected = JSON.parse(field.dataset.selected || "[]")
+            .map((value) => normalizeText(value))
+            .filter(Boolean);
+          return !selected.length || selected.includes(normalizedCellValue);
+        }
+
+        if (type === "checkbox") {
+          const checked = Array.from(field.querySelectorAll('input[type="checkbox"]:checked'))
+            .map((checkbox) => normalizeText(cleanValue(checkbox.value)))
+            .filter(Boolean);
+          return !checked.length || checked.includes(normalizedCellValue);
+        }
+
+        return true;
+      });
+    });
+
+    currentPage = 1;
+    renderTable();
+    renderPagination();
+  }
+
+  function renderTable() {
+    if (!columns.length) {
+      renderStatusMessage("Nenhum dado encontrado.");
+      return;
+    }
+
+    const totalPages = Math.max(1, Math.ceil(filteredRows.length / itemsPerPage));
+    if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+
+    tableHead.innerHTML = `
+      <tr>
+        ${columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("")}
+      </tr>
+    `;
+
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredRows.slice(start, end);
+
+    if (!pageItems.length) {
+      tableBody.innerHTML = `<tr><td class="wp-csv-table-status" colspan="${columns.length}">Nenhum resultado encontrado.</td></tr>`;
+      return;
+    }
+
+    tableBody.innerHTML = pageItems
+      .map(
+        (row) => `
+          <tr>
+            ${columns.map((column) => `<td>${formatCell(row[column])}</td>`).join("")}
+          </tr>
+        `,
+      )
+      .join("");
+  }
+
+  function renderPagination() {
+    const totalPages = Math.ceil(filteredRows.length / itemsPerPage);
+
+    paginationEls.forEach((paginationEl) => {
+      paginationEl.innerHTML = "";
+
+      if (totalPages <= 1) {
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      const createBtn = (label, page, disabled = false, active = false, ariaLabel = "") => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = label;
+        btn.disabled = disabled;
+        btn.className = active ? "active" : "";
+        btn.setAttribute("aria-label", ariaLabel || `Página ${page}`);
+        btn.setAttribute("aria-current", active ? "page" : "false");
+
+        if (!disabled) {
+          btn.addEventListener("click", () => {
+            currentPage = page;
+            renderTable();
+            renderPagination();
+            root.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }
+
+        return btn;
+      };
+
+      fragment.appendChild(createBtn("«", 1, currentPage === 1, false, "Primeira página"));
+      fragment.appendChild(
+        createBtn("‹", currentPage - 1, currentPage === 1, false, "Página anterior"),
+      );
+
+      const start = Math.max(1, currentPage - 2);
+      const end = Math.min(totalPages, currentPage + 2);
+
+      for (let page = start; page <= end; page += 1) {
+        fragment.appendChild(
+          createBtn(String(page), page, false, page === currentPage, `Página ${page}`),
+        );
+      }
+
+      fragment.appendChild(
+        createBtn("›", currentPage + 1, currentPage === totalPages, false, "Próxima página"),
+      );
+      fragment.appendChild(
+        createBtn("»", totalPages, currentPage === totalPages, false, "Última página"),
+      );
+
+      paginationEl.appendChild(fragment);
+    });
+  }
+}
+
+function formatCell(value) {
+  const text = value == null || value === "" ? "--" : String(value);
+
+  if (/^https?:\/\//i.test(text)) {
+    return `<a href="${escapeHtml(text)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
+  }
+
+  return escapeHtml(text);
+}
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+async function getImageDimensions(imageUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({ width: img.naturalWidth, height: img.naturalHeight });
+    };
+    img.onerror = () => {
+      resolve({ width: 100, height: 100 });
+    };
+    img.src = imageUrl;
+  });
+}
+
+function calculateProportionalDimensions(originalWidth, originalHeight, maxHeight) {
+  if (originalHeight === 0) return { width: 0, height: maxHeight };
+  const ratio = originalWidth / originalHeight;
+  const width = maxHeight * ratio;
+  return { width, height: maxHeight };
+}
+
+function getPdfTextLines(doc, text, maxWidth) {
+  const normalizedText = String(text || "").trim();
+  if (!normalizedText) {
+    return [];
+  }
+
+  return doc.splitTextToSize(normalizedText, maxWidth);
+}
+
+async function exportPDF({ title, description, note, columns, rows, logo = null }) {
+  if (!rows.length || !columns.length) {
+    alert("Não há dados para exportar.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("landscape", "pt", "a4");
+  const body = rows.map((row) => columns.map((column) => String(row[column] ?? "--")));
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const marginLeft = 20;
+  const marginRight = 20;
+  const topMargin = 20;
+  const bottomMargin = 24;
+  const maxLogoHeight = 35;
+  const logoTopY = topMargin;
+  const fileTitle = String(title || "Tabela").trim() || "Tabela";
+  const descriptionText = String(description || "").trim();
+  const noteText = String(note || "").trim();
+  let logoWidth = 0;
+  let logoBottomY = 0;
+
+  if (logo && logo.url) {
+    try {
+      const dimensions = await getImageDimensions(logo.url);
+      const proportional = calculateProportionalDimensions(
+        dimensions.width,
+        dimensions.height,
+        maxLogoHeight,
+      );
+      const logoX = pageWidth - proportional.width - marginRight;
+
+      doc.addImage(logo.url, "PNG", logoX, logoTopY, proportional.width, proportional.height);
+      logoWidth = proportional.width;
+      logoBottomY = logoTopY + proportional.height;
+    } catch (err) {
+      console.warn("Erro ao carregar logo:", err);
+    }
+  }
+
+  const headerTextWidth = Math.max(
+    180,
+    pageWidth - marginLeft - marginRight - (logoWidth ? logoWidth + 20 : 0),
+  );
+
+  doc.setFontSize(16);
+  doc.setFont(undefined, "bold");
+  doc.setTextColor(0, 0, 0);
+  const titleY = topMargin + 18;
+  doc.text(fileTitle, marginLeft, titleY);
+
+  let headerBottomY = titleY;
+
+  if (descriptionText) {
+    doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+    doc.setTextColor(90, 90, 90);
+    const descriptionLines = getPdfTextLines(doc, descriptionText, headerTextWidth);
+    const descriptionY = titleY + 20;
+    doc.text(descriptionLines, marginLeft, descriptionY);
+    headerBottomY = descriptionY + Math.max(0, descriptionLines.length - 1) * 12;
+  }
+
+  headerBottomY = Math.max(headerBottomY, logoBottomY);
+
+  const startY = headerBottomY + 18;
+  const tableBottomMargin = noteText ? 72 : bottomMargin;
+
+  doc.autoTable({
+    head: [columns],
+    body,
+    startY,
+    theme: "grid",
+    headStyles: {
+      fillColor: [22, 119, 74],
+      textColor: 255,
+      fontSize: 8,
+    },
+    styles: {
+      fontSize: 7,
+      cellPadding: 3,
+      overflow: "linebreak",
+    },
+    margin: { top: startY, left: marginLeft, right: marginRight, bottom: tableBottomMargin },
+  });
+
+  if (noteText) {
+    const finalY = doc.lastAutoTable?.finalY || startY;
+    const noteLabel = "";
+    const noteAvailableWidth = pageWidth - marginLeft - marginRight;
+
+    doc.setFontSize(9);
+    doc.setTextColor(80, 80, 80);
+    const noteLines = getPdfTextLines(doc, noteText, noteAvailableWidth);
+    const noteBlockHeight = 44 + Math.max(1, noteLines.length) * 11;
+
+    if (finalY + noteBlockHeight > pageHeight - bottomMargin) {
+      doc.addPage();
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(1);
+      doc.line(marginLeft, topMargin, pageWidth - marginRight, topMargin);
+      doc.setFont(undefined, "bold");
+      doc.text(noteLabel, marginLeft, topMargin + 18);
+      doc.setFont(undefined, "normal");
+      doc.text(noteLines, marginLeft, topMargin + 36);
+    } else {
+      doc.setDrawColor(200, 200, 200);
+      doc.setLineWidth(1);
+      doc.line(marginLeft, finalY + 12, pageWidth - marginRight, finalY + 12);
+      doc.setFont(undefined, "bold");
+      doc.text(noteLabel, marginLeft, finalY + 30);
+      doc.setFont(undefined, "normal");
+      doc.text(noteLines, marginLeft, finalY + 48);
+    }
+  }
+
+  doc.save(`${slugifyFilename(fileTitle)}.pdf`);
+}
+
+async function exportExcel({ title, description, note, columns, rows }) {
+  if (!rows.length || !columns.length) {
+    alert("Não há dados para exportar.");
+    return;
+  }
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Tabela");
+  const fileTitle = String(title || "Tabela").trim() || "Tabela";
+  const descriptionText = String(description || "").trim();
+  const noteText = String(note || "").trim();
+  let currentRowNumber = 1;
+
+  worksheet.columns = columns.map((column) => ({
+    key: column,
+    width: Math.min(Math.max(String(column).length + 4, 18), 40),
+  }));
+
+  const titleRow = worksheet.getRow(currentRowNumber);
+  titleRow.getCell(1).value = fileTitle;
+  titleRow.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+  titleRow.alignment = { horizontal: "left", vertical: "center" };
+  titleRow.height = 25;
+  currentRowNumber += 1;
+
+  if (descriptionText) {
+    const descriptionRow = worksheet.getRow(currentRowNumber);
+    descriptionRow.getCell(1).value = descriptionText;
+    descriptionRow.font = { size: 11, color: { argb: "FF666666" } };
+    descriptionRow.alignment = { horizontal: "left", vertical: "top", wrapText: true };
+    descriptionRow.height = Math.max(18, Math.ceil(descriptionText.length / 90) * 15);
+    currentRowNumber += 1;
+  }
+
+  const spacerRow = worksheet.getRow(currentRowNumber);
+  spacerRow.height = 8;
+  currentRowNumber += 1;
+
+  const headerRowNumber = currentRowNumber;
+  const headerRow = worksheet.getRow(headerRowNumber);
+
+  columns.forEach((column, index) => {
+    const cell = headerRow.getCell(index + 1);
+    cell.value = column;
+    cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    cell.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF16774A" },
+    };
+    cell.alignment = { horizontal: "center", vertical: "center", wrapText: true };
+  });
+
+  headerRow.height = 25;
+
+  const dataRowStart = headerRowNumber + 1;
+  rows.forEach((row, rowIndex) => {
+    const excelRow = {};
+
+    columns.forEach((column) => {
+      const value = String(row[column] ?? "");
+      excelRow[column] = /^https?:\/\//i.test(value) ? { text: value, hyperlink: value } : value;
+    });
+
+    const newRow = worksheet.insertRow(dataRowStart + rowIndex, excelRow);
+    newRow.alignment = { horizontal: "left", vertical: "top", wrapText: true };
+  });
+
+  worksheet.views = [{ state: "frozen", ySplit: headerRowNumber }];
+
+  columns.forEach((column, index) => {
+    let maxLength = String(column).length;
+
+    rows.forEach((row) => {
+      const valueLength = String(row[column] ?? "").length;
+      if (valueLength > maxLength) {
+        maxLength = valueLength;
+      }
+    });
+
+    const calculatedWidth = Math.min(Math.max(maxLength + 2, 14), 42);
+    worksheet.getColumn(index + 1).width = calculatedWidth;
+  });
+
+  if (noteText) {
+    const noteRowNumber = dataRowStart + rows.length + 1;
+    const noteRow = worksheet.getRow(noteRowNumber);
+    noteRow.getCell(1).value = `${noteText}`;
+    noteRow.getCell(1).font = { italic: true, color: { argb: "FF555555" } };
+    noteRow.getCell(1).alignment = { horizontal: "left", vertical: "top", wrapText: true };
+    noteRow.height = Math.max(18, Math.ceil((noteText.length + 6) / 90) * 15);
+  }
+
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+
+  triggerDownload(blob, `${slugifyFilename(fileTitle)}.xlsx`);
+}

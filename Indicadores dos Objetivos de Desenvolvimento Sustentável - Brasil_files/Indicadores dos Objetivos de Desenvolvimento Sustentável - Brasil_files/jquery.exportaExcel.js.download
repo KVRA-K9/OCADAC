@@ -1,0 +1,1390 @@
+﻿//table2excel.js
+; (function ($, window, document) {
+    var pluginName = "exportaExcel";
+
+    var divider = "\n";
+
+    var defaults = {
+        exclude: ".noExl",
+        company: "Anonymous",
+        creator: "Anonymous",
+        format: "xlsx",  // "xlsx", "xls" (xml), "ods"
+        name: "Spreadsheets",
+        sheetNames: null,
+        style: true,
+        data: null	// if necessary, informs the element attribute with unprocessed numerical value of a data cell
+    };
+
+    var WHITE = "#FFFFFF";
+    var BLACK = "#000000";
+    var DEFAULT_STYLE = {
+        "id": "Default",
+        "index": 0,
+        "back": "#FFFFFF",
+        "text": "#000000",
+        "align": "center",
+        "border": false,
+        "key": "#FFFFFF_#000000_center"
+    };
+
+    // plugin constructor
+    function Plugin(element, options) {
+        this.element = element;
+
+        this.settings = $.extend({}, defaults, options);
+        this._defaults = defaults;
+        this._name = pluginName;
+
+        var dataField = this.settings.data;
+
+        if (typeof dataField === "string")
+            this.settings.data = function (el) { return el.attr(dataField); };
+
+        this.execute();
+    }
+
+    var proto = Plugin.prototype;
+
+    proto.execute = function () {
+        // get the tables inside the element
+        var $tables = this.element;
+        if (!$tables.is("table"))
+            $tables = $tables.find("table");
+
+        // create default style
+        this.nStyles = 1;
+        this.styles = {};
+        this.styles[DEFAULT_STYLE.key] = DEFAULT_STYLE;
+
+        // process table data
+        var tables = [];
+        var nTables = $tables.length;
+
+        for (var i = 0; i < nTables; i++) {
+            var table = $($tables[i]);
+            if (!table.is(this.settings.exclude))
+                tables.push(this.processMatrix(table));
+        }
+        console.log("OUTPUT")
+        console.log(this.settings.format)
+        // output data
+        switch (this.settings.format) {
+            case "xlsx":
+                return this.outputXLSX(tables);
+            case "xls":
+                return this.outputXML(tables);
+            case "ods":
+                return this.outputODS(tables);
+        }
+
+        return null;
+    };
+
+    // ****************************************************************************************************************************************************************************************
+    // EXPORT XLSX ****************************************************************************************************************************************************************************
+    // ****************************************************************************************************************************************************************************************
+
+    // os schemas usados para validação dos XML.
+    var XLSX_SCHEMAS = {
+        "pkg-relationships": "http://schemas.openxmlformats.org/package/2006/relationships",
+        "pkg-content-types": "http://schemas.openxmlformats.org/package/2006/content-types",
+        "pkg-meta-core": "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
+        "pkg-rel-meta-core": "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties",
+        "office-relationships": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+        "office-rel-document": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+        "office-rel-properties": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties",
+        "office-rel-shared": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings",
+        "office-rel-styles": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
+        "office-rel-worksheet": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet",
+        "office-properties": "http://schemas.openxmlformats.org/officeDocument/2006/extended-properties",
+        "office-docProps": "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes",
+        "spreadsheetml": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        "dcmi-terms": "http://purl.org/dc/terms/",
+        "dcmi-type": "http://purl.org/dc/dcmitype/",
+        "dcmi-elements": "http://purl.org/dc/elements/1.1/",
+        "w3-schema": "http://www.w3.org/2001/XMLSchema-instance"
+    };
+
+    var XLSX_RELS = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<Relationships xmlns="' + XLSX_SCHEMAS["pkg-relationships"] + '">',
+        '<Relationship Id="rId3" Type="' + XLSX_SCHEMAS["office-rel-properties"] + '" Target="docProps/app.xml"/>',
+        '<Relationship Id="rId2" Type="' + XLSX_SCHEMAS["pkg-rel-meta-core"] + '" Target="docProps/core.xml"/><Relationship Id="rId1" Type="' + XLSX_SCHEMAS["office-rel-document"] + '" Target="xl/workbook.xml"/>',
+        '</Relationships>'
+    ].join(divider);
+
+    var XLSX_CONTENT_TYPES = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<Types xmlns="' + XLSX_SCHEMAS["pkg-content-types"] + '">',
+        '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>',
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>',
+        '<Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>',
+        '<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>',
+        '<Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>',
+        '<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>',
+        '{sheetTypes}',
+        '</Types>'
+    ].join(divider);
+
+    var XLSX_SHEET_NAME = '<Override PartName="/xl/worksheets/{fileName}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>';
+
+    var XLSX_CORE = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<cp:coreProperties xmlns:cp="' + XLSX_SCHEMAS["pkg-meta-core"]
+            + '" xmlns:dc="' + XLSX_SCHEMAS["dcmi-elements"]
+            + '" xmlns:dcterms="' + XLSX_SCHEMAS["dcmi-terms"]
+            + '" xmlns:dcmitype="' + XLSX_SCHEMAS["dcmi-type"]
+            + '" xmlns:xsi="' + XLSX_SCHEMAS["w3-schema"]
+            + '">',
+        '<dc:creator>{creator}</dc:creator>',
+        '<cp:lastModifiedBy>{creator}</cp:lastModifiedBy>',
+        '<dcterms:created xsi:type="dcterms:W3CDTF">{created}</dcterms:created>',
+        '<dcterms:modified xsi:type="dcterms:W3CDTF">{created}</dcterms:modified>',
+        '</cp:coreProperties>'
+    ].join(divider);
+
+    var XLSX_APP = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<Properties xmlns="' + XLSX_SCHEMAS["office-properties"] + '" xmlns:vt="' + XLSX_SCHEMAS["office-docProps"] + '">',
+        '<Application>Microsoft Excel</Application>',
+        '<DocSecurity>0</DocSecurity>',
+        '<ScaleCrop>false</ScaleCrop>',
+        '<Company>{company}</Company>',
+        '<LinksUpToDate>false</LinksUpToDate>',
+        '<SharedDoc>false</SharedDoc>',
+        '<HyperlinksChanged>false</HyperlinksChanged>',
+        '<AppVersion>12.0000</AppVersion>',
+        '<HeadingPairs>',
+            '<vt:vector size="2" baseType="variant">',
+            '<vt:variant><vt:lpstr>Worksheets</vt:lpstr></vt:variant><vt:variant><vt:i4>{sheetCount}</vt:i4></vt:variant>',
+            '</vt:vector>',
+        '</HeadingPairs>',
+        '<TitlesOfParts>',
+            '<vt:vector size="{sheetCount}" baseType="lpstr">',
+                '{sheetTitles}',
+            '</vt:vector>',
+        '</TitlesOfParts>',
+        '</Properties>'
+    ].join(divider);
+
+    var XLSX_SHEET_TITLE = '<vt:lpstr>{title}</vt:lpstr>';
+
+    var XLSX_WORKBOOK_RELS = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<Relationships xmlns="' + XLSX_SCHEMAS["pkg-relationships"] + '">',
+            '<Relationship Id="rId1" Type="' + XLSX_SCHEMAS["office-rel-shared"] + '" Target="sharedStrings.xml"/>',
+            '<Relationship Id="rId2" Type="' + XLSX_SCHEMAS["office-rel-styles"] + '" Target="styles.xml"/>',
+            '{sheetRels}',
+        '</Relationships>'
+    ].join(divider);
+
+    var XLSX_SHEET_RELS = '<Relationship Id="{rId}" Type="' + XLSX_SCHEMAS["office-rel-worksheet"] + '" Target="worksheets/{fileName}.xml"/>';
+
+    var XLSX_WORKBOOK = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<workbook xmlns="' + XLSX_SCHEMAS["spreadsheetml"] + '" xmlns:r="' + XLSX_SCHEMAS["office-relationships"] + '">',
+        '<fileVersion appName="xl" lastEdited="4" lowestEdited="4" rupBuild="4505"/>',
+        '<workbookPr defaultThemeVersion="124226"/>',
+        '<bookViews>',
+            '<workbookView xWindow="192" yWindow="48" windowWidth="13332" windowHeight="4200" activeTab="0"/>',
+        '</bookViews>',
+        '<sheets>',
+            '{workSheets}',
+        '</sheets>',
+        '<calcPr calcId="0"/>',
+        '</workbook>'
+    ].join(divider);
+
+    var XLSX_WORK_SHEET = '<sheet name="{name}" sheetId="{index}" r:id="{rId}"/>';
+
+    var XLSX_STYLES = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<styleSheet xmlns="' + XLSX_SCHEMAS["spreadsheetml"] + '">',
+        //
+        '<fonts count="{fontCount}">', '{fonts}', '</fonts>',
+        '<fills count="{fillCount}">', '{fills}', '</fills>',
+        '<borders count="{borderCount}">', '{borders}', '</borders>',
+        //
+        '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>',
+        '<cellXfs count="{fxCount}">', '{fxs}', '</cellXfs>',
+        '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>',
+        '<dxfs count="0"/><tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleLight16"/>',
+        //
+        '</styleSheet>'
+    ].join(divider);
+
+    var XLSX_FONT = '<font><sz val="{size}"/><name val="Calibri"/><family val="2"/><scheme val="minor"/><color {color}/></font>';
+    var XLSX_FILL = '<fill><patternFill patternType="{pattern}">{color}</patternFill></fill>';
+    var XLSX_FILL_COLOR = '<fgColor {foreground}/><bgColor {background}/>';
+
+    // estilos de borda fixadas em apenas 2 estilos: 0 = sem bordas; 1 = com todas as bordas finas e pretas
+    var XLSX_BORDERS = [
+        '<border><left/><right/><top/><bottom/><diagonal/></border>',
+        '<border>',
+            '<left style="thin"><color indexed="64"/></left>',
+            '<right style="thin"><color indexed="64"/></right>',
+            '<top style="thin"><color indexed="64"/></top>',
+            '<bottom style="thin"><color indexed="64"/></bottom>',
+            '<diagonal/>',
+        '</border>',
+    ].join(divider);
+
+    //
+    var XLSX_FX_DEFAULT = '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>';
+    var XLSX_FX = [
+        [
+            '<xf',
+            'numFmtId="0"',
+            'fontId="{fontId}"',
+            'fillId="{fillId}"',
+            'borderId="{borderId}"',
+            'xfId="0"',
+            'applyFont="1"',
+            'applyBorder="1"',
+            'applyAlignment="1">'
+        ].join(" "),
+        '<alignment horizontal="{hAlign}" vertical="{vAlign}" {wrap}/>',
+        '</xf>'
+    ].join(divider);
+
+    var XLSX_AUTOMATIC_STYLE = 'indexed="64"';
+
+    function xlsxColor(color) {
+        return 'rgb="FF' + (color.slice(1) || "000000") + '"';
+    }
+
+    // criei o XML assim, sem usar nenhuma biblioteca, por questões de performance. 
+    proto.outputXLSX = function (tables) {
+        console.log("outputXLSX")
+        var nTables = tables.length;
+        // cria o xml com as relações de esquemas XML
+        var rels = XLSX_RELS;
+        // cria o xml com os tipos de conteúdo e nomes dos arquivos de sheet
+        var sheetFileNameTmpl = XLSX_SHEET_NAME.replace("{fileName}", "sheet{index}");
+        //
+        var contentTypes = replace(XLSX_CONTENT_TYPES, {
+            sheetTypes: sequence(nTables, sheetFileNameTmpl, 1).join(divider)
+        });
+
+        // cria o xml do core do XLSX
+        var core = replace(XLSX_CORE, {
+            creator: this.settings.creator,
+            created: getDateTime()
+        });
+
+        // cria o descritor de aplicação com os títulos das Sheets
+        var sheetTitles = (this.settings.sheetNames || []).slice();
+        var xmlSheetTitles = [];
+        for (var i = 0; i < nTables; i++) {
+            var title = sheetTitles[i] = (sheetTitles[i] || "Sheet " + (i + 1));
+            xmlSheetTitles.push(XLSX_SHEET_TITLE.replace("{title}", title));
+        }
+
+        //
+        var app = replace(XLSX_APP, {
+            sheetCount: nTables,
+            company: this.settings.company,
+            sheetTitles: xmlSheetTitles.join(divider)
+        });
+
+        // cria as relações de workbook
+        var sheetBaseId = 2;    // pula os IDs de "sharedStrings" e "styles"
+        // associa os ids de sheet aos seus filenames
+        var sheetRels = [];
+        for (var i = 1; i <= nTables; i++)
+            sheetRels.push(replace(XLSX_SHEET_RELS, {
+                rId: "rId" + (i + sheetBaseId),
+                fileName: "sheet" + i
+            }));
+        // cria o arquivo final
+        var workbookRels = replace(XLSX_WORKBOOK_RELS, {
+            sheetRels: sheetRels.join(divider)
+        });
+        // workbook data
+        var workSheets = [];
+        for (var i = 1; i <= nTables; i++)
+            workSheets.push(replace(XLSX_WORK_SHEET, {
+                name: sheetTitles[i - 1],
+                index: i,
+                rId: "rId" + (i + sheetBaseId)
+            }));
+        //
+        var workbook = replace(XLSX_WORKBOOK, {
+            workSheets: workSheets.join(divider)
+        });
+
+        // inicialização do arquivo de estilos
+        var styles = this.processXlsxStyles();
+
+        // if styles are used, get the maximum data cell width for all tables
+        var useStyle = this.settings.style;
+        //
+        var colWidth = 18;
+        if (useStyle) {
+            // get maximum width for all tables
+            for (var i = 0; i < nTables; i++)
+                colWidth = Math.max(colWidth, tables[i].maxWidth);
+            // calculation adapted from ISO/IEC 29500-1:2012, page 1598
+            colWidth = Math.max(10, (5 + colWidth) / 7);
+        }
+        // dados das sheets (DEPOIS EXTRAIR PRA UM MÉTODO **************************)
+        var sharedStrings = {};
+        var idSharedStrings = 0;
+        var sheets = [];
+        //
+        for (var i = 0; i < nTables; i++) {
+            var table = tables[i];
+            var tableRows = table.rows;
+            var nRows = tableRows.length;
+            //
+            var limit = getCellReference(table.limits.x, table.limits.y);
+            var dimension = '<dimension ref="A1:' + limit + '"/>';
+
+            // process columns properties, if styling is enabled
+            var colProperties = (!useStyle ? "" : '<cols><col min="' + 1 + '" max="' + (table.limits.x + 1) + '" width="' + colWidth + '" /></cols>');
+
+            // dados da sheet
+            var sheet = [
+                '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+                '<worksheet xmlns="' + XLSX_SCHEMAS["spreadsheetml"] + '" xmlns:r="' + XLSX_SCHEMAS["office-relationships"] + '">',
+                dimension,
+                '<sheetViews><sheetView workbookViewId="0"><selection activeCell="A1" sqref="A1"/></sheetView></sheetViews>',
+                '<sheetFormatPr defaultRowHeight="14.4"/>',
+                colProperties,
+                '<sheetData>'
+            ];
+            //
+            var mergedCells = [];
+            var rows = [];
+            // inicializar cada linha no xlsx 
+            for (var y = 0; y < nRows; y++)
+                rows[y] = ['<row r="' + (y + 1) + '">'];
+
+            // preencher o conteúdo das células
+            for (var y = 0; y < nRows; y++) {
+                // para cada linha
+                var nCells = tableRows[y].length;
+                for (var x = 0; x < nCells; x++) {
+                    // para cada celula nessa linha
+                    var cell = tableRows[y][x];
+                    if (!cell.ref) {
+                        // caso seja uma célula de padding, só usar quando os estilos visuais estiverem habilitados
+                        if (useStyle)
+                            rows[cell.y].push('<c r="' + getCellReference(cell.x, cell.y) + '" s="' + cell.style.index + '"><v></v></c>');
+                        continue;
+                    }
+                    //
+                    var conteudo = '<c r="' + getCellReference(cell.x, cell.y) + '"'
+                        + (cell.isNum ? '' : ' t="s"')
+                        + (!useStyle || !cell.style ? '' : ' s="' + cell.style.index + '"')
+                        + "><v>";
+
+                    if (cell.isNum)
+                        conteudo += cell.data;
+                    else {
+                        // se não for numérico, cria uma shared string ou pega seu índice
+                        var texto = getCellText(cell.ref);
+                        var indice = sharedStrings[texto];
+                        if (isNaN(indice))
+                            indice = sharedStrings[texto] = (idSharedStrings++);
+                        conteudo += indice;
+                    }
+                    conteudo += "</v></c>";
+
+                    // processar o conteúdo da célula
+                    rows[cell.y].push(conteudo);
+
+                    // salvar as informações de span, se houverem
+                    if (cell.rowspan > 1 || cell.colspan > 1)
+                        mergedCells.push('<mergeCell ref="' + getCellReference(cell.x, cell.y) + ':' + getCellReference(cell.x + cell.colspan - 1, cell.y + cell.rowspan - 1) + '"/>');
+                }
+            }
+
+            // finaliza as linhas do xlsx e insere na sheet
+            for (var y = 0; y < nRows; y++) {
+                rows[y].push('</row>');
+                sheet.push(rows[y].join(divider));
+            }
+
+            //
+            sheet.push('</sheetData>');
+
+            // insere os dados relativos às células combinadas
+            if (mergedCells.length) {
+                sheet.push('<mergeCells count="' + mergedCells.length + '">');
+                sheet.push(mergedCells.join(divider));
+                sheet.push('</mergeCells>');
+            }
+
+            //
+            sheet.push('<pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/>');
+            sheet.push('</worksheet>');
+            //
+            sheets.push(sheet.join(divider));
+        }
+
+        // preenche as shared strings
+        var shared = [
+            '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+            '<sst xmlns="' + XLSX_SCHEMAS["spreadsheetml"] + '" count="' + idSharedStrings + '" uniqueCount="' + idSharedStrings + '">'
+        ];
+        var baseShared = shared.length;
+        for (var ss in sharedStrings)
+            shared[baseShared + sharedStrings[ss]] = ("<si><t>" + escapeXmlText(ss) + "</t></si>");
+        shared.push('</sst>');
+        shared = shared.join(divider);
+
+        // monta a porra toda numa estrutura de diretórios dentro do zip
+        var zip = new JSZip();
+        zip.file("_rels/.rels", rels);
+        zip.file("docProps/app.xml", app);
+        zip.file("docProps/core.xml", core);
+        zip.file("[Content_Types].xml", contentTypes);
+        //
+        zip.file("xl/_rels/workbook.xml.rels", workbookRels);
+        zip.file("xl/sharedStrings.xml", shared);
+        zip.file("xl/styles.xml", styles);
+        zip.file("xl/workbook.xml", workbook);
+        //
+        for (var i = 0; i < nTables; i++)
+            zip.file("xl/worksheets/sheet" + (i + 1) + ".xml", sheets[i]);
+
+        // pega as propriedades do resultado
+        var nome = this.settings.name + ".xlsx";
+        var mime = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+        // aplica uma compressão rápida
+        var resultado = zip.generate({
+            compression: "DEFLATE",
+            compressionOptions: { level: 1 },
+            mimeType: mime,
+            type: "base64"
+        });
+
+        // tenta salvar e retorna o resultado
+        return $.sidra.salvar(nome, resultado, mime, true);
+    };
+
+    proto.processXlsxStyles = function () {
+        // prepara os estilos gerando os indices de fontes e preenchimentos, fixando alguns por padrão
+        var fontMap = { "#000000": 0 };
+        var fillMap = { "#FFFFFF": 0, "": 1 };
+        var nFonts = 1;
+        var nFills = 2;
+
+        // só processa os estilos de células se for habilitada essa opcao
+        var styles = this.styles;
+        for (var key in styles) {
+            var fontColor = styles[key].text;
+            if (!fontMap.hasOwnProperty(fontColor))
+                fontMap[fontColor] = nFonts++;
+            //
+            var backColor = styles[key].back;
+            if (!fillMap.hasOwnProperty(backColor))
+                fillMap[backColor] = nFills++;
+        }
+
+        // salva os estilos de fontes
+        var fonts = [];
+        for (var color in fontMap) {
+            var index = fontMap[color];
+            fonts[index] = replace(XLSX_FONT, {
+                size: 11,
+                color: (index ? xlsxColor(color) : XLSX_AUTOMATIC_STYLE)
+            });
+        }
+
+        // salva os estilos de preenchimento
+        var fills = [];
+        for (var color in fillMap) {
+            var index = fillMap[color];
+            fills[index] = replace(XLSX_FILL, {
+                pattern: (index > 1 ? "solid" : index ? "gray125" : "none"),
+                color: (index <= 1 ? "" : replace(XLSX_FILL_COLOR, {
+                    foreground: xlsxColor(color),
+                    background: XLSX_AUTOMATIC_STYLE
+                }))
+            });
+        }
+
+        // estilos de borda (fixo)
+        var borders = XLSX_BORDERS;
+
+        // agora sim prepara os estilos de células, usando os índices para listá-los em ordem
+        var fxs = [];
+        for (var key in styles) {
+            var style = styles[key];
+            fxs[style.index] = (style === DEFAULT_STYLE
+                ? XLSX_FX_DEFAULT
+                : replace(XLSX_FX, {
+                    fontId: fontMap[style.text],
+                    fillId: fillMap[style.back],
+                    borderId: (style.border ? 1 : 0),
+                    hAlign: style.align,
+                    vAlign: "center",
+                    wrap: (style.wrap ? 'wrapText="1" ' : "")
+                }));
+        }
+        //
+        var result = replace(XLSX_STYLES, {
+            fontCount: nFonts,
+            fonts: fonts.join(divider),
+            //
+            fillCount: nFills,
+            fills: fills.join(divider),
+            //
+            borderCount: 2,
+            borders: borders,
+            //
+            fxCount: this.nStyles,
+            fxs: fxs.join(divider)
+        });
+        //console.dir(result);
+        //
+        return result;
+    }
+
+    var htmlTagsRegex = /<[^>]+>/gm;
+    var htmlBrRegex = /<br\s*\/?>/gm;
+
+    function getCellText(cell) {
+        // poderia usar o "cell.text()" do jQuery, mas ele não pega os <br> como quebra de linha
+        // isso vai ficar bem melhor quando estiver usando o TableCraft
+        var text = [];
+
+        var stack = [cell[0]];
+        while (stack.length) {
+            var element = stack.pop();
+            if (element.nodeType == 3)
+                text.push(element.nodeValue);
+            else if (element.nodeType == 1) {
+                if (element.tagName == "BR")
+                    text.push("\n");
+                else {
+                    var children = element.childNodes;
+                    for (var i = children.length; i--;)
+                        stack.push(children[i]);
+                }
+            }
+        }
+
+        return text.join("");
+    }
+
+    var xmlEscapeRegex = /[&<>'"]/gm;
+
+    var xmlEscapeChars = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&apos;"
+    };
+
+    function escapeXmlText(text) {
+        return text.replace(xmlEscapeRegex, function (c) {
+            return xmlEscapeChars[c];
+        });
+    }
+
+    // ****************************************************************************************************************************************************************************************
+    // EXPORT ODS *****************************************************************************************************************************************************************************
+    // ****************************************************************************************************************************************************************************************
+
+    var ODS_MIMETYPE = "application/vnd.oasis.opendocument.spreadsheet";
+
+    var ODS_META_MANIFEST = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">',
+            '<manifest:file-entry manifest:full-path="/" manifest:version="1.2" manifest:media-type="application/vnd.oasis.opendocument.spreadsheet" />',
+            '<manifest:file-entry manifest:full-path="styles.xml" manifest:media-type="text/xml" />',
+            '<manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml" />',
+            '<manifest:file-entry manifest:full-path="meta.xml" manifest:media-type="text/xml" />',
+        '</manifest:manifest>'
+    ].join("");
+
+    /*
+    var ODS_MANIFEST = [
+        '<?xml version="1.0" encoding="utf-8"?>',
+        '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">',
+            '<rdf:Description rdf:about="styles.xml">',
+                '<rdf:type rdf:resource="http://docs.oasis-open.org/ns/office/1.2/meta/odf#StylesFile"/>',
+            '</rdf:Description>',
+            '<rdf:Description rdf:about="">',
+                '<ns0:hasPart xmlns:ns0="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#" rdf:resource="styles.xml"/>',
+            '</rdf:Description>',
+            '<rdf:Description rdf:about="content.xml">',
+                '<rdf:type rdf:resource="http://docs.oasis-open.org/ns/office/1.2/meta/odf#ContentFile"/>',
+            '</rdf:Description>',
+            '<rdf:Description rdf:about="">',
+                '<ns0:hasPart xmlns:ns0="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#" rdf:resource="content.xml"/>',
+            '</rdf:Description>',
+            '<rdf:Description rdf:about="">',
+                '<rdf:type rdf:resource="http://docs.oasis-open.org/ns/office/1.2/meta/pkg#Document"/>',
+            '</rdf:Description>',
+        '</rdf:RDF>'
+    ].join("");
+    */
+
+    var ODS_CONTENT_STYLES = [
+          '<office:font-face-decls>',
+            '<style:font-face style:name="Calibri" svg:font-family="Calibri"/>',
+          '</office:font-face-decls>',
+          '<office:automatic-styles>',
+            '<style:style style:name="ce1" style:family="table-cell" style:data-style-name="N0"/>',
+            '<style:style style:name="co1" style:family="table-column">',
+              '<style:table-column-properties fo:break-before="auto" style:column-width="1.69333333333333cm"/>',
+            '</style:style>',
+            '<style:style style:name="ro1" style:family="table-row">',
+              '<style:table-row-properties style:row-height="14.4pt" style:use-optimal-row-height="true" fo:break-before="auto"/>',
+            '</style:style>',
+            '<style:style style:name="ta1" style:family="table" style:master-page-name="mp1">',
+              '<style:table-properties table:display="true" style:writing-mode="lr-tb"/>',
+            '</style:style>',
+          '</office:automatic-styles>'
+    ].join("");
+
+    var ODS_CONTENT_BEFORE_TABLES = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<office:document-content ',
+            'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ',
+            'xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" ',
+            'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" ',
+            'xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" ',
+            'xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" ',
+            'xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" ',
+            'xmlns:xlink="http://www.w3.org/1999/xlink" ',
+            'xmlns:dc="http://purl.org/dc/elements/1.1/" ',
+            'xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" ',
+            'xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" ',
+            'xmlns:presentation="urn:oasis:names:tc:opendocument:xmlns:presentation:1.0" ',
+            'xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" ',
+            'xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0" ',
+            'xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0" ',
+            'xmlns:math="http://www.w3.org/1998/Math/MathML" ',
+            'xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0" ',
+            'xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" ',
+            'xmlns:ooo="http://openoffice.org/2004/office" ',
+            'xmlns:ooow="http://openoffice.org/2004/writer" ',
+            'xmlns:oooc="http://openoffice.org/2004/calc" ',
+            'xmlns:dom="http://www.w3.org/2001/xml-events" ',
+            'xmlns:xforms="http://www.w3.org/2002/xforms" ',
+            'xmlns:xsd="http://www.w3.org/2001/XMLSchema" ',
+            'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ',
+            'xmlns:rpt="http://openoffice.org/2005/report" ',
+            'xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" ',
+            'xmlns:xhtml="http://www.w3.org/1999/xhtml" ',
+            'xmlns:grddl="http://www.w3.org/2003/g/data-view#" ',
+            'xmlns:tableooo="http://openoffice.org/2009/table" ',
+            'xmlns:drawooo="http://openoffice.org/2010/draw" ',
+            'xmlns:calcext="urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0" ',
+            'xmlns:loext="urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0" ',
+            'xmlns:field="urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0" ',
+            'xmlns:formx="urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0" ',
+            'xmlns:css3t="http://www.w3.org/TR/css3-text/" ',
+            'office:version="1.2">',
+            // content styles
+            '<office:font-face-decls>',
+                '<style:font-face style:name="Calibri" svg:font-family="Calibri"/>',
+            '</office:font-face-decls>',
+            '<office:automatic-styles>',
+                '<style:style style:name="ce1" style:family="table-cell" style:data-style-name="N0"/>',
+                '<style:style style:name="co1" style:family="table-column">',
+                    '<style:table-column-properties fo:break-before="auto" style:column-width="1.69333333333333cm"/>',
+                '</style:style>',
+                '<style:style style:name="ro1" style:family="table-row">',
+                    '<style:table-row-properties style:row-height="14.4pt" style:use-optimal-row-height="true" fo:break-before="auto"/>',
+                '</style:style>',
+                '<style:style style:name="ta1" style:family="table" style:master-page-name="mp1">',
+                    '<style:table-properties table:display="true" style:writing-mode="lr-tb"/>',
+                '</style:style>',
+            '</office:automatic-styles>',
+            //
+            '<office:scripts />',
+            '<office:body>',
+                '<office:spreadsheet>',
+                    '<table:calculation-settings table:case-sensitive="false" table:automatic-find-labels="false" table:use-regular-expressions="false">',
+                        '<table:iteration table:maximum-difference="0.0001"/>',
+                    '</table:calculation-settings>'
+    ];
+
+    var ODS_CONTENT_AFTER_TABLES = [
+                    '<table:named-expressions />',
+                '</office:spreadsheet>',
+            '</office:body>',
+        '</office:document-content>'
+    ].join("");
+
+    var ODS_META = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+        '<office:document-meta ',
+            'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ',
+            'xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" ',
+            'xmlns:dc="http://purl.org/dc/elements/1.1/" ',
+            'xmlns:xlink="http://www.w3.org/1999/xlink" ',
+            'office:version="1.2">',
+            '<office:meta>',
+              '<meta:generator>IBGE/SIDRA/1.0</meta:generator>',
+              '<dc:creator>API Sidra</dc:creator>',
+              '<dc:date>2017-06-29T12:21:58.000Z</dc:date>',
+            '</office:meta>',
+          '</office:document-meta>'
+    ].join("");
+
+    var ODS_STYLES = [
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>',
+        '<office:document-styles ',
+                'xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" ',
+                'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ',
+                'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" ',
+                'xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" ',
+                'xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" ',
+                'xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" ',
+                'xmlns:xlink="http://www.w3.org/1999/xlink" ',
+                'xmlns:dc="http://purl.org/dc/elements/1.1/" ',
+                'xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" ',
+                'xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" ',
+                'xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" ',
+                'office:version="1.2" >',
+          '<office:font-face-decls>',
+            '<style:font-face style:name="Calibri" svg:font-family="Calibri" />',
+          '</office:font-face-decls>',
+          '<office:styles>',
+            '<number:number-style style:name="N0">',
+              '<number:number number:min-integer-digits="1"/>',
+            '</number:number-style>',
+            '<style:default-style style:family="graphic">',
+              '<style:graphic-properties draw:fill="solid" draw:fill-color="#4472c4" draw:opacity="100%" draw:stroke="solid" svg:stroke-width="0.01389in" svg:stroke-color="#2f528f" svg:stroke-opacity="100%" draw:stroke-linejoin="miter" svg:stroke-linecap="butt"/>',
+            '</style:default-style>',
+          '</office:styles>',
+          '<office:automatic-styles>',
+            '<style:page-layout style:name="pm1">',
+              '<style:page-layout-properties fo:margin-top="0.3in" fo:margin-bottom="0.3in" fo:margin-left="0.7in" fo:margin-right="0.7in" style:table-centering="none" style:print="objects charts drawings"/>',
+              '<style:header-style>',
+                '<style:header-footer-properties fo:min-height="0.45in" fo:margin-left="0.7in" fo:margin-right="0.7in" fo:margin-bottom="0in"/>',
+              '</style:header-style>',
+              '<style:footer-style>',
+                '<style:header-footer-properties fo:min-height="0.45in" fo:margin-left="0.7in" fo:margin-right="0.7in" fo:margin-top="0in"/>',
+              '</style:footer-style>',
+            '</style:page-layout>',
+          '</office:automatic-styles>',
+          '<office:master-styles>',
+            '<style:master-page style:name="mp1" style:page-layout-name="pm1">',
+              '<style:header/>',
+              '<style:header-left style:display="false"/>',
+              '<style:footer/>',
+              '<style:footer-left style:display="false"/>',
+            '</style:master-page>',
+          '</office:master-styles>',
+        '</office:document-styles>'
+    ].join("");
+
+    proto.outputODS = function (tables) {
+
+        var mimetype = ODS_MIMETYPE;
+        var metaManifest = ODS_META_MANIFEST;
+        var styles = ODS_STYLES;
+        var odsMeta = ODS_META;
+        var content = ODS_CONTENT_BEFORE_TABLES.slice();
+
+        var sheetNames = this.settings.sheetNames;
+
+        for (var i = 0 ; i < tables.length; i++) {
+            var name = ((sheetNames && sheetNames[i]) || "Sheet " + (i + 1));
+            this.outputOdsTable(content, name, tables[i]);
+        }
+
+        content.push(ODS_CONTENT_AFTER_TABLES);
+        content = content.join("");
+
+        // monta a porra toda numa estrutura de diretórios dentro do zip
+        var zip = new JSZip();
+
+        //zip.file("mimetype", mimetype);
+
+        zip.file("META-INF/manifest.xml", metaManifest);
+        zip.file("mimetype", mimetype);
+        zip.file("styles.xml", styles);
+        zip.file("content.xml", content);
+        zip.file("meta.xml", odsMeta);
+
+        // pega as propriedades do resultado
+        var nome = this.settings.name + ".ods";
+        var mime = ODS_MIMETYPE;
+
+        // aplica uma compressão rápida
+        var resultado = zip.generate({
+            compression: "DEFLATE",
+            compressionOptions: { level: 1 },
+            mimeType: mime,
+            type: "base64"
+        });
+
+        // tenta salvar e retorna o resultado
+        return $.sidra.salvar(nome, resultado, mime, true);
+
+    };
+
+
+    /*
+    <table:table-cell table:style-name="ce1" office:value-type="string" calcext:value-type="string" table:number-columns-spanned="4" table:number-rows-spanned="1">
+        <text:p>Variável - Área plantada (Hectares)</text:p>
+    </table:table-cell>
+    <table:covered-table-cell table:number-columns-repeated="3"/>
+    <table:table-cell table:number-columns-repeated="1020"/>
+    */
+
+    /*
+    colspan:  1
+    data:     0
+    isNum:    false
+    ref:      jQuery.fn.init[1]
+    rowspan:  1
+    style:    Object
+    x:        1
+    y:        2
+    */
+
+    proto.outputOdsTable = function (result, name, table) {
+        result.push('<table:table table:style-name="ta1" table:name="' + name + '">');
+
+        var rows = table.rows;
+        var nRows = rows.length;
+
+        var cellContents, text;
+
+        for (var r = 0; r < nRows; r++) {
+            var cells = rows[r];
+            var nCells = cells.length;
+
+            result.push('<table:table-row table:style-name="ro1">');
+
+            var index = 0;
+
+            for (var c = 0; c < nCells; c++) {
+                var cell = cells[c];
+
+                // padding cells
+                while (index++ < cell.x)
+                    result.push('<table:table-cell table:style-name="ce1" office:value-type="string"><text:p></text:p></table:table-cell>');
+
+                //
+
+                if (cell.isNum)
+                    cellContents = '<table:table-cell table:style-name="ce1" office:value-type="float" office:value="' + cell.data + '" />';
+                else {
+                    text = (cell.ref && cell.ref.text()) || "";
+                    cellContents = '<table:table-cell table:style-name="ce1" office:value-type="string"><text:p>' + escapeXmlText(text) + '</text:p></table:table-cell>';
+                }
+
+                result.push(cellContents);
+            }
+
+            result.push('</table:table-row>');
+        }
+
+        result.push('</table:table>');
+    };
+
+    // ****************************************************************************************************************************************************************************************
+    // EXPORT SPREADSHEETML XML ***************************************************************************************************************************************************************
+    // ****************************************************************************************************************************************************************************************
+
+
+    var XML_ALIGN = {
+        "center": "Center",
+        "left": "Left",
+        "right": "Right"
+    };
+
+    proto.outputXML = function (tables) {
+        // xml header
+        var xml = [
+            "<?xml version=\"1.0\"?>",
+            "<?mso-application progid=\"Excel.Sheet\"?>"
+        ];
+        // initialize with default schemas
+        var schemas = [
+            'xmlns="urn:schemas-microsoft-com:office:spreadsheet"',
+            'xmlns:o="urn:schemas-microsoft-com:office:office"',
+            'xmlns:x="urn:schemas-microsoft-com:office:excel"',
+            'xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"',
+            'xmlns:html="http://www.w3.org/TR/REC-html40"'
+        ]
+        xml.push("<Workbook " + schemas.join(" ") + ">");
+        // output style data
+        if (this.settings.style) {
+            xml.push("<Styles>");
+            for (var key in this.styles) {
+                var style = this.styles[key];
+                xml.push('<Style ss:ID="' + style.id + '">');
+                // hardcoded font and some basic styling
+                xml.push('<Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="' + style.text + '"/>');
+                xml.push('<Alignment ss:Horizontal="' + XML_ALIGN[style.align] + '" ss:Vertical="Center"/>');
+                // background color
+                if (style.back === WHITE)
+                    xml.push('<Interior />');
+                else
+                    xml.push('<Interior ss:Color="' + style.back + '" ss:Pattern="Solid"/>');
+                // output borders
+                if (!style.border)
+                    xml.push('<Borders />');
+                else {
+                    xml.push('<Borders>');
+                    xml.push('<Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>');
+                    xml.push('<Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>');
+                    xml.push('<Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>');
+                    xml.push('<Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>');
+                    xml.push('</Borders>');
+                }
+                //
+                xml.push("</Style>");
+            }
+            xml.push("</Styles>");
+        }
+        // process worksheets
+        var nTables = tables.length;
+        for (var i = 0; i < nTables; i++) {
+            xml.push('<Worksheet ss:Name="Sheet ' + (i + 1) + '">');
+            xml.push('<Table>')
+            // process table lines
+            var rows = tables[i];
+            var nRows = rows.length;
+            for (var y = 0; y < nRows; y++) {
+                xml.push('<Row ss:Index="' + (y + 1) + '">');
+                // process table cells
+                var nCells = rows[y].length;
+                for (var x = 0; x < nCells; x++) {
+                    var cell = rows[y][x];
+                    // get cellspan
+                    var span =
+                        (cell.rowspan === 1 ? "" : ' ss:MergeDown="' + (cell.rowspan - 1) + '"') +
+                        (cell.colspan === 1 ? "" : ' ss:MergeAcross="' + (cell.colspan - 1) + '"');
+                    // get cellstyle
+                    var estilo = (!this.settings.style ? "" : (cell.style.id === "Default" ? "" : ' ss:StyleID="' + cell.style.id + '"'));
+                    // get data type
+                    var dType = (cell.isNum ? "Number" : "String");
+                    // output xml
+                    xml.push('<Cell ss:Index="' + (cell.x + 1) + '"' + span + estilo + '>');
+                    xml.push('<Data ss:Type="' + dType + '">');
+                    xml.push(cell.isNum ? cell.data : cell.ref.text());
+                    xml.push('</Data>');
+                    xml.push('</Cell>');
+                }
+                xml.push('</Row>');
+            }
+            xml.push('</Table>')
+            xml.push('</Worksheet>');
+        }
+        // close workbook
+        xml.push("</Workbook>");
+
+        // pega as propriedades do resultado
+        var nome = this.settings.name + ".xls";
+        var mime = "application/vnd.ms-excel";
+        // concatena o texto do xml
+        var resultado = xml.join("");
+
+        // tenta salvar e retorna o resultado
+        return $.sidra.salvar(nome, resultado, mime, false);
+    };
+
+    function createContentCell(x, y, $cell, style, dataRetriever) {
+        var rowspan = Number($cell.attr("rowspan")) || 1;
+        var colspan = Number($cell.attr("colspan")) || 1;
+
+        var value = 0;
+        var isNum = false;
+
+        if (dataRetriever && $cell.is("td")) {
+            var cellData = dataRetriever($cell);
+            if (!isNaN(cellData)) {
+                value = cellData;
+                isNum = true;
+            }
+        }
+
+        return {
+            x: x,
+            y: y,
+            ref: $cell,
+            isNum: isNum,
+            data: value,
+            rowspan: rowspan,
+            colspan: colspan,
+            style: style
+        };
+    }
+
+    function createPaddingCell(x, y, style) {
+        return {
+            x: x,
+            y: y,
+            ref: null,
+            style: style
+        };
+    }
+
+    function expandRowspans(rows, rowspanList) {
+        var length = rowspanList.length;
+
+        for (var i = 0; i < length; i++) {
+            var cell = rowspanList[i];
+
+            var rowspan = cell.rowspan;
+            var colspan = cell.colspan;
+
+            var x0 = cell.x;
+            var x1 = x0 + colspan - 1;
+
+            var y0 = cell.y + 1;
+            var y1 = y0 + rowspan - 1;
+
+            for (var y = y0; y < y1; y++) {
+                cols = rows[y];
+
+                for (var x = cols.length - 1; x >= x0; x--) {
+                    var toShift = cols[x];
+                    cols[x + colspan] = toShift;
+                    toShift.x += colspan;
+                }
+
+                for (var x = x1; x >= x0; x--)
+                    cols[x] = createPaddingCell(x, y, cell.style);
+            }
+        }
+    }
+
+    proto.processMatrix = function ($tabela) {
+        var settings = this.settings;
+
+        var excludeSelector = settings.exclude;
+        var dataRetriever = settings.data;
+        var useStyle = settings.style;
+
+        var $rows = $tabela
+            .find("tr")
+            .not(excludeSelector);
+
+        var rows = [];
+        var rowspanList = [];
+        var nRows = $rows.length;
+
+        for (var y = 0; y < nRows; y++) {
+            var $cells = $($rows[y])
+                .children()
+                .not(excludeSelector);
+
+            var x = 0;
+            var cells = [];
+            var nCells = $cells.length;
+
+            for (var j = 0; j < nCells; j++) {
+                var $cell = $($cells[j]);
+                var style = (useStyle ? this.getStyle($cell) : null);
+
+                var cell = createContentCell(x++, y, $cell, style, dataRetriever);
+                cells.push(cell);
+
+                // process colspan inside this line
+                if (cell.colspan > 1)
+                    for (var k = 1; k < cell.colspan; k++)
+                        cells.push(createPaddingCell(x++, y, style));
+                //cells[k].x += (cell.colspan - 1);
+
+                // if cell has rowspan, append to list for later processing
+                if (cell.rowspan > 1)
+                    rowspanList.push(cell);
+            }
+            rows[y] = cells;
+        }
+
+        // process rowspans
+        if (rowspanList.length)
+            expandRowspans(rows, rowspanList);
+
+        rowspanList = null;
+
+        // process some additional data
+        // MEIO GAMBY, MAS ACHO QUE VAI SER O JEITO ***************************
+        var tmpCell = (useStyle && $("<span style='font-size:11pt; font-family:\"Calibri\";'></span>").appendTo($("body")));
+
+        //
+        var maxWidth = 0;
+        var limits = { x: 0, y: 0 };
+        for (var i = rows.length; i--;)
+            for (var j = rows[i].length; j--;) {
+                var cell = rows[i][j];
+
+                // skip padding cells
+                if (!cell.ref)
+                    continue;
+
+                // cell limits
+                var x1 = cell.x + cell.colspan - 1;
+                var y1 = cell.y + cell.rowspan - 1;
+
+                // table limits
+                limits.x = Math.max(limits.x, x1);
+                limits.y = Math.max(limits.y, y1);
+
+                // max data cell width
+                if (useStyle && cell.isNum) {
+                    tmpCell.empty().append(cell.data);
+                    maxWidth = Math.max(maxWidth, parseFloat(tmpCell.width()));
+                }
+            }
+
+        // remove tmpCell if defined
+        if (tmpCell)
+            tmpCell.remove();
+
+        // return
+        return {
+            rows: rows,
+            limits: limits,
+            maxWidth: maxWidth  // width in default font size
+        };
+    };
+
+    // get object containing element style properties
+    proto.getStyle = function (el) {
+        // inclusão pra pegar o estilo
+        var back = getColor(el, "background-color");
+        var text = getColor(el, "color");
+        var align = getAlign(el);
+        var wrap = getWrap(el);
+        //
+        var key = back + "_" + text + "_" + align + "_" + (wrap ? "wrap" : "nowrap");
+        var estilo = this.styles[key];
+        if (!estilo) {
+            var index = this.nStyles++;
+            estilo = {
+                "index": index,
+                "id": "s" + (100 + index),
+                "back": back,
+                "text": text,
+                "align": align,
+                "wrap": wrap,
+                "border": true,
+                "key": key
+            };
+            this.styles[key] = estilo;
+        }
+        return estilo;
+    };
+
+    // cria a referência para uma célula no formato excel ("H4", "B3", etc) a partir da coordenada (x,y)
+    var cellLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var nCellLetters = cellLetters.length;
+
+    function getCellReference(x, y) {
+        var inner = (x % nCellLetters);
+        var refX = cellLetters[inner];
+
+        while (x >= nCellLetters) {
+            x = (x - inner) / nCellLetters - 1;    // subtrai "inner" pra forçar divisão inteira
+            inner = x % nCellLetters;
+            refX = cellLetters[inner] + refX;
+        }
+
+        return refX + (y + 1);
+    }
+
+    // retorna uma string contendo o horário atual da máquina cliente, no formato W3CDTF "AAAA-MM-DDTHH:MM:SSZ" (http://www.w3.org/TR/NOTE-datetime)
+    function getDateTime() {
+        var data = new Date();
+        if (data.toISOString) {
+            return data.toISOString();
+        }
+        else {
+            // se for IE <9 não temos o método toISOString. construir na mão
+            var formatar = function (n) { return (n < 10 ? "0" + n : n); }
+            return data.getUTCFullYear() + '-' + formatar(data.getUTCMonth() + 1) + '-' + formatar(data.getUTCDate()) + 'T'
+                + formatar(data.getUTCHours()) + ':' + formatar(data.getUTCMinutes()) + ':' + formatar(data.getUTCSeconds()) + 'Z';
+        }
+    }
+
+    // get text horizontal alignment of an element
+    var alignMap = {
+        "left": "left",
+        "start": "left",
+        "right": "right",
+        "end": "right"
+    };
+
+    function getAlign(el) {
+        var align = (el.css("text-align") || "").toLowerCase();
+        return (alignMap[align] || "left");
+    }
+
+    function getWrap(el) {
+        return (el.find("br").length == 0 ? false : true);
+    }
+
+    // get color from property of html element, ascending to parent if transparent
+    function getColor(el, prop) {
+        var css, tmp = el;
+        while (true) {
+            css = tmp.css(prop);
+            if (!isTransparent(css))
+                return evalRgb(css);
+            else if (!(tmp = tmp.parent()) || !tmp.is("table,tbody,thead,tfoot,tr"))
+                return WHITE;
+        }
+    }
+    // check if a css color property is transparent
+    function isTransparent(css) {
+        css = (css || "").replace(/\s+/g, '').toLowerCase();
+        return (css === "transparent" || css === "" || css === "rgba(0,0,0,0)" ? true : false);
+    }
+    // evaluate a css rgb string
+    function evalRgb(rgb) {
+        var indice
+        if ((indice = rgb.indexOf("rgb")) >= 0) {
+            // string no formato "rgb(r,g,b)"
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            try {
+                var color = parseInt(rgb[1]) * 0x10000 + parseInt(rgb[2]) * 0x100 + parseInt(rgb[3]);
+                return ("#" + ("000000" + color.toString(16)).substr(-6)).toUpperCase();
+
+
+            } catch (err) {
+                return "#FFFFFF";
+
+            }
+
+        }
+        if ((indice = rgb.indexOf("#")) >= 0) {
+            // string no formato #RRGGBB ou #RGB
+            rgb = rgb.match(/^#(\w+)/);
+            switch (rgb[1].length) {
+                case 3: // "#RGB" - duplica os caracteres
+                    rgb = rgb[1];
+                    return "#" + (rgb[0] + rgb[0]) + (rgb[1] + rgb[1]) + (rgb[2] + rgb[2]);
+                    break;
+                case 6: // "#RRGGBB" - pega a string completa
+                    return rgb[0];
+                    break;
+                default: // não tem um formato conhecido. retornar branco mesmo
+                    return WHITE;
+            }
+        }
+        // se não for nenhum dos formatos conhecidos, retornar branco
+        return WHITE;
+    }
+
+    // map(list, callback [, offset])
+    // map(list, template [, offset])
+    //   list: array or object
+    //   callback: function(index/key, value)
+    //   template: a string template with fields {index}/{key} and {value} to be replaced by list entries.
+    //   offset: specifies the offset to be added to {index} value when list is an array (eg: offset = 1 if the indexes text should range from 1 to N)
+    function map(list, arg, offset) {
+        // prepare callback function, creating one if it's a template string 
+        var callback = (typeof arg === "function" ? arg : function (index, value) {
+            return arg
+                .replace(/(\{index\}|\{key\})/g, index)
+                .replace(/\{value\}/g, value);
+        });
+        // iterate values and create result array
+        var result = [];
+        if (isArray(list)) {
+            offset = (offset || 0);
+            for (var i = 0; i < list.length; i++)
+                result.push(callback(i + offset, list[i]));
+        }
+        else {
+            for (var key in list)
+                result.push(callback(key, list[key]));
+        }
+        return result;
+    }
+
+    // creates a sequence with the specified pattern/callback and "count" entries
+    // sequence(count, callback [, offset])
+    //   callback: function (index + offset)
+    // sequence(count, pattern [, offset [, field]])
+    //   replaces each {index} or {<field>} occurrences with the value (index + offset)
+    function sequence(count, arg, offset, field) {
+        offset = (offset || 0);
+        var result = [];
+        //
+        if (typeof arg === "function") {
+            for (var i = 0; i < count; i++)
+                result.push(arg(i + offset));
+        }
+        else {
+            field = (field || "index");
+            var regexp = new RegExp("\{" + field + "\}", "g");
+            //
+            for (var i = 0; i < count; i++)
+                result.push(arg.replace(regexp, i + offset));
+        }
+        //
+        return result;
+    }
+
+    // replace(string, object)
+    function replace(text, args) {
+        // mapeia os nomes dos parâmetros e cria as chaves para o regexp
+        var keys = [], map = {};
+        for (var key in args) {
+            map["{" + key + "}"] = args[key];
+            keys.push("\\{" + key + "\\}");
+        }
+        //
+        var regexp = new RegExp("(" + keys.join("|") + ")", "g");
+        return text.replace(regexp, function (code) {
+            return map[code];
+        });
+    }
+
+    function forEach(list, callback) {
+        if (isArray(list)) {
+            for (var i = 0; i < list.length; i++)
+                callback(i, list[i]);
+        } else {
+            for (var key in list)
+                callback(key, list[key]);
+        }
+    }
+
+    function toArray(obj) {
+        var result = [];
+        for (var key in obj)
+            result.push(obj[key]);
+        return result;
+    }
+
+    function isArray(list) {
+        return ({}).toString.call(list) === "[object Array]";
+    }
+
+    function keys(obj) {
+        if (Object && Object.keys)
+            return Object.keys(obj);
+        //
+        var result = [];
+        for (var key in obj)
+            result.push(key);
+        return result;
+    }
+
+    function getFileName(settings) {
+        return (settings.filename ? settings.filename : "spreadsheet") + ".xlsx";
+    }
+
+    function throwError(message) {
+        throw "[SpreadSheetExport] " + message;
+    }
+
+    $.fn[pluginName] = function (options) {
+        var e = $(this);
+        new Plugin(e, options);
+        // object chaining
+        return e;
+    };
+
+})(jQuery, window, document);
+

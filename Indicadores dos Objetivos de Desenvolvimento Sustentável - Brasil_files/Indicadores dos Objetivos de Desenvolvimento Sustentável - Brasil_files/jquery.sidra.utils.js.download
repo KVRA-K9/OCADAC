@@ -1,0 +1,906 @@
+﻿(function ($, $undefined) {
+
+    // PRA DEBUGAR
+    __chart = function () {
+        return $("svg").parent().data("chart");
+    }
+
+    // variáveis locais
+    var CACHE_MARGEM = "__cacheMargem"
+
+    // Cria o namespace para os métodos genéricos dentro do namespace do jQuery
+    $.sidra = {};
+
+    $.sidra.debugErro = function (_) {
+        var args = [].slice.call(arguments);
+        while (args.length) {
+            var arg = args.shift();
+            if (arg !== $undefined) {
+                console.log(arg);
+                if (arg.stack)
+                    console.log(arg.stack);
+            }
+        }
+        if (console.trace)
+            console.trace();
+    };
+
+    // habilita o estilo de layout em coluna para a página do SIDRA
+    $.sidra.habilitarModoColuna = function (container) {
+        $("body").addClass("modo-coluna");
+        $(container).addClass("container-modo-coluna");
+    };
+
+    // pega a origem da página, corrigindo a ausência do parâmetro no IE
+    $.sidra.origin = function () {
+        return (location.origin || location.protocol + "//" + location.hostname + (location.port ? ':' + location.port : ''));
+    };
+
+    $.sidra.isIE8m = function () {
+        return !!(window.navigator.userAgent.toUpperCase().match(/MSIE\s*[5-8]/));
+    };
+
+    // cria uma tabela HTML simples a partir de uma lista de elementos. a função "getter" recebe 
+    // o objeto e deve retornar um array contendo em cada posição, o texto da respectiva célula
+    $.sidra.criarTabelaSimples = function (lista, getter) {
+        // cria um wrapper pra tabela, por questão de compatibilidade com o método de impressão
+        var wrapper = document.createElement("div");
+        var tabela = document.createElement("table");
+        wrapper.appendChild(tabela);
+
+        if (!lista || !lista.length)
+            return wrapper;
+
+        var tamanho = lista.length;
+        for (var i = 0; i < tamanho; i++) {
+            var dados = getter(lista[i]);
+            var linha = document.createElement("tr");
+            for (var j = 0; j < dados.length; j++) {
+                var celula = document.createElement("td");
+                celula.appendChild(document.createTextNode(dados[j]));
+                linha.appendChild(celula);
+            }
+            tabela.appendChild(linha);
+        }
+        return wrapper;
+    };
+
+    //
+    var regexpTags = /<[^>]+>/gm;
+    $.sidra.removerTags = function (texto) {
+        return texto.replace(regexpTags, "");
+    };
+
+    // sobrescreve os métodos padrão de timeout, para permitir debug de eventos de tempo
+    // adaptado de: http://stackoverflow.com/questions/858619/viewing-all-the-timouts-intervals-in-javascript
+    $.sidra.debugarTimeout = function () {
+        if (window.activeTimers)
+            return;
+        //
+        window.activeTimers = {};
+        window.originalSetTimeout = window.setTimeout;
+        window.originalClearTimeout = window.clearTimeout;
+        //
+        window.setTimeout = function (func, delay) {
+            var id = window.originalSetTimeout(function () {
+                delete window.activeTimers[id];
+                func();
+            }, delay);
+            window.activeTimers[id] = func;
+            return id;
+        };
+        //
+        window.clearTimeout = function (timerID) {
+            delete window.activeTimers[timerID];
+            window.originalClearTimeout(timerID);
+        };
+    };
+
+    var regexQueryStringEscapes = /[ \+\?\&\=]/gm;
+
+    var queryStringStringEscapes = {
+        " ": "%20",
+        "+": "%2B",
+        "?": "%3F",
+        "&": "%26",
+        "=": "%3D"
+    };
+
+    $.sidra.escapeQueryString = function (query) {
+        return ("" + query).replace(regexQueryStringEscapes, function (w) {
+            return (queryStringStringEscapes[w] || "");
+        });
+    };
+
+    // gera uma query string no formato "?key1=value1&key2=value2..."
+    $.sidra.queryString = function (obj) {
+        var query = [];
+        for (var key in obj)
+            query.push(key + "=" + $.sidra.escapeQueryString(obj[key]));
+        return "?" + query.join("&");
+    };
+
+    $.sidra.getQueryStringValues = function (url) {
+        var key, value, obj = {};
+        var query = url.match(/^[^\?]+(\?[^#]+)/); // extrai tudo que estiver após "?" e antes de "#"
+        if (query) {
+            var args = query[1].match(/[\?&][^\?&]+/g); // separa em uma lista todos os termos da query (iniciados por "?" ou "&")
+            while (args.length) {
+                key = args.pop().slice(1); // remove o prefixo "?" ou "&"
+                var eq = key.indexOf("="); // verifica se existe uma atribuição "=" no termo
+                if (eq < 0)
+                    value = true; // se não houver, coloca o valor como "true"
+                else {
+                    // se houver uma atribuição, divide a string e decodifica o valor
+                    value = decodeURIComponent(key.slice(eq + 1));
+                    key = key.slice(0, eq);
+                }
+                obj[key] = value;
+            }
+        }
+        return obj;
+    };
+
+    var xmpEscapeRegexp = /(^ |  |\r\n|[<>&\n])/gm;
+
+    var xmlEscapeTags = {
+        "<": "&lt;",
+        ">": "&gt;",
+        "&": "&amp;",
+        " ": "&nbsp;",
+        "  ": "&nbsp; ",
+        "\n": "<br/>",
+        "\r\n": "<br/>",
+    };
+
+    $.sidra.escapeXml = function (texto) {
+        return texto.replace(xmpEscapeRegexp, function (t) {
+            return xmlEscapeTags[t];
+        });
+    };
+
+
+    (function () {
+
+        // expressão regular para identificar as componentes de uma tag (nome, atributos, strings, etc).
+        // a ordem dos grupos de captura coincide com a da lista de classes "hl_classes", pois é pelo índice do grupo de match que saberemos qual classe aplicar
+        var tag_regex = /(?:(<!--(?:(?!-->).)*-->)|(<[\/!]?[\w\-:]+)|(\/?>)|([\w\-:]+)|("(?:\\.|[^"])*"|'(?:\\'|[^'])*')|(\d+)|([=])|(\s+|[^<>]+|.))/gm;
+
+        // expressão regular para selecionar todo o texto que existir entre tags, logo após um match de fechamento ser reconhecido (abaixo)
+        var txt_regex = /[^<]*/gm;
+
+        // um objeto simples para identificar, pelo íncice, quais grupos devem ser tratados como fechamento de tags
+        var isClose = { 0: 1, 2: 1 };
+
+        // a lista de classes usadas no highlight do xml. 
+        var hl_classes = [
+            "comment", // <!--  -->
+            "tag", // <tag ou <!tag
+            "tag", // </tag, /> or >
+            "attr", // attr-name
+            "string", // "string" ou 'string'
+            "number", // número
+            "symbol", // símbolos
+            "" // qualquer sequência sem formatação (ex: expaços)
+        ];
+
+        // recebe um texto de xml/html, e o prepara para exibição com syntax highlight
+        // IMPORTANTE: para a formatação funcionar direito, o arquivo não pode iniciar com texto antes da primeira tag
+        $.sidra.highlightXml = function (xml) {
+            var result = [];
+            var match, text, clss;
+
+            var escape = $.sidra.escapeXml;
+
+            tag_regex.lastIndex = -1;
+
+            while (match = tag_regex.exec(xml)) {
+                // realizar uma repetição em "hl_classes" para identificar qual foi a regra do match
+
+                for (var i = hl_classes.length; i--;) {
+                    // se esta regra não deu match, continuar o loop
+                    if (!(text = match[i + 1]))
+                        continue;
+
+                    text = escape(text);
+
+                    // se houver uma classe definida para este match, encapsular o texto em um span=
+                    if (clss = hl_classes[i])
+                        text = "<span class='xhl-" + clss + "'>" + text + "</span>";
+
+                    result.push(text);
+
+                    // se for um match de fechamento de tag, usar outra regra para extrair o texto após ela
+                    if (isClose[i]) {
+                        // seta o indice para início
+                        txt_regex.lastIndex = tag_regex.lastIndex;
+
+                        if (match = txt_regex.exec(xml))
+                            result.push(escape(match[0]));
+
+                        // continuar o match principal a partir do fim desse
+                        tag_regex.lastIndex = txt_regex.lastIndex;
+                    }
+
+                    // a regra já foi consumida. podemos partir para o próximo match
+                    break;
+                }
+            }
+
+            return result.join("");
+        };
+
+    })();
+
+    // cria uma string que é a repetição de uma substring N vezes
+    $.sidra.repetirString = function (texto, n) {
+        var resultado = "";
+        for (var i = 0; i < n; i++)
+            resultado += texto;
+        return resultado;
+    }
+
+    // atualiza o hash de URL
+    $.sidra.inserirHash = function (hash) {
+        hash = (hash || "").replace(/^#/, "");
+        if (!$.isFunction(history.pushState))
+            location.hash = hash;
+        else {
+            var url = location.href.replace(/#.*$/, "");
+            history.pushState({}, null, url + (hash ? "#" + hash : ""));
+        }
+    };
+
+    $.sidra.substituirHash = function (hash) {
+        hash = (hash || "").replace(/^#/, "");
+        if (!$.isFunction(history.replaceState))
+            location.hash = hash;
+        else {
+            var url = location.href.replace(/#.*$/, "");
+            history.replaceState({}, null, url + (hash ? "#" + hash : ""));
+        }
+    };
+
+    // formatação simples sobre strings que substitui parâmetros "{0}", "{1}", etc, pelos parâmetros na ordem especificada
+    var regex_substituir = /\{(\d+)\}/gm;
+
+    $.sidra.substituir = function (texto, _) {
+        var args = arguments;
+        return texto.replace(regex_substituir, function (match, i) {
+            var value = args[Number(i) + 1];
+            return (value !== $undefined ? value : match);
+        });
+    }
+
+    // seleciona o primeiro item cujo callback retornar "true", ou null caso nenhum seja encontrado
+    $.sidra.get = function (lista, callback) {
+        var length = lista.length;
+        for (var i = 0; i < length; i++) {
+            var item = lista[i];
+            if (callback(item))
+                return item;
+        }
+        return null;
+    };
+
+    // informa se algum elemento na lista atende à condição de callback
+    $.sidra.any = function (lista, callback) {
+        return ($.sidra.get(lista, callback) !== null);
+    };
+
+    // formatação simples sobre strings que substitui parâmetros "${key}" pela correspondência {key: value} de um objeto.
+    // ao contrário do template do jQuery, retorna uma string, e não um objeto jQuery
+    var regex_template = /\$\{(\w+)\}/gm;
+
+    $.sidra.template = function (texto, params) {
+        return texto.replace(regex_template, function (match, key) {
+            var value = params[key];
+            return (value !== $undefined ? value : match);
+        });
+    }
+
+    // análogo ao $.sidra.template, mas retornando um elemento jQuery
+    $.sidra.tmpl = function (texto, params) {
+        return $($.sidra.template(texto, params));
+    }
+
+    $.sidra.textoPesquisavel = function (texto) {
+        return removeAcentos(texto || "").toUpperCase();
+    };
+
+    $.sidra.filtrarTexto = function (texto, lista) {
+        var filtrados = [];
+        // verifica se a filtragem deve ocorrer do inicio, e gera o texto pesquisável
+        var doInicio = (texto.charAt(0) === "=");
+        var match = $.sidra.textoPesquisavel(doInicio ? texto.slice(1) : texto);
+        // itera a lista de elementos
+        var tamanho = lista.length;
+        for (var i = 0; i < tamanho; i++) {
+            var item = lista[i];
+            var nome = (item.contents || item).pesquisavel;
+            if ((doInicio ? nome.lastIndexOf(match, 0) : nome.indexOf(match)) >= 0)
+                filtrados.push(item);
+        }
+        //
+        return filtrados;
+    };
+
+    // recebe um array de IDs e retorna um objeto de mapeamento da forma {key: indice}
+    $.sidra.arrayToMap = function (lista) {
+        var obj = {};
+        for (var i = lista.length; i--;)
+            obj[lista[i]] = i;
+        return obj;
+    }
+
+    // função que pega o elemento com a maior propriedade ou resultado de função em um array de objetos (DA PRA MELHORAR)
+    // max(array, key)
+    // max(array, function)
+    $.sidra.max = function (array, key) {
+        if (!array || array.length === 0)
+            return null;
+        else {
+            var max = 0;
+            if (typeof key === "string") {
+                for (var i = array.length - 1; i > 0; i--)
+                    if (array[i][key] > array[max][key])
+                        max = i;
+            }
+            else {
+                var val, maxVal = key(array[0]);
+                for (var i = array.length - 1; i > 0; i--) {
+                    val = key(array[i]);
+                    if (val > maxVal) {
+                        maxVal = val;
+                        max = i;
+                    }
+                }
+            }
+            return array[max];
+        }
+    }
+
+    // função que pega o elemento com a menor propriedade ou resultado de função em um array de objetos (DA PRA MELHORAR)
+    // max(array, key)
+    // max(array, function)
+    $.sidra.min = function (array, key) {
+        if (!array || array.length === 0)
+            return null;
+        else {
+            var min = 0;
+            if (typeof key === "string") {
+                for (var i = array.length - 1; i > 0; i--)
+                    if (array[i][key] < array[min][key])
+                        min = i;
+            }
+            else {
+                var val, minVal = key(array[0]);
+                for (var i = array.length - 1; i > 0; i--) {
+                    val = key(array[i]);
+                    if (val < minVal) {
+                        minVal = val;
+                        min = i;
+                    }
+                }
+            }
+            return array[min];
+        }
+    }
+
+    // cria um array contendo todas as chaves de um objeto (alternativa ao Object.keys, 
+    // que não insere  properties herdades nem é suportado em browsers antigos)
+    $.sidra.keys = function (obj, own) {
+        var saida = [];
+        for (var key in obj)
+            if (!own || obj.hasOwnProperty(key))
+                saida.push(key);
+        return saida;
+    }
+
+    $.sidra.values = function (obj, own) {
+        var saida = [];
+        for (var key in obj)
+            if (!own || obj.hasOwnProperty(key))
+                saida.push(obj[key]);
+        return saida;
+    }
+
+    // cria um array contendo todas as propriedades especificadas de um array de objetos
+    $.sidra.select = function (lista, key, descartarNulos) {
+        var saida = [];
+        for (var i = 0; i < lista.length; i++) {
+            var valor = lista[i][key];
+            if (valor || !descartarNulos)
+                saida.push(valor);
+        }
+        return saida;
+    }
+
+    // Função para gerar o produto cartesiano entre N arrays. Não altera os arrays originais.
+    $.sidra.cartesiano = function (params) {
+        var resultado = null;
+        var nArgumentos = arguments.length;
+        for (var i = nArgumentos; i > 0; i--) {
+            var atual = arguments[i - 1];
+            if (resultado === null)
+                resultado = $.sidra.map(atual, function (el) { return [el]; });
+            else {
+                var novo = [];
+                var lenA = atual.length;
+                var lenB = resultado.length;
+                for (var j = 0; j < lenA; j++) {
+                    var elA = [atual[j]];
+                    for (var k = 0; k < lenB; k++)
+                        novo.push(elA.concat(resultado[k]));
+                }
+                resultado = novo;
+            }
+        }
+        return resultado;
+    }
+
+    // versão própria do "$.map" mais flexível e que não "planifica" (flatten) os arrays.
+    // se arg for string, cria-se a saída contendo os campos do dados com este nome. senão,
+    // considera-se que é uma função de callback que deve retornar o valor objetivo
+    $.sidra.map = function (dados, arg) {
+        var resultado = [];
+        //
+        var n = dados.length;
+        if (typeof arg === 'string') {
+            for (var i = 0; i < n; i++)
+                resultado.push(dados[i][arg]);
+        }
+        else {
+            for (var i = 0; i < n; i++) {
+                var value = dados[i];
+                resultado.push(arg.call(value, value, i));
+            }
+        }
+        //
+        return resultado;
+    };
+
+    // formata um numero para apresentação
+    $.sidra.formatarNumero = function (n) {
+        if (isNaN(n))
+            return n;
+
+        // verifica se possui parte decimal (deve ser preservada a precisão utilizada)
+        n = n.toString();
+        var inteiro = n,
+            decimal = "",
+            ponto = n.indexOf('.');
+
+        if (ponto >= 0) {
+            inteiro = n.slice(0, ponto);
+            decimal = "," + n.slice(ponto + 1);
+        }
+
+        return $.sidra.inserePontosMilhar(inteiro) + decimal;
+    }
+
+    // converte um número para texto no formato padronizado
+    $.sidra.inserePontosMilhar = function (n) {
+        return n.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // converte uma cor na notação rgb(...) para notação hexadecimal
+    // obtida de: http://stackoverflow.com/questions/1740700/how-to-get-hex-color-value-rather-than-rgb-value
+    $.sidra.rgbToHex = function (rgb) {
+        if (rgb.indexOf("rgb(") < 0)
+            return rgb;
+        else {
+            rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+        }
+    }
+
+    var hexDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+    function hex(x) {
+        return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+    }
+
+    // executa uma sequencia de tentativas em um vetor de funções, abstraindo a captura de exceções
+    $.sidra.sequenciaTry = function () {
+        var i = 0, nFuncoes = arguments.length;
+        var ctx = { abort: false }
+        var foi = false;
+        while (!foi && !ctx.abort && i < nFuncoes) {
+            try { foi = arguments[i++].call(ctx) }
+            catch (e) {
+                console.log("Erro: " + e);  // pra debug
+                foi = false;
+            }
+        }
+        return foi;
+    };
+
+    // copia o html do elemento para área de transferência
+    // adaptado de: http://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+    $.sidra.clipboard = function ($elemento) {
+        // pega o html do elemento como texto
+        var tag = $elemento[0].tagName.toLowerCase();
+        var texto = [
+            "<" + tag + ">",
+            $elemento.html(),
+            "</" + tag + ">"
+        ].join("\n");
+        // copia o texto para area de transferencia
+        window.prompt("Copiar para área de transferência: Ctrl+C, Enter", texto);
+    };
+
+    var padroesExcel = {
+        format: "xlsx",
+        company: "IBGE",
+        creator: "SIDRA",
+        style: true
+    };
+
+    // função que efetiva a exportação
+    $.sidra.exportarExcel = function (titulo, conteudo, opcoes) {
+        // pega a visão, remove a seleção e exporta suas tabelas
+        opcoes = $.extend({}, padroesExcel, opcoes || {});
+        //
+        opcoes.name = titulo;
+        opcoes.filename = titulo;
+        //
+        try {
+            conteudo.exportaExcel(opcoes);
+            return true;
+        }
+        catch (e) {
+            $.sidra.debugErro(e);
+            return false;
+        }
+    };
+
+    // centraliza todas as rotinas de salvamento de objeto
+    $.sidra.salvar = function (nome, dado, mime, usaBase64) {
+        // checa alguns parâmetros
+        if (!mime) mime = "text/plain";
+        var msie = window.navigator.userAgent.indexOf("MSIE");
+        // executa uma sequência de tentativas por métodos diversos
+        return $.sidra.sequenciaTry(
+            function () {
+                // se o dado é Blob tenta salvar pela lib "filesaver.js"
+                if (dado instanceof Blob) {
+                    console.log("ja veio blob");
+                    // sinaliza para o "sequenciaTry" que não devem haver mais passos após este, independentemente do resultado
+                    this.abort = true;
+                    // tenta salvar o dado
+                    return saveAs(dado, nome);
+                }
+            },
+            function () {
+                console.log("por blob");
+                // se suportar blobs, então tentar usar (espera-se que tenha, por causa do "blob.js", mas ainda pode rolar algum erro)
+                if (typeof Blob === "undefined" || !saveAs)
+                    return false;
+                else {
+                    // verifica se o dado é string, e o converte caso não seja
+                    if (typeof dado !== "string")
+                        dado = dado.toString();
+                    // cria a blob a partir dos dados, verificando se o formato é base64
+                    var blob = (usaBase64
+                        ? b64toBlob(dado, mime)
+                        : new Blob([dado], { type: mime }));
+                    // tenta salvar 
+                    return saveAs(blob, nome);
+                }
+            },
+            function () {
+                return false; // ta bugando no iOS
+                // <IE9 não funciona, e IE10 tem blob
+                if (msie >= 0) return false;
+                //
+                console.log("por link");
+                // tentar fazer download criando um link e clicando
+                // cria o "href" do link, contendo os dados em base64
+                var uri = "data:" + mime + ";base64,";
+                var link = uri + (usaBase64 ? dado : base64.encode(dado));
+                // cria o elemento contendo os dados
+                var a = document.createElement("a");
+                a.download = nome;
+                a.href = link;
+                // inclui no corpo da página e chama o click
+                document.body.appendChild(a);
+                // gamby gamby pra verificar se o click conseguiu ser realizado
+                var foi = false;
+                $(a).click(function () { return foi = true });
+                //
+                if (a.click)
+                    a.click()
+                else
+                    $(a).click();
+                // remove o elemento do corpo
+                document.body.removeChild(a);
+                // retorna
+                return foi;
+            },
+            function () {
+                // verifica se é internet explorer
+                if (msie < 0) {
+                    console.log("por nova janela");
+                    // não é IE. abrir o conteudo numa nova janela
+                    return !!window.open("data:" + mime + ";base64," + (usaBase64 ? dado : base64.encode(dado)));
+                }
+                else {
+                    console.log("por iframe");
+                    // é IE. tentar criar por iframe
+                    if (usaBase64) return false; // base64 não é compatível com esse método, só texto e xml
+                    // cria o frame
+                    var frame = document.createElement("iframe");
+                    frame.location = "about:blank";
+                    frame.style.display = "none";
+                    $("body").append(frame);
+                    //
+                    var frameWnd = frame.contentWindow;
+                    frameWnd.document.open("text/html", "replace");
+                    frameWnd.document.write(dado);
+                    frameWnd.document.close();
+                    frameWnd.focus();
+                    // tenta salvar e registra o resultado
+                    var resultado = frameWnd.document.execCommand("SaveAs", true, nome);
+                    // dá um timeout antes de remover do body, porque se remover direto alguns browsers não abrem download
+                    console.log(resultado);
+                    setTimeout(function () { $(frame).remove(); }, 1000);
+                    // retornar o resultado
+                    return resultado;
+                }
+            }
+        );
+    }
+
+    // converte uma string base64 para blob
+    // obtido de: http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+    function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+        //
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+        //
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+        }
+
+        var blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+    }
+
+    // função que calcula a bounding box transformada do elemento
+    var bboxTransformada = function ($container, obj) {
+        try {
+            if (!obj || !obj.getBBox || !obj.getCTM)
+                throw "";
+            // pontos para top-left e bottom-right
+            var bbox = obj.getBBox();
+            // se a largura e altura forem zero, pode ser um erro do browser no cálculo de elementos aninhados
+            // (meio gambiarrinha, mas ta valendo. qualquer coisa melhor depois)
+            if (bbox.width == 0 && bbox.height == 0) {
+                // calcula a partir do maximo e minimo de todas as bbox filhas
+                var $filhos = $(obj).children();
+                if ($filhos.length == 0)
+                    bbox = { "x": bbox.x || 0, "y": bbox.y || 0, "width": 0, "height": 0 };
+                else {
+                    // captura, recursivamente, todas as coordenadas de x e y dos elementos filho
+                    var x = [], y = [];
+                    for (var i = $filhos.length - 1; i >= 0; i--) {
+                        var fBBox = bboxTransformada($filhos[i]);
+                        x.push(fBBox.x, fBBox.x + fBBox.width);
+                        y.push(fBBox.y, fBBox.y + fBBox.height);
+                    }
+                    // coordenadas iniciais
+                    bbox.x = Math.min.apply(this, x);
+                    bbox.y = Math.min.apply(this, y);
+                    // dimensões
+                    bbox.width = Math.max.apply(this, x) - bbox.x;
+                    bbox.height = Math.max.apply(this, y) - bbox.y;
+                }
+            }
+            // pega a matriz de transformação acumulada do objeto
+            var ctm = obj.getCTM();
+            // realiza a transformação dos elementos a partir dos 4 pontos de limite
+            var x = [], y = [];
+            for (var i = 0; i < 4; i++) {
+                // cria o ponto
+                var p1 = $container[0].createSVGPoint();
+                p1.x = bbox.x + (i % 2 ? 0 : bbox.width);
+                p1.y = bbox.y + (i < 2 ? 0 : bbox.height);
+                // transforma o ponto e insere as coordenadas nas listas
+                var p2 = p1.matrixTransform(ctm);
+                x.push(p2.x);
+                y.push(p2.y);
+            }
+            // captura os limites das listas e retorna o objeto
+            bbox = {
+                obj: $(obj),
+                x: Math.min.apply(this, x),
+                y: Math.min.apply(this, y)
+            }
+            bbox.width = Math.max.apply(this, x) - bbox.x;
+            bbox.height = Math.max.apply(this, y) - bbox.y;
+            return bbox;
+        }
+        catch (e) {
+            return { "obj": $(obj), "x": 0, "y": 0, "width": 0, "height": 0 };
+        }
+    };
+
+    // ajusta automaticamente as margens de um gráfico nvd3
+    $.sidra.ajustarMargens = function (chart) {
+        // define a função internamente, que será chamada por timeout
+        var ajustar = function (chart) {
+            var $container = $(chart.container);
+            // pega o elemento de cache, o criando caso não exista
+            var cache = $container.data(CACHE_MARGEM);
+            var bboxMinMax = function (boxes, atributo) {
+                var obj = { min: boxes[0], max: boxes[0] };
+                for (var i = boxes.length - 1; i > 0; i--) {
+                    var bbox = boxes[i];
+                    if (bbox[atributo] > obj.max[atributo]) obj.max = bbox;
+                    if (bbox[atributo] < obj.min[atributo]) obj.min = bbox;
+                }
+                return obj;
+            }
+            //
+            var graph = $container.children();
+            var margem = { left: 0, right: 0, top: 0, bottom: 0 }
+            // meio merda dar um update aqui, mas é necessário pro nvd3 atualizar algumas transformações
+            chart.margin(margem);
+            if (chart.update)
+                chart.update();
+            //
+            if (graph.is(".nv-pieChart")) {
+                // se for gráfico de setor, não faz nada
+            }
+            else {
+                // verifica o cache e se o gráfico é horizontal 
+                var horizontal = graph.is(".nv-multiBarHorizontalChart");
+                // verifica se o cache está definido
+                if (!cache) {
+                    // se o cache de elementos não estiver definido, o criar
+                    cache = {};
+                    // localiza os elementos de referência
+                    var xBox = $container.find("g.nv-x.nv-axis").find("g.tick.major,.nv-axisMaxMin").find("text")
+                        .map(function (e, el) { return bboxTransformada($container, el); });
+                    var yBox = $container.find("g.nv-y.nv-axis").find("g.tick.major,.nv-axisMaxMin").find("text")
+                        .map(function (e, el) { return bboxTransformada($container, el); });
+                    // se for o gráfico horizontal, inverte as referências dos eixos
+                    if (horizontal) {
+                        var tmp = xBox;
+                        xBox = yBox;
+                        yBox = tmp;
+                    }
+                    // cria o elemento de cache com os dados relevantes
+                    var xMax = bboxMinMax(xBox, "x").max;
+                    cache.xBox = xBox;
+                    cache.xMaxW = xMax.width;
+                    cache.xObj = xMax.obj;
+                    cache.xLimit = cache.xObj.parent().is(".nv-axisMaxMin");
+                    //
+                    cache.yBox = yBox;
+                    cache.yTop = bboxMinMax(yBox, "x").max.height;
+                }
+                else if (!horizontal) {
+                    // se o cache de elementos estiver definido, só atualiza as bounding boxes
+                    // (não executa para o horizontal porque os labels não podem girar e, portanto, suas dimensões nunca mudam)
+                    // eixo x
+                    cache.xMax = bboxTransformada($container, cache.xObj[0]);
+                    for (var i = cache.xBox.length - 1; i >= 0; i--)
+                        cache.xBox[i] = bboxTransformada($container, cache.xBox[i].obj[0]);
+                    // eixo y
+                    for (var i = cache.yBox.length - 1; i >= 0; i--)
+                        cache.yBox[i] = bboxTransformada($container, cache.yBox[i].obj[0]);
+                }
+                // pega os limites definidos pelos textos de eixo
+                var yMax = $.sidra.max(cache.yBox, "width").width;
+                var xMax = $.sidra.max(cache.xBox, "height").height;
+                // verifica se os limites dos maxMin em X supera os limites anteriores
+                var xMinMax = $.grep(cache.xBox, function (e) { return e.obj.parent().is("g.nv-axisMaxMin") });
+                var xMin = $.sidra.min(xMinMax, "x");
+                //
+                if (xMin && -xMin.x > yMax)
+                    // se for maior, os limites foram violados. corrigir
+                    yMax = -xMin.x;
+                //
+                $.extend(cache, {
+                    left: yMax,
+                    top: cache.yTop / 2,
+                    bottom: xMax
+                });
+                // atualiza a margem a partir dos elementos de controle
+                var margem = {
+                    left: 10 + cache.left,
+                    right: 10 + (!cache.xLimit ? 0 : (cache.xObj.css("text-anchor") === "right" ? 0 : cache.xMaxW / 2)),
+                    top: 10 + cache.top,
+                    bottom: 10 + cache.bottom
+                }
+            }
+            // salva o elemento de cache atualizado e atualiza a margem
+            $container.data(CACHE_MARGEM, cache);
+            chart.margin(margem);
+            chart.update();
+        }
+        setTimeout(function () {
+            try {
+                ajustar(chart);
+            }
+            catch (e) {
+                //
+            }
+        }, 0);
+    }
+
+
+    // provê acesso aos metodos da classe base. meio caro em performance, mas basta não usar dentro de trechos críticos
+    function baseCall(method, _) {
+        // pega a classe base atual
+        var ptr = this.__basePtr;
+        var base = (ptr[method] || this.__base);
+
+        // encontra a classe base mais proxima onde o método é definido (precisamos
+        // chamar na classe certa pra não ter problemas no encadeamento de base-calls)
+        var callBase = base;
+        while (callBase && !callBase.hasOwnProperty(method))
+            callBase = callBase.__base;
+
+        if (!callBase)
+            throw "Error executing base method";
+
+        // salva o ponteiro da próxima classe base na cadeia
+        ptr[method] = callBase.__base;
+
+        try {
+            // remove o primeiro parâmetro e executa a chamada
+            var args = [].slice.call(arguments, 1);
+            var result = callBase[method].apply(this, args);
+
+            // restaura o valor do atributo base para o método e retorna
+            ptr[method] = base;
+            return result;
+        }
+        catch (e) {
+            ptr[method] = base;
+            throw e;
+        }
+    }
+
+    $.sidra.criarClasse = function (Base, metodos) {
+        // cria um construtor anônimo que chama a inicialização
+        var Class = function (_) {
+            // evita inicialição na etapa de extensão (gamby suave, mas é rápido de processar)
+            if (!this.__extending) {
+                this.inicializado = false;
+                this.__basePtr = {};
+                this.inicializar.apply(this, arguments);
+                this.inicializado = true;
+            }
+        };
+        if (!Base)
+            Class.prototype.__baseClass = null;
+        else {
+            // se houver uma classe base, extende o protótipo da nova classe
+            var baseProto = Base.prototype;
+            baseProto.__extending = true;
+            Class.prototype = new Base();
+            Class.prototype.__base = baseProto;
+            Class.prototype.base = baseCall;
+            baseProto.__extending = false;
+        }
+        // extende o protótipo com os metodos informados
+        $.extend(Class.prototype, metodos || {});
+        // retorna a classe criada
+        return Class;
+    }
+
+})(jQuery);

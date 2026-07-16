@@ -1,0 +1,15 @@
+﻿
+function createHttpString(url) {
+    if (url == null) {
+        return null;
+    }
+
+    url = removeAcentos(url);
+    url = url.toLowerCase();
+    url = url.replace(/ /gi, '-');
+    url = trim(url);
+
+    url = removeCaracteresEspeciais(url);
+
+    return url;
+}

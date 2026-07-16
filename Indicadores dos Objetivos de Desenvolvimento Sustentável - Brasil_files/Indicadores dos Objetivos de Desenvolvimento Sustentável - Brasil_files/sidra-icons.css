@@ -1,0 +1,49 @@
+﻿/************************************************************/
+/** CLASSES SIDRAICONS **************************************/
+/************************************************************/
+@font-face {
+  font-family: 'SidraIcons';
+  src: url('../fonts/SidraIcons.eot');
+  src: url('../fonts/SidraIcons.eot?#iefix') format('embedded-opentype'), url('../fonts/SidraIcons.woff') format('woff'), url('../fonts/SidraIcons.ttf') format('truetype'), url('../fonts/SidraIcons.svg#SidraIcons') format('svg');
+}
+.sidraicon {
+  font-family: 'SidraIcons';
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+}
+.sidraicon-splitter:before {
+  content: "\e001";
+}
+.sidraicon-summation:before {
+  content: "\2211";
+}
+.sidraicon-user:before {
+  content: "\e010";
+}
+.sidraicon-logout:before {
+  content: "\e011";
+}
+.sidraicon-graph:before {
+  content: "\e016";
+}
+.sidraicon-graph-stack:before {
+  content: "\e017";
+}
+.sidraicon-graph-expand:before {
+  content: "\e018";
+}
+.sidraicon-xlsx:before {
+  content: "\e030";
+}
+.sidraicon-embed:before {
+  content: "\e025";
+}
+.sidraicon-ods:before {
+  content: "\e031";
+}

@@ -1,0 +1,1657 @@
+.wp-csv-table-wrap {
+  --wp-csv-primary: #16774a;
+  --wp-csv-primary-rgb: 22, 119, 74;
+  --wp-csv-primary-soft: rgba(22, 119, 74, 0.08);
+  --wp-csv-primary-soft-strong: rgba(22, 119, 74, 0.14);
+  --wp-csv-primary-ring: rgba(22, 119, 74, 0.18);
+  --wp-csv-theme-container-width: var(--content-width, 1140px);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+body.wp-csv-main-page .entry-header,
+body.wp-csv-main-page-context .entry-header,
+body.wp-csv-main-page .page-header,
+body.wp-csv-main-page-context .page-header,
+body.wp-csv-main-page .wp-block-post-title,
+body.wp-csv-main-page-context .wp-block-post-title,
+body.wp-csv-main-page .entry-title,
+body.wp-csv-main-page-context .entry-title,
+body.wp-csv-main-page .page-title,
+body.wp-csv-main-page .nv-page-title-wrap,
+body.wp-csv-main-page .single-entry-header,
+body.wp-csv-axis-page .entry-header,
+body.wp-csv-axis-page-context .entry-header,
+body.wp-csv-axis-page .page-header,
+body.wp-csv-axis-page-context .page-header,
+body.wp-csv-axis-page .wp-block-post-title,
+body.wp-csv-axis-page-context .wp-block-post-title,
+body.wp-csv-axis-page .entry-title,
+body.wp-csv-axis-page .page-title,
+body.wp-csv-axis-page .nv-page-title-wrap,
+body.wp-csv-axis-page .single-entry-header,
+body.wp-csv-single-page .entry-header,
+body.wp-csv-single-page-context .entry-header,
+body.wp-csv-single-page .page-header,
+body.wp-csv-single-page-context .page-header,
+body.wp-csv-single-page .wp-block-post-title,
+body.wp-csv-single-page-context .wp-block-post-title,
+body.wp-csv-single-page .entry-title,
+body.wp-csv-single-page .page-title,
+body.wp-csv-single-page .nv-page-title-wrap,
+body.wp-csv-single-page .single-entry-header,
+body.wp-csv-single-page .nv-title-meta-wrap,
+body.wp-csv-single-page .nv-meta-list,
+body.wp-csv-single-page .nv-post-thumbnail-wrap,
+body.wp-csv-axis-page-context .entry-title {
+  display: none !important;
+}
+
+body.wp-csv-plugin-context {
+  overflow-x: clip;
+}
+
+.wp-csv-nav {
+  --wp-csv-primary: #16774a;
+  --wp-csv-primary-rgb: 22, 119, 74;
+  --wp-csv-hero-image: none;
+}
+
+.wp-csv-nav-main {
+  display: grid;
+  gap: 32px;
+}
+
+.wp-csv-nav-heading-main {
+  margin-bottom: -8px;
+}
+
+.wp-csv-nav-title-main {
+  color: var(--wp-csv-primary);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.wp-csv-nav-subtitle-main {
+  max-width: 760px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.wp-csv-home-search-inner {
+  position: relative;
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.wp-csv-home-search-input {
+  width: 100%;
+  min-height: 64px;
+  padding: 18px 22px;
+  border: 1px solid rgba(var(--wp-csv-primary-rgb), 0.18);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
+  color: #163026;
+  font-size: 1rem;
+  line-height: 1.4;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 14px 34px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.wp-csv-home-search-input::placeholder {
+  color: #6b7b73;
+}
+
+.wp-csv-home-search-input:focus {
+  outline: none;
+  border-color: rgba(var(--wp-csv-primary-rgb), 0.52);
+  box-shadow:
+    0 0 0 4px rgba(var(--wp-csv-primary-rgb), 0.12),
+    0 18px 38px rgba(15, 23, 42, 0.1);
+  transform: translateY(-1px);
+}
+
+.wp-csv-home-search-results {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid rgba(var(--wp-csv-primary-rgb), 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(8px);
+}
+
+.wp-csv-home-search-results[hidden] {
+  display: none !important;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.wp-csv-home-search-result,
+.wp-csv-home-search-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+.wp-csv-home-search-result {
+  color: #163026;
+  text-decoration: none !important;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.wp-csv-home-search-result:hover,
+.wp-csv-home-search-result:focus {
+  background: rgba(var(--wp-csv-primary-rgb), 0.08);
+  transform: translateX(2px);
+  outline: none;
+}
+
+.wp-csv-home-search-result-title {
+  color: var(--wp-csv-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.wp-csv-home-search-result-meta,
+.wp-csv-home-search-empty {
+  color: #5c6a63;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.wp-csv-hero {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: clamp(52px, 10vw, 112px) 0;
+  border-radius: 0;
+  background-color: #163026;
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(12, 29, 21, 0.82) 0%,
+      rgba(18, 58, 39, 0.72) 52%,
+      rgba(18, 88, 55, 0.56) 100%
+    ),
+    var(--wp-csv-hero-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 28px 50px rgba(10, 24, 18, 0.16);
+}
+
+.wp-csv-hero.wp-csv-hero-has-video {
+  background-image: none;
+}
+
+.wp-csv-hero-inner {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 32px, var(--content-width, 1140px));
+  max-width: var(--content-width, 1140px);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.wp-csv-hero-video,
+.wp-csv-hero-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.wp-csv-hero-video {
+  z-index: 0;
+  object-fit: cover;
+}
+
+.wp-csv-hero-overlay {
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    rgba(12, 29, 21, 0.82) 0%,
+    rgba(18, 58, 39, 0.72) 52%,
+    rgba(18, 88, 55, 0.56) 100%
+  );
+}
+
+.wp-csv-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -45% auto;
+  width: 320px;
+  height: 320px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 72%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.wp-csv-hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.wp-csv-hero-content.wp-csv-hero-content-has-logo {
+  max-width: 860px;
+}
+
+.wp-csv-screen-reader-text {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wp-csv-hero-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.wp-csv-hero-logo {
+  display: block;
+  max-width: min(100%, clamp(240px, 48vw, 560px));
+  max-height: clamp(88px, 18vw, 220px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 32px rgba(8, 18, 14, 0.32));
+}
+
+.wp-csv-hero-title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.wp-csv-hero-description {
+  max-width: 700px;
+  margin: 18px auto 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.wp-csv-hero-summary a {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.wp-csv-hero-summary a:hover {
+  opacity: 0.8;
+}
+
+.wp-csv-hero-summary strong,
+.wp-csv-hero-summary b {
+  font-weight: 700;
+}
+
+.wp-csv-hero-summary em {
+  font-style: italic;
+}
+
+.wp-csv-hero-content.wp-csv-hero-content-has-logo .wp-csv-hero-description {
+  margin-top: 24px;
+}
+
+.wp-csv-eixos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto 50px;
+}
+
+.wp-csv-eixo-card {
+  gap: 18px;
+  min-height: 214px;
+  padding: 24px 20px;
+  border-color: rgba(var(--wp-csv-primary-rgb), 0.18);
+  box-shadow:
+    inset 0 4px 0 0 var(--wp-csv-primary),
+    0 10px 28px rgba(15, 23, 42, 0.05);
+}
+
+.wp-csv-eixo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--wp-csv-primary-rgb), 0.12) 0%,
+    rgba(var(--wp-csv-primary-rgb), 0.05) 100%
+  );
+  box-shadow: inset 0 0 0 1px rgba(var(--wp-csv-primary-rgb), 0.12);
+}
+
+.wp-csv-eixo-icon-image {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.wp-csv-eixo-icon-fallback {
+  color: var(--wp-csv-primary);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.wp-csv-eixo-body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wp-csv-eixo-title {
+  color: var(--wp-csv-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.wp-csv-eixo-count {
+  margin-top: auto;
+  color: var(--wp-csv-primary);
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.wp-csv-eixo-card .wp-csv-nav-card-description {
+  margin-top: auto;
+}
+
+.wp-csv-nav-main .wp-csv-nav-empty {
+  margin: 0;
+}
+
+.wp-csv-eixos-grid > .wp-csv-nav-empty,
+.wp-csv-nav-grid > .wp-csv-nav-empty {
+  grid-column: 1 / -1;
+}
+
+.wp-csv-nav-heading {
+  --wp-csv-axis-banner-image: none;
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: 18px;
+  min-height: 200px;
+  padding: 24px 0 20px;
+  border-top: 4px solid var(--wp-csv-primary);
+  border-bottom: 4px solid var(--wp-csv-primary);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(var(--wp-csv-primary-rgb), 0.04) 100%);
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 44px 0 40px;
+  background-color: #163026;
+  background-image:
+    linear-gradient(
+      135deg,
+      rgba(12, 29, 21, 0.82) 0%,
+      rgba(18, 58, 39, 0.72) 52%,
+      rgba(18, 88, 55, 0.5) 100%
+    ),
+    var(--wp-csv-axis-banner-image);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner::after {
+  content: "";
+  position: absolute;
+  inset: auto -8% -55% auto;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 72%);
+  pointer-events: none;
+}
+
+.wp-csv-nav-heading-inner {
+  width: min(100% - 32px, var(--content-width, 1140px));
+  max-width: 1140px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner .wp-csv-nav-heading-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.wp-csv-nav-title {
+  margin: 0 0 8px;
+  color: #163026;
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.wp-csv-nav-subtitle {
+  margin: 0;
+  color: #5b6470;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner .wp-csv-nav-title,
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner .wp-csv-nav-subtitle {
+  color: #fff;
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner .wp-csv-nav-subtitle {
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.wp-csv-axis-page .wp-csv-nav-heading-inner {
+  text-align: center;
+}
+
+.wp-csv-axis-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto 12px;
+}
+
+.wp-csv-axis-logo-image {
+  display: block;
+  max-width: min(100%, clamp(140px, 24vw, 220px));
+  max-height: clamp(72px, 10vw, 120px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(8, 18, 14, 0.18));
+}
+
+.wp-csv-nav-heading.wp-csv-nav-heading-has-banner .wp-csv-axis-logo-image {
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.32));
+}
+
+.wp-csv-axis-title {
+  margin: 0 auto 8px;
+  font-size: 2.2rem !important;
+}
+
+.wp-csv-axis-description {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.wp-csv-axis-page .wp-csv-nav-heading-inner > .wp-csv-nav-subtitle:not(.wp-csv-axis-heading-text) {
+  display: none;
+}
+
+.wp-csv-axis-heading-text {
+  display: block;
+}
+
+.wp-csv-axis-main-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, 42%) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  width: 100%;
+  max-width: 1140px;
+  margin: 50px auto;
+}
+
+.wp-csv-axis-main-layout-no-sidebar {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wp-csv-axis-sidebar {
+  min-width: 0;
+}
+
+.wp-csv-axis-intro {
+  position: sticky;
+  top: 24px;
+  margin: 0;
+  padding: 22px 22px 24px;
+  border: 1px solid rgba(var(--wp-csv-primary-rgb), 0.14);
+  border-radius: 18px;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--wp-csv-primary-rgb), 0.08) 0%,
+    rgba(var(--wp-csv-primary-rgb), 0.03) 100%
+  );
+  color: #4d5a66;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+.wp-csv-axis-intro p {
+  margin: 0 0 14px;
+}
+
+.wp-csv-axis-intro p:last-child {
+  margin-bottom: 0;
+}
+
+.wp-csv-axis-content {
+  min-width: 0;
+}
+
+.wp-csv-axis-subgroup {
+  border: 1px solid rgba(var(--wp-csv-primary-rgb), 0.12);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.05);
+  overflow: hidden;
+}
+
+.wp-csv-axis-subgroup + .wp-csv-axis-subgroup {
+  margin-top: 22px;
+}
+
+.wp-csv-axis-subgroup-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 22px;
+  border: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--wp-csv-primary-rgb), 0.08) 0%,
+    rgba(var(--wp-csv-primary-rgb), 0.03) 100%
+  ) !important;
+  color: var(--wp-csv-primary);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.wp-csv-axis-subgroup-toggle:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(var(--wp-csv-primary-rgb), 0.12) 0%,
+    rgba(var(--wp-csv-primary-rgb), 0.05) 100%
+  );
+  color: var(--wp-csv-primary) !important;
+}
+
+.wp-csv-axis-subgroup-toggle:focus-visible {
+  outline: 3px solid rgba(var(--wp-csv-primary-rgb), 0.24);
+  outline-offset: -3px;
+}
+
+.wp-csv-axis-subgroup.is-open .wp-csv-axis-subgroup-toggle {
+  box-shadow: inset 0 -1px 0 rgba(var(--wp-csv-primary-rgb), 0.1);
+}
+
+.wp-csv-axis-subgroup-toggle:hover,
+.wp-csv-axis-subgroup-toggle:focus-visible,
+.wp-csv-axis-subgroup-toggle:focus,
+.wp-csv-axis-subgroup-toggle:active,
+.wp-csv-axis-subgroup-toggle span {
+  color: var(--wp-csv-primary) !important;
+}
+.wp-csv-axis-subgroup-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.wp-csv-axis-subgroup-icon {
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 220ms ease;
+}
+
+.wp-csv-axis-subgroup.is-open .wp-csv-axis-subgroup-icon {
+  transform: rotate(225deg);
+}
+
+.wp-csv-axis-subgroup-panel {
+  height: 0;
+  overflow: hidden;
+}
+
+.wp-csv-axis-subgroup-panel-inner {
+  padding: 20px;
+}
+
+.wp-csv-axis-subgroup-panel-inner .wp-csv-axis-cards {
+  padding-top: 6px;
+}
+
+.wp-csv-axis-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.wp-csv-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.wp-csv-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px;
+  border: 1px solid rgba(var(--wp-csv-primary-rgb), 0.16);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbf9 100%);
+  color: #1f2933;
+  text-decoration: none !important;
+  box-shadow:
+    inset 0 4px 0 0 rgba(var(--wp-csv-primary-rgb), 0.22),
+    0 10px 28px rgba(15, 23, 42, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.wp-csv-nav-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--wp-csv-primary-rgb), 0.42);
+  box-shadow:
+    inset 0 4px 0 0 var(--wp-csv-primary),
+    0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.wp-csv-nav-card-disabled,
+.wp-csv-nav-card-disabled:hover {
+  transform: none;
+  border-color: rgba(var(--wp-csv-primary-rgb), 0.14);
+  box-shadow:
+    inset 0 4px 0 0 rgba(var(--wp-csv-primary-rgb), 0.16),
+    0 10px 28px rgba(15, 23, 42, 0.03);
+  cursor: default;
+}
+
+.wp-csv-nav-card:focus {
+  outline: none;
+  border-color: var(--wp-csv-primary);
+  box-shadow: 0 0 0 4px rgba(var(--wp-csv-primary-rgb), 0.14);
+}
+
+.wp-csv-nav-card-title {
+  color: var(--wp-csv-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.wp-csv-nav-card-description {
+  color: #4d5a66;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.wp-csv-nav-card-meta {
+  margin-top: auto;
+  color: var(--wp-csv-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.wp-csv-nav-empty {
+  margin: 0;
+  padding: 18px 20px;
+  border: 1px solid #e3e8e5;
+  border-radius: 14px;
+  background: #f8faf9;
+  color: #4d5a66;
+  font-size: 0.95rem;
+}
+
+.wp-csv-header {
+  margin-bottom: 0;
+}
+
+.wp-csv-page-heading-wrap {
+  display: block;
+  width: 100%;
+  max-width: 1140px;
+  box-sizing: border-box;
+  overflow: visible;
+  margin: 0 auto 36px;
+}
+
+.wp-csv-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  color: #66727f;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.wp-csv-breadcrumbs a {
+  color: var(--wp-csv-primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.wp-csv-breadcrumbs a:hover,
+.wp-csv-breadcrumbs a:focus {
+  color: #0f5e3a;
+}
+
+.wp-csv-breadcrumb-separator {
+  color: #98a3ad;
+  font-weight: 500;
+}
+
+.wp-csv-breadcrumb-current {
+  color: #364451;
+  font-weight: 700;
+}
+
+.wp-csv-breadcrumb-item {
+  color: #5e6975;
+  font-weight: 600;
+}
+
+.wp-csv-axis-page > .wp-csv-breadcrumbs {
+  margin: 10px 0;
+}
+
+.wp-csv-page-header {
+  display: block;
+  flex: 0 0 auto;
+  width: 100vw;
+  max-width: 100vw;
+  box-sizing: border-box;
+  align-self: stretch;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 34px 0 38px;
+  border-top: 6px solid var(--wp-csv-primary);
+  border-bottom: 6px solid var(--wp-csv-primary);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(var(--wp-csv-primary-rgb), 0.035) 100%);
+}
+
+.wp-csv-page-header-inner {
+  width: min(calc(100vw - 32px), var(--content-width, 1140px));
+  max-width: var(--content-width, 1140px);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.wp-csv-single-page .wp-csv-table-wrap,
+.wp-csv-single-page-context .wp-csv-table-wrap {
+  width: 100%;
+  max-width: var(--content-width, 1140px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wp-csv-single-page .wp-csv-page-heading-wrap,
+.wp-csv-single-page-context .wp-csv-page-heading-wrap {
+  width: 100%;
+  max-width: 1140px;
+}
+
+.wp-csv-title {
+  font-size: 1.75rem !important;
+  margin: 0;
+}
+
+.wp-csv-page-title {
+  margin: 0;
+  color: var(--wp-csv-primary);
+  font-size: 2rem !important;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.wp-csv-description {
+  color: #555;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.wp-csv-page-description {
+  max-width: 760px;
+
+  color: #55626e;
+  font-size: 1rem;
+  line-height: 1.75;
+  font-style: normal;
+}
+
+.wp-csv-note {
+  color: #444;
+  font-size: 0.6rem;
+  font-weight: bold;
+}
+
+.wp-csv-last-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+color: #000;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.wp-csv-last-update strong {
+  color: #000);
+}
+
+.wp-csv-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.wp-csv-toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 560px;
+  min-width: 280px;
+  flex-wrap: wrap;
+}
+
+.wp-csv-toolbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.wp-csv-table-topbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.wp-csv-table-topbar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.wp-csv-search-wrap {
+  position: relative;
+  flex: 1 1 360px;
+  min-width: 260px;
+  border-radius: 6px;
+}
+
+.wp-csv-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.wp-csv-search-icon svg,
+.wp-csv-btn-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.wp-csv-search {
+  width: 100%;
+  min-height: 38px;
+  padding: 0 44px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  background: #fff;
+  box-sizing: border-box;
+  color: #1f2933;
+  font-size: 0.9375rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.wp-csv-search::placeholder {
+  color: #8a8f98;
+}
+
+.wp-csv-search:focus,
+.wp-csv-filter-field input:focus,
+.wp-csv-filter-field select:focus,
+.wp-csv-per-page-control select:focus,
+.wp-csv-pagination button:focus {
+  outline: none;
+  border-color: var(--wp-csv-primary);
+  box-shadow: 0 0 0 3px var(--wp-csv-primary-soft-strong);
+}
+
+.wp-csv-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #1f2933;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wp-csv-btn:hover {
+  transform: translateY(-1px);
+}
+
+.wp-csv-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--wp-csv-primary-ring);
+}
+
+.wp-csv-btn-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.wp-csv-btn-filter {
+  background: var(--wp-csv-primary-soft);
+  border-color: var(--wp-csv-primary-soft-strong);
+  color: var(--wp-csv-primary);
+}
+
+.wp-csv-btn-filter:hover {
+  background: var(--wp-csv-primary);
+  border-color: var(--wp-csv-primary);
+  color: #fff;
+}
+
+.wp-csv-btn-excel {
+  color: #16774a !important;
+  background: rgba(22, 119, 74, 0.08) !important;
+}
+
+.wp-csv-btn-excel:hover {
+  color: #0f5e3a !important;
+  background: rgba(22, 119, 74, 0.16) !important;
+}
+
+.wp-csv-btn-pdf {
+  color: #b14444 !important;
+  background: rgba(177, 68, 68, 0.08) !important;
+}
+
+.wp-csv-btn-pdf:hover {
+  color: #923636 !important;
+  background: rgba(177, 68, 68, 0.16) !important;
+}
+
+.wp-csv-per-page-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  color: #1f2933;
+}
+
+.wp-csv-per-page-label {
+  color: #5b6470;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.wp-csv-items-per-page {
+  min-height: 28px;
+  padding: 4px 28px 4px 8px;
+  border: 1px solid #d8e2dc;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2933;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wp-csv-filters-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.wp-csv-filters-panel-inline {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 14px;
+}
+
+.wp-csv-filter-field {
+  min-width: 0;
+  position: relative;
+  overflow: visible;
+}
+
+.wp-csv-filter-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: #5b6470;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wp-csv-filter-field input,
+.wp-csv-filter-field select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  color: #1f2933;
+}
+
+.wp-csv-filter-field select[multiple] {
+  min-height: 140px;
+  padding: 8px;
+}
+
+.custom-multiselect {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 44px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.custom-multiselect.is-open {
+  border-color: var(--wp-csv-primary);
+  box-shadow: 0 0 0 4px var(--wp-csv-primary-soft-strong);
+}
+
+.custom-multiselect:focus {
+  outline: none;
+  border-color: var(--wp-csv-primary);
+  box-shadow: 0 0 0 4px var(--wp-csv-primary-soft-strong);
+}
+
+.multiselect-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+  min-height: 28px;
+}
+
+.multiselect-placeholder {
+  color: #8a8f98;
+  font-size: 0.875rem;
+}
+
+.multiselect-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--wp-csv-primary-soft);
+  color: var(--wp-csv-primary);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.multiselect-dropdown {
+  position: fixed;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10010;
+}
+
+.multiselect-dropdown.hidden {
+  display: none !important;
+}
+
+.multiselect-dropdown.active {
+  display: block !important;
+}
+
+.multiselect-dropdown div {
+  padding: 8px 12px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.multiselect-dropdown div:hover {
+  background: var(--wp-csv-primary-soft);
+}
+
+.multiselect-dropdown div.selected {
+  background: var(--wp-csv-primary);
+  color: #fff;
+}
+
+.multiselect-dropdown.direction-up {
+  border-radius: 8px 8px 0 0;
+}
+
+.wp-csv-checkbox-group {
+  display: grid;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.wp-csv-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: #1f2933;
+  cursor: pointer;
+}
+
+.wp-csv-checkbox-item input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--wp-csv-primary);
+}
+
+.wp-csv-table-responsive {
+  overflow-x: auto;
+  width: 100%;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.wp-csv-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.wp-csv-table th,
+.wp-csv-table td {
+  padding: 0 10px;
+  border-bottom: 1px solid #ececec;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.875rem;
+}
+
+.wp-csv-table th {
+  padding: 10px;
+}
+
+.wp-csv-table td a {
+  color: var(--wp-csv-primary);
+  word-break: break-word;
+}
+
+.wp-csv-table th {
+  position: sticky;
+  top: 0;
+  background: var(--wp-csv-primary);
+  color: #fff;
+}
+
+.wp-csv-table-status {
+  color: #5b6470;
+  font-style: italic;
+}
+
+.wp-csv-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.wp-csv-pagination-top {
+  margin: 0;
+}
+
+.wp-csv-pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 1px solid #d9e3dd;
+  border-radius: 6px;
+  background: #fff !important;
+  color: #496056 !important;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wp-csv-pagination button:hover:not(:disabled) {
+  background: var(--wp-csv-primary-soft) !important;
+  border-color: var(--wp-csv-primary-soft-strong) !important;
+  color: var(--wp-csv-primary) !important;
+}
+
+.wp-csv-pagination button:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}
+
+.wp-csv-pagination button.active {
+  background: var(--wp-csv-primary) !important;
+  border-color: var(--wp-csv-primary) !important;
+  color: #fff !important;
+}
+
+.wp-csv-filters-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wp-csv-filters-modal.is-open {
+  display: flex;
+}
+
+.wp-csv-filters-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.wp-csv-filters-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 22px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22);
+}
+
+.wp-csv-filters-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.wp-csv-filters-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.wp-csv-close-filters-modal {
+  border: none;
+  background: transparent;
+  color: #5b6470;
+  font-size: 1.875rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (min-width: 640px) {
+  body.wp-csv-single-page .container,
+  body.wp-csv-single-page-context .container {
+    max-width: none !important;
+  }
+
+  body.wp-csv-single-page .col,
+  body.wp-csv-single-page-context .col {
+    padding: 0 20px !important;
+  }
+}
+
+.wp-csv-filters-panel-modal {
+  padding: 4px 0;
+  overflow: visible;
+}
+
+@media (max-width: 1100px) {
+  .wp-csv-eixos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 980px) {
+  .wp-csv-axis-main-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 782px) {
+  .wp-csv-axis-main-layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin: 20px auto;
+  }
+
+  .wp-csv-btn {
+    flex: 1;
+  }
+
+  .wp-csv-axis-intro {
+    position: static;
+    padding: 18px 18px 20px;
+  }
+
+  .wp-csv-nav-main {
+    gap: 24px;
+  }
+
+  .wp-csv-hero {
+    padding: 42px 0;
+  }
+
+  .wp-csv-hero-title {
+    font-size: clamp(2.1rem, 9vw, 3rem);
+  }
+
+  .wp-csv-hero-logo {
+    max-width: min(100%, 320px);
+    max-height: 120px;
+  }
+
+  .wp-csv-hero-description {
+    margin-top: 14px;
+    font-size: 0.98rem;
+    line-height: 1.7;
+  }
+
+  .wp-csv-hero-content.wp-csv-hero-content-has-logo .wp-csv-hero-description {
+    margin-top: 18px;
+  }
+
+  .wp-csv-nav-title-main {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+
+  .wp-csv-nav-subtitle-main {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .wp-csv-home-search {
+    width: min(100% - 24px, 1140px);
+    margin: 0 auto;
+  }
+
+  .wp-csv-home-search-input {
+    min-height: 58px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    font-size: 0.96rem;
+  }
+
+  .wp-csv-home-search-results {
+    display: none;
+    top: calc(100% + 10px);
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .wp-csv-hero-inner,
+  .wp-csv-nav-heading-inner {
+    width: min(100% - 24px, var(--content-width, 1140px));
+  }
+
+  .wp-csv-nav-heading.wp-csv-nav-heading-has-banner {
+    padding: 34px 0 30px;
+  }
+
+  .wp-csv-eixos-grid {
+    margin: 20px;
+    width: auto;
+  }
+
+  .wp-csv-eixo-card {
+    min-height: 0;
+  }
+
+  .wp-csv-nav-title {
+    font-size: 1.5rem;
+  }
+
+  .wp-csv-axis-subgroup-toggle {
+    padding: 18px 18px;
+  }
+
+  .wp-csv-axis-subgroup-title {
+    font-size: 1.05rem;
+  }
+
+  .wp-csv-axis-subgroup-panel-inner {
+    padding: 10px;
+  }
+
+  .wp-csv-axis-logo {
+    margin-bottom: 10px;
+  }
+
+  .wp-csv-axis-logo-image {
+    max-width: min(100%, 168px);
+    max-height: 84px;
+  }
+
+  .wp-csv-page-heading-wrap {
+    margin-bottom: 28px;
+  }
+
+  .wp-csv-breadcrumbs {
+    gap: 2px;
+    margin: 20px;
+    font-size: 0.85rem;
+  }
+
+  .wp-csv-axis-sidebar,
+  .wp-csv-axis-content {
+    margin: 0 20px;
+  }
+
+  .wp-csv-page-header {
+    padding: 24px 0 28px;
+    border-top-width: 5px;
+    border-bottom-width: 5px;
+  }
+
+  .wp-csv-page-header-inner {
+    width: min(calc(100vw - 24px), var(--content-width, 1140px));
+  }
+
+  .wp-csv-page-title {
+    max-width: none;
+    font-size: 1.5rem;
+    line-height: 1.12;
+  }
+
+  .wp-csv-page-description {
+    margin-top: 14px;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .wp-csv-nav-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wp-csv-last-update {
+    display: flex;
+    border-radius: 14px;
+  }
+
+  .wp-csv-toolbar-main,
+  .wp-csv-toolbar-actions {
+    width: 100%;
+  }
+
+  .wp-csv-toolbar-actions {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+
+  .wp-csv-table-topbar-controls {
+    justify-content: flex-end;
+  }
+
+  .wp-csv-search-wrap,
+  .wp-csv-btn-filter {
+    width: 100%;
+  }
+
+  .wp-csv-btn-text {
+    display: inline;
+  }
+
+  .wp-csv-filters-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .wp-csv-filters-modal {
+    padding: 12px;
+  }
+
+  .wp-csv-filters-modal-content {
+    padding: 18px;
+  }
+
+  .wp-csv-table {
+    min-width: 640px;
+  }
+}

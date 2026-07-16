@@ -1,0 +1,335 @@
+﻿
+
+; (function ($, undefined) {
+
+    // constants
+    var ASYNC_FIELD = '__async';
+    var PLUGIN_FIELD = 'pluginLoading';
+    var DEFAULT_TEXT = 'Carregando';
+    var TIMEOUT_TEXT = 'Sem resposta. Verifique sua conexão e atualize a página.';
+    var DEFAULT_ASYNC_TEXT = 'Aguarde';
+    var ASYNC_TIMEOUT = 10000;
+
+    // html templates
+    var templateProgressBar = "".concat(
+        "<div class='progress'>",
+            "<div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100'></div>",
+        "</div>"
+    );
+
+    var templateLoading = "".concat(
+        "<div class='loading-overlay'>",
+            "<div class='loading-wrapper'>",
+                "<span class='loading-mensagem'></span>",
+                templateProgressBar,
+            "</div>",
+        "</div>"
+    );
+
+    // css styles
+    var styleLoadingModal = {
+        "position": "absolute",
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "z-index": 50,
+        "background-color": "rgba(255,255,255,0.7)"
+    };
+
+    var styleLoadingWrapper = {
+        "position": "absolute",
+        "width": "272px",
+        "height": "64px",
+        "top": 0,
+        "bottom": 0,
+        "left": 0,
+        "right": 0,
+        "margin": "auto"
+    };
+
+    var alignMargin = "40px";
+
+    // class constructor
+    function Loading(_) {
+        this.initialize.apply(this, arguments);
+    }
+
+    // class methods
+    $.extend(Loading.prototype, {
+
+        // propriedades padrão
+        defaults: {
+            text: DEFAULT_TEXT,
+            position: 1,
+            align: "middle" // "top", "middle", "bottom"
+        },
+
+        // inicialização do plugin
+        initialize: function (element, arg1, arg2) {
+            this.element = element;
+            // copiar as opcoes default pro campo de opcoes
+            var options = this.options = $.extend({}, this.defaults);
+            // processa os parâmetros
+            if (typeof arg1 === "object")
+                $.extend(options, arg1)
+            else {
+                options.text = arg1;
+                options.position = arg2;
+            }
+            // salva o estilo prévio do elemento
+            var style = options.style = {};
+            // se for o body, previne scroll
+            if (element.is("body")) {
+                style.overflow = element[0].style.overflow;
+                element.css("overflow", "hidden");
+            }
+            // se o elemento for posicionado static, colocar como relative
+            if (element.css("position") === "static") {
+                style.position = element[0].style.position;
+                element.css("position", "relative");
+            }
+            // chama a inicialização do modal
+            this.createHtml();
+        },
+
+        createHtml: function () {
+            // inclui a classe no elemento principal
+            this.element
+                .addClass("loading-container");
+            // cria o elemento do loading
+            var loading = $(templateLoading)
+                .css(styleLoadingModal)
+                .appendTo(this.element);
+            // define os estilos do wrapper
+            var wrapper = loading
+                .find(".loading-wrapper")
+                .css(styleLoadingWrapper);
+            //
+            var align = this.options.align;
+            if (align === "top")
+                wrapper.css("margin-top", alignMargin);
+            else if (align === "bottom")
+                wrapper.css("margin-bottom", alignMargin);
+            // cria referências para os campos importantes
+            this.html = {
+                overlay: loading,
+                text: loading.find(".loading-mensagem"),
+                progress: loading.find(".progress-bar")
+            };
+            // preenche com os valores iniciais e retorna
+            return this.update()
+        },
+
+        // termina uma instância de loading
+        __close: function () {
+            // remove o modal do html, apaga a referência e retorna
+            var element = this.element
+                .removeClass("loading-container")
+                .removeData(PLUGIN_FIELD);
+
+            this.element = null;
+            //
+            element.css(this.options.style);
+            //
+            this.html.overlay.remove();
+            this.html = null;
+            return element;
+        },
+
+        // atualiza a exibição do modal
+        // __update(text)
+        // __update(progress)
+        // __update(text, progress)
+        __update: function (arg1, arg2) {
+            var options = this.options;
+            //
+            if (arguments.length < 2)
+                options[isNaN(arg1) ? "text" : "position"] = arg1;
+            else {
+                options.text = arg1;
+                options.position = arg2;
+            }
+            // atualiza a barra e retorna
+            return this.update();
+        },
+
+        update: function () {
+            // pega a posição do progresso e o converte em um inteiro no intervalo 0-100 (se for indefinido, 100)
+            var position = parseFloat(this.options.position);
+            position = ~~(position >= 0 && position <= 1 ? 100 * position : 100);
+            // atualiza os componentes
+            this.html.text.html(this.options.text);
+            this.html.progress
+                .attr("aria-valuenow", position)
+                .css("width", position + "%");
+            //
+            return this.element;
+        },
+
+        // estiliza o loading para sinalizar erro
+        __error: function (text) {
+            // altera as classes para a cor vermelha
+            this.html.overlay
+                .addClass("loading-error");
+
+            this.html.progress
+                .removeClass("active progress-bar-striped")
+                .addClass("progress-bar-danger");
+            // atualiza a barra e retorna
+            return this.__update(text, 100);
+        }
+
+    });
+
+
+    $.fn.loading = function (arg1, arg2) {
+        // pega o plugin de loading do elemento
+        var element = $(this);
+        var plugin = element.data(PLUGIN_FIELD);
+        // se receber o comando "hasLoading", retornar se o pluging está presente
+        if (arg1 === "hasLoading")
+            return (!!plugin);
+        // senão, se o plugin não estiver definido, o cria e retorna
+        if (!plugin) {
+            plugin = new Loading(element, arg1, arg2);
+            return element.data(PLUGIN_FIELD, plugin);
+        }
+        // se o plugin já estiver definido, verificamos se existe um método para ser chamado
+        var method = plugin['__' + arg1];
+        // se não houver um método correspondente, consideramos que é um update
+        if (!method)
+            return plugin.__update.apply(plugin, arguments);
+        else {
+            // senão, executamos o método com os parâmetros passados
+            var params = [].slice.call(arguments, 1);
+            return method.apply(plugin, params);
+        }
+    };
+
+
+
+
+
+
+    // ************************************************************************************************************************
+    // ************************************************************************************************************************
+    // ************************************************************************************************************************
+
+    function nop() { }
+
+    // asynchronously execute a callback, automaticaly applying a "loading" overlay and creating a call queue.
+    // the method "execute" is the desired procedure, and the method "abort" is an optional callback to abort
+    // current execution in case of concurrency.
+    // .startAsync(execute [, abort])
+    $.fn.startAsync = function (execute, abort) {
+        var target = $(this);
+        //
+        setTimeout(function () {
+            var handler = target.data(ASYNC_FIELD);
+            if (!handler)
+                target.data(ASYNC_FIELD, handler = {
+                    target: target,
+                    timeout: null,
+                    queue: []
+                });
+            //
+            handler.queue.push({
+                aborted: false,
+                execute: execute,
+                abort: abort
+            });
+            //
+            if (handler.queue.length === 1)
+                executeAsync(handler);
+            else {
+                target.loading(DEFAULT_ASYNC_TEXT);
+                var first = handler.queue[0];
+                (first.abort && first.abort());
+            }
+        }, 0);
+        //
+        return target;
+    };
+
+    // must be called after the current async method is complete. 
+    // .endAsync()
+    $.fn.endAsync = function () {
+        var target = $(this);
+        //
+        setTimeout(function () {
+            var handler = target.data(ASYNC_FIELD);
+            if (!handler)
+                return;
+            //
+            if (handler.timeout)
+                clearTimeout(handler.timeout);
+            //
+            handler.queue.shift();
+            if (handler.queue.length > 0)
+                executeAsync(handler)
+            else {
+                target.removeData(ASYNC_FIELD);
+                if (target.loading("hasLoading"))
+                    target.loading("close");
+            }
+        }, 0);
+        //
+        return target;
+    };
+
+    $.fn.abortAsync = function () {
+        var target = $(this);
+        //
+        setTimeout(function () {
+            target.removeData(ASYNC_FIELD);
+            if (target.loading("hasLoading"))
+                target.loading("close");
+        }, 0);
+        //
+        return target;
+    }
+
+    // giver some feedback to async loading, to prevent timeout of current execution
+    $.fn.refreshAsync = function () {
+        var target = $(this);
+        //
+        setTimeout(function () {
+            var handler = target.data(ASYNC_FIELD);
+            if (!handler)
+                return;
+            //
+            if (handler.timeout)
+                clearTimeout(handler.timeout);
+            //
+            handler.timeout = asyncTimeout(handler);
+        }, 0);
+        //
+        return target;
+    };
+
+    function executeAsync(handler) {
+        if (handler.queue[0].execute() == true)
+            handler.target.endAsync();
+        else
+            handler.timeout = asyncTimeout(handler);
+    }
+
+    function asyncTimeout(handler) {
+        return setTimeout(function () {
+            console.log("[AsyncLoading] Timeout reached. Async loading aborted.");
+            handler.timeout = null;
+            //
+            var queue = handler.queue = handler.queue.slice(0, 1);
+            if (queue.length && queue[0].abort)
+                queue[0].abort();
+            else if (handler.target.loading("hasLoading"))
+                handler.target.loading("close");
+            //
+            handler.target.removeData(ASYNC_FIELD);
+        }, ASYNC_TIMEOUT);
+    }
+
+
+
+})(jQuery);
