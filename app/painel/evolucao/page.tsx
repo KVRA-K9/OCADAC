@@ -4,8 +4,6 @@ import * as React from "react";
 import {
   Bar,
   BarChart,
-  Line,
-  LineChart,
   PolarAngleAxis,
   RadialBar,
   RadialBarChart,
@@ -19,14 +17,17 @@ import {
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { formatMoeda, formatMoedaCompacta } from "@/lib/format";
-import { serieHistoricaCompleta } from "@/data/historico";
+import { serieExecucao } from "@/data/historico";
+import { META_ROCA } from "@/data/roca";
+
+const ESTAGIOS = [
+  { key: "ocadInicial", rotulo: "OCAD Inicial", cor: "var(--chart-1)" },
+  { key: "ocadAtualizado", rotulo: "OCAD Atualizado", cor: "var(--chart-2)" },
+  { key: "ocadEmpenhado", rotulo: "OCAD Empenhado", cor: "var(--chart-3)" },
+  { key: "ocadLiquidado", rotulo: "OCAD Liquidado", cor: "var(--chart-5)" },
+  { key: "ocadPago", rotulo: "OCAD Pago", cor: "var(--chart-4)" },
+] as const;
 
 function ChartTooltip({
   active,
@@ -120,142 +121,166 @@ function MedidorLiquidado({
   );
 }
 
-const METRICAS: Array<{
-  key: "inicial" | "atual" | "empenhado" | "liquidado" | "pago";
-  rotulo: string;
-  cor: string;
-}> = [
-  { key: "inicial", rotulo: "Inicial (pond.)", cor: "var(--chart-1)" },
-  { key: "atual", rotulo: "Atual (pond.)", cor: "var(--chart-2)" },
-  { key: "empenhado", rotulo: "Empenhado", cor: "var(--chart-3)" },
-  { key: "liquidado", rotulo: "Liquidado", cor: "var(--chart-5)" },
-  { key: "pago", rotulo: "Pago", cor: "var(--chart-4)" },
-];
-
 export default function EvolucaoPage() {
-  const serie = serieHistoricaCompleta;
-
-  const primeiro = serie[0];
-  const ultimo = serie[serie.length - 1];
-  const variacaoLiquidado =
-    primeiro && ultimo && primeiro.liquidado > 0
-      ? ((ultimo.liquidado - primeiro.liquidado) / primeiro.liquidado) * 100
+  const primeiro = serieExecucao[0];
+  const ultimo = serieExecucao[serieExecucao.length - 1];
+  const variacaoPlanejado =
+    primeiro && ultimo && primeiro.ocadInicial > 0
+      ? ((ultimo.ocadInicial - primeiro.ocadInicial) / primeiro.ocadInicial) * 100
       : null;
 
-  const gaugesLiquidado = React.useMemo(
+  const medidores = React.useMemo(
     () =>
-      serie.map((s) => {
-        const pct = s.atual > 0 ? (s.liquidado / s.atual) * 100 : 0;
+      serieExecucao.map((p) => {
+        const pct =
+          p.ocadAtualizado > 0 ? (p.ocadLiquidado / p.ocadAtualizado) * 100 : 0;
         return {
-          ano: s.ano,
-          acumulado: s.acumulado,
-          atual: s.atual,
-          liquidado: s.liquidado,
+          ...p,
           pct,
           pctClamped: Math.min(Math.max(pct, 0), 100),
         };
       }),
-    [serie],
+    [],
   );
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Evolução Temporal"
-        descricao="Comparativo ponderado do Orçamento Criança e Adolescente (OCAD) no Estado do Acre. Valores de Orçamento Inicial e Atual ponderados por tipo (Exclusivo ×1,0 / Não exclusivo ×0,36). Empenhado, Liquidado e Pago já apresentam a ponderação nas planilhas originais. O ano de 2026 refere-se ao acumulado até junho."
+        descricao="Comparativo ponderado do OCAD por exercício. Cada ano identifica a planilha de origem e sua data de corte; onde a fonte não publica um estágio da despesa, ele aparece como não publicado em vez de zero."
       />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">
-            Orçamento Inicial e Atual (ponderado) — por ano
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[400px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={serie} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
-                <XAxis
-                  dataKey="ano"
-                  tickLine={false}
-                  axisLine={false}
-                  fontSize={12}
-                  stroke="var(--muted-foreground)"
-                />
-                <YAxis
-                  tickFormatter={(v) => formatMoedaCompacta(v)}
-                  tickLine={false}
-                  axisLine={false}
-                  fontSize={12}
-                  stroke="var(--muted-foreground)"
-                  width={72}
-                />
-                <ChartTooltipHost
-                  content={<ChartTooltip />}
-                  cursor={{ fill: "var(--muted)", opacity: 0.4 }}
-                />
-                <Legend
-                  formatter={(value) => (
-                    <span className="text-xs text-muted-foreground">{value}</span>
-                  )}
-                />
-                <Bar
-                  dataKey="inicial"
-                  name="Orçamento Inicial (pond.)"
-                  fill="var(--chart-1)"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={80}
-                  isAnimationActive
-                  animationDuration={900}
-                />
-                <Bar
-                  dataKey="atual"
-                  name="Orçamento Atual (pond.)"
-                  fill="var(--chart-2)"
-                  radius={[4, 4, 0, 0]}
-                  maxBarSize={80}
-                  isAnimationActive
-                  animationDuration={900}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
+        <Card className="flex-1">
+          <CardHeader>
+            <CardTitle className="text-base">
+              OCAD Inicial e Atualizado (ponderados) — por exercício
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[400px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={serieExecucao}
+                  margin={{ top: 8, right: 8, left: 8, bottom: 0 }}
+                >
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="var(--border)"
+                  />
+                  <XAxis
+                    dataKey="ano"
+                    tickLine={false}
+                    axisLine={false}
+                    fontSize={12}
+                    stroke="var(--muted-foreground)"
+                  />
+                  <YAxis
+                    tickFormatter={(v) => formatMoedaCompacta(v)}
+                    tickLine={false}
+                    axisLine={false}
+                    fontSize={12}
+                    stroke="var(--muted-foreground)"
+                    width={72}
+                  />
+                  <ChartTooltipHost
+                    content={<ChartTooltip />}
+                    cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+                  />
+                  <Legend
+                    formatter={(value) => (
+                      <span className="text-xs text-muted-foreground">{value}</span>
+                    )}
+                  />
+                  <Bar
+                    dataKey="ocadInicial"
+                    name="OCAD Inicial"
+                    fill="var(--chart-1)"
+                    radius={[4, 4, 0, 0]}
+                    maxBarSize={80}
+                    isAnimationActive
+                    animationDuration={900}
+                  />
+                  <Bar
+                    dataKey="ocadAtualizado"
+                    name="OCAD Atualizado"
+                    fill="var(--chart-2)"
+                    radius={[4, 4, 0, 0]}
+                    maxBarSize={80}
+                    isAnimationActive
+                    animationDuration={900}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="relative w-full overflow-hidden border-primary/30 bg-primary text-primary-foreground ring-primary/30 lg:w-52">
+          <CardHeader>
+            <CardTitle className="text-sm font-medium text-primary-foreground/80">
+              Variação {primeiro?.ano}–{ultimo?.ano}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="relative flex flex-col justify-center">
+            <span
+              className={`text-3xl font-bold tabular-nums ${
+                variacaoPlanejado !== null && variacaoPlanejado >= 0
+                  ? "text-[#2f9e44]"
+                  : "text-[#e9776f]"
+              }`}
+            >
+              {variacaoPlanejado !== null
+                ? `${variacaoPlanejado >= 0 ? "+" : ""}${variacaoPlanejado.toFixed(1)}%`
+                : "—"}
+            </span>
+            <p className="mt-1 text-xs text-primary-foreground/70">
+              {variacaoPlanejado !== null && variacaoPlanejado >= 0
+                ? "Aumento"
+                : "Redução"}{" "}
+              no OCAD Inicial entre {primeiro?.ano} e {ultimo?.ano}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+
+      <div className="flex flex-col gap-2 pt-2">
+        <h2 className="text-lg font-semibold tracking-tight">
+          Execução orçamentária
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Ações não exclusivas entram a{" "}
+          {(META_ROCA.ponderador * 100).toLocaleString("pt-BR")}% e exclusivas,
+          integralmente. Só os exercícios vindos das planilhas OCAD publicam
+          empenhado e pago; o painel de orçamentos temáticos divulga apenas o
+          liquidado.
+        </p>
+      </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Valor Liquidado (ponderado) — por ano
+            Liquidado sobre o orçamento atualizado — por exercício
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {gaugesLiquidado.map((g) => (
+            {medidores.map((g) => (
               <div key={g.ano} className="flex flex-col items-center gap-0.5">
-                <span className="relative flex items-center justify-center text-2xl font-bold tracking-tight text-foreground">
+                <span className="text-2xl font-bold tracking-tight text-foreground">
                   {g.ano}
-                  {g.acumulado && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          className="absolute -right-6 top-1/2 inline-flex size-5 -translate-y-1/2 items-center justify-center rounded-full bg-muted-foreground/30 text-xs font-bold text-muted-foreground hover:bg-muted-foreground/50"
-                        >
-                          i
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>Acumulado até 06/2026</TooltipContent>
-                    </Tooltip>
-                  )}
                 </span>
                 <MedidorLiquidado pct={g.pct} pctClamped={g.pctClamped} />
-                <span className="-mt-3 max-w-[220px] text-center text-xs text-muted-foreground">
-                  {formatMoedaCompacta(g.liquidado)} liquidado ·{" "}
+                <span className="-mt-3 max-w-[280px] text-center text-xs text-muted-foreground">
+                  {formatMoedaCompacta(g.ocadLiquidado)} liquidado ·{" "}
                   <span style={{ color: "var(--chart-2)" }}>
-                    Meta: {formatMoedaCompacta(g.atual)}
+                    atualizado: {formatMoedaCompacta(g.ocadAtualizado)}
                   </span>
+                </span>
+                <span className="text-center text-[11px] text-muted-foreground/80">
+                  {g.fonte} · corte {g.dataCorte}
                 </span>
               </div>
             ))}
@@ -263,86 +288,61 @@ export default function EvolucaoPage() {
         </CardContent>
       </Card>
 
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch">
-        <Card className="flex-1">
-          <CardHeader>
-            <CardTitle className="text-base">Valores anuais (ponderados)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <TooltipProvider>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {serie.map((p) => (
-                  <div
-                    key={p.ano}
-                    className="flex flex-col gap-2 rounded-lg bg-muted/40 p-4"
-                    style={{ minWidth: "240px" }}
-                  >
-                    <span className="flex items-center gap-1 text-sm font-medium text-muted-foreground">
-                      {p.ano}
-                      {p.acumulado && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button
-                              type="button"
-                              className="inline-flex size-4 items-center justify-center rounded-full bg-muted-foreground/30 text-[10px] font-bold text-muted-foreground hover:bg-muted-foreground/50"
-                            >
-                              i
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>Acumulado até 06/2026</TooltipContent>
-                        </Tooltip>
-                      )}
-                    </span>
-                    <div className="flex flex-col gap-1.5">
-                      {METRICAS.map((m) => (
-                        <div key={m.key} className="flex items-center justify-between gap-2">
-                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">
+            Estágios da despesa por exercício (ponderados)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {serieExecucao.map((p) => (
+              <div
+                key={p.ano}
+                className="flex flex-col gap-2 rounded-lg bg-muted/40 p-4"
+              >
+                <span className="text-sm font-medium text-muted-foreground">
+                  {p.ano}
+                </span>
+                <div className="flex flex-col gap-1.5">
+                  {ESTAGIOS.map((m) => {
+                    const valor = p[m.key];
+                    return (
+                      <div
+                        key={m.key}
+                        className="flex items-center justify-between gap-2"
+                      >
+                        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <span
+                            className="size-2 rounded-sm"
+                            style={{ background: m.cor }}
+                          />
+                          {m.rotulo}
+                        </span>
+                        <span className="text-xs font-semibold tabular-nums">
+                          {valor === null ? (
                             <span
-                              className="size-2 rounded-sm"
-                              style={{ background: m.cor }}
-                            />
-                            {m.rotulo}
-                          </span>
-                          <span className="text-xs font-semibold tabular-nums">
-                            {formatMoeda(p[m.key])}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                              className="font-normal text-muted-foreground"
+                              title="Estágio não publicado pela fonte deste exercício"
+                            >
+                              não publicado
+                            </span>
+                          ) : (
+                            formatMoeda(valor)
+                          )}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+                <span className="text-[11px] text-muted-foreground/80">
+                  {p.fonte} · corte {p.dataCorte}
+                </span>
               </div>
-            </TooltipProvider>
-          </CardContent>
-        </Card>
-
-        <Card className="relative w-48 overflow-hidden border-primary/30 bg-primary text-primary-foreground ring-primary/30">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-primary-foreground/80">
-              Variação {primeiro.ano}–{ultimo.ano}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="relative flex flex-col justify-center">
-            <span
-              className={`text-3xl font-bold tabular-nums ${
-                variacaoLiquidado !== null && variacaoLiquidado >= 0
-                  ? "text-[#2f9e44]"
-                  : "text-[#e9776f]"
-              }`}
-            >
-              {variacaoLiquidado !== null
-                ? `${variacaoLiquidado >= 0 ? "+" : ""}${variacaoLiquidado.toFixed(1)}%`
-                : "—"}
-            </span>
-            <p className="mt-1 text-xs text-primary-foreground/70">
-              {variacaoLiquidado !== null && variacaoLiquidado >= 0
-                ? "Aumento"
-                : "Redução"}{" "}
-              no valor liquidado entre {primeiro.ano} e {ultimo.ano}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

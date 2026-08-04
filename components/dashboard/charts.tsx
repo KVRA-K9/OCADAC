@@ -26,14 +26,14 @@ import type {
   ContagemAcoesSecretaria,
   PontoComparacao,
   PontoSerie,
-} from "@/data/placeholder";
+} from "@/data/visao-geral";
 import type { CategoriaEconomica, OrcamentoItem } from "@/lib/types";
 
 const SERIES_COLORS: Record<string, string> = {
-  previsto: "var(--chart-1)",
-  empenhado: "var(--chart-2)",
-  liquidado: "var(--chart-3)",
-  pago: "var(--chart-5)",
+  ocadInicial: "var(--chart-1)",
+  ocadAtualizado: "var(--chart-2)",
+  ocadLiquidado: "var(--chart-3)",
+  ocadDisponivel: "var(--chart-5)",
 };
 
 const EIXO_COLORS: Record<string, string> = {
@@ -44,10 +44,10 @@ const EIXO_COLORS: Record<string, string> = {
 };
 
 const ROTULOS_ESTAGIO: Record<string, string> = {
-  previsto: "Planejado Inicial",
-  empenhado: "Orçamento Atualizado",
-  liquidado: "Liquidado",
-  pago: "Disponível",
+  ocadInicial: "OCAD Inicial",
+  ocadAtualizado: "OCAD Atualizado",
+  ocadLiquidado: "OCAD Liquidado",
+  ocadDisponivel: "OCAD Disponível",
 };
 
 interface TooltipPayload {
@@ -152,8 +152,8 @@ export function BudgetBarChart({ data }: { data: AgregadoOrgao[] }) {
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        <Bar dataKey="empenhado" name="Orçamento Atualizado" fill={SERIES_COLORS.empenhado} radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} />
-        <Bar dataKey="liquidado" name="Liquidado" fill="#a3c4c2" radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} animationBegin={150} />
+        <Bar dataKey="ocadAtualizado" name="OCAD Atualizado" fill={SERIES_COLORS.ocadAtualizado} radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} />
+        <Bar dataKey="ocadLiquidado" name="OCAD Liquidado" fill="#a3c4c2" radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} animationBegin={150} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -163,21 +163,21 @@ export function BudgetBarChart({ data }: { data: AgregadoOrgao[] }) {
 
 interface FatiaFuncao {
   funcao: string;
-  previsto: number;
+  ocadInicial: number;
 }
 
 export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
-  const ordenado = [...data].sort((a, b) => b.previsto - a.previsto);
+  const ordenado = [...data].sort((a, b) => b.ocadInicial - a.ocadInicial);
   const topo = ordenado.slice(0, 5);
   const outras = ordenado.slice(5);
   const fatias: FatiaFuncao[] = topo.map((d) => ({
     funcao: d.funcao,
-    previsto: d.previsto,
+    ocadInicial: d.ocadInicial,
   }));
   if (outras.length > 0) {
     fatias.push({
       funcao: "Outras",
-      previsto: outras.reduce((acc, d) => acc + d.previsto, 0),
+      ocadInicial: outras.reduce((acc, d) => acc + d.ocadInicial, 0),
     });
   }
 
@@ -187,7 +187,7 @@ export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
         <Tooltip content={<ChartTooltip />} />
         <Pie
           data={fatias}
-          dataKey="previsto"
+          dataKey="ocadInicial"
           nameKey="funcao"
           innerRadius="55%"
           outerRadius="80%"
@@ -242,7 +242,9 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        {(["previsto", "empenhado", "liquidado", "pago"] as const).map((key) => (
+        {(
+          ["ocadInicial", "ocadAtualizado", "ocadLiquidado", "ocadDisponivel"] as const
+        ).map((key) => (
           <Line
             key={key}
             type="monotone"
@@ -343,13 +345,13 @@ function histogramaEixo(itens: OrcamentoItem[]): BinDado[] {
     "Não Exclusivo Valor": 0,
   }));
   itens.forEach((i) => {
-    const idx = binIndex(i.valores.liquidado);
+    const idx = binIndex(i.valores.ocadLiquidado);
     if (i.categoriaEconomica === "Exclusivo") {
       bins[idx].Exclusivo++;
-      bins[idx].ExclusivoValor += i.valores.liquidado;
+      bins[idx].ExclusivoValor += i.valores.ocadLiquidado;
     } else {
       bins[idx]["Não Exclusivo"]++;
-      bins[idx]["Não Exclusivo Valor"] += i.valores.liquidado;
+      bins[idx]["Não Exclusivo Valor"] += i.valores.ocadLiquidado;
     }
   });
   return bins;
@@ -469,11 +471,11 @@ function HistogramaEixo({
   const detalhe = selecionado
     ? itens
         .filter(
-          (i) => binIndex(i.valores.liquidado) === selecionado.binIndex,
+          (i) => binIndex(i.valores.ocadLiquidado) === selecionado.binIndex,
         )
         .map((i) => ({
           acao: i.acao,
-          liquidado: i.valores.liquidado,
+          liquidado: i.valores.ocadLiquidado,
           categoriaEconomica: i.categoriaEconomica,
           orgao: i.orgao,
           orgaoCurto: SIGLAS_ORGAOS[i.orgao] ?? i.orgao,
@@ -995,9 +997,9 @@ export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
         <Bar
-          dataKey="liquidado"
-          name="Liquidado"
-          fill={SERIES_COLORS.liquidado}
+          dataKey="ocadLiquidado"
+          name="OCAD Liquidado"
+          fill={SERIES_COLORS.ocadLiquidado}
           radius={[0, 4, 4, 0]}
           maxBarSize={34}
           isAnimationActive

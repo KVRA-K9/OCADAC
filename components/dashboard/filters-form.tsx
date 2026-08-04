@@ -28,7 +28,7 @@ import {
   OPCAO_TODOS,
   anosDisponiveis,
   orgaosDisponiveis,
-} from "@/data/placeholder";
+} from "@/data/visao-geral";
 import { EIXOS_OCAD } from "@/lib/conteudo-ocad";
 
 const filtrosSchema = z.object({

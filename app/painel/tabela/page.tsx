@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { FiltrosOrcamento } from "@/lib/types";
-import { OPCAO_TODOS, filtrarOrcamento, orcamentoData } from "@/data/placeholder";
+import { OPCAO_TODOS, filtrarOrcamento, orcamentoData } from "@/data/visao-geral";
 import { exportarPDF, exportarXLSX } from "@/lib/export";
 
 export default function TabelaPage() {

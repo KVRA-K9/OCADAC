@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "dados:visao-geral": "node scripts/gerar-visao-geral.mjs",
+    "dados:historico": "node scripts/gerar-historico-pond.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

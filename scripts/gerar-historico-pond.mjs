@@ -1,3 +1,14 @@
+/**
+ * Gera a série de EXECUÇÃO por exercício a partir das planilhas OCAD, que são a
+ * única fonte com empenhado e pago (o painel de orçamentos temáticos publica
+ * apenas o liquidado).
+ *
+ * O exercício de 2026 NÃO entra aqui: vem do painel, via
+ * `scripts/gerar-visao-geral.mjs`, que tem data de corte mais recente. Misturar
+ * as duas fontes no mesmo ano foi o que produzia números diferentes entre as
+ * páginas do site.
+ */
+
 import { writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,9 +18,26 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const raiz = resolve(__dirname, "..");
 
 const FONTES = [
-  { caminho: "OCAD_Orcamento_Crianca_Adolescente 2025.xlsx", ano: 2025 },
-  { caminho: "OCAD_Orcamento_Crianca_Adolescente-2026.06.xls", ano: 2026 },
+  {
+    caminho: "Planilhas/OCAD_Orcamento_Crianca_Adolescente 2025.xlsx",
+    ano: 2025,
+    dataCorte: "2026-06-23",
+  },
 ];
+
+// Colunas da planilha OCAD. As de índice ímpar a partir de 9 trazem o valor já
+// ponderado pelo "Ref. %" — apesar do cabeçalho dizer "% Empenhado" etc.
+const COL = {
+  orgao: 0,
+  funcionalProgramatica: 2,
+  orcInicial: 4,
+  orcAtual: 5,
+  tipo: 6,
+  ref: 7,
+  empenhadoPonderado: 9,
+  liquidadoPonderado: 11,
+  pagoPonderado: 13,
+};
 
 function numero(valor) {
   if (valor === null || valor === undefined || valor === "") return 0;
@@ -17,6 +45,17 @@ function numero(valor) {
   const limpo = String(valor).replace(/\./g, "").replace(",", ".").trim();
   const n = Number(limpo);
   return Number.isFinite(n) ? n : 0;
+}
+
+/** Lê o ponderador da coluna "Ref. %" em vez de assumir 36%. */
+function ponderador(linha) {
+  const ref = numero(linha[COL.ref]);
+  if (ref <= 0 || ref > 100) {
+    throw new Error(
+      `Ref. % inválido: ${JSON.stringify(linha[COL.ref])} na linha ${JSON.stringify(linha[COL.funcionalProgramatica])}`,
+    );
+  }
+  return ref / 100;
 }
 
 function extrairAcao(funcionalProgramatica) {
@@ -38,34 +77,40 @@ function classificacaoDe(tipo) {
   return t || "Exclusivo";
 }
 
+const centavos = (v) => Math.round(v * 100) / 100;
+
 function lerPlanilha(caminho, ano) {
   const wb = XLSX.readFile(caminho, { cellText: false, cellDates: true });
   const ws = wb.Sheets[wb.SheetNames[0]];
-  const linhas = XLSX.utils.sheet_to_json(ws, { header: 1, blankrows: false, defval: null });
+  const linhas = XLSX.utils.sheet_to_json(ws, {
+    header: 1,
+    blankrows: false,
+    defval: null,
+  });
   if (linhas.length < 2) return [];
+
   const registros = [];
   for (let i = 1; i < linhas.length; i++) {
     const r = linhas[i];
     if (!r || r.length === 0) continue;
-    const tipo = String(r[6] ?? "").trim().toUpperCase();
+    const tipo = String(r[COL.tipo] ?? "").trim().toUpperCase();
     if (tipo !== "EX" && tipo !== "NEX") continue;
-    const fator = tipo === "NEX" ? 0.36 : 1.0;
-    const inicial = numero(r[4]) * fator;
-    const atual = numero(r[5]) * fator;
-    const empenhado = numero(r[9]);
-    const liquidado = numero(r[11]);
-    const pago = numero(r[13]);
+
+    // Orçamento inicial e atual vêm brutos e precisam ser ponderados aqui;
+    // empenhado, liquidado e pago já vêm ponderados da planilha.
+    const fator = ponderador(r);
     registros.push({
       ano,
-      orgao: String(r[0] ?? "").trim(),
-      programa: extrairPrograma(r[2]),
-      acao: extrairAcao(r[2]),
+      orgao: String(r[COL.orgao] ?? "").trim(),
+      programa: extrairPrograma(r[COL.funcionalProgramatica]),
+      acao: extrairAcao(r[COL.funcionalProgramatica]),
       classificacao: classificacaoDe(tipo),
-      orcamentoInicial: Math.round(inicial * 100) / 100,
-      orcamentoAtual: Math.round(atual * 100) / 100,
-      empenhado: Math.round(empenhado * 100) / 100,
-      liquidado: Math.round(liquidado * 100) / 100,
-      pago: Math.round(pago * 100) / 100,
+      ponderador: fator,
+      ocadInicial: centavos(numero(r[COL.orcInicial]) * fator),
+      ocadAtualizado: centavos(numero(r[COL.orcAtual]) * fator),
+      ocadEmpenhado: centavos(numero(r[COL.empenhadoPonderado])),
+      ocadLiquidado: centavos(numero(r[COL.liquidadoPonderado])),
+      ocadPago: centavos(numero(r[COL.pagoPonderado])),
     });
   }
   return registros;
@@ -73,31 +118,53 @@ function lerPlanilha(caminho, ano) {
 
 async function main() {
   const todos = [];
-  for (const { caminho, ano } of FONTES) {
-    const abs = resolve(raiz, caminho);
-    const regs = lerPlanilha(abs, ano);
-    console.log(`${ano}: ${regs.length} registros`);
+  const cortes = {};
+  for (const { caminho, ano, dataCorte } of FONTES) {
+    const regs = lerPlanilha(resolve(raiz, caminho), ano);
+    cortes[ano] = { dataCorte, arquivoFonte: caminho.replace(/^Planilhas\//, "") };
+    console.log(`${ano}: ${regs.length} registros (corte ${dataCorte})`);
     todos.push(...regs);
   }
-  const saida = resolve(raiz, "data", "orcamento-historico.json");
-  await writeFile(saida, JSON.stringify(todos, null, 2), "utf8");
+
+  await writeFile(
+    resolve(raiz, "data", "orcamento-historico.json"),
+    JSON.stringify(todos, null, 2),
+    "utf8",
+  );
+  await writeFile(
+    resolve(raiz, "data", "orcamento-historico.meta.json"),
+    JSON.stringify({ geradoEm: new Date().toISOString().slice(0, 10), cortes }, null, 2),
+    "utf8",
+  );
+
   const resumo = todos.reduce((acc, r) => {
-    acc[r.ano] = acc[r.ano] ?? { inicial: 0, atual: 0, empenhado: 0, liquidado: 0, pago: 0, linhas: 0 };
-    acc[r.ano].inicial += r.orcamentoInicial;
-    acc[r.ano].atual += r.orcamentoAtual;
-    acc[r.ano].empenhado += r.empenhado;
-    acc[r.ano].liquidado += r.liquidado;
-    acc[r.ano].pago += r.pago;
-    acc[r.ano].linhas += 1;
+    const a = (acc[r.ano] ??= {
+      ocadInicial: 0,
+      ocadAtualizado: 0,
+      ocadEmpenhado: 0,
+      ocadLiquidado: 0,
+      ocadPago: 0,
+      linhas: 0,
+    });
+    a.ocadInicial += r.ocadInicial;
+    a.ocadAtualizado += r.ocadAtualizado;
+    a.ocadEmpenhado += r.ocadEmpenhado;
+    a.ocadLiquidado += r.ocadLiquidado;
+    a.ocadPago += r.ocadPago;
+    a.linhas += 1;
     return acc;
   }, {});
+
+  const reais = (v) =>
+    `R$ ${v.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
   console.log("--- Resumo por ano (ponderado) ---");
   for (const [ano, v] of Object.entries(resumo)) {
     console.log(
-      `${ano}: linhas=${v.linhas} inicial=R$${v.inicial.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} atual=R$${v.atual.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} empenhado=R$${v.empenhado.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} liquidado=R$${v.liquidado.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} pago=R$${v.pago.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}`,
+      `${ano}: linhas=${v.linhas} inicial=${reais(v.ocadInicial)} atualizado=${reais(v.ocadAtualizado)} empenhado=${reais(v.ocadEmpenhado)} liquidado=${reais(v.ocadLiquidado)} pago=${reais(v.ocadPago)}`,
     );
   }
-  console.log(`Gravado em ${saida} (${todos.length} registros)`);
+  console.log(`${todos.length} registros gravados em data/orcamento-historico.json`);
 }
 
 main().catch((err) => {

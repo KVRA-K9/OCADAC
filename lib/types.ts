@@ -1,12 +1,25 @@
 export type CategoriaEconomica = "Exclusivo" | "Não Exclusivo";
 
-export type Estagio = "previsto" | "empenhado" | "liquidado" | "pago";
+/**
+ * Estágios na nomenclatura do ROCA. `dotacaoInicial` é o valor bruto da ação;
+ * os demais já saem ponderados (exclusivo ×1,0 / não exclusivo ×0,36).
+ */
+export type Estagio =
+  | "dotacaoInicial"
+  | "ocadInicial"
+  | "ocadAtualizado"
+  | "ocadLiquidado"
+  | "ocadDisponivel";
 
 export interface ValoresOrcamentarios {
-  previsto: number;
-  empenhado: number;
-  liquidado: number;
-  pago: number;
+  /** Dotação inicial da ação, sem ponderação. */
+  dotacaoInicial: number;
+  /** "OCAD Inicial" no ROCA: dotação inicial × ponderador. */
+  ocadInicial: number;
+  ocadAtualizado: number;
+  ocadLiquidado: number;
+  /** Derivado: ocadAtualizado − ocadLiquidado. */
+  ocadDisponivel: number;
 }
 
 export interface OrcamentoItem {
@@ -29,8 +42,9 @@ export interface FiltrosOrcamento {
 }
 
 export const VALORES_NULOS: ValoresOrcamentarios = {
-  previsto: 0,
-  empenhado: 0,
-  liquidado: 0,
-  pago: 0,
+  dotacaoInicial: 0,
+  ocadInicial: 0,
+  ocadAtualizado: 0,
+  ocadLiquidado: 0,
+  ocadDisponivel: 0,
 };

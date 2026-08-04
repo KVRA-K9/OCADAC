@@ -32,7 +32,7 @@ import {
   filtrarOrcamento,
   orcamentoData,
   somaValores,
-} from "@/data/placeholder";
+} from "@/data/visao-geral";
 
 export default function VisaoGeralPage() {
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
@@ -67,16 +67,17 @@ export default function VisaoGeralPage() {
     [filtrados],
   );
 
-  const ratio = (v: number) =>
-    totais.previsto > 0 ? formatPercent(v / totais.previsto) : "—";
-
   const semDados = filtrados.length === 0;
+
+  /** Todos os percentuais usam o OCAD Inicial da mesma base — o export. */
+  const ratio = (v: number) =>
+    totais.ocadInicial > 0 ? formatPercent(v / totais.ocadInicial) : "—";
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Visão Geral"
-        descricao="Síntese do orçamento previsto, empenhado, liquidado e pago para a Criança e o Adolescente no Estado do Acre."
+        descricao="Orçamento planejado e sua execução para a Criança e o Adolescente no Estado do Acre, extraídos do painel de orçamentos temáticos da SEPLAN."
       />
 
       <FiltersForm onApply={onApply} />
@@ -84,26 +85,26 @@ export default function VisaoGeralPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           titulo="Orçamento Inicial"
-          valor={semDados ? "—" : formatMoeda(totais.previsto)}
+          valor={semDados ? "—" : formatMoeda(totais.ocadInicial)}
           dica={semDados ? "Sem dados" : `${filtrados.length} ações`}
           icone={Wallet}
         />
         <KpiCard
           titulo="Orçamento Atualizado"
-          valor={semDados ? "—" : formatMoeda(totais.empenhado)}
-          dica={`${ratio(totais.empenhado)} do planejado`}
+          valor={semDados ? "—" : formatMoeda(totais.ocadAtualizado)}
+          dica={`${ratio(totais.ocadAtualizado)} do planejado`}
           icone={FileText}
         />
         <KpiCard
           titulo="Liquidado"
-          valor={semDados ? "—" : formatMoeda(totais.liquidado)}
-          dica={`${ratio(totais.liquidado)} do planejado`}
+          valor={semDados ? "—" : formatMoeda(totais.ocadLiquidado)}
+          dica={`${ratio(totais.ocadLiquidado)} do planejado`}
           icone={CheckCircle2}
         />
         <KpiCard
           titulo="Disponível"
-          valor={semDados ? "—" : formatMoeda(totais.pago)}
-          dica={`${ratio(totais.pago)} do planejado (execução)`}
+          valor={semDados ? "—" : formatMoeda(totais.ocadDisponivel)}
+          dica={`${ratio(totais.ocadDisponivel)} do planejado`}
           icone={Banknote}
         />
       </div>

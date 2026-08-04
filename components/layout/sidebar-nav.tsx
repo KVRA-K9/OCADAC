@@ -137,7 +137,7 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
           collapsed ? "max-h-0 opacity-0 py-0" : "max-h-10 opacity-100 py-1 pb-3",
         )}
       >
-        Dados demonstrativos (placeholder)
+        Fontes oficiais: ROCA e painel de orçamentos temáticos (SEPLAN/AC)
       </div>
     </div>
   );
