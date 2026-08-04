@@ -24,7 +24,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { FiltrosOrcamento } from "@/lib/types";
-import { OPCAO_TODOS, filtrarOrcamento, orcamentoData } from "@/data/visao-geral";
+import { OPCAO_TODOS, filtrarOrcamento, orcamentoData } from "@/data/base-ocad";
+import { NotaBase } from "@/components/dashboard/nota-base";
 import { exportarPDF, exportarXLSX } from "@/lib/export";
 
 export default function TabelaPage() {
@@ -80,7 +81,7 @@ export default function TabelaPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Tabela Detalhada"
-        descricao="Relação de ações orçamentárias do Estado do Acre por função, programa e estágio da despesa."
+        descricao="Relação das ações do Orçamento Criança e Adolescente por órgão, eixo e estágio da despesa, do orçamento inicial ao valor pago."
       />
 
       <FiltersForm onApply={onApply} />
@@ -124,8 +125,9 @@ export default function TabelaPage() {
             </DropdownMenu>
           </CardAction>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex flex-col gap-4">
           <DataTable data={filtrados} />
+          <NotaBase />
         </CardContent>
       </Card>
     </div>

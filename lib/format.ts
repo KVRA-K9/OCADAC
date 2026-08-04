@@ -27,6 +27,20 @@ export function formatPercent(ratio: number): string {
   return percent.format(ratio);
 }
 
+/**
+ * Variação percentual com sinal sempre explícito. O "+" importa: sem ele, um
+ * acréscimo de crédito e uma anulação ficam visualmente iguais.
+ */
+export function formatVariacao(ratio: number): string {
+  return `${ratio > 0 ? "+" : ""}${percent.format(ratio)}`;
+}
+
+/** Valor com sinal explícito, em notação compacta. */
+export function formatVariacaoMoeda(valor: number): string {
+  const sinal = valor > 0 ? "+" : valor < 0 ? "−" : "";
+  return `${sinal}${formatMoedaCompacta(Math.abs(valor))}`;
+}
+
 export function formatNumero(valor: number): string {
   return new Intl.NumberFormat("pt-BR").format(valor);
 }

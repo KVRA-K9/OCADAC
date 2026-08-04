@@ -5,13 +5,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const Carregando = () => <Skeleton className="h-full w-full" />;
 
-export const BudgetBarChart = dynamic(
-  () => import("@/components/dashboard/charts").then((m) => m.BudgetBarChart),
+export const BudgetPieChart = dynamic(
+  () => import("@/components/dashboard/charts").then((m) => m.BudgetPieChart),
   { ssr: false, loading: Carregando },
 );
 
-export const BudgetPieChart = dynamic(
-  () => import("@/components/dashboard/charts").then((m) => m.BudgetPieChart),
+export const CadeiaExecucaoChart = dynamic(
+  () => import("@/components/dashboard/charts").then((m) => m.CadeiaExecucaoChart),
   { ssr: false, loading: Carregando },
 );
 

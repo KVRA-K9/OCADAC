@@ -19,14 +19,15 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMoeda, formatMoedaCompacta } from "@/lib/format";
 import { serieExecucao } from "@/data/historico";
-import { META_ROCA } from "@/data/roca";
+import { PONDERACAO } from "@/data/base-ocad";
+import { NotaBase } from "@/components/dashboard/nota-base";
 
 const ESTAGIOS = [
-  { key: "ocadInicial", rotulo: "OCAD Inicial", cor: "var(--chart-1)" },
-  { key: "ocadAtualizado", rotulo: "OCAD Atualizado", cor: "var(--chart-2)" },
-  { key: "ocadEmpenhado", rotulo: "OCAD Empenhado", cor: "var(--chart-3)" },
-  { key: "ocadLiquidado", rotulo: "OCAD Liquidado", cor: "var(--chart-5)" },
-  { key: "ocadPago", rotulo: "OCAD Pago", cor: "var(--chart-4)" },
+  { key: "ocadInicial", rotulo: "Orçamento Inicial", cor: "var(--chart-1)" },
+  { key: "ocadAtualizado", rotulo: "Orçamento Atualizado", cor: "var(--chart-2)" },
+  { key: "ocadEmpenhado", rotulo: "Empenhado", cor: "var(--chart-4)" },
+  { key: "ocadLiquidado", rotulo: "Liquidado", cor: "var(--chart-3)" },
+  { key: "ocadPago", rotulo: "Pago", cor: "var(--chart-5)" },
 ] as const;
 
 function ChartTooltip({
@@ -147,14 +148,14 @@ export default function EvolucaoPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Evolução Temporal"
-        descricao="Comparativo ponderado do OCAD por exercício. Cada ano identifica a planilha de origem e sua data de corte; onde a fonte não publica um estágio da despesa, ele aparece como não publicado em vez de zero."
+        descricao="Comparativo ponderado do OCAD por exercício, do orçamento inicial ao valor pago. Cada ano identifica a planilha de origem e sua data."
       />
 
       <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
         <Card className="flex-1">
           <CardHeader>
             <CardTitle className="text-base">
-              OCAD Inicial e Atualizado (ponderados) — por exercício
+              Orçamento Inicial e Atualizado (ponderados) — por exercício
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -195,7 +196,7 @@ export default function EvolucaoPage() {
                   />
                   <Bar
                     dataKey="ocadInicial"
-                    name="OCAD Inicial"
+                    name="Orçamento Inicial"
                     fill="var(--chart-1)"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={80}
@@ -204,7 +205,7 @@ export default function EvolucaoPage() {
                   />
                   <Bar
                     dataKey="ocadAtualizado"
-                    name="OCAD Atualizado"
+                    name="Orçamento Atualizado"
                     fill="var(--chart-2)"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={80}
@@ -239,7 +240,7 @@ export default function EvolucaoPage() {
               {variacaoPlanejado !== null && variacaoPlanejado >= 0
                 ? "Aumento"
                 : "Redução"}{" "}
-              no OCAD Inicial entre {primeiro?.ano} e {ultimo?.ano}
+              no orçamento inicial entre {primeiro?.ano} e {ultimo?.ano}
             </p>
           </CardContent>
         </Card>
@@ -251,11 +252,8 @@ export default function EvolucaoPage() {
           Execução orçamentária
         </h2>
         <p className="text-sm text-muted-foreground">
-          Ações não exclusivas entram a{" "}
-          {(META_ROCA.ponderador * 100).toLocaleString("pt-BR")}% e exclusivas,
-          integralmente. Só os exercícios vindos das planilhas OCAD publicam
-          empenhado e pago; o painel de orçamentos temáticos divulga apenas o
-          liquidado.
+          {PONDERACAO.descricao} Todos os exercícios vêm de planilhas OCAD e
+          trazem os cinco estágios, do orçamento inicial ao valor pago.
         </p>
       </div>
 
@@ -320,16 +318,7 @@ export default function EvolucaoPage() {
                           {m.rotulo}
                         </span>
                         <span className="text-xs font-semibold tabular-nums">
-                          {valor === null ? (
-                            <span
-                              className="font-normal text-muted-foreground"
-                              title="Estágio não publicado pela fonte deste exercício"
-                            >
-                              não publicado
-                            </span>
-                          ) : (
-                            formatMoeda(valor)
-                          )}
+                          {formatMoeda(valor)}
                         </span>
                       </div>
                     );
@@ -343,6 +332,8 @@ export default function EvolucaoPage() {
           </div>
         </CardContent>
       </Card>
+
+      <NotaBase />
     </div>
   );
 }

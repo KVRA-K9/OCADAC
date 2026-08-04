@@ -26,28 +26,20 @@ import type {
   ContagemAcoesSecretaria,
   PontoComparacao,
   PontoSerie,
-} from "@/data/visao-geral";
-import type { CategoriaEconomica, OrcamentoItem } from "@/lib/types";
-
-const SERIES_COLORS: Record<string, string> = {
-  ocadInicial: "var(--chart-1)",
-  ocadAtualizado: "var(--chart-2)",
-  ocadLiquidado: "var(--chart-3)",
-  ocadDisponivel: "var(--chart-5)",
-};
+} from "@/data/base-ocad";
+import type {
+  CategoriaEconomica,
+  OrcamentoItem,
+  ValoresOrcamentarios,
+} from "@/lib/types";
+import { CADEIA_EXECUCAO } from "@/lib/types";
+import { ROTULOS_ESTAGIO, SERIES_COLORS, siglaOrgao } from "@/lib/estagios";
 
 const EIXO_COLORS: Record<string, string> = {
   "Educação": "#f7bb75",
   "Saúde": "#d15c57",
   "Assistência Social": "#92bf9f",
   "Outras": "var(--muted-foreground)",
-};
-
-const ROTULOS_ESTAGIO: Record<string, string> = {
-  ocadInicial: "OCAD Inicial",
-  ocadAtualizado: "OCAD Atualizado",
-  ocadLiquidado: "OCAD Liquidado",
-  ocadDisponivel: "OCAD Disponível",
 };
 
 interface TooltipPayload {
@@ -103,32 +95,30 @@ function AxisFormat(value: number): string {
   return formatMoedaCompacta(value);
 }
 
-/* ---------------------------- Barra por órgão ----------------------------- */
+/* ------------------------- Cadeia de execução ----------------------------- */
 
-const SIGLAS_ORGAOS: Record<string, string> = {
-  "SECRETARIA DE ESTADO DE ADMINISTRAÇÃO - SEAD": "SEAD",
-  "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE": "SEE",
-  "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH": "SEASDH",
-  "SECRETARIA DE ESTADO DE SAÚDE - SESACRE": "SESACRE",
-  "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP": "SEJUSP",
-  "SECRETARIA DE ESTADO DA MULHER - SEMULHER": "SEMULHER",
-  "SECRETARIA DE ESTADO DE OBRAS PÚBLICAS - SEOP": "SEOP",
-  "SECRETARIA EXTRAORDINÁRIA DE ESPOR- TE E LAZER - SEEL": "SEEL",
-  "SECRETARIA DE ESTADO DE HABITAÇÃO E URBANISMO - SEHURB": "SEHURB",
-};
-
-export function BudgetBarChart({ data }: { data: AgregadoOrgao[] }) {
-  const dados = data.map((d) => ({
-    ...d,
-    orgaoCurto: SIGLAS_ORGAOS[d.orgao] ?? d.orgao,
+/**
+ * Do orçamento inicial ao pago. Os percentuais são sempre sobre o orçamento
+ * atualizado — que é a dotação vigente contra a qual a execução se mede — e o
+ * rótulo diz isso, para não repetir o erro de comparar estágios com bases
+ * diferentes sem avisar.
+ */
+export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }) {
+  const base = totais.ocadAtualizado;
+  const dados = CADEIA_EXECUCAO.map((key) => ({
+    estagio: ROTULOS_ESTAGIO[key],
+    valor: totais[key],
+    pct: base > 0 ? (totais[key] / base) * 100 : 0,
+    cor: SERIES_COLORS[key],
   }));
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
         data={dados}
         layout="vertical"
-        margin={{ top: 8, right: 16, left: 8, bottom: 0 }}
-        barCategoryGap="22%"
+        margin={{ top: 8, right: 64, left: 8, bottom: 0 }}
+        barCategoryGap="24%"
       >
         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
         <XAxis
@@ -141,19 +131,36 @@ export function BudgetBarChart({ data }: { data: AgregadoOrgao[] }) {
         />
         <YAxis
           type="category"
-          dataKey="orgaoCurto"
+          dataKey="estagio"
           tickLine={false}
           axisLine={false}
-          fontSize={11}
+          fontSize={12}
           stroke="var(--muted-foreground)"
-          width={120}
+          width={140}
         />
-        <Tooltip content={<ChartTooltip />} cursor={{ fill: "var(--muted)", opacity: 0.4 }} />
-        <Legend
-          formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
+        <Tooltip
+          content={<ChartTooltip />}
+          cursor={{ fill: "var(--muted)", opacity: 0.4 }}
         />
-        <Bar dataKey="ocadAtualizado" name="OCAD Atualizado" fill={SERIES_COLORS.ocadAtualizado} radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} />
-        <Bar dataKey="ocadLiquidado" name="OCAD Liquidado" fill="#a3c4c2" radius={[0, 4, 4, 0]} maxBarSize={34} isAnimationActive animationDuration={900} animationBegin={150} />
+        <Bar
+          dataKey="valor"
+          name="Valor"
+          radius={[0, 4, 4, 0]}
+          maxBarSize={38}
+          isAnimationActive
+          animationDuration={900}
+          label={{
+            position: "right",
+            fontSize: 11,
+            fill: "var(--muted-foreground)",
+            formatter: (v: unknown) =>
+              base > 0 ? `${((Number(v) / base) * 100).toFixed(1)}%` : "—",
+          }}
+        >
+          {dados.map((d, i) => (
+            <Cell key={i} fill={d.cor} />
+          ))}
+        </Bar>
       </BarChart>
     </ResponsiveContainer>
   );
@@ -242,9 +249,7 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        {(
-          ["ocadInicial", "ocadAtualizado", "ocadLiquidado", "ocadDisponivel"] as const
-        ).map((key) => (
+        {CADEIA_EXECUCAO.map((key) => (
           <Line
             key={key}
             type="monotone"
@@ -478,7 +483,7 @@ function HistogramaEixo({
           liquidado: i.valores.ocadLiquidado,
           categoriaEconomica: i.categoriaEconomica,
           orgao: i.orgao,
-          orgaoCurto: SIGLAS_ORGAOS[i.orgao] ?? i.orgao,
+          orgaoCurto: siglaOrgao(i.orgao),
         }))
         .sort((a, b) => b.liquidado - a.liquidado)
     : [];
@@ -715,7 +720,7 @@ export function AcoesClassificacaoBar({
 }) {
   const dados = data.map((d) => ({
     ...d,
-    orgaoCurto: SIGLAS_ORGAOS[d.orgao] ?? d.orgao,
+    orgaoCurto: siglaOrgao(d.orgao),
   }));
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -824,7 +829,7 @@ export function AcoesClassificacaoDonut({
   const detalhe = selecionada
     ? data
         .map((d) => ({
-          sigla: SIGLAS_ORGAOS[d.orgao] ?? d.orgao,
+          sigla: siglaOrgao(d.orgao),
           orgao: d.orgao,
           count:
             selecionada.classificacao === "Exclusivo"
@@ -964,7 +969,7 @@ export function AcoesClassificacaoDonut({
 export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
   const dados = data.map((d) => ({
     ...d,
-    orgaoCurto: SIGLAS_ORGAOS[d.orgao] ?? d.orgao,
+    orgaoCurto: siglaOrgao(d.orgao),
   }));
   return (
     <ResponsiveContainer width="100%" height="100%">

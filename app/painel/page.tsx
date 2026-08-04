@@ -1,16 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { Banknote, CheckCircle2, FileText, Info, Wallet } from "lucide-react";
+import {
+  Banknote,
+  CheckCircle2,
+  FileSignature,
+  FileText,
+  Info,
+  PiggyBank,
+  Wallet,
+} from "lucide-react";
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { KpiCard } from "@/components/dashboard/kpi-card";
+import { CardsSecretaria } from "@/components/dashboard/cards-secretaria";
 import { FiltersForm } from "@/components/dashboard/filters-form";
 import {
-  BudgetBarChart,
   BudgetPieChart,
   AcoesClassificacaoDonut,
   BudgetStackedBar,
+  CadeiaExecucaoChart,
   ExecucaoClassificacaoBar,
 } from "@/components/dashboard/dynamic-charts";
 import {
@@ -20,8 +29,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { formatMoeda, formatPercent } from "@/lib/format";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  formatMoeda,
+  formatPercent,
+  formatVariacao,
+  formatVariacaoMoeda,
+} from "@/lib/format";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_TODOS,
@@ -32,7 +50,7 @@ import {
   filtrarOrcamento,
   orcamentoData,
   somaValores,
-} from "@/data/visao-geral";
+} from "@/data/base-ocad";
 
 export default function VisaoGeralPage() {
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
@@ -50,10 +68,7 @@ export default function VisaoGeralPage() {
   );
 
   const totais = React.useMemo(() => somaValores(filtrados), [filtrados]);
-  const porOrgao = React.useMemo(
-    () => agregarPorOrgao(filtrados),
-    [filtrados],
-  );
+  const porOrgao = React.useMemo(() => agregarPorOrgao(filtrados), [filtrados]);
   const porFuncao = React.useMemo(
     () => agregarPorFuncao(filtrados),
     [filtrados],
@@ -69,20 +84,35 @@ export default function VisaoGeralPage() {
 
   const semDados = filtrados.length === 0;
 
-  /** Todos os percentuais usam o OCAD Inicial da mesma base — o export. */
-  const ratio = (v: number) =>
-    totais.ocadInicial > 0 ? formatPercent(v / totais.ocadInicial) : "—";
+  /**
+   * Quanto o orçamento atualizado se afastou do inicial — créditos adicionais
+   * menos anulações. Um percentual "do inicial" esconderia o sentido do
+   * movimento; a variação mostra se a dotação cresceu ou encolheu.
+   */
+  const variacaoAtualizado =
+    totais.ocadInicial > 0
+      ? (totais.ocadAtualizado - totais.ocadInicial) / totais.ocadInicial
+      : null;
+  const deltaAtualizado = totais.ocadAtualizado - totais.ocadInicial;
+
+  /**
+   * Percentual sobre o orçamento atualizado. Os estágios da despesa se medem
+   * contra a dotação vigente, não contra a inicial — e cada card diz qual base
+   * usou, para que nenhum percentual fique ambíguo.
+   */
+  const doAtualizado = (v: number) =>
+    totais.ocadAtualizado > 0 ? formatPercent(v / totais.ocadAtualizado) : "—";
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Visão Geral"
-        descricao="Orçamento planejado e sua execução para a Criança e o Adolescente no Estado do Acre, extraídos do painel de orçamentos temáticos da SEPLAN."
+        descricao="Orçamento e execução da despesa para a Criança e o Adolescente no Estado do Acre, do valor inicial ao efetivamente pago."
       />
 
       <FiltersForm onApply={onApply} />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
           titulo="Orçamento Inicial"
           valor={semDados ? "—" : formatMoeda(totais.ocadInicial)}
@@ -92,96 +122,129 @@ export default function VisaoGeralPage() {
         <KpiCard
           titulo="Orçamento Atualizado"
           valor={semDados ? "—" : formatMoeda(totais.ocadAtualizado)}
-          dica={`${ratio(totais.ocadAtualizado)} do planejado`}
+          dica={
+            variacaoAtualizado === null
+              ? "—"
+              : `${formatVariacao(variacaoAtualizado)} sobre o inicial · ${formatVariacaoMoeda(deltaAtualizado)}`
+          }
           icone={FileText}
+        />
+        <KpiCard
+          titulo="Empenhado"
+          valor={semDados ? "—" : formatMoeda(totais.ocadEmpenhado)}
+          dica={`${doAtualizado(totais.ocadEmpenhado)} do atualizado`}
+          icone={FileSignature}
         />
         <KpiCard
           titulo="Liquidado"
           valor={semDados ? "—" : formatMoeda(totais.ocadLiquidado)}
-          dica={`${ratio(totais.ocadLiquidado)} do planejado`}
+          dica={`${doAtualizado(totais.ocadLiquidado)} do atualizado`}
           icone={CheckCircle2}
+        />
+        <KpiCard
+          titulo="Pago"
+          valor={semDados ? "—" : formatMoeda(totais.ocadPago)}
+          dica={`${doAtualizado(totais.ocadPago)} do atualizado`}
+          icone={Banknote}
         />
         <KpiCard
           titulo="Disponível"
           valor={semDados ? "—" : formatMoeda(totais.ocadDisponivel)}
-          dica={`${ratio(totais.ocadDisponivel)} do planejado`}
-          icone={Banknote}
+          dica={`${doAtualizado(totais.ocadDisponivel)} do atualizado — ainda não liquidado`}
+          icone={PiggyBank}
         />
       </div>
 
+      <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+        <CardHeader>
+          <CardTitle className="text-base">
+            Cadeia de execução da despesa
+          </CardTitle>
+          <CardAction>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Informação sobre o gráfico"
+                >
+                  <Info className="size-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[280px]">
+                Do orçamento inicial ao valor efetivamente pago. Os percentuais
+                são calculados sobre o orçamento atualizado.
+              </TooltipContent>
+            </Tooltip>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[300px] w-full">
+            <CadeiaExecucaoChart totais={totais} />
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+        <Card className="flex flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
           <CardHeader>
-            <CardTitle className="text-base">Orçamento Atualizado x Liquidado por órgão</CardTitle>
+            <CardTitle className="text-base">
+              Distribuição por Eixo Temático
+            </CardTitle>
+            <CardAction>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                    aria-label="Informação sobre o gráfico"
+                  >
+                    <Info className="size-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[240px]">
+                  Valores baseados no Orçamento Inicial previsto para o
+                  exercício, distribuídos pelos eixos temáticos.
+                </TooltipContent>
+              </Tooltip>
+            </CardAction>
           </CardHeader>
-          <CardContent>
-            <div className="max-h-[640px] w-full overflow-y-auto">
-              <div style={{ height: `${Math.max(560, porOrgao.length * 70)}px` }} className="w-full">
-                <BudgetBarChart data={porOrgao} />
-              </div>
+          <CardContent className="flex flex-1 items-center justify-center">
+            <div className="h-[300px] w-full">
+              <BudgetPieChart data={porFuncao} />
             </div>
           </CardContent>
         </Card>
 
-        <div className="flex flex-col gap-4">
-          <Card className="flex flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
-            <CardHeader>
-              <CardTitle className="text-base">Distribuição por Eixo Temático</CardTitle>
-              <CardAction>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                      aria-label="Informação sobre o gráfico"
-                    >
-                      <Info className="size-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-[240px]">
-                    Valores baseados no Orçamento Inicial previsto para o
-                    exercício, distribuídos pelos eixos temáticos.
-                  </TooltipContent>
-                </Tooltip>
-              </CardAction>
-            </CardHeader>
-            <CardContent className="flex flex-1 items-center justify-center">
-              <div className="h-[300px] w-full">
-                <BudgetPieChart data={porFuncao} />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="flex flex-1 flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
-            <CardHeader>
-              <CardTitle className="text-base">
-                Composição do Orçamento Criança e Adolescente - OCAD
-              </CardTitle>
-              <CardAction>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                      aria-label="Informação sobre o gráfico"
-                    >
-                      <Info className="size-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-[240px]">
-                    Clique em uma fatia do gráfico para visualizar a quantidade
-                    de ações por secretaria.
-                  </TooltipContent>
-                </Tooltip>
-              </CardAction>
-            </CardHeader>
-            <CardContent className="flex flex-1 min-h-0 items-center justify-center">
-              <div className="h-full w-full">
-                <AcoesClassificacaoDonut data={porAcaoSecretaria} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Card className="flex flex-1 flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+          <CardHeader>
+            <CardTitle className="text-base">
+              Composição do Orçamento Criança e Adolescente - OCAD
+            </CardTitle>
+            <CardAction>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                    aria-label="Informação sobre o gráfico"
+                  >
+                    <Info className="size-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[240px]">
+                  Clique em uma fatia do gráfico para visualizar a quantidade de
+                  ações por secretaria.
+                </TooltipContent>
+              </Tooltip>
+            </CardAction>
+          </CardHeader>
+          <CardContent className="flex flex-1 min-h-0 items-center justify-center">
+            <div className="h-full w-full">
+              <AcoesClassificacaoDonut data={porAcaoSecretaria} />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
@@ -215,8 +278,8 @@ export default function VisaoGeralPage() {
               </TooltipTrigger>
               <TooltipContent className="max-w-[240px]">
                 Clique em uma barra para ver o detalhamento das ações que
-                compõem aquele intervalo de valor liquidado, dentro do
-                eixo correspondente.
+                compõem aquele intervalo de valor liquidado, dentro do eixo
+                correspondente.
               </TooltipContent>
             </Tooltip>
           </CardAction>
@@ -225,6 +288,30 @@ export default function VisaoGeralPage() {
           <ExecucaoClassificacaoBar data={filtrados} />
         </CardContent>
       </Card>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center gap-1">
+          <h2 className="text-lg font-semibold tracking-tight">
+            Execução por secretaria
+          </h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Informação sobre os cards de secretaria"
+              >
+                <Info className="size-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-[280px]">
+              Clique sobre o card da secretaria para obter as informações de
+              orçamento e execução.
+            </TooltipContent>
+          </Tooltip>
+        </div>
+        <CardsSecretaria data={porOrgao} />
+      </div>
     </div>
   );
 }

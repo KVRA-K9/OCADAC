@@ -1,20 +1,13 @@
 /**
- * Série de EXECUÇÃO por exercício. Combina duas fontes, cada uma com sua data
- * de corte e seu conjunto de estágios:
- *
- * - exercícios das planilhas OCAD: empenhado, liquidado e pago;
- * - exercício corrente do painel de orçamentos temáticos: apenas liquidado.
- *
- * O planejado oficial não vem daqui — está em `data/roca.ts`.
+ * Série de EXECUÇÃO por exercício, montada a partir das planilhas OCAD — a
+ * mesma família de arquivos que alimenta o BI. Todos os exercícios trazem os
+ * cinco estágios (inicial, atualizado, empenhado, liquidado e pago), e cada um
+ * carrega o arquivo de origem.
  */
 
 import dadosHistoricos from "@/data/orcamento-historico.json";
 import metaHistorico from "@/data/orcamento-historico.meta.json";
-import {
-  dataCorteVisaoGeral,
-  metaVisaoGeral,
-  orcamentoData,
-} from "@/data/visao-geral";
+import { dataBase, metaBase, totaisBase } from "@/data/base-ocad";
 
 interface RegistroHistorico {
   ano: number;
@@ -39,10 +32,9 @@ export interface PontoExecucao {
   ano: number;
   ocadInicial: number;
   ocadAtualizado: number;
-  /** Ausente quando a fonte do ano não publica o estágio. */
-  ocadEmpenhado: number | null;
+  ocadEmpenhado: number;
   ocadLiquidado: number;
-  ocadPago: number | null;
+  ocadPago: number;
   dataCorte: string;
   fonte: string;
 }
@@ -88,40 +80,31 @@ const dePlanilhas: PontoExecucao[] = (() => {
     ano,
     ...v,
     dataCorte: formatarData(meta.cortes[String(ano)]?.dataCorte ?? ""),
-    fonte: `Planilha OCAD ${ano}`,
+    fonte: meta.cortes[String(ano)]?.arquivoFonte ?? `Planilha OCAD ${ano}`,
   }));
 })();
 
-/** Exercícios vindos do painel de orçamentos temáticos — só liquidado. */
-const doPainel: PontoExecucao[] = metaVisaoGeral.anos.map((ano) => {
-  const doAno = orcamentoData.filter((i) => i.ano === ano);
-  const soma = (campo: "ocadInicial" | "ocadAtualizado" | "ocadLiquidado") =>
-    doAno.reduce((acc, i) => acc + i.valores[campo], 0);
-  return {
-    ano,
-    ocadInicial: soma("ocadInicial"),
-    ocadAtualizado: soma("ocadAtualizado"),
-    ocadEmpenhado: null,
-    ocadLiquidado: soma("ocadLiquidado"),
-    ocadPago: null,
-    dataCorte: dataCorteVisaoGeral,
-    fonte: "Painel de orçamentos temáticos",
-  };
-});
+/** Exercício corrente, vindo da mesma base que abastece o resto do site. */
+const doExercicioCorrente: PontoExecucao[] = metaBase.anos.map((ano) => ({
+  ano,
+  ocadInicial: totaisBase.ocadInicial,
+  ocadAtualizado: totaisBase.ocadAtualizado,
+  ocadEmpenhado: totaisBase.ocadEmpenhado,
+  ocadLiquidado: totaisBase.ocadLiquidado,
+  ocadPago: totaisBase.ocadPago,
+  dataCorte: dataBase,
+  fonte: metaBase.arquivoFonte,
+}));
 
 /**
- * Um exercício presente nas duas fontes fica com a do painel, que tem data de
- * corte mais recente — é o que mantém esta página e a Visão Geral coerentes.
+ * O exercício corrente vem da base do site; os anteriores, das planilhas
+ * arquivadas. Um ano presente nos dois lugares fica com a base do site, que é a
+ * mais recente — é o que mantém esta página e a Visão Geral coerentes.
  */
 export const serieExecucao: PontoExecucao[] = (() => {
-  const anosDoPainel = new Set(doPainel.map((p) => p.ano));
+  const anosCorrentes = new Set(doExercicioCorrente.map((p) => p.ano));
   return [
-    ...dePlanilhas.filter((p) => !anosDoPainel.has(p.ano)),
-    ...doPainel,
+    ...dePlanilhas.filter((p) => !anosCorrentes.has(p.ano)),
+    ...doExercicioCorrente,
   ].sort((a, b) => a.ano - b.ano);
 })();
-
-/** Verdadeiro quando algum exercício da série não publica todos os estágios. */
-export const serieExecucaoIncompleta = serieExecucao.some(
-  (p) => p.ocadEmpenhado === null || p.ocadPago === null,
-);

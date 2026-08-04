@@ -11,7 +11,7 @@
  * Uso: node scripts/comparar-bi-site.mjs [arquivo-do-site.xlsx]
  */
 
-import { readdir } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import XLSX from "xlsx";
@@ -109,17 +109,39 @@ function lerBI() {
   return mapa;
 }
 
-async function arquivoDoSite(informado) {
-  if (informado) return informado;
-  const arquivos = await readdir(PASTA);
-  const candidatos = arquivos
-    .filter((n) => /^orcamentos-tematicos-visao-geral-.*\.xlsx$/i.test(n))
-    .sort();
-  if (!candidatos.length) throw new Error("Nenhum export do painel em Planilhas/");
-  return candidatos[candidatos.length - 1];
-}
-
+/**
+ * Base publicada no site. Por padrão é o JSON gerado por `npm run dados`; um
+ * export do painel pode ser passado por argumento para comparações pontuais.
+ */
 function lerSite(nome) {
+  if (!nome) {
+    const registros = JSON.parse(
+      readFileSync(resolve(raiz, "data/base-ocad.json"), "utf8"),
+    );
+    return new Map(
+      registros.map((r) => {
+        const chave = `${r.secretariaCodigo}|${r.unidadeCodigo}|${r.programaFuncional}`;
+        return [
+          chave,
+          {
+            chave,
+            orgao: r.secretariaCodigo,
+            unidade: r.unidadeCodigo,
+            acaoCodigo: r.programaFuncional,
+            descricao: r.acao,
+            tipo: r.classificacao === "Exclusivo" ? "EX" : "NEX",
+            ref: r.ponderador,
+            eixo: r.eixo,
+            dotacaoInicial: r.dotacaoInicial,
+            ocadInicial: r.ocadInicial,
+            ocadAtualizado: r.ocadAtualizado,
+            ocadLiquidado: r.ocadLiquidado,
+          },
+        ];
+      }),
+    );
+  }
+
   const wb = XLSX.readFile(resolve(PASTA, nome));
   const registros = XLSX.utils
     .sheet_to_json(wb.Sheets["Visão Geral"], { defval: null })
@@ -146,13 +168,14 @@ function lerSite(nome) {
   return mapa;
 }
 
-async function main() {
-  const nomeSite = await arquivoDoSite(process.argv[2]);
+function main() {
+  const nomeSite = process.argv[2];
   const bi = lerBI();
   const site = lerSite(nomeSite);
 
+  const rotuloSite = nomeSite ?? "data/base-ocad.json (gerado de OCAD_2026.xlsx)";
   console.log(`BI   : ${ARQUIVO_BI}  (${bi.size} ações)`);
-  console.log(`SITE : ${nomeSite}  (${site.size} ações)`);
+  console.log(`SITE : ${rotuloSite}  (${site.size} ações)`);
 
   /* ---------------- 1. ações presentes em só uma das bases -------------- */
   titulo("1. AÇÕES PRESENTES EM APENAS UMA DAS BASES");

@@ -1,10 +1,9 @@
 /**
- * Execução orçamentária do OCAD, vinda do painel de orçamentos temáticos da
- * SEPLAN. Gerado por `npm run dados:visao-geral` a partir da planilha mais
- * recente em `Planilhas/`.
+ * Base do OCAD — a mesma planilha que alimenta o BI da SEPLAN.
  *
- * Esta é a fonte da EXECUÇÃO. O planejado oficial vem de `data/roca.ts`, que
- * tem outra data de corte e outro universo de ações.
+ * Gerada por `npm run dados` a partir de `Planilhas/OCAD_2026.xlsx`. Os valores
+ * exibidos no site reproduzem os do BI ação a ação; o eixo é derivado da função
+ * orçamentária, porque a planilha não traz essa coluna.
  */
 
 import type {
@@ -14,8 +13,8 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { VALORES_NULOS } from "@/lib/types";
-import dadosBrutos from "@/data/visao-geral.json";
-import metaBruta from "@/data/visao-geral.meta.json";
+import dadosBrutos from "@/data/base-ocad.json";
+import metaBruta from "@/data/base-ocad.meta.json";
 
 const EIXO_MAP: Record<string, string> = {
   EDUCACAO: "Educação",
@@ -30,44 +29,85 @@ const CLASSIFICACAO_MAP: Record<string, CategoriaEconomica> = {
 
 const FUNCOES = ["Educação", "Saúde", "Assistência Social"] as const;
 
-interface RegistroVisaoGeral {
+interface RegistroBase {
   ano: number;
+  secretariaCodigo: string;
   secretariaNome: string;
-  unidadeNome: string;
   unidadeCodigo: string;
+  unidadeNome: string;
   acaoCodigo: string;
   acao: string;
   programaFuncional: string;
   eixo: string;
   classificacao: string;
   ponderador: number;
+  fontes: number;
   dotacaoInicial: number;
   ocadInicial: number;
   ocadAtualizado: number;
+  ocadEmpenhado: number;
   ocadLiquidado: number;
+  ocadPago: number;
   ocadDisponivel: number;
 }
 
-export interface MetaVisaoGeral {
+export interface MetaBase {
   arquivoFonte: string;
-  dataCorte: string;
+  origem: string;
+  dataArquivo: string;
   geradoEm: string;
   anos: number[];
-  linhas: number;
-  totais: ValoresOrcamentarios;
+  linhasFonte: number;
+  acoes: number;
+  eixoDerivado: boolean;
+  totais: ValoresOrcamentarios & { ocadEmpenhado: number; ocadPago: number };
 }
 
-export const metaVisaoGeral = metaBruta as MetaVisaoGeral;
+export const metaBase = metaBruta as MetaBase;
 
-/** Data de corte no formato dd/mm/aaaa, para exibição. */
-export const dataCorteVisaoGeral = (() => {
-  const [ano, mes, dia] = metaVisaoGeral.dataCorte.split("-");
+/** Data do arquivo-fonte em dd/mm/aaaa, para exibição. */
+export const dataBase = (() => {
+  const [ano, mes, dia] = metaBase.dataArquivo.split("-");
   return `${dia}/${mes}/${ano}`;
 })();
 
+const registros = dadosBrutos as RegistroBase[];
+
+export const totaisBase = metaBase.totais;
+
+/**
+ * Regra de ponderação em vigor, lida da própria base em vez de fixada no
+ * código: se a planilha mudar o Ref. %, o texto exibido acompanha.
+ */
+export const PONDERACAO = (() => {
+  const porClasse = new Map<string, number>();
+  for (const r of registros) porClasse.set(r.classificacao, r.ponderador);
+
+  const trecho = (classificacao: string, sufixo: string) => {
+    const fator = porClasse.get(classificacao);
+    if (fator === undefined) return null;
+    return fator === 1
+      ? `${sufixo} entram integralmente`
+      : `${sufixo} entram a ${(fator * 100).toLocaleString("pt-BR")}%`;
+  };
+
+  const partes = [
+    trecho("Não exclusivo", "Ações não exclusivas"),
+    trecho("Exclusivo", "exclusivas"),
+  ].filter(Boolean);
+
+  return {
+    porClassificacao: [...porClasse].map(([classificacao, fator]) => ({
+      classificacao,
+      fator,
+    })),
+    descricao: `${partes.join(" e ")}.`,
+  };
+})();
+
 function gerarDados(): OrcamentoItem[] {
-  return (dadosBrutos as RegistroVisaoGeral[]).map((d, i) => ({
-    id: `OCAD-AC-${d.acaoCodigo}-${d.unidadeCodigo}-${i}`,
+  return registros.map((d, i) => ({
+    id: `OCAD-AC-${d.programaFuncional}-${d.unidadeCodigo}-${i}`,
     ano: d.ano,
     funcao: EIXO_MAP[d.eixo] ?? d.eixo,
     programa: d.programaFuncional,
@@ -79,7 +119,9 @@ function gerarDados(): OrcamentoItem[] {
       dotacaoInicial: d.dotacaoInicial,
       ocadInicial: d.ocadInicial,
       ocadAtualizado: d.ocadAtualizado,
+      ocadEmpenhado: d.ocadEmpenhado,
       ocadLiquidado: d.ocadLiquidado,
+      ocadPago: d.ocadPago,
       ocadDisponivel: d.ocadDisponivel,
     },
   }));
@@ -110,7 +152,9 @@ export function somaValores(itens: OrcamentoItem[]): ValoresOrcamentarios {
       dotacaoInicial: acc.dotacaoInicial + item.valores.dotacaoInicial,
       ocadInicial: acc.ocadInicial + item.valores.ocadInicial,
       ocadAtualizado: acc.ocadAtualizado + item.valores.ocadAtualizado,
+      ocadEmpenhado: acc.ocadEmpenhado + item.valores.ocadEmpenhado,
       ocadLiquidado: acc.ocadLiquidado + item.valores.ocadLiquidado,
+      ocadPago: acc.ocadPago + item.valores.ocadPago,
       ocadDisponivel: acc.ocadDisponivel + item.valores.ocadDisponivel,
     }),
     { ...VALORES_NULOS },
@@ -229,9 +273,7 @@ export function compararCategorias(itens: OrcamentoItem[]): PontoComparacao[] {
       NaoExclusivoLiquidado: naoExclusivoLiquidado,
     };
   })
-    .filter(
-      (d) => d.Exclusivo + d["Não Exclusivo"] > 0,
-    )
+    .filter((d) => d.Exclusivo + d["Não Exclusivo"] > 0)
     .sort(
       (a, b) =>
         b.Exclusivo + b["Não Exclusivo"] - (a.Exclusivo + a["Não Exclusivo"]),

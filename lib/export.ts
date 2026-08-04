@@ -1,6 +1,5 @@
 import type { OrcamentoItem } from "@/lib/types";
-import { META_ROCA } from "@/data/roca";
-import { dataCorteVisaoGeral, metaVisaoGeral } from "@/data/visao-geral";
+import { PONDERACAO, dataBase, metaBase } from "@/data/base-ocad";
 
 const moedaExport = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -332,11 +331,13 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
     { header: "Programa", key: "programa", width: 20 },
     { header: "Ação", key: "acao", width: 60 },
     { header: "Classificação", key: "categoriaEconomica", width: 16 },
-    { header: "Dotação Inicial", key: "dotacaoInicial", width: 18 },
-    { header: "OCAD Inicial", key: "ocadInicial", width: 18 },
-    { header: "OCAD Atualizado", key: "ocadAtualizado", width: 18 },
-    { header: "OCAD Liquidado", key: "ocadLiquidado", width: 18 },
-    { header: "OCAD Disponível", key: "ocadDisponivel", width: 18 },
+    { header: "Dotação Inicial (bruta)", key: "dotacaoInicial", width: 20 },
+    { header: "Orçamento Inicial", key: "ocadInicial", width: 20 },
+    { header: "Orçamento Atualizado", key: "ocadAtualizado", width: 20 },
+    { header: "Empenhado", key: "ocadEmpenhado", width: 18 },
+    { header: "Liquidado", key: "ocadLiquidado", width: 18 },
+    { header: "Pago", key: "ocadPago", width: 18 },
+    { header: "Disponível", key: "ocadDisponivel", width: 18 },
   ];
   ws.getRow(1).font = { bold: true };
 
@@ -352,7 +353,9 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
       dotacaoInicial: item.valores.dotacaoInicial,
       ocadInicial: item.valores.ocadInicial,
       ocadAtualizado: item.valores.ocadAtualizado,
+      ocadEmpenhado: item.valores.ocadEmpenhado,
       ocadLiquidado: item.valores.ocadLiquidado,
+      ocadPago: item.valores.ocadPago,
       ocadDisponivel: item.valores.ocadDisponivel,
     });
   }
@@ -361,7 +364,9 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
     "dotacaoInicial",
     "ocadInicial",
     "ocadAtualizado",
+    "ocadEmpenhado",
     "ocadLiquidado",
+    "ocadPago",
     "ocadDisponivel",
   ]) {
     ws.getColumn(key).numFmt = "#,##0.00";
@@ -374,16 +379,19 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
   ];
   wsFonte.getRow(1).font = { bold: true };
   for (const [campo, valor] of [
-    ["Fonte", "Painel de Orçamentos Temáticos — SEPLAN/AC"],
-    ["Arquivo", metaVisaoGeral.arquivoFonte],
-    ["Data de corte", dataCorteVisaoGeral],
-    ["Linhas", String(metaVisaoGeral.linhas)],
-    ["Ponderação", META_ROCA.ponderadorJustificativa],
-    ["OCAD Disponível", "Derivado: OCAD Atualizado − OCAD Liquidado."],
-    ["Sobre “executado”", META_ROCA.notaExecutado],
+    ["Fonte", `${metaBase.origem} — SEPLAN/AC`],
+    ["Arquivo", metaBase.arquivoFonte],
+    ["Data do arquivo", dataBase],
+    ["Ações", String(metaBase.acoes)],
     [
-      "Planejado oficial",
-      `O planejado publicado pela SEPLAN está no ${META_ROCA.fonte}: ${META_ROCA.urlRelatorio}`,
+      "Eixo",
+      "Derivado da função orçamentária da funcional programática; a planilha de origem não traz essa coluna.",
+    ],
+    ["Ponderação", PONDERACAO.descricao],
+    ["Disponível", "Derivado: Orçamento Atualizado − Liquidado."],
+    [
+      "Linhas de origem",
+      `${metaBase.linhasFonte} linhas por fonte de recurso, consolidadas em ${metaBase.acoes} ações.`,
     ],
   ]) {
     wsFonte.addRow({ campo, valor });

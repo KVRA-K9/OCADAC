@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "dados:visao-geral": "node scripts/gerar-visao-geral.mjs",
-    "dados:historico": "node scripts/gerar-historico-pond.mjs"
+    "dados": "node scripts/gerar-base-ocad.mjs",
+    "dados:historico": "node scripts/gerar-historico-pond.mjs",
+    "logos": "node scripts/gerar-logos.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
