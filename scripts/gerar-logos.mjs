@@ -46,6 +46,18 @@ const MARGEM_X = 0.92;
 const MARGEM_Y = 0.88;
 
 /**
+ * Logotipos que ocupam toda a largura útil em vez de se limitarem à área
+ * comum.
+ *
+ * São as tarjas tipográficas muito alongadas: com a mesma área das
+ * ilustrações, a altura da letra fica bem menor, porque a tinta se espalha
+ * numa faixa comprida. Deixá-las chegarem à margem recupera parte dessa
+ * diferença — é o máximo possível sem cortar as laterais nem distorcer.
+ */
+const LARGURA_CHEIA = new Set(["717-212", "721-302"]);
+const MARGEM_X_CHEIA = 1;
+
+/**
  * As ilustrações vêm com fundo branco opaco. Compor todas sobre branco — e não
  * sobre transparente — é o que evita a mistura de plaquinhas brancas com
  * logotipos recortados na mesma grade.
@@ -79,6 +91,7 @@ const LOGOS_UNIDADE = {
   "717-212": "ieptec_logo_transparente",
   "719-213": "ise_logo_linha_unica_transparente",
   "721-302": "FUNDHACRE",
+  "717-303": "FEM",
 };
 
 const EXTENSOES = /\.(png|jpe?g|webp|svg)$/i;
@@ -229,8 +242,20 @@ async function main() {
   for (const { saida, rotulo, pasta, arquivo, entrada, corte, ratio } of medidos) {
     const antes = await sharp(entrada).metadata();
 
-    const alvoAltura = Math.round(Math.sqrt(areaComum / ratio));
-    const alvoLargura = Math.round(alvoAltura * ratio);
+    // As tarjas alongadas vão até a margem; as demais ficam na área comum.
+    const cheia = LARGURA_CHEIA.has(saida);
+    const larguraMax = LARGURA * (cheia ? MARGEM_X_CHEIA : MARGEM_X);
+    const alturaMax = ALTURA * MARGEM_Y;
+
+    let alvoLargura = cheia
+      ? larguraMax
+      : Math.round(Math.sqrt(areaComum / ratio)) * ratio;
+    let alvoAltura = alvoLargura / ratio;
+
+    // Nunca estourar a área segura, em nenhuma das duas direções.
+    const excesso = Math.max(alvoLargura / larguraMax, alvoAltura / alturaMax, 1);
+    alvoLargura = Math.round(alvoLargura / excesso);
+    alvoAltura = Math.round(alvoAltura / excesso);
 
     const arte = await sharp(entrada)
       .flatten({ background: FUNDO })

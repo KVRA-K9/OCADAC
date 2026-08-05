@@ -125,6 +125,10 @@ export const LOGOS_UNIDADE: Record<string, { src: string; alt: string }> = {
     src: "/logos/721-302.webp",
     alt: "Logotipo da Fundação Hospital Estadual do Acre",
   },
+  "717/303": {
+    src: "/logos/717-303.webp",
+    alt: "Logotipo da Fundação de Cultura e Comunicação Elias Mansour",
+  },
 };
 
 /**

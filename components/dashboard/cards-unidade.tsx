@@ -89,20 +89,21 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
           style={FACE}
           aria-hidden={mostrandoValores}
         >
-          <CardContent className="flex h-full w-full flex-col items-center justify-center gap-3">
-            {/* Altura contida, para o logotipo ficar discreto e dar espaço ao
-                rótulo. Com `object-contain` e a tela comum gerada por `npm run
-                logos`, todas as artes ocupam o mesmo espaço. */}
-            <div className="relative h-20 w-full">
+          {/* Sem recuo lateral: as tarjas tipográficas são limitadas pela
+              largura, não pela altura, então os 16px de cada lado do
+              CardContent saíam direto do tamanho do logotipo. O rótulo mantém
+              o recuo por conta própria. */}
+          <CardContent className="flex h-full w-full flex-col items-center justify-center gap-3 px-0">
+            <div className="relative h-28 w-full">
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 fill
-                sizes="(max-width: 640px) 90vw, (max-width: 1280px) 30vw, 22vw"
+                sizes="(max-width: 640px) 95vw, (max-width: 1280px) 32vw, 24vw"
                 className="object-contain"
               />
             </div>
-            <span className="text-center text-sm font-medium">
+            <span className="px-4 text-center text-sm font-medium">
               {dados.rotulo}
             </span>
           </CardContent>
