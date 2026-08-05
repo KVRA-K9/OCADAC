@@ -38,16 +38,12 @@ const ORIGENS = ["Fotografias/Secs/IA", "Fotografias/Secs"];
  * de todos os logotipos a preencha por inteiro — é isso que faz os cards
  * parecerem padronizados.
  */
-const LARGURA = 480;
+const LARGURA = 720;
 const ALTURA = 280;
 
-/**
- * Área segura em que a arte é encaixada, como fração da tela. Igual para
- * todos: é a margem constante que padroniza a aparência, independentemente de
- * o logotipo ser quadrado ou uma tarja larga.
- */
-const MARGEM_X = 0.88;
-const MARGEM_Y = 0.8;
+/** Área segura dentro da tela, como fração dela. */
+const MARGEM_X = 0.92;
+const MARGEM_Y = 0.88;
 
 /**
  * As ilustrações vêm com fundo branco opaco. Compor todas sobre branco — e não
@@ -202,24 +198,47 @@ async function main() {
     alvos.push({ saida: chave, rotulo: chave, ...achado });
   }
 
+  // Primeira passada: recortar a arte de cada logotipo e medir sua proporção.
+  const medidos = [];
+  for (const alvo of alvos) {
+    const entrada = resolve(raiz, alvo.pasta, alvo.arquivo);
+    const corte = await recortarNaArte(entrada);
+    medidos.push({ ...alvo, entrada, corte, ratio: corte.width / corte.height });
+  }
+
+  /*
+   * Área comum da arte, e não caixa comum.
+   *
+   * Encaixar cada arte na mesma caixa deixa uma tarja larga com o texto muito
+   * menor que o de uma ilustração quadrada, porque a largura se esgota antes
+   * da altura. Igualando a ÁREA que a arte ocupa, todas ficam com o mesmo peso
+   * visual — a tarja fica comprida e baixa, a ilustração curta e alta, mas
+   * ambas com a mesma quantidade de tinta.
+   *
+   * O teto é o da arte mais alongada, que é quem primeiro encosta na margem.
+   */
+  const limiteX = LARGURA * MARGEM_X;
+  const limiteY = ALTURA * MARGEM_Y;
+  const areaComum = Math.min(
+    ...medidos.map((m) =>
+      Math.min((limiteX * limiteX) / m.ratio, limiteY * limiteY * m.ratio),
+    ),
+  );
+
   const resultados = [];
-  for (const { saida, rotulo, pasta, arquivo } of alvos) {
-    const entrada = resolve(raiz, pasta, arquivo);
+  for (const { saida, rotulo, pasta, arquivo, entrada, corte, ratio } of medidos) {
     const antes = await sharp(entrada).metadata();
 
-    const corte = await recortarNaArte(entrada);
+    const alvoAltura = Math.round(Math.sqrt(areaComum / ratio));
+    const alvoLargura = Math.round(alvoAltura * ratio);
 
-    // 1) A arte, recortada, é escalada para caber na área segura.
     const arte = await sharp(entrada)
       .flatten({ background: FUNDO })
       .extract(corte)
-      .resize(Math.round(LARGURA * MARGEM_X), Math.round(ALTURA * MARGEM_Y), {
-        fit: "inside",
-        withoutEnlargement: false,
-      })
+      .resize(alvoLargura, alvoAltura, { fit: "fill" })
       .toBuffer({ resolveWithObject: true });
 
-    // 2) Centralizada na tela comum, todas as saídas ficam do mesmo tamanho.
+    // Centralizada na tela comum: todas as saídas ficam do mesmo tamanho.
     const sobra = {
       left: Math.floor((LARGURA - arte.info.width) / 2),
       top: Math.floor((ALTURA - arte.info.height) / 2),
