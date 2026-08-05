@@ -107,3 +107,74 @@ export const LOGOS_ORGAOS: Record<string, { src: string; alt: string }> = {
 export function logoOrgao(nome: string) {
   return LOGOS_ORGAOS[siglaOrgao(nome)];
 }
+
+/**
+ * Logotipo próprio de unidades que não usam a arte da secretaria. Chaveado por
+ * `códigoDoÓrgão/códigoDaUnidade`; o arquivo troca a barra por hífen.
+ */
+export const LOGOS_UNIDADE: Record<string, { src: string; alt: string }> = {
+  "717/212": {
+    src: "/logos/717-212.webp",
+    alt: "Logotipo do Instituto Estadual de Educação Profissional e Tecnológica",
+  },
+  "719/213": {
+    src: "/logos/719-213.webp",
+    alt: "Logotipo do Instituto Socioeducativo do Acre",
+  },
+  "721/302": {
+    src: "/logos/721-302.webp",
+    alt: "Logotipo da Fundação Hospital Estadual do Acre",
+  },
+};
+
+/**
+ * Logotipo a exibir numa unidade: o próprio, se houver, senão o da secretaria
+ * a que ela pertence.
+ */
+export function logoUnidade(chave: string, secretaria: string) {
+  return LOGOS_UNIDADE[chave] ?? logoOrgao(secretaria);
+}
+
+/**
+ * Rótulo de cada unidade orçamentária, na nomenclatura do BI — `SIGLA` para a
+ * unidade principal do órgão e `SIGLA/FUNDO` para as demais. A chave é
+ * `códigoDoÓrgão/códigoDaUnidade`.
+ *
+ * É um mapa explícito, e não uma regra derivada do nome da unidade, porque a
+ * convenção não é dedutível: `714/002` é FOLHA GERAL e `714/607` é FOLHA
+ * FUNDES, ambas sem "001" e sem o termo no nome cadastrado.
+ */
+export const ROTULOS_UNIDADE: Record<string, string> = {
+  "714/607": "SEAD/FOLHA/FUNDES",
+  "714/002": "SEAD/FOLHA GERAL",
+  "760/001": "SEASDH",
+  "760/606": "SEASDH/FDCA",
+  "760/608": "SEASDH/FEAS",
+  "717/001": "SEE",
+  "717/303": "SEE/FEM",
+  "717/601": "SEE/FUNDEB",
+  "717/212": "SEE/IEPTEC",
+  "718/001": "SEEL",
+  "744/001": "SEHURB",
+  "719/213": "SEJUSP/ISE",
+  "762/001": "SEMULHER",
+  "754/001": "SEOP",
+  "721/001": "SESACRE",
+  "721/607": "SESACRE/FUNDES",
+  "721/302": "FUNDHACRE",
+};
+
+/**
+ * Rótulo da unidade. Sem entrada no mapa — unidade nova na planilha — monta
+ * `SIGLA/CÓDIGO`, que identifica sem inventar um apelido.
+ */
+export function rotuloUnidade(
+  secretaria: string,
+  orgaoCodigo: string,
+  unidadeCodigo: string,
+): string {
+  return (
+    ROTULOS_UNIDADE[`${orgaoCodigo}/${unidadeCodigo}`] ??
+    `${siglaOrgao(secretaria)}/${unidadeCodigo}`
+  );
+}

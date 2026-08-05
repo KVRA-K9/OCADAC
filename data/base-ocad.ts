@@ -13,6 +13,7 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { VALORES_NULOS } from "@/lib/types";
+import { rotuloUnidade } from "@/lib/estagios";
 import dadosBrutos from "@/data/base-ocad.json";
 import metaBruta from "@/data/base-ocad.meta.json";
 
@@ -113,7 +114,9 @@ function gerarDados(): OrcamentoItem[] {
     programa: d.programaFuncional,
     acao: d.acao,
     orgao: d.secretariaNome,
+    orgaoCodigo: d.secretariaCodigo,
     unidadeGestora: d.unidadeNome,
+    unidadeCodigo: d.unidadeCodigo,
     categoriaEconomica: CLASSIFICACAO_MAP[d.classificacao] ?? "Não Exclusivo",
     valores: {
       dotacaoInicial: d.dotacaoInicial,
@@ -197,6 +200,40 @@ export function agregarPorOrgao(itens: OrcamentoItem[]): AgregadoOrgao[] {
     })
     .filter((d) => d.ocadInicial > 0)
     .sort((a, b) => b.ocadInicial - a.ocadInicial);
+}
+
+export interface AgregadoUnidade extends ValoresOrcamentarios {
+  /** `códigoDoÓrgão/códigoDaUnidade`. */
+  chave: string;
+  /** Nomenclatura do BI: `SEE`, `SEE/FUNDEB`, `SEAD/FOLHA FUNDES`. */
+  rotulo: string;
+  secretaria: string;
+  unidade: string;
+  acoes: number;
+}
+
+/**
+ * Agrega por unidade orçamentária — o mesmo recorte que o BI usa nos filtros.
+ * Um órgão aparece em mais de um card quando executa por fundos distintos.
+ */
+export function agregarPorUnidade(itens: OrcamentoItem[]): AgregadoUnidade[] {
+  const porChave = new Map<string, OrcamentoItem[]>();
+  for (const item of itens) {
+    const chave = `${item.orgaoCodigo}/${item.unidadeCodigo}`;
+    porChave.set(chave, [...(porChave.get(chave) ?? []), item]);
+  }
+
+  return [...porChave.entries()]
+    .map(([chave, sub]) => ({
+      chave,
+      rotulo: rotuloUnidade(sub[0].orgao, sub[0].orgaoCodigo, sub[0].unidadeCodigo),
+      secretaria: sub[0].orgao,
+      unidade: sub[0].unidadeGestora,
+      acoes: sub.length,
+      ...somaValores(sub),
+    }))
+    .filter((d) => d.ocadInicial > 0)
+    .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
 }
 
 export interface AgregadoFuncao {

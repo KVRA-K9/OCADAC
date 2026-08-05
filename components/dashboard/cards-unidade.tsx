@@ -9,27 +9,25 @@ import {
   ESTAGIOS_SECRETARIA,
   ROTULOS_ESTAGIO,
   SERIES_COLORS,
-  logoOrgao,
-  siglaOrgao,
+  logoUnidade,
 } from "@/lib/estagios";
-import type { AgregadoOrgao } from "@/data/base-ocad";
+import type { AgregadoUnidade } from "@/data/base-ocad";
 
 const FACE: React.CSSProperties = {
   backfaceVisibility: "hidden",
   WebkitBackfaceVisibility: "hidden",
   // Empilha as duas faces na mesma célula do grid. Diferente de position
   // absolute, isso deixa o card crescer conforme o conteúdo e continuar se
-  // esticando junto com os vizinhos da linha — o dimensionamento que ele tinha
-  // antes de virar flashcard.
+  // esticando junto com os vizinhos da linha.
   gridArea: "1 / 1",
 };
 
-function CardOrgao({ dados }: { dados: AgregadoOrgao }) {
-  // O card abre pelo logotipo: a identidade da secretaria vem primeiro e os
-  // valores aparecem ao clicar.
+function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
+  // O card abre pelo logotipo: a identidade vem primeiro e os valores aparecem
+  // ao clicar.
   const [mostrandoValores, setMostrandoValores] = React.useState(false);
-  const logo = logoOrgao(dados.orgao);
-  const sigla = siglaOrgao(dados.orgao);
+  // Arte própria da unidade quando existir; senão, a da secretaria.
+  const logo = logoUnidade(dados.chave, dados.secretaria);
 
   // `girada` só é verdadeira quando esta face fica no verso do cartão.
   const faceValores = (girada: boolean) => (
@@ -39,9 +37,9 @@ function CardOrgao({ dados }: { dados: AgregadoOrgao }) {
       aria-hidden={girada && !mostrandoValores}
     >
       <CardHeader className="gap-0.5">
-        <CardTitle className="text-base">{sigla}</CardTitle>
+        <CardTitle className="text-base">{dados.rotulo}</CardTitle>
         <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-          {dados.orgao}
+          {dados.unidade}
         </p>
       </CardHeader>
       <CardContent className="flex flex-col gap-1.5">
@@ -77,8 +75,8 @@ function CardOrgao({ dados }: { dados: AgregadoOrgao }) {
         aria-pressed={mostrandoValores}
         aria-label={
           mostrandoValores
-            ? `Mostrar o logotipo de ${sigla}`
-            : `Mostrar os valores de ${sigla}`
+            ? `Mostrar o logotipo de ${dados.rotulo}`
+            : `Mostrar os valores de ${dados.rotulo}`
         }
         className="relative grid h-full w-full cursor-pointer rounded-xl text-left transition-transform duration-500 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
         style={{
@@ -92,21 +90,20 @@ function CardOrgao({ dados }: { dados: AgregadoOrgao }) {
           aria-hidden={mostrandoValores}
         >
           <CardContent className="flex h-full w-full flex-col items-center justify-center gap-3">
-            {/* A caixa tem a mesma proporção da tela gerada por `npm run
-                logos`, então a imagem a preenche por inteiro e o fundo branco
-                das ilustrações vira uma plaquinha de cantos arredondados, igual
-                em todos os cards. */}
-            <div className="relative aspect-[4/3] h-28 overflow-hidden rounded-lg">
+            {/* Altura contida, para o logotipo ficar discreto e dar espaço ao
+                rótulo. Com `object-contain` e a tela comum gerada por `npm run
+                logos`, todas as artes ocupam o mesmo espaço. */}
+            <div className="relative h-20 w-full">
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 fill
-                sizes="160px"
-                className="object-cover"
+                sizes="(max-width: 640px) 90vw, (max-width: 1280px) 30vw, 22vw"
+                className="object-contain"
               />
             </div>
-            <span className="text-center text-xs leading-snug text-muted-foreground">
-              {dados.orgao}
+            <span className="text-center text-sm font-medium">
+              {dados.rotulo}
             </span>
           </CardContent>
         </Card>
@@ -120,23 +117,23 @@ function CardOrgao({ dados }: { dados: AgregadoOrgao }) {
 }
 
 /**
- * Um card por secretaria com os estágios da despesa. Substitui o gráfico de
- * barras por órgão: os mesmos valores que antes só apareciam no tooltip ficam
- * visíveis de imediato. Onde há logotipo, o card vira ao ser clicado.
+ * Um card por unidade orçamentária, no mesmo recorte que o BI usa nos filtros —
+ * um órgão aparece em mais de um card quando executa por fundos distintos.
+ * Cada card abre pelo logotipo e vira ao clique para mostrar os valores.
  */
-export function CardsSecretaria({ data }: { data: AgregadoOrgao[] }) {
+export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
   if (data.length === 0) {
     return (
       <p className="rounded-lg border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
-        Nenhuma secretaria corresponde aos filtros selecionados.
+        Nenhuma unidade corresponde aos filtros selecionados.
       </p>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data.map((d) => (
-        <CardOrgao key={d.orgao} dados={d} />
+        <CardUnidade key={d.chave} dados={d} />
       ))}
     </div>
   );

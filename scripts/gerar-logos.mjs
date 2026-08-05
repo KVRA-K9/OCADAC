@@ -9,7 +9,7 @@
  *   1. `trim` remove a moldura vazia em volta da arte, para que a margem do
  *      arquivo original não vire tamanho aparente diferente entre logotipos;
  *   2. `resize contain` encaixa tudo numa tela única, sem cortar nem distorcer;
- *   3. saída em WebP com fundo transparente.
+ *   3. saída em WebP sobre fundo branco, que é o das ilustrações recebidas.
  *
  * Com todos na mesma tela, o `object-contain` do card aplica a mesma escala a
  * todos — é o que os deixa visualmente do mesmo tamanho.
@@ -33,9 +33,21 @@ const DESTINO = resolve(raiz, "public/logos");
  */
 const ORIGENS = ["Fotografias/Secs/IA", "Fotografias/Secs"];
 
-/** Tela comum, na proporção 4:3 das ilustrações atuais. */
+/**
+ * Tela comum. A proporção acompanha a da caixa do card, para que a plaquinha
+ * de todos os logotipos a preencha por inteiro — é isso que faz os cards
+ * parecerem padronizados.
+ */
 const LARGURA = 480;
-const ALTURA = 360;
+const ALTURA = 280;
+
+/**
+ * Área segura em que a arte é encaixada, como fração da tela. Igual para
+ * todos: é a margem constante que padroniza a aparência, independentemente de
+ * o logotipo ser quadrado ou uma tarja larga.
+ */
+const MARGEM_X = 0.88;
+const MARGEM_Y = 0.8;
 
 /**
  * As ilustrações vêm com fundo branco opaco. Compor todas sobre branco — e não
@@ -62,7 +74,18 @@ const APELIDOS = {
   seop_ac: "SEOP",
 };
 
-const EXTENSOES = /\.(png|jpe?g|webp)$/i;
+/**
+ * Logotipos de unidade, para quando o fundo tem arte própria em vez de herdar
+ * a da secretaria. A chave vira o nome do arquivo: `717-212.webp` para a
+ * unidade `717/212`.
+ */
+const LOGOS_UNIDADE = {
+  "717-212": "ieptec_logo_transparente",
+  "719-213": "ise_logo_linha_unica_transparente",
+  "721-302": "FUNDHACRE",
+};
+
+const EXTENSOES = /\.(png|jpe?g|webp|svg)$/i;
 
 /** Varre as origens e devolve, por sigla, o primeiro arquivo encontrado. */
 async function localizarOrigens() {
@@ -85,6 +108,71 @@ async function localizarOrigens() {
   return encontrados;
 }
 
+/**
+ * Recorta a imagem na caixa da arte, ignorando o espaço vazio em volta.
+ *
+ * O `trim` do sharp não serve aqui: ele só corta quando encontra uma borda
+ * uniforme nos quatro lados, e nestes logotipos a arte encosta nas laterais —
+ * então ele devolvia a imagem intacta, com faixas vazias em cima e embaixo que
+ * depois viravam escala menor no card.
+ */
+async function recortarNaArte(caminho) {
+  const { data, info } = await sharp(caminho)
+    .flatten({ background: FUNDO })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  let minX = info.width;
+  let maxX = -1;
+  let minY = info.height;
+  let maxY = -1;
+
+  for (let y = 0; y < info.height; y++) {
+    for (let x = 0; x < info.width; x++) {
+      const i = (y * info.width + x) * info.channels;
+      // Tolerância alta o bastante para ignorar o ruído do branco de fundo
+      // (245–255) sem descartar tons claros da própria arte.
+      if (data[i] < 245 || data[i + 1] < 245 || data[i + 2] < 245) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if (maxX < 0) return { left: 0, top: 0, width: info.width, height: info.height };
+
+  // Uma folga pequena evita que a arte fique colada na borda do card.
+  const folga = Math.round(Math.max(info.width, info.height) * 0.02);
+  const left = Math.max(0, minX - folga);
+  const top = Math.max(0, minY - folga);
+  return {
+    left,
+    top,
+    width: Math.min(info.width - left, maxX - minX + 1 + folga * 2),
+    height: Math.min(info.height - top, maxY - minY + 1 + folga * 2),
+  };
+}
+
+/** Acha o arquivo de um nome-base, na ordem das pastas de origem. */
+async function localizarPorNome(nomeBase) {
+  for (const pasta of ORIGENS) {
+    let arquivos = [];
+    try {
+      arquivos = await readdir(resolve(raiz, pasta));
+    } catch {
+      continue;
+    }
+    const arquivo = arquivos.find(
+      (a) => EXTENSOES.test(a) && a.replace(EXTENSOES, "") === nomeBase,
+    );
+    if (arquivo) return { pasta, arquivo };
+  }
+  return null;
+}
+
 async function main() {
   await mkdir(DESTINO, { recursive: true });
 
@@ -96,24 +184,60 @@ async function main() {
     );
   }
 
+  // Um alvo por arquivo de saída: as secretarias e, depois, as unidades com
+  // arte própria.
+  const alvos = SIGLAS.map((sigla) => ({
+    saida: sigla.toLowerCase(),
+    rotulo: sigla,
+    ...origens.get(sigla),
+  }));
+
+  for (const [chave, nomeBase] of Object.entries(LOGOS_UNIDADE)) {
+    const achado = await localizarPorNome(nomeBase);
+    if (!achado) {
+      throw new Error(
+        `Sem imagem para a unidade ${chave} (${nomeBase})\nProcurei em: ${ORIGENS.join(", ")}`,
+      );
+    }
+    alvos.push({ saida: chave, rotulo: chave, ...achado });
+  }
+
   const resultados = [];
-  for (const sigla of SIGLAS) {
-    const { pasta, arquivo } = origens.get(sigla);
+  for (const { saida, rotulo, pasta, arquivo } of alvos) {
     const entrada = resolve(raiz, pasta, arquivo);
     const antes = await sharp(entrada).metadata();
 
-    const buffer = await sharp(entrada)
-      // Retira a moldura vazia do arquivo original; sem isso, uma margem larga
-      // viraria escala menor para aquele logotipo.
-      .trim()
-      .resize(LARGURA, ALTURA, { fit: "contain", background: FUNDO })
+    const corte = await recortarNaArte(entrada);
+
+    // 1) A arte, recortada, é escalada para caber na área segura.
+    const arte = await sharp(entrada)
       .flatten({ background: FUNDO })
+      .extract(corte)
+      .resize(Math.round(LARGURA * MARGEM_X), Math.round(ALTURA * MARGEM_Y), {
+        fit: "inside",
+        withoutEnlargement: false,
+      })
+      .toBuffer({ resolveWithObject: true });
+
+    // 2) Centralizada na tela comum, todas as saídas ficam do mesmo tamanho.
+    const sobra = {
+      left: Math.floor((LARGURA - arte.info.width) / 2),
+      top: Math.floor((ALTURA - arte.info.height) / 2),
+    };
+    const buffer = await sharp(arte.data)
+      .extend({
+        left: sobra.left,
+        right: LARGURA - arte.info.width - sobra.left,
+        top: sobra.top,
+        bottom: ALTURA - arte.info.height - sobra.top,
+        background: FUNDO,
+      })
       .webp({ quality: 90 })
       .toBuffer();
 
-    await writeFile(resolve(DESTINO, `${sigla.toLowerCase()}.webp`), buffer);
+    await writeFile(resolve(DESTINO, `${saida}.webp`), buffer);
     resultados.push({
-      sigla,
+      sigla: rotulo,
       origem: `${pasta.replace("Fotografias/", "")}/${arquivo}`,
       de: `${antes.width}x${antes.height}`,
       kb: (buffer.length / 1024).toFixed(1),

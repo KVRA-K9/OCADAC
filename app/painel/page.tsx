@@ -13,7 +13,7 @@ import {
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import { CardsSecretaria } from "@/components/dashboard/cards-secretaria";
+import { CardsUnidade } from "@/components/dashboard/cards-unidade";
 import { FiltersForm } from "@/components/dashboard/filters-form";
 import {
   BudgetPieChart,
@@ -44,7 +44,7 @@ import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_TODOS,
   agregarPorFuncao,
-  agregarPorOrgao,
+  agregarPorUnidade,
   compararCategorias,
   contarAcoesPorSecretaria,
   filtrarOrcamento,
@@ -68,7 +68,10 @@ export default function VisaoGeralPage() {
   );
 
   const totais = React.useMemo(() => somaValores(filtrados), [filtrados]);
-  const porOrgao = React.useMemo(() => agregarPorOrgao(filtrados), [filtrados]);
+  const porUnidade = React.useMemo(
+    () => agregarPorUnidade(filtrados),
+    [filtrados],
+  );
   const porFuncao = React.useMemo(
     () => agregarPorFuncao(filtrados),
     [filtrados],
@@ -292,25 +295,26 @@ export default function VisaoGeralPage() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
           <h2 className="text-lg font-semibold tracking-tight">
-            Execução por secretaria
+            Execução por unidade orçamentária
           </h2>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
                 className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Informação sobre os cards de secretaria"
+                aria-label="Informação sobre os cards de unidade"
               >
                 <Info className="size-4" />
               </button>
             </TooltipTrigger>
             <TooltipContent className="max-w-[280px]">
-              Clique sobre o card da secretaria para obter as informações de
-              orçamento e execução.
+              Mesmo recorte usado nos filtros do BI: um órgão aparece em mais de
+              um card quando executa por fundos distintos. Clique sobre o card
+              para obter as informações de orçamento e execução.
             </TooltipContent>
           </Tooltip>
         </div>
-        <CardsSecretaria data={porOrgao} />
+        <CardsUnidade data={porUnidade} />
       </div>
     </div>
   );

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1228" height="430" viewBox="0 0 1228 430">
+  <rect width="1228" height="430" fill="#ffffff"/>
+  <text x="614.0" y="202" text-anchor="middle" fill="#178C4A"
+        font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="220">IEPTEC</text>
+  <rect x="216.7" y="226" width="794.6" height="8" fill="#F7D23D"/>
+  <text x="614.0" y="312" text-anchor="middle" fill="#8A8A8A"
+        font-family="Arial, Helvetica, sans-serif" font-weight="400" font-size="48"
+        letter-spacing="7">INSTITUTO ESTADUAL DE EDUCAÇÃO</text>
+  <text x="614.0" y="375" text-anchor="middle" fill="#8A8A8A"
+        font-family="Arial, Helvetica, sans-serif" font-weight="400" font-size="48"
+        letter-spacing="7">PROFISSIONAL E TECNOLÓGICA</text>
+</svg>

@@ -42,7 +42,9 @@ export interface OrcamentoItem {
   programa: string;
   acao: string;
   orgao: string;
+  orgaoCodigo: string;
   unidadeGestora: string;
+  unidadeCodigo: string;
   categoriaEconomica: CategoriaEconomica;
   valores: ValoresOrcamentarios;
 }
