@@ -208,6 +208,7 @@ export interface AgregadoUnidade extends ValoresOrcamentarios {
   /** Nomenclatura do BI: `SEE`, `SEE/FUNDEB`, `SEAD/FOLHA FUNDES`. */
   rotulo: string;
   secretaria: string;
+  orgaoCodigo: string;
   unidade: string;
   acoes: number;
 }
@@ -223,17 +224,39 @@ export function agregarPorUnidade(itens: OrcamentoItem[]): AgregadoUnidade[] {
     porChave.set(chave, [...(porChave.get(chave) ?? []), item]);
   }
 
-  return [...porChave.entries()]
+  const unidades = [...porChave.entries()]
     .map(([chave, sub]) => ({
       chave,
       rotulo: rotuloUnidade(sub[0].orgao, sub[0].orgaoCodigo, sub[0].unidadeCodigo),
       secretaria: sub[0].orgao,
+      orgaoCodigo: sub[0].orgaoCodigo,
       unidade: sub[0].unidadeGestora,
       acoes: sub.length,
       ...somaValores(sub),
     }))
-    .filter((d) => d.ocadInicial > 0)
-    .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
+    .filter((d) => d.ocadInicial > 0);
+
+  // Total por órgão, para ordenar os grupos entre si.
+  const totalPorOrgao = new Map<string, number>();
+  for (const u of unidades) {
+    totalPorOrgao.set(
+      u.orgaoCodigo,
+      (totalPorOrgao.get(u.orgaoCodigo) ?? 0) + u.ocadAtualizado,
+    );
+  }
+
+  /*
+   * Órgãos do maior para o menor e, dentro de cada um, as unidades também por
+   * valor. Ordenar só por valor espalharia SEE, SEE/FUNDEB e SEE/IEPTEC pela
+   * grade inteira; agrupando, as unidades de uma mesma secretaria ficam lado a
+   * lado sem perder a leitura por tamanho.
+   */
+  return unidades.sort(
+    (a, b) =>
+      (totalPorOrgao.get(b.orgaoCodigo) ?? 0) -
+        (totalPorOrgao.get(a.orgaoCodigo) ?? 0) ||
+      b.ocadAtualizado - a.ocadAtualizado,
+  );
 }
 
 export interface AgregadoFuncao {
