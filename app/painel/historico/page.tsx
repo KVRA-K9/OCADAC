@@ -753,9 +753,8 @@ export default function HistoricoPage() {
                     * de qualquer jeito. A elipse ao lado do texto é a mesma do
                     * gráfico, para ninguém precisar adivinhar a ligação. */}
                   <div
-                    className="flex items-start gap-2 rounded-lg border-l-4 px-3 py-2 text-xs"
+                    className="flex items-start gap-2 rounded-lg px-3 py-2 text-xs"
                     style={{
-                      borderLeftColor: "var(--destructive)",
                       background:
                         "color-mix(in oklab, var(--destructive) 8%, var(--card))",
                     }}
@@ -798,13 +797,9 @@ export default function HistoricoPage() {
                       </span>
                     </p>
                   </div>
-                  {/* Mesmo molde do aviso da pandemia — caixa, barra à esquerda
-                    * e ícone de informação —, mas sem cor de fundo: o realce é
-                    * do alerta do período, e nota de leitura não é alerta. */}
-                  <div
-                    className="flex items-start gap-2 rounded-lg border-l-4 bg-card px-3 py-2 text-xs leading-relaxed text-muted-foreground"
-                    style={{ borderLeftColor: "var(--muted-foreground)" }}
-                  >
+                  {/* Nota de leitura: só o ícone e o texto. O realce fica com o
+                    * aviso da pandemia, que é alerta; isto aqui é rodapé. */}
+                  <div className="flex items-start gap-2 px-1 py-1 text-xs leading-relaxed text-muted-foreground">
                     <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
                     <div className="flex flex-col gap-2">
                       <p>

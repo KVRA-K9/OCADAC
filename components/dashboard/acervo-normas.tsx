@@ -85,7 +85,6 @@ function CartaoNorma({
   destacado?: boolean;
 }) {
   const [aberto, setAberto] = React.useState(false);
-  const cor = CORES_NORMA[norma.tipo];
 
   /* Ajuste durante a renderização: virou alvo do gráfico, abre; deixou de ser,
    * fecha — o segundo clique na barra desfaz o destaque e o cartão que ele abriu
@@ -99,11 +98,18 @@ function CartaoNorma({
   return (
     <div
       data-norma-id={norma.id}
+      /*
+       * Sem contorno, o cartão precisa de fundo próprio para existir: no tema
+       * claro `--card` e `--background` são o mesmo branco, e um cartão branco
+       * sobre página branca some. `--muted` dá o degrau — cinza claríssimo no
+       * claro, cinza mais alto que o fundo no escuro —, e a sombra sutil separa
+       * um cartão do outro sem desenhar linha. O anel continua reservado ao
+       * cartão que o gráfico destaca, onde ele tem função.
+       */
       className={cn(
-        "mb-2 break-inside-avoid rounded-lg bg-card ring-1 ring-foreground/10 transition-colors hover:bg-muted/40",
-        destacado && "bg-muted/40 ring-2 ring-ring",
+        "mb-2 break-inside-avoid rounded-lg bg-muted/60 shadow-sm transition-all hover:bg-muted hover:shadow-md",
+        destacado && "bg-muted shadow-md ring-2 ring-ring",
       )}
-      style={{ borderLeft: `3px solid ${cor}` }}
     >
       <button
         type="button"
