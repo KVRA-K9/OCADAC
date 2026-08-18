@@ -48,6 +48,22 @@ export const SIGLAS_ORGAOS: Record<string, string> = {
 };
 
 /**
+ * Nomes que a planilha grava com quebra de palavra no meio. Um mapa explícito,
+ * e não uma regra do tipo "hífen seguido de espaço": a unidade
+ * `FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE- FUNDHACRE` tem a mesma forma sem ser
+ * quebra, e viraria uma palavra só.
+ */
+export const NOMES_ORGAOS: Record<string, string> = {
+  "SECRETARIA EXTRAORDINÁRIA DE ESPOR- TE E LAZER - SEEL":
+    "SECRETARIA EXTRAORDINÁRIA DE ESPORTE E LAZER - SEEL",
+};
+
+/** Nome do órgão como vai para a tela. */
+export function nomeOrgao(nome: string): string {
+  return NOMES_ORGAOS[nome] ?? nome;
+}
+
+/**
  * Sigla do órgão. Sem entrada no mapa, cai para o trecho após o último hífen do
  * nome — que é onde a sigla costuma estar — e, na falta dele, para o nome todo.
  */
@@ -59,84 +75,27 @@ export function siglaOrgao(nome: string): string {
 }
 
 /**
- * Logo de cada secretaria, servida de `public/logos/`. Chaveada pela sigla.
+ * Tom de cada secretaria nos cards de unidade. Chaveado pela sigla.
  *
- * Os arquivos são gerados por `npm run logos`, que normaliza todos na mesma
- * tela — é o que os deixa do mesmo tamanho no card. Secretarias ausentes daqui
- * simplesmente não viram, para o card não prometer uma imagem que não existe.
+ * São as mesmas cores que os gráficos já usam — os seis tokens de `--chart-*` e
+ * os tons dos eixos temáticos — para o painel inteiro falar uma língua só.
+ * Secretaria fora do mapa cai num cinza neutro, sem inventar cor nova.
  */
-export const LOGOS_ORGAOS: Record<string, { src: string; alt: string }> = {
-  SEE: {
-    src: "/logos/see.webp",
-    alt: "Logotipo da Secretaria de Estado da Educação, Cultura e Esportes",
-  },
-  SEAD: {
-    src: "/logos/sead.webp",
-    alt: "Logotipo da Secretaria de Estado de Administração",
-  },
-  SESACRE: {
-    src: "/logos/sesacre.webp",
-    alt: "Logotipo da Secretaria de Estado de Saúde",
-  },
-  SEASDH: {
-    src: "/logos/seasdh.webp",
-    alt: "Logotipo da Secretaria de Estado de Assistência Social e Direitos Humanos",
-  },
-  SEJUSP: {
-    src: "/logos/sejusp.webp",
-    alt: "Logotipo da Secretaria de Estado da Justiça e Segurança Pública",
-  },
-  SEEL: {
-    src: "/logos/seel.webp",
-    alt: "Logotipo da Secretaria Extraordinária de Esporte e Lazer",
-  },
-  SEOP: {
-    src: "/logos/seop.webp",
-    alt: "Logotipo da Secretaria de Estado de Obras Públicas",
-  },
-  SEHURB: {
-    src: "/logos/sehurb.webp",
-    alt: "Logotipo da Secretaria de Estado de Habitação e Urbanismo",
-  },
-  SEMULHER: {
-    src: "/logos/semulher.webp",
-    alt: "Logotipo da Secretaria de Estado da Mulher",
-  },
+export const CORES_SECRETARIA: Record<string, string> = {
+  SEE: "var(--chart-1)",
+  SESACRE: "var(--chart-2)",
+  SEASDH: "var(--chart-3)",
+  SEJUSP: "var(--chart-4)",
+  SEAD: "var(--chart-5)",
+  SEOP: "var(--chart-6)",
+  SEEL: "#f7bb75",
+  SEHURB: "#92bf9f",
+  SEMULHER: "#d15c57",
 };
 
-export function logoOrgao(nome: string) {
-  return LOGOS_ORGAOS[siglaOrgao(nome)];
-}
-
-/**
- * Logotipo próprio de unidades que não usam a arte da secretaria. Chaveado por
- * `códigoDoÓrgão/códigoDaUnidade`; o arquivo troca a barra por hífen.
- */
-export const LOGOS_UNIDADE: Record<string, { src: string; alt: string }> = {
-  "717/212": {
-    src: "/logos/717-212.webp",
-    alt: "Logotipo do Instituto Estadual de Educação Profissional e Tecnológica",
-  },
-  "719/213": {
-    src: "/logos/719-213.webp",
-    alt: "Logotipo do Instituto Socioeducativo do Acre",
-  },
-  "721/302": {
-    src: "/logos/721-302.webp",
-    alt: "Logotipo da Fundação Hospital Estadual do Acre",
-  },
-  "717/303": {
-    src: "/logos/717-303.webp",
-    alt: "Logotipo da Fundação de Cultura e Comunicação Elias Mansour",
-  },
-};
-
-/**
- * Logotipo a exibir numa unidade: o próprio, se houver, senão o da secretaria
- * a que ela pertence.
- */
-export function logoUnidade(chave: string, secretaria: string) {
-  return LOGOS_UNIDADE[chave] ?? logoOrgao(secretaria);
+/** Tom da secretaria a que a unidade pertence. */
+export function corSecretaria(nome: string): string {
+  return CORES_SECRETARIA[siglaOrgao(nome)] ?? "var(--muted-foreground)";
 }
 
 /**
@@ -181,4 +140,20 @@ export function rotuloUnidade(
     ROTULOS_UNIDADE[`${orgaoCodigo}/${unidadeCodigo}`] ??
     `${siglaOrgao(secretaria)}/${unidadeCodigo}`
   );
+}
+
+/**
+ * A planilha não nomeia a unidade principal do órgão: grava só
+ * "UNIDADE GESTORA", igual em sete unidades. Nesses casos o nome de exibição é
+ * o da secretaria, que já vem na forma `NOME COMPLETO - SIGLA`.
+ *
+ * A comparação é exata, e não por prefixo, para preservar
+ * `UNIDADE GESTORA DA FOLHA DE PAGAMEN TO DE PESSOAL`, que diz a que veio.
+ */
+const UNIDADE_GENERICA = "UNIDADE GESTORA";
+
+export function nomeUnidade(unidade: string, secretaria: string): string {
+  return unidade.trim().toUpperCase() === UNIDADE_GENERICA
+    ? nomeOrgao(secretaria)
+    : unidade;
 }

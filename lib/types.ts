@@ -40,6 +40,8 @@ export interface OrcamentoItem {
   ano: number;
   funcao: string;
   programa: string;
+  /** Código da ação na planilha, como o BI a identifica. */
+  acaoCodigo: string;
   acao: string;
   orgao: string;
   orgaoCodigo: string;

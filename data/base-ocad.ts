@@ -112,6 +112,7 @@ function gerarDados(): OrcamentoItem[] {
     ano: d.ano,
     funcao: EIXO_MAP[d.eixo] ?? d.eixo,
     programa: d.programaFuncional,
+    acaoCodigo: d.acaoCodigo,
     acao: d.acao,
     orgao: d.secretariaNome,
     orgaoCodigo: d.secretariaCodigo,
@@ -257,6 +258,96 @@ export function agregarPorUnidade(itens: OrcamentoItem[]): AgregadoUnidade[] {
         (totalPorOrgao.get(a.orgaoCodigo) ?? 0) ||
       b.ocadAtualizado - a.ocadAtualizado,
   );
+}
+
+export interface NoAcao extends ValoresOrcamentarios {
+  id: string;
+  acaoCodigo: string;
+  acao: string;
+  programa: string;
+  funcao: string;
+  ano: number;
+  categoriaEconomica: CategoriaEconomica;
+}
+
+export interface NoUnidade extends ValoresOrcamentarios {
+  /** `códigoDoÓrgão/códigoDaUnidade`. */
+  chave: string;
+  /** Nomenclatura do BI: `SEE`, `SEE/FUNDEB`. */
+  rotulo: string;
+  unidade: string;
+  acoes: NoAcao[];
+}
+
+export interface NoOrgao extends ValoresOrcamentarios {
+  orgao: string;
+  orgaoCodigo: string;
+  unidades: NoUnidade[];
+  totalAcoes: number;
+}
+
+/**
+ * A mesma divisão dos cards da visão geral, em árvore: órgão → unidade
+ * orçamentária → ação. Alimenta a tabela detalhada, onde cada nível abre para
+ * mostrar o de baixo.
+ *
+ * Diferente de `agregarPorUnidade`, nada é descartado: um card vazio não serve
+ * para nada, mas uma tabela que omite registro deixa de bater com o total
+ * exportado.
+ */
+export function agregarHierarquia(itens: OrcamentoItem[]): NoOrgao[] {
+  const porOrgao = new Map<string, OrcamentoItem[]>();
+  for (const item of itens) {
+    porOrgao.set(item.orgaoCodigo, [
+      ...(porOrgao.get(item.orgaoCodigo) ?? []),
+      item,
+    ]);
+  }
+
+  const orgaos = [...porOrgao.values()].map((doOrgao) => {
+    const porUnidade = new Map<string, OrcamentoItem[]>();
+    for (const item of doOrgao) {
+      porUnidade.set(item.unidadeCodigo, [
+        ...(porUnidade.get(item.unidadeCodigo) ?? []),
+        item,
+      ]);
+    }
+
+    const unidades = [...porUnidade.values()]
+      .map((sub) => ({
+        chave: `${sub[0].orgaoCodigo}/${sub[0].unidadeCodigo}`,
+        rotulo: rotuloUnidade(
+          sub[0].orgao,
+          sub[0].orgaoCodigo,
+          sub[0].unidadeCodigo,
+        ),
+        unidade: sub[0].unidadeGestora,
+        acoes: sub
+          .map((i) => ({
+            id: i.id,
+            acaoCodigo: i.acaoCodigo,
+            acao: i.acao,
+            programa: i.programa,
+            funcao: i.funcao,
+            ano: i.ano,
+            categoriaEconomica: i.categoriaEconomica,
+            ...i.valores,
+          }))
+          .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado),
+        ...somaValores(sub),
+      }))
+      .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
+
+    return {
+      orgao: doOrgao[0].orgao,
+      orgaoCodigo: doOrgao[0].orgaoCodigo,
+      unidades,
+      totalAcoes: doOrgao.length,
+      ...somaValores(doOrgao),
+    };
+  });
+
+  return orgaos.sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
 }
 
 export interface AgregadoFuncao {

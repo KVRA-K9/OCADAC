@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMoeda } from "@/lib/format";
@@ -9,7 +8,8 @@ import {
   ESTAGIOS_SECRETARIA,
   ROTULOS_ESTAGIO,
   SERIES_COLORS,
-  logoUnidade,
+  corSecretaria,
+  nomeUnidade,
 } from "@/lib/estagios";
 import type { AgregadoUnidade } from "@/data/base-ocad";
 
@@ -23,23 +23,30 @@ const FACE: React.CSSProperties = {
 };
 
 function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
-  // O card abre pelo logotipo: a identidade vem primeiro e os valores aparecem
-  // ao clicar.
+  // O card abre pelo nome: a identidade vem primeiro e os valores aparecem ao
+  // clicar.
   const [mostrandoValores, setMostrandoValores] = React.useState(false);
-  // Arte própria da unidade quando existir; senão, a da secretaria.
-  const logo = logoUnidade(dados.chave, dados.secretaria);
+  // Tom da secretaria: unidades do mesmo órgão se reconhecem pela cor.
+  const cor = corSecretaria(dados.secretaria);
+  // Unidade principal do órgão não tem nome na planilha: mostra o da secretaria.
+  const nome = nomeUnidade(dados.unidade, dados.secretaria);
 
-  // `girada` só é verdadeira quando esta face fica no verso do cartão.
-  const faceValores = (girada: boolean) => (
+  // Sempre no verso: gira meia volta para ficar legível com o card virado.
+  const faceValores = (
     <Card
       className="h-full gap-3 overflow-hidden"
-      style={girada ? { ...FACE, transform: "rotateY(180deg)" } : FACE}
-      aria-hidden={girada && !mostrandoValores}
+      style={{
+        ...FACE,
+        transform: "rotateY(180deg)",
+        // Mesma tarja da frente, para as duas faces se lerem como um card só.
+        borderTop: `3px solid ${cor}`,
+      }}
+      aria-hidden={!mostrandoValores}
     >
       <CardHeader className="gap-0.5">
         <CardTitle className="text-base">{dados.rotulo}</CardTitle>
         <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-          {dados.unidade}
+          {nome}
         </p>
       </CardHeader>
       <CardContent className="flex flex-col gap-1.5">
@@ -61,12 +68,6 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
     </Card>
   );
 
-  // Sem logotipo não há o que mostrar de início: o card não vira e já abre
-  // pelos valores, em vez de exibir um verso vazio.
-  if (!logo) {
-    return <div className="grid h-full">{faceValores(false)}</div>;
-  }
-
   return (
     <div className="relative h-full" style={{ perspective: 1200 }}>
       <button
@@ -75,7 +76,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
         aria-pressed={mostrandoValores}
         aria-label={
           mostrandoValores
-            ? `Mostrar o logotipo de ${dados.rotulo}`
+            ? `Mostrar o nome de ${dados.rotulo}`
             : `Mostrar os valores de ${dados.rotulo}`
         }
         className="relative grid h-full w-full cursor-pointer rounded-xl text-left transition-transform duration-500 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
@@ -85,33 +86,28 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
         }}
       >
         <Card
-          className="h-full gap-3 overflow-hidden bg-card"
-          style={FACE}
+          className="h-full min-h-36 gap-3 overflow-hidden"
+          style={{
+            ...FACE,
+            // Tom da secretaria diluído no fundo do card: forte o bastante para
+            // separar um órgão do outro, fraco o bastante para o texto seguir
+            // legível nos dois temas.
+            background: `color-mix(in oklab, ${cor} 18%, var(--card))`,
+            borderTop: `3px solid ${cor}`,
+          }}
           aria-hidden={mostrandoValores}
         >
-          {/* Sem recuo lateral: as tarjas tipográficas são limitadas pela
-              largura, não pela altura, então os 16px de cada lado do
-              CardContent saíam direto do tamanho do logotipo. O rótulo mantém
-              o recuo por conta própria. */}
-          <CardContent className="flex h-full w-full flex-col items-center justify-center gap-3 px-0">
-            <div className="relative h-28 w-full">
-              <Image
-                src={logo.src}
-                alt={logo.alt}
-                fill
-                sizes="(max-width: 640px) 95vw, (max-width: 1280px) 32vw, 24vw"
-                className="object-contain"
-              />
-            </div>
-            <span className="px-4 text-center text-sm font-medium">
+          <CardContent className="flex h-full w-full flex-col items-center justify-center gap-1.5 text-center">
+            <span className="text-lg font-semibold tracking-tight text-balance">
               {dados.rotulo}
+            </span>
+            <span className="line-clamp-3 text-xs leading-snug text-balance text-muted-foreground">
+              {nome}
             </span>
           </CardContent>
         </Card>
 
-        {/* Valores no verso: giram meia volta para ficarem legíveis quando o
-            card estiver virado. */}
-        {faceValores(true)}
+        {faceValores}
       </button>
     </div>
   );
@@ -120,7 +116,8 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
 /**
  * Um card por unidade orçamentária, no mesmo recorte que o BI usa nos filtros —
  * um órgão aparece em mais de um card quando executa por fundos distintos.
- * Cada card abre pelo logotipo e vira ao clique para mostrar os valores.
+ * Cada card abre pelo nome, no tom da secretaria, e vira ao clique para
+ * mostrar os valores.
  */
 export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
   if (data.length === 0) {

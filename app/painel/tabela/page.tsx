@@ -81,7 +81,7 @@ export default function TabelaPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         titulo="Tabela Detalhada"
-        descricao="Relação das ações do Orçamento Criança e Adolescente por órgão, eixo e estágio da despesa, do orçamento inicial ao valor pago."
+        descricao="Ações do Orçamento Criança e Adolescente por órgão, unidade orçamentária e ação, do orçamento inicial ao valor pago. Clique em uma linha para abrir o nível seguinte."
       />
 
       <FiltersForm onApply={onApply} />
@@ -89,7 +89,7 @@ export default function TabelaPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Ações orçamentárias
+            Execução por órgão, unidade e ação
             <span className="ml-2 text-sm font-normal text-muted-foreground">
               {filtrados.length} registros
             </span>
