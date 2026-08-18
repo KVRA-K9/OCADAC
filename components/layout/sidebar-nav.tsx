@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   Home,
+  Landmark,
   LayoutDashboard,
   Table2,
   Target,
@@ -24,6 +25,7 @@ const NAV_ITENS = [
   { href: "/painel", label: "Visão Geral", icon: LayoutDashboard },
   { href: "/painel/tabela", label: "Tabela Detalhada", icon: Table2 },
   { href: "/painel/evolucao", label: "Evolução Temporal", icon: TrendingUp },
+  { href: "/painel/historico", label: "Histórico", icon: Landmark },
   { href: "/painel/ods", label: "ODS", icon: Target },
 ] as const;
 
