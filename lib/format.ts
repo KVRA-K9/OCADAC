@@ -23,6 +23,16 @@ export function formatMoedaCompacta(valor: number): string {
   return `R$ ${moedaCompacta.format(valor)}`;
 }
 
+/*
+ * Os quatro primeiros exercícios do acervo foram fixados em cruzeiro e a
+ * planilha os traz em milhares. Ficam na moeda da época: convertê-los para real
+ * pelos cortes monetários dá números sem significado (Cr$ 4.518.657 mil viram
+ * R$ 1.643).
+ */
+export function formatCruzeiroMil(valor: number): string {
+  return `Cr$ ${new Intl.NumberFormat("pt-BR").format(valor)} mil`;
+}
+
 export function formatPercent(ratio: number): string {
   return percent.format(ratio);
 }
