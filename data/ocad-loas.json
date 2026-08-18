@@ -1,0 +1,3153 @@
+[
+  {
+    "exercicio": 2010,
+    "origens": [
+      "doe-2009-12-30-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 158,
+    "conferencia": {
+      "unidades": 158,
+      "divergentes": 5,
+      "pelaTabelaPlana": 2,
+      "naoDetalhado": 32213860.56000012,
+      "unidadesIncompletas": 3
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DA SECRETÁRIA",
+        "motivo": "educacao",
+        "acoes": 3,
+        "total": 1269990
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO INTERNA",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 17406232.23
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO",
+        "motivo": "educacao",
+        "acoes": 2,
+        "total": 504853
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DEPARTAMENTO DE PLANEJAMENTO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 9099392.05
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DEPARTAMENTO DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 14,
+        "total": 78980836.19
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "007",
+        "unidadeNome": "DEPARTAMENTO DE PESSOAS",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 108858761
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO DOM MOACIR GRECCHI - IDM RE C E ITA Valores em R$",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 35675590
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 329699690
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL - SEDSS",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO-EDUCATIVO DO ESTADO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 24586573.63
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL - SEDSS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 380018
+      }
+    ],
+    "acoesCasadas": [],
+    "conferidas": [
+      {
+        "codigo": "08.244.2172.2521",
+        "nome": "MANUTENÇÃO DO DIREITO DA CRIANÇA",
+        "total": 380018,
+        "orgaoCodigo": "756",
+        "unidadeCodigo": "619",
+        "unidadeNome": "FUNDO ESTADUAL DE HABITAÇÃO - FEH Nº 10.202 RE C E ITA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.244.2172.2 521 MANUTENÇÃO DO DIREITO DA CRIANÇA G 0,00 380.018,00 380.018,00"
+      }
+    ],
+    "totalIntegrais": 606461936.1,
+    "totalAcoes": 0,
+    "ocad": 606461936.1
+  },
+  {
+    "exercicio": 2011,
+    "origens": [
+      "doe-2010-12-31-1.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 166,
+    "conferencia": {
+      "unidades": 166,
+      "divergentes": 1,
+      "pelaTabelaPlana": 1,
+      "naoDetalhado": 6039150.75999999,
+      "unidadesIncompletas": 1
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DA SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 3,
+        "total": 1940000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO INTERNA",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 25336091.84
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO",
+        "motivo": "educacao",
+        "acoes": 2,
+        "total": 15
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DEPARTAMENTO DE PLANEJAMENTO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 9210000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DEPARTAMENTO DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 13,
+        "total": 66335033.03
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "007",
+        "unidadeNome": "DEPARTAMENTO DE PESSOAS",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 131915074.84
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO DOM MOACIR GRECCHI - IDM RE C E ITA Valores em R$",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 35089892.85
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 362056400.46
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL-SEDSS",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO-EDUCATIVO DO ESTADO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 26035923.75
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL-SEDSS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 460001
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL-SEDSS",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "codigo": "08.243.2175.1656.0000",
+        "nome": "PROJETO CAMINHO CERTO - CIDADANIA PARA CRIANÇAS E JOVENS",
+        "esfera": "S",
+        "total": 300000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO PARA SEGURANÇA SOCIAL-SEDSS",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "codigo": "08.244.1021.1560.5062",
+        "nome": "APOIO AS AÇÕES DA PASTORAL DA CRIANÇA - MÂNCIO LIMA - AC",
+        "esfera": "S",
+        "total": 15000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.244.2172.2521",
+        "nome": "MANUTENÇÃO DO DIREITO DA CRIANÇA",
+        "total": 360000,
+        "orgaoCodigo": "756",
+        "unidadeCodigo": "619",
+        "unidadeNome": "FUNDO ESTADUAL DE HABITAÇÃO - FEH Nº 10.452 RE C E ITA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.244.2172.2 521 MANUTENÇÃO DO DIREITO DA CRIANÇA G 0,00 360.000,00 360.000,00"
+      }
+    ],
+    "totalIntegrais": 658378432.77,
+    "totalAcoes": 315000,
+    "ocad": 658693432.77
+  },
+  {
+    "exercicio": 2012,
+    "origens": [
+      "doe-2011-12-29-1.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 170,
+    "conferencia": {
+      "unidades": 170,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 11,
+        "total": 43395599.9
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO INTERNA",
+        "motivo": "educacao",
+        "acoes": 3,
+        "total": 3915000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO",
+        "motivo": "educacao",
+        "acoes": 8,
+        "total": 11030001
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DEPARTAMENTO DE PLANEJAMENTO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 1700000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DEPARTAMENTO DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 55531749.12
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "007",
+        "unidadeNome": "DEPARTAMENTO DE PESSOAS",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 143800000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO DOM MOACIR GRECCHI - IDM REC E ITA Valores em R$",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 28498500
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 24,
+        "total": 413738701.06
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 360010
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO Nº 10.706 INSTITUCIONAL - SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 240000
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 12052000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO Nº 10.706",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE - UNIDADE GESTORA",
+        "codigo": "03.091.2234.1703.0000",
+        "nome": "PRÓ-ECA-FORTALECENDO A CULTURA DE DEFESA DOS DIREITOS DA CRIANÇA E DO",
+        "esfera": "F",
+        "total": 60000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DEPARTAMENTO DA PROTEÇÃO SOCIAL ESPECIAL",
+        "codigo": "08.244.1111.3139.5029",
+        "nome": "APOIO ÀS AÇÕES DO CENTRO DE APOIO AGRÍCOLA À CRIANÇA E AO ADOLESCENTE",
+        "esfera": "S",
+        "total": 10000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [],
+    "totalIntegrais": 714261561.0799999,
+    "totalAcoes": 70000,
+    "ocad": 714331561.0799999
+  },
+  {
+    "exercicio": 2013,
+    "origens": [
+      "doe-2012-12-28-0.pdf",
+      "doe-2012-12-28-1.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 233,
+    "conferencia": {
+      "unidades": 233,
+      "divergentes": 4,
+      "pelaTabelaPlana": 5,
+      "naoDetalhado": 106940616.45000005,
+      "unidadesIncompletas": 4
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "002",
+        "orgaoNome": "GABINETE DO PREFEITO",
+        "unidadeCodigo": "007",
+        "unidadeNome": "COORDENADORIA MUNICIPAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 4,
+        "total": 100779
+      },
+      {
+        "orgaoCodigo": "010",
+        "orgaoNome": "SECRETARIA MUNICIPAL DE EDUCAÇÃO",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DEPARTAMENTO DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 40462040
+      },
+      {
+        "orgaoCodigo": "010",
+        "orgaoNome": "SECRETARIA MUNICIPAL DE EDUCAÇÃO",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO MANUT E DESENV EDUCAÇÃO BASIC E DE VAL DOS PROF DA EDUCAÇ-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 2,
+        "total": 52801663
+      },
+      {
+        "orgaoCodigo": "014",
+        "orgaoNome": "SECRETARIA MUNICIPAL DE CIDADANIA E ASSISTÊNCIA SOCIAL",
+        "unidadeCodigo": "604",
+        "unidadeNome": "FUNDO MUNICIPAL DOS DIREITOS DA CRIANÇA E DO ADOLESCENTE",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 975002
+      },
+      {
+        "orgaoCodigo": "015",
+        "orgaoNome": "SECRETARIA MUNICIPAL DE MEIO AMBIENTE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DEPARTAMENTO DE GESTÃO DE ESPAÇOS PÚBLICOS E EDUCAÇÃO AMBIENTAL",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 1386268
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 5
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 6
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 33476446.13
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 36936.31
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 19977295.27
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSO",
+        "motivo": "educacao",
+        "acoes": 13,
+        "total": 239275945.14
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 26662498
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 22,
+        "total": 441958042.91
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 360010
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO INSTITUCIONAL - SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 240000
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 10952000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "014",
+        "orgaoNome": "SECRETARIA MUNICIPAL DE CIDADANIA E ASSISTÊNCIA SOCIAL",
+        "unidadeCodigo": "605",
+        "unidadeNome": "FUNDO MUNICIPAL DE ASSISTÊNCIA SOCIAL",
+        "codigo": "08.243.0010.1005.0000",
+        "nome": "PROGRAMA DE ERRADICAÇÃO DO TRABALHO INFANTIL - PETI",
+        "esfera": "S",
+        "total": 625601,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE - UNIDADE GESTORA",
+        "codigo": "03.091.2234.1703.0000",
+        "nome": "PRÓ-ECA-FORTALECENDO A CULTURA DE DEFESA DOS DIREITOS DA CRIANÇA E DO",
+        "esfera": "F",
+        "total": 160000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.243.0010.1110",
+        "nome": "AÇÕES PARA ATENDIMENTO DA CRIANÇA E",
+        "total": 189998,
+        "orgaoCodigo": "015",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO MUNICIPAL DE MEIO AMBIENTE R E C E ITA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.0010.1110 AÇÕES PARA ATENDIMENTO DA CRIANÇA E G 189.998,00 0,00 189.998,00"
+      },
+      {
+        "codigo": "12.365.0009.2090",
+        "nome": "MANUTENÇÃO DA EDUCAÇÃO INFANTIL",
+        "total": 3520120,
+        "orgaoCodigo": "015",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO MUNICIPAL DE MEIO AMBIENTE R E C E ITA Valores em R$",
+        "descritor": "infantil",
+        "destino": "já contada na apuração",
+        "linha": "12.365.0009.2090 MANUTENÇÃO DA EDUCAÇÃO INFANTIL G 0,00 3.520.120,00 3.520.120,00"
+      },
+      {
+        "codigo": "14.422.0006.2128",
+        "nome": "CONSELHO MUNICIPAL DE JUVENTUDE",
+        "total": 21706,
+        "orgaoCodigo": "015",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO MUNICIPAL DE MEIO AMBIENTE R E C E ITA Valores em R$",
+        "descritor": "juventude",
+        "destino": "já contada na apuração",
+        "linha": "14.422.0006.2128 CONSELHO MUNICIPAL DE JUVENTUDE G 0,00 21.706,00 21.706,00"
+      }
+    ],
+    "totalIntegrais": 868664936.76,
+    "totalAcoes": 785601,
+    "ocad": 869450537.76
+  },
+  {
+    "exercicio": 2014,
+    "origens": [
+      "Caderno suplementar do DOE de 30/12/2013 (edição 11.210), páginas lidas na renderização"
+    ],
+    "cobertura": "parcial — só unidades integrais",
+    "unidades": 11,
+    "conferencia": {
+      "unidades": 11,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 175000,
+        "pagina": 633
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 455000,
+        "pagina": 634
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 3838002,
+        "pagina": 635
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 2860021,
+        "pagina": 636
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 16824102.84,
+        "pagina": 637
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSOS",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 259164982.51,
+        "pagina": 639
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 36265882.65,
+        "pagina": 643
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": null,
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 0,
+        "total": 478120982.28,
+        "pagina": 648
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": null,
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 0,
+        "total": 360010,
+        "pagina": 800
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": null,
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 0,
+        "total": 235000,
+        "pagina": 850
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": null,
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 0,
+        "total": 4752000,
+        "pagina": 1037
+      }
+    ],
+    "acoesCasadas": [],
+    "conferidas": [],
+    "totalIntegrais": 803050983.28,
+    "totalAcoes": null,
+    "ocad": 803050983.28
+  },
+  {
+    "exercicio": 2015,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 178,
+    "conferencia": {
+      "unidades": 178,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 90933.33
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 369970.04
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 362243.9
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 1892736.9
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 32590264.65
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSO",
+        "motivo": "educacao",
+        "acoes": 12,
+        "total": 248252052.36
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI\u0019IDM",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 63321965.85
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE \u0019 SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA\u0019FUNDEB",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 534411286.44
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL\u0019SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE \u0019 FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 365000
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO INSTITUCIONAL \u0019 SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 230000
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS \u0019 SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE \u0019 ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 12052000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE \u0019 UNIDADE GESTORA",
+        "codigo": "03.091.2234.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE ABSOLUTA.",
+        "esfera": "F",
+        "total": 550000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL\u0019SEDS",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DEPARTAMENTO DA PROTEÇÃO SOCIAL ESPECIAL",
+        "codigo": "08.244.1111.3139.5030",
+        "nome": "APOIO ÀS AÇÕES DO CENTRO DE APOIO AGRÍCOLA A CRIANÇA E AO ADOLESCENTE",
+        "esfera": "S",
+        "total": 10000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2234.3208",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 550000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "618",
+        "unidadeNome": "FUNDO DE DESENVOLVIMENTO CIENTÍFICO E TECNOLÓGICO",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2234.3208 CRIANÇA E ADOLESCENTE PRIORIDADE G 550.000,00 0,00 550.000,00"
+      }
+    ],
+    "totalIntegrais": 893938453.47,
+    "totalAcoes": 560000,
+    "ocad": 894498453.47
+  },
+  {
+    "exercicio": 2016,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 173,
+    "conferencia": {
+      "unidades": 173,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 134815.44
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 18,
+        "total": 2534540.19
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 3,
+        "total": 3739218.2
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 1903543.0899999999
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 10280027.58
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 252982501.53000003
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "007",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 2620310.7399999998
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 57309298.42999999
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "306",
+        "unidadeNome": "",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 1
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 360000
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 11181000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 545580529.66
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": null,
+        "unidadeCodigo": "001",
+        "unidadeNome": "",
+        "codigo": "03.091.2234.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "esfera": "G",
+        "total": 100000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2234.3208",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 200000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "618",
+        "unidadeNome": "FUNDO DE DESENVOLVIMENTO CIENTÍFICO E TECNOLÓGICO - FDCT",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2234.3208 CRIANÇA E ADOLESCENTE PRIORIDADE G 200.000,00 0,00 200.000,00"
+      }
+    ],
+    "totalIntegrais": 888625785.86,
+    "totalAcoes": 100000,
+    "ocad": 888725785.86
+  },
+  {
+    "exercicio": 2017,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 176,
+    "conferencia": {
+      "unidades": 176,
+      "divergentes": 0,
+      "pelaTabelaPlana": 1,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 289632
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 1,
+        "total": 50000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 3905471.3
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 997206.4
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 12712911.58
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSO",
+        "motivo": "educacao",
+        "acoes": 15,
+        "total": 264052729.84
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 34584667.74
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 525887697.34
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 470000
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO INSTITUCIONAL - SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 273000
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 3702000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE - UNIDADE GESTORA",
+        "codigo": "03.091.2234.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE ABSOLUTA.",
+        "esfera": "F",
+        "total": 195000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1111.3232.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI.",
+        "esfera": "S",
+        "total": 85000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2234.3208",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 195000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "618",
+        "unidadeNome": "FUNDO DE DESENVOLVIMENTO CIENTÍFICO E TECNOLÓGICO - FDCT",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2234.3 208 CRIANÇA E ADOLESCENTE PRIORIDADE G 195.000,00 0,00 195.000,00"
+      }
+    ],
+    "totalIntegrais": 846925316.2,
+    "totalAcoes": 280000,
+    "ocad": 847205316.2
+  },
+  {
+    "exercicio": 2018,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 173,
+    "conferencia": {
+      "unidades": 173,
+      "divergentes": 1,
+      "pelaTabelaPlana": 3,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 525000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 2,
+        "total": 26156251.08
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 2969354.5
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 3403086.02
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 63772990.32
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSO",
+        "motivo": "educacao",
+        "acoes": 11,
+        "total": 284377152.65
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 4,
+        "total": 13580501.69
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 554188346.22
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 370000
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO INSTITUCIONAL - SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 272832.99
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 3967732.37
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE - UNIDADE GESTORA",
+        "codigo": "03.091.2234.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE ABSOLUTA.",
+        "esfera": "F",
+        "total": 195000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "codigo": "10.302.2261.4191.5031",
+        "nome": "SECRETARIA DE ESTADO DE SAÚDE - PASTORAL DA CRIANÇA RODRIGUES ALVES",
+        "esfera": "F",
+        "total": 50000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1111.3232.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI.",
+        "esfera": "S",
+        "total": 172000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1111.3263.0000",
+        "nome": "PROGRAMA PRIMEIRA INFÂNCIA NO SUAS.",
+        "esfera": "S",
+        "total": 252000,
+        "descritor": "infancia",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2234.3208",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 195000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "309",
+        "unidadeNome": "FUNDAÇÃO DE AMPARO À PESQUISA DO",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2234.3 208 CRIANÇA E ADOLESCENTE PRIORIDADE G 195.000,00 0,00 195.000,00"
+      },
+      {
+        "codigo": "08.244.1111.3263",
+        "nome": "PROGRAMA PRIMEIRA INFÂNCIA NO SUAS.",
+        "total": 252000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "309",
+        "unidadeNome": "FUNDAÇÃO DE AMPARO À PESQUISA DO",
+        "descritor": "infancia",
+        "destino": "já contada na apuração",
+        "linha": "08.244.1111.3 263 PROGRAMA PRIMEIRA INFÂNCIA NO SUAS. G 252.000,00 0,00 252.000,00"
+      }
+    ],
+    "totalIntegrais": 953583247.84,
+    "totalAcoes": 669000,
+    "ocad": 954252247.84
+  },
+  {
+    "exercicio": 2019,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 175,
+    "conferencia": {
+      "unidades": 175,
+      "divergentes": 0,
+      "pelaTabelaPlana": 4,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "GABINETE DO SECRETÁRIO",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 325000
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "002",
+        "unidadeNome": "GABINETE DO SECRETÁRIO ADJUNTO DE EDUCAÇÃO",
+        "motivo": "educacao",
+        "acoes": 2,
+        "total": 16793572.61
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "003",
+        "unidadeNome": "DIRETORIA DE GESTÃO ESTRATÉGICA E E RELAÇÕES INSTITUCIONAIS",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 1969354.5
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "004",
+        "unidadeNome": "DIRETORIA DE INOVAÇÃO",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 3483086.02
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "005",
+        "unidadeNome": "DIRETORIA DE ENSINO",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 28965914.6
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "006",
+        "unidadeNome": "DIRETORIA DE RECURSO",
+        "motivo": "educacao",
+        "acoes": 12,
+        "total": 319899998.63
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO EST. DE DES. DA EDUCAÇÃO PROFIS. DOM MOACYR GRECHI-IDM",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 14162075.32
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DE EDUCAÇÃO E ESPORTE - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOL. EDUCAÇÃO BÁSICA-FUNDEB",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 592981530.45
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 1,
+        "total": 112000
+      },
+      {
+        "orgaoCodigo": "744",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ARTICULAÇÃO INSTITUCIONAL - SAI",
+        "unidadeCodigo": "004",
+        "unidadeNome": "ASSESSORIA ESPECIAL DA JUVENTUDE",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 272832.99
+      },
+      {
+        "orgaoCodigo": "755",
+        "orgaoNome": "SECRETARIA DE ESTADO DE JUSTIÇA E DIREITOS HUMANOS - SEJUDH",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 3622732.37
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "MPE - UNIDADE GESTORA",
+        "codigo": "03.091.2234.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE ABSOLUTA.",
+        "esfera": "F",
+        "total": 833000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1111.3232.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI.",
+        "esfera": "S",
+        "total": 172000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "722",
+        "orgaoNome": "SECRETARIA DE ESTADO DE DESENVOLVIM ENTO SOCIAL-SEDS",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1111.3263.0000",
+        "nome": "PROGRAMA PRIMEIRA INFÂNCIA NO SUAS.",
+        "esfera": "S",
+        "total": 252000,
+        "descritor": "infancia",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2234.3208",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 833000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "309",
+        "unidadeNome": "FUNDAÇÃO DE AMPARO À PESQUISA DO",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2234.3 208 CRIANÇA E ADOLESCENTE PRIORIDADE G 833.000,00 0,00 833.000,00"
+      },
+      {
+        "codigo": "08.244.1111.3263",
+        "nome": "PROGRAMA PRIMEIRA INFÂNCIA NO SUAS.",
+        "total": 252000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "309",
+        "unidadeNome": "FUNDAÇÃO DE AMPARO À PESQUISA DO",
+        "descritor": "infancia",
+        "destino": "já contada na apuração",
+        "linha": "08.244.1111.3 263 PROGRAMA PRIMEIRA INFÂNCIA NO SUAS. G 252.000,00 0,00 252.000,00"
+      }
+    ],
+    "totalIntegrais": 982588097.4900001,
+    "totalAcoes": 1257000,
+    "ocad": 983845097.4900001
+  },
+  {
+    "exercicio": 2020,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 108,
+    "conferencia": {
+      "unidades": 108,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 77,
+        "total": 360569488.09
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 9233828.44
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 6,
+        "total": 723352475.2
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP.",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 7,
+        "total": 4168490
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 219000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "03.091.2283.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE ABSOLUTA.",
+        "esfera": "F",
+        "total": 34000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.3441.5162",
+        "nome": "EMENDA Nº27/2019-APOIO A SEC SAÚDE (HOSP DA MULHER E CRIANÇA DO JURUÁ)",
+        "esfera": "S",
+        "total": 85000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.244.1426.3441.5148",
+        "nome": "EMENDA Nº24/2019-APOIO AS AÇÕES DA PASTORAL DA CRIANÇA DE RODRIGUES",
+        "esfera": "S",
+        "total": 50000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.243.1426.3421.0000",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA FELIZ",
+        "esfera": "S",
+        "total": 500000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1426.3420.0000",
+        "nome": "AÇÕES ESTRATEGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI",
+        "esfera": "S",
+        "total": 6,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "03.091.2283.3208.0000",
+        "nome": "CRIANÇA E ADOLESCENTE PRIORIDADE",
+        "total": 34000,
+        "orgaoCodigo": "304",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "03.091.2283.3208.0000 CRIANÇA E ADOLESCENTE PRIORIDADE G 34.000,00 0,00 34.000,00"
+      },
+      {
+        "codigo": "08.243.1426.3421.0000",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA",
+        "total": 500000,
+        "orgaoCodigo": "760",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1426.3421.0000 PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA G 500.000,00 0,00 500.000,00"
+      }
+    ],
+    "totalIntegrais": 1097543281.73,
+    "totalAcoes": 669006,
+    "ocad": 1098212287.73
+  },
+  {
+    "exercicio": 2021,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 109,
+    "conferencia": {
+      "unidades": 109,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 103,
+        "total": 493914626.44
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 13685987.07
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 8,
+        "total": 682867169.46
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP.",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 1,
+        "total": 75000
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 1002000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "03.243.2283.3457.0000",
+        "nome": "FORTALECIMENTO DA ATUAÇÃO INTEGRADA DE DEFESA DOS DIREITOS DA INFÂNCIA",
+        "esfera": "F",
+        "total": 132000,
+        "descritor": "infancia",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.3441.5202",
+        "nome": "EMENDA Nº13/2020-APOIO A MANUTENÇÃO DO HOSPITAL DA MULHER E CRIANÇA DO",
+        "esfera": "S",
+        "total": 100000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.243.1426.3441.5205",
+        "nome": "EMENDA Nº13/2020-APOIO AS AÇÕES DA PASTORAL DA CRIANÇA (CRUZEIRO DO",
+        "esfera": "S",
+        "total": 30000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.244.1426.3464.0000",
+        "nome": "POLÍTICA DE ATENDIMENTO AOS DIREI- TOS DA CRIANÇA E DO ADOLESCENTE.",
+        "esfera": "S",
+        "total": 450000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.243.1426.3421.0000",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA FELIZ",
+        "esfera": "S",
+        "total": 350000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1426.3420.0000",
+        "nome": "AÇÕES ESTRATEGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI",
+        "esfera": "S",
+        "total": 191500,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.243.1426.3421",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA",
+        "total": 350000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "623",
+        "unidadeNome": "FUNDO DE APOIO AO COOPERATIVISMO - FAC",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1426.3421 PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA G 350.000,00 0,00 350.000,00"
+      }
+    ],
+    "totalIntegrais": 1191544782.97,
+    "totalAcoes": 1253500,
+    "ocad": 1192798282.97
+  },
+  {
+    "exercicio": 2022,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 112,
+    "conferencia": {
+      "unidades": 112,
+      "divergentes": 0,
+      "pelaTabelaPlana": 1,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 129,
+        "total": 477649500
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 5,
+        "total": 16188068
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 8,
+        "total": 845948756.06
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP.",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 5,
+        "total": 9551000
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 1100000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "304",
+        "orgaoNome": "MINISTÉRIO PÚBLICO",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "03.243.2283.3457.0000",
+        "nome": "FORTALECIMENTO DA ATUAÇÃO INTEGRADA DE DEFESA DOS DIREITOS DA INFÂNCIA",
+        "esfera": "F",
+        "total": 125000,
+        "descritor": "infancia",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.122.1424.4492.0000",
+        "nome": "AÇÕES DA ADMINISTRAÇÃO GERAL VOLTADAS A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1424.3441.5519",
+        "nome": "EMENDA Nº02/2022-APOIO AO SERVIÇO ASSIST.A SAUDE DA MULHER E CRIANÇA",
+        "esfera": "S",
+        "total": 50000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1424.3441.5758",
+        "nome": "EMENDA Nº17/2022-APOIO SIST.ASSIST. À MULHER E DA CRIANÇA-SASMC (AQUIS.",
+        "esfera": "S",
+        "total": 75000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1424.4493.0000",
+        "nome": "AÇÕES DA ATENÇÃO BÁSICA VOLTADAS A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.3441.5501",
+        "nome": "EMENDA Nº01/2022-APOIO A PREF.BRASI LEIA(SEC.SAUDE),ATEND.ESPEC.CRIANCA",
+        "esfera": "S",
+        "total": 50000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.3441.5523",
+        "nome": "EMENDA Nº02/2022-APOIO AO SISTEMA ASSIST. A SAUDE DA MULHER E CRIANÇA",
+        "esfera": "S",
+        "total": 50000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.4494.0000",
+        "nome": "ASSISTÊNCIA HOSPITALAR E AMBULATORIAL PARA A CRIANÇA E O",
+        "esfera": "S",
+        "total": 2902000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.304.1424.4496.0000",
+        "nome": "AÇÕES DA VIGILÂNCIA SANITÁRIA PARA A CRIANÇA E O ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.305.1424.4497.0000",
+        "nome": "AÇÕES DA VIGILÂNCIA EPIDEMIOLÓGICA PARA A CRIANÇA E O ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.306.1424.4498.0000",
+        "nome": "ALIMENTAÇÃO E NUTRIÇÃO PARA A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.244.1426.3441.5742",
+        "nome": "EMENDA Nº16/2022-APOIO A FUNDAÇÃO MENINO JESUS NAZARÉ (PROJ.QUALIF.",
+        "esfera": "S",
+        "total": 10000,
+        "descritor": "menino",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.244.1426.3464.0000",
+        "nome": "POLÍTICA DE ATENDIMENTO AOS DIREI- TOS DA CRIANÇA E DO ADOLESCENTE.",
+        "esfera": "S",
+        "total": 500000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.243.1426.3421.0000",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA FELIZ",
+        "esfera": "S",
+        "total": 386000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST. SOCIAL DIR.HUMANOS E POL.P/MULH. - SEASDHM",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1426.3420.0000",
+        "nome": "AÇÕES ESTRATEGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI",
+        "esfera": "S",
+        "total": 115000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.243.1426.3421",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA",
+        "total": 386000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "623",
+        "unidadeNome": "FUNDO DE APOIO AO COOPERATIVISMO - FAC",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1426.3421 PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA G 386.000,00 0,00 386.000,00"
+      }
+    ],
+    "totalIntegrais": 1350437324.06,
+    "totalAcoes": 4273000,
+    "ocad": 1354710324.06
+  },
+  {
+    "exercicio": 2023,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 109,
+    "conferencia": {
+      "unidades": 109,
+      "divergentes": 0,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 0,
+      "unidadesIncompletas": 0
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 141,
+        "total": 687199197.18
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 25527816.55
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 10,
+        "total": 967516867.33
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 5,
+        "total": 10070000
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST.SOCIAL, DA MULHER E DOS DIR. HUMANOS - SEAMD",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 3,
+        "total": 601000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "303",
+        "unidadeNome": "FUNDAÇÃO DE CULTURA E COMUNICAÇÃO ELIAS MANSOUR - FEM",
+        "codigo": "13.392.1422.1441.5312",
+        "nome": "EMENDA N°26/2022-APOIO ÀS AÇÕES DA FUNDAÇÃO MENINO JESUS DE NAZARÉ.",
+        "esfera": "F",
+        "total": 50000,
+        "descritor": "menino",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.122.1424.4492.0000",
+        "nome": "AÇÕES DA ADMINISTRAÇÃO GERAL VOLTADAS A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1424.4493.0000",
+        "nome": "AÇÕES DA ATENÇÃO BÁSICA VOLTADAS A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.4494.0000",
+        "nome": "ASSISTÊNCIA HOSPITALAR E AMBULATORIAL PARA A CRIANÇA E O",
+        "esfera": "S",
+        "total": 9424250,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1424.4495.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E ADOLESCENTE.",
+        "esfera": "S",
+        "total": 3419260.51,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.304.1424.4496.0000",
+        "nome": "AÇÕES DA VIGILÂNCIA SANITÁRIA PARA A CRIANÇA E O ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.305.1424.4497.0000",
+        "nome": "AÇÕES DA VIGILÂNCIA EPIDEMIOLÓGICA PARA A CRIANÇA E O ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.306.1424.4498.0000",
+        "nome": "ALIMENTAÇÃO E NUTRIÇÃO PARA A CRIANÇA E ADOLESCENTE",
+        "esfera": "S",
+        "total": 2000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST.SOCIAL, DA MULHER E DOS DIR. HUMANOS - SEAMD",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "08.244.1426.3464.0000",
+        "nome": "POLÍTICA DE ATENDIMENTO AOS DIREI- TOS DA CRIANÇA E DO ADOLESCENTE.",
+        "esfera": "S",
+        "total": 700000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST.SOCIAL, DA MULHER E DOS DIR. HUMANOS - SEAMD",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.243.1426.3421.0000",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA FELIZ",
+        "esfera": "S",
+        "total": 451000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SEC. DE ESTADO DE ASSIST.SOCIAL, DA MULHER E DOS DIR. HUMANOS - SEAMD",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1426.3420.0000",
+        "nome": "AÇÕES ESTRATEGICAS DE ERRADICAÇÃO DO TRABALHO INFANTIL - AEPETI",
+        "esfera": "S",
+        "total": 126000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.243.1426.3421",
+        "nome": "PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA",
+        "total": 451000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "645",
+        "unidadeNome": "FUNDO DO TRABALHO - FT/AC REC E I TA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1426.3421 PRIMEIRA INFÂNCIA NO SUAS - CRIANÇA G 451.000,00 0,00 451.000,00"
+      },
+      {
+        "codigo": "08.243.1426.3474",
+        "nome": "PROTEÇÃO AS CRIANÇAS E ADOLESCENTES",
+        "total": 100000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "645",
+        "unidadeNome": "FUNDO DO TRABALHO - FT/AC REC E I TA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1426.3474 PROTEÇÃO AS CRIANÇAS E ADOLESCENTES G 100.000,00 0,00 100.000,00"
+      }
+    ],
+    "totalIntegrais": 1690914881.06,
+    "totalAcoes": 14180510.51,
+    "ocad": 1705095391.57
+  },
+  {
+    "exercicio": 2024,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 117,
+    "conferencia": {
+      "unidades": 117,
+      "divergentes": 35,
+      "pelaTabelaPlana": 52,
+      "naoDetalhado": 208727440.63000035,
+      "unidadesIncompletas": 33
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 146,
+        "total": 732104432.73
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 38803660.86
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 1134459563.43
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 7,
+        "total": 14326689.16
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 800000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1465.8028.5062",
+        "nome": "EMENDA Nº04/2023-APOIO À SECRETÁRIA DE ESTADO DE SAÚDE(HOSPITAL DA MULHER E DA CRIANÇA DO JURUÁ).",
+        "esfera": "S",
+        "total": 200000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.301.1465.8028.5132",
+        "nome": "EMENDA Nº08/2023-APOIO À SECRETARIA DE ESTADO DE SAÚDE(HOSPITAL DA CRIANÇA DE RIO BRANCO).",
+        "esfera": "S",
+        "total": 80000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1465.1190.0000",
+        "nome": "ASSISTÊNCIA HOSPITALAR E AMBULATORIAL PARA CRIANÇA E O ADOLESCENTE.",
+        "esfera": "S",
+        "total": 5642386.63,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E ADOLESCENTE.",
+        "esfera": "S",
+        "total": 355960.69,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1469.1250.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DO PROGRAMA DE ERRADICAÇÃO DO TRABALHO INFANTIL-AEPETI'S.",
+        "esfera": "S",
+        "total": 121000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS REC E I TA Valores em R$",
+        "codigo": "08.244.1469.1251.0000",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SUAS-CRIANÇA FELIZ.",
+        "esfera": "S",
+        "total": 510000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "451",
+        "orgaoNome": "POLÍCIA CIVIL DO ESTADO DO ACRE - PCAC",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "esfera": "G",
+        "total": 241000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "conferido automaticamente",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.244.1469.1251",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU",
+        "total": 510000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "645",
+        "unidadeNome": "FUNDO DO TRABALHO - FT/AC REC E I TA Valores em R$",
+        "descritor": "infancia",
+        "destino": "já contada na apuração",
+        "linha": "08.244.1469.1251 PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU G 510.000,00 0,00 510.000,00"
+      },
+      {
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "total": 241000,
+        "orgaoCodigo": "451",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "descritor": "crianca",
+        "destino": "somada",
+        "linha": "06.183.1431.1108.0000 VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES, G 241.000,00 0,00 241.000,00"
+      },
+      {
+        "codigo": "27.812.1451.8028.5406",
+        "nome": "CRIANÇAS, JOVENS E ADULTOS EM SITUAÇÃO DE",
+        "total": 415000,
+        "orgaoCodigo": "717",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "27.812.1451.8028.5406 CRIANÇAS, JOVENS E ADULTOS EM SITUAÇÃO DE G 0,00 415.000,00 415.000,00"
+      },
+      {
+        "codigo": "14.243.1434.1008.0000",
+        "nome": "LABORAL PARA OS ADOLESCENTES EM MEDIDAS",
+        "total": 240000,
+        "orgaoCodigo": "719",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "descritor": "adolescente",
+        "destino": "já contada na apuração",
+        "linha": "14.243.1434.1008.0000 LABORAL PARA OS ADOLESCENTES EM MEDIDAS G 240.000,00 0,00 240.000,00"
+      },
+      {
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E",
+        "total": 355960.69,
+        "orgaoCodigo": "721",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES REC E I TA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "10.302.1465.1191.0000 FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E G 355.960,69 0,00 355.960,69"
+      },
+      {
+        "codigo": "08.243.1470.1238.0000",
+        "nome": "PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO",
+        "total": 790000,
+        "orgaoCodigo": "760",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1470.1238.0000 PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO G 790.000,00 0,00 790.000,00"
+      }
+    ],
+    "totalIntegrais": 1920494346.18,
+    "totalAcoes": 7150347.32,
+    "ocad": 1927644693.5
+  },
+  {
+    "exercicio": 2025,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 122,
+    "conferencia": {
+      "unidades": 122,
+      "divergentes": 41,
+      "pelaTabelaPlana": 51,
+      "naoDetalhado": 386450137.0599999,
+      "unidadesIncompletas": 39
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA EX",
+        "motivo": "educacao",
+        "acoes": 90,
+        "total": 851994921.84
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC NEX",
+        "motivo": "educacao",
+        "acoes": 8,
+        "total": 45164771.97
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB EX",
+        "motivo": "educacao",
+        "acoes": 7,
+        "total": 1262718351.65
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP 10.181.550,44 10.181.550,44",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE EX",
+        "motivo": "ise",
+        "acoes": 7,
+        "total": 15628760.63
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA 33.208,53 33.208,53 EX",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 1000000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES R EC E I TA Valores em R$",
+        "codigo": "10.302.1465.1190.0000",
+        "nome": "ASSISTÊNCIA HOSPITALAR E AMBULATORIAL PARA CRIANÇA E O ADOLESCENTE.",
+        "esfera": "S",
+        "total": 4382050,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES R EC E I TA Valores em R$",
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E",
+        "esfera": "S",
+        "total": 260000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS R EC E I TA Valores em R$",
+        "codigo": "08.244.1469.1250.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DO PROGRAMA DE ERRADICAÇÃO DO TRABALHO INFANTIL-AEPETI'S.",
+        "esfera": "S",
+        "total": 122240,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS R EC E I TA Valores em R$",
+        "codigo": "08.244.1469.1251.0000",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SUAS-CRIANÇA FELIZ.",
+        "esfera": "S",
+        "total": 505000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "451",
+        "orgaoNome": "POLÍCIA CIVIL DO ESTADO DO ACRE - PCAC",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "esfera": "G",
+        "total": 150133.15,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "conferido automaticamente",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.244.1469.1251",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU",
+        "total": 505000,
+        "orgaoCodigo": "761",
+        "unidadeCodigo": "645",
+        "unidadeNome": "FUNDO DO TRABALHO - FT/AC R EC E I TA Valores em R$",
+        "descritor": "infancia",
+        "destino": "já contada na apuração",
+        "linha": "08.244.1469.1251 PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU G 505.000,00 0,00 505.000,00"
+      },
+      {
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "total": 150133.15,
+        "orgaoCodigo": "451",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "descritor": "crianca",
+        "destino": "somada",
+        "linha": "06.183.1431.1108.0000 VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES, G 150.133,15 0,00 150.133,15"
+      },
+      {
+        "codigo": "14.243.1434.1008.0000",
+        "nome": "LABORAL PARA OS ADOLESCENTES EM MEDIDAS",
+        "total": 49550,
+        "orgaoCodigo": "719",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE EX",
+        "descritor": "adolescente",
+        "destino": "já contada na apuração",
+        "linha": "14.243.1434.1008.0000 LABORAL PARA OS ADOLESCENTES EM MEDIDAS G 49.550,00 0,00 49.550,00"
+      },
+      {
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E",
+        "total": 260000,
+        "orgaoCodigo": "721",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES R EC E I TA Valores em R$",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "10.302.1465.1191.0000 FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E G 260.000,00 0,00 260.000,00"
+      },
+      {
+        "codigo": "08.243.1470.1238.0000",
+        "nome": "PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO",
+        "total": 990000,
+        "orgaoCodigo": "760",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA 33.208,53 33.208,53 EX",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1470.1238.0000 PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO G 990.000,00 0,00 990.000,00"
+      }
+    ],
+    "totalIntegrais": 2176506806.09,
+    "totalAcoes": 5419423.15,
+    "ocad": 2181926229.2400002
+  },
+  {
+    "exercicio": 2026,
+    "origens": [
+      "seplan-0.pdf"
+    ],
+    "cobertura": "completo",
+    "unidades": 122,
+    "conferencia": {
+      "unidades": 122,
+      "divergentes": 60,
+      "pelaTabelaPlana": 0,
+      "naoDetalhado": 1780141517.34,
+      "unidadesIncompletas": 57
+    },
+    "unidadesIntegrais": [
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "motivo": "educacao",
+        "acoes": 12,
+        "total": 999969618.73
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "212",
+        "unidadeNome": "INSTITUTO ESTADUAL DE EDUCAÇÃO PROFISSIONAL E TECNOLÓGICA - IEPTEC",
+        "motivo": "educacao",
+        "acoes": 9,
+        "total": 52548387.68
+      },
+      {
+        "orgaoCodigo": "717",
+        "orgaoNome": "SECRETARIA DE ESTADO DA EDUCAÇÃO, CULTURA E ESPORTES - SEE",
+        "unidadeCodigo": "601",
+        "unidadeNome": "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+        "motivo": "educacao",
+        "acoes": 3,
+        "total": 1400864323.66
+      },
+      {
+        "orgaoCodigo": "719",
+        "orgaoNome": "SECRETARIA DE ESTADO DA JUSTIÇA E SEGURANÇA PÚBLICA - SEJUSP",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "motivo": "ise",
+        "acoes": 6,
+        "total": 18030760.63
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "motivo": "infancia",
+        "acoes": 2,
+        "total": 600000
+      }
+    ],
+    "acoesCasadas": [
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES",
+        "codigo": "10.302.1465.1190.0000",
+        "nome": "ASSISTÊNCIA HOSPITALAR E AMBULATORIAL PARA CRIANÇA E O ADOLESCENTE.",
+        "esfera": "S",
+        "total": 4212000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "721",
+        "orgaoNome": "SECRETARIA DE ESTADO DE SAÚDE - SESACRE",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES",
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E ADOLESCENTE.",
+        "esfera": "S",
+        "total": 312000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "14.422.1470.1235.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE ATENDIMENTO E PROMOÇÃO AOS DIREITOS DA CRIANÇA E ADOLESCENTE.",
+        "esfera": "S",
+        "total": 500000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS",
+        "codigo": "08.244.1469.1250.0000",
+        "nome": "AÇÕES ESTRATÉGICAS DO PROGRAMA DE ERRADICAÇÃO DO TRABALHO INFANTIL-AEPETI'S.",
+        "esfera": "S",
+        "total": 160000,
+        "descritor": "infantil",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "760",
+        "orgaoNome": "SECRETARIA DE ESTADO DE ASSISTÊNCIA SOCIAL E DIREITOS HUMANOS - SEASDH",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS",
+        "codigo": "08.244.1469.1251.0000",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SUAS-CRIANÇA FELIZ.",
+        "esfera": "S",
+        "total": 530000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "quadro da unidade",
+        "soma": true
+      },
+      {
+        "orgaoCodigo": "451",
+        "orgaoNome": "POLÍCIA CIVIL DO ESTADO DO ACRE - PCAC",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "esfera": "G",
+        "total": 150000,
+        "descritor": "crianca",
+        "revisar": false,
+        "origem": "conferido automaticamente",
+        "soma": true
+      }
+    ],
+    "conferidas": [
+      {
+        "codigo": "08.244.1469.1251",
+        "nome": "PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU",
+        "total": 530000,
+        "orgaoCodigo": "760",
+        "unidadeCodigo": "608",
+        "unidadeNome": "FUNDO DE ASSITÊNCIA SOCIAL - FEAS",
+        "descritor": "infancia",
+        "destino": "já contada na apuração",
+        "linha": "08.244.1469.1 251 PROMOÇÃO DA PRIMEIRA INFÂNCIA NO SU G 530.000,00 0,00 530.000,00"
+      },
+      {
+        "codigo": "06.183.1431.1108.0000",
+        "nome": "VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES,",
+        "total": 150000,
+        "orgaoCodigo": "451",
+        "unidadeCodigo": "001",
+        "unidadeNome": "UNIDADE GESTORA",
+        "descritor": "crianca",
+        "destino": "somada",
+        "linha": "06.183.1431.1108.0000 VULNERÁVEL(MULHERES, CRIANÇAS, ADOLESCENTES, G 150.000,00 0,00 150.000,00"
+      },
+      {
+        "codigo": "14.243.1434.1008.0000",
+        "nome": "LABORAL PARA OS ADOLESCENTES EM MEDIDAS",
+        "total": 78550,
+        "orgaoCodigo": "719",
+        "unidadeCodigo": "213",
+        "unidadeNome": "INSTITUTO SÓCIO EDUCATIVO DO ACRE - ISE",
+        "descritor": "adolescente",
+        "destino": "já contada na apuração",
+        "linha": "14.243.1434.1008.0000 LABORAL PARA OS ADOLESCENTES EM MEDIDAS G 78.550,00 0,00 78.550,00"
+      },
+      {
+        "codigo": "10.302.1465.1191.0000",
+        "nome": "FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E",
+        "total": 312000,
+        "orgaoCodigo": "721",
+        "unidadeCodigo": "607",
+        "unidadeNome": "FUNDO ESTADUAL DE SAÚDE - FUNDES",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "10.302.1465.1191.0000 FORTALECIMENTO DA POLÍTICA DE SAÚDE DA CRIANÇA E G 312.000,00 0,00 312.000,00"
+      },
+      {
+        "codigo": "08.243.1470.1238.0000",
+        "nome": "PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO",
+        "total": 599000,
+        "orgaoCodigo": "760",
+        "unidadeCodigo": "606",
+        "unidadeNome": "FUNDO DO DIREITO DA CRIANÇA E DO ADOLESCENTE - FDCA",
+        "descritor": "crianca",
+        "destino": "já contada na apuração",
+        "linha": "08.243.1470.1238.0000 PROMOÇÃO AOS DIREITOS DA CRIANÇA E DO G 599.000,00 0,00 599.000,00"
+      }
+    ],
+    "totalIntegrais": 2472013090.7000003,
+    "totalAcoes": 5864000,
+    "ocad": 2477877090.7000003
+  }
+]

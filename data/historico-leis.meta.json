@@ -1,0 +1,23 @@
+{
+  "arquivoFonte": "HISTÓRICO DE LEIS ORÇAMENTO CRIANÇA E ADOLESCENTE.xlsx",
+  "origem": "Histórico de leis do Orçamento Criança e Adolescente — SEPLAN/AC",
+  "dataArquivo": "2026-08-14",
+  "atualizadoEm": "8/12/26",
+  "geradoEm": "2026-08-18",
+  "normas": 145,
+  "porTipo": {
+    "Lei Ordinária": 45,
+    "LDO": 36,
+    "LOA": 36,
+    "Decreto": 5,
+    "Estrutura Administrativa": 13,
+    "PPA": 10
+  },
+  "observacoes": [
+    "O exercício de 1991 (Cr$ 4.518.657 mil) é menor que o de 1992 em plena hiperinflação, o que não fecha com a série.",
+    "A lei do exercício de 1994 é de dezembro de 1993, quando já vigorava o cruzeiro real; a planilha rotula os quatro primeiros exercícios como Cr$ mil.",
+    "A conversão de cruzeiro para real é nominal, pelos cortes monetários, sem correção pela inflação.",
+    "1 norma(s) aparecem em mais de uma aba da planilha e foram contadas uma única vez: Lei 1.011/1991 (Lei Ordinária e Estrutura Administrativa).",
+    "2 número(s) de lei aparecem em normas distintas, com links e ementas diferentes — inconsistência da fonte, mantida como está: Lei 1.156/1995; Lei 1.082/1993."
+  ]
+}

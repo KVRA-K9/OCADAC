@@ -1,0 +1,222 @@
+{
+  "descritor": "infantil",
+  "padrao": "/\\binfanti[la]s?\\b/g",
+  "geradoEm": "2026-08-18",
+  "normasLidas": 146,
+  "normasComOTermo": 8,
+  "porTipo": {
+    "Lei Ordinária": 7,
+    "Decreto": 1
+  },
+  "falhas": [],
+  "normas": [
+    {
+      "id": "Lei Ordinária-0",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "4.754",
+      "ano": 2026,
+      "exercicio": null,
+      "ementa": "Institui a obrigatoriedade de aferição da pressão arterial o chamado teste do bracinho, nas consultas pediátricas em crianças a partir de três anos de idade, atendidas pela rede pública e privada de saúde.",
+      "link": "https://legis.ac.gov.br/detalhar/6713",
+      "naEmenta": false,
+      "ocorrencias": 2,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…ão arterial em crianças a partir dos três anos de idade, o rastreio, diagnóstico e prevenção de:I -hipertensão arterial infantil;II -doenças cardíacas;III -doenças renais; eIV -complicações renais, cardiológicas e em retina.Art. 6ºNas aferições da…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…arterial em crianças a partir dos três anos de idade, o rastreio, diagnóstico e prevenção de: I - hipertensão arterial infantil; II - doenças cardíacas; III - doenças renais; e IV - complicações renais, cardiológicas e em retina. Art. 6º Nas aferi…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-3",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "4.613",
+      "ano": 2025,
+      "exercicio": null,
+      "ementa": "Institui a Semana de Combate à Exploração do Trabalho da Criança e do Adolescente.",
+      "link": "https://legis.ac.gov.br/detalhar/6509",
+      "naEmenta": false,
+      "ocorrencias": 4,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…a defesa dos direitos das crianças e dos adolescentes;II -conscientizar a população acreana dos malefícios do trabalho infantil ou degradante prestado por criança ou adolescente em qualquer atividade;III -desenvolver ações de prevenção e erradicaç…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…prestado por criança ou adolescente em qualquer atividade;III -desenvolver ações de prevenção e erradicação do trabalho infantil; eIV -garantir aos adolescentes o direito ao exercício de uma atividade laboral digna, nos termos da lei, livre de abus…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…defesa dos direitos das crianças e dos adolescentes; II - conscientizar a população acreana dos malefícios do trabalho infantil ou degradante prestado por criança ou adolescente em qualquer atividade; III - desenvolver ações de prevenção e erradic…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…estado por criança ou adolescente em qualquer atividade; III - desenvolver ações de prevenção e erradicação do trabalho infantil; e IV - garantir aos adolescentes o direito ao exercício de uma atividade laboral digna, nos termos da lei, livre de ab…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-5",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "4.557",
+      "ano": 2025,
+      "exercicio": null,
+      "ementa": "Institui a obrigatoriedade da facilitação para realização de aferição de glicemia regular em crianças a partir de três anos de idade, atendidas pelas redes públicas e privadas de saúde no Estado.",
+      "link": "https://legis.ac.gov.br/detalhar/6412",
+      "naEmenta": false,
+      "ocorrencias": 2,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…stinado às crianças com diagnostico de diabetes, dos tipos 1 e 2.§ 2ºO programa tem por objetivo minimizar o sofrimento infantil e contribuir para melhoria da sua qualidade de vida.Art. 2ºPara o cumprimento do programa, o Estado poderá fornecer, gr…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…inado às crianças com diagnostico de diabetes, dos tipos 1 e 2. § 2º O programa tem por objetivo minimizar o sofrimento infantil e contribuir para melhoria da sua qualidade de vida. Art. 2º Para o cumprimento do programa, o Estado poderá fornecer,…"
+        }
+      ]
+    },
+    {
+      "id": "Decreto-49",
+      "tipo": "Decreto",
+      "especie": "Decreto",
+      "numero": "8.232",
+      "ano": 2021,
+      "exercicio": null,
+      "ementa": "Institui o Comitê de Apuração do Orçamento Criança e Adolescente - OCAD no âmbito do Estado do Acre e dá outras providências.",
+      "link": "https://legis.ac.gov.br/detalhar/4376",
+      "naEmenta": false,
+      "ocorrencias": 1,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…exclusivamente para a atenção direta às crianças e aos adolescentes, tais como promoção da educação e da saúde materno-infantil) e o Orçamento Criança não exclusivo (ações de saúde, educação, assistência social, habitação, saneamento, cultura e es…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-14",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "3.777",
+      "ano": 2021,
+      "exercicio": null,
+      "ementa": "Dispõe sobre a criação de Observatório de Proteção Integral à Infância e Adolescência.",
+      "link": "https://legis.ac.gov.br/detalhar/4766",
+      "naEmenta": false,
+      "ocorrencias": 4,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…;II -a compatibilidade entre faixa etária e série escolar;III -a evasão escolar;IV -a oferta de vagas no ensino público infantil, fundamental e médio;V -a oferta de vagas no ensino público técnico-profissional;VI -a oferta de vagas em cursos de inf…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…violência doméstica;III -acidentes domésticosIV -o homicídio de crianças;V -o homicídio de adolescentes;VI -o trabalho infantil;VII -a exploração sexual;VII -as infrações cometidas por adolescentes;IX -a aplicação das medidas socioeducativas e das…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…a compatibilidade entre faixa etária e série escolar; III - a evasão escolar; IV - a oferta de vagas no ensino público infantil, fundamental e médio; V - a oferta de vagas no ensino público técnico-profissional; VI - a oferta de vagas em cursos de…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…ia doméstica; III - acidentes domésticos IV - o homicídio de crianças; V - o homicídio de adolescentes; VI - o trabalho infantil; VII - a exploração sexual; VII - as infrações cometidas por adolescentes; IX - a aplicação das medidas socioeducativas…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-19",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "3.398",
+      "ano": 2018,
+      "exercicio": null,
+      "ementa": "Estabelece a obrigatoriedade de exigência da carteira de vacinação da criança, ou documento similar no ato da matrícula dos alunos da educação infantil e da primeira etapa do ensino fundamental.",
+      "link": "https://legis.ac.gov.br/detalhar/2155",
+      "naEmenta": true,
+      "ocorrencias": 4,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…e eu sanciono a seguinte Lei:Art. 1ºAs instituições de ensino devem solicitar aos responsáveis pelos alunos da educação infantil e da primeira etapa do ensino fundamental a apresentação da carteira de vacinação da criança, ou de documento similar,…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…edade de exigência da carteira de vacinação da criança, ou documento similar no ato da matrícula dos alunos da educação infantil e da primeira etapa do ensino fundamental. O GOVERNADOR DO ESTADO DO ACRE FAÇO SABER que a Assembleia Legislativa do Es…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…eu sanciono a seguinte Lei: Art. 1º As instituições de ensino devem solicitar aos responsáveis pelos alunos da educação infantil e da primeira etapa do ensino fundamental a apresentação da carteira de vacinação da criança, ou de documento similar,…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…edade de exigência da carteira de vacinação da criança, ou documento similar no ato da matrícula dos alunos da educação infantil e da primeira etapa do ensino fundamental. Alterações Autoria Assembleia Legislativa do Estado do Acre ( Parlamentar: D…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-21",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "3.367",
+      "ano": 2017,
+      "exercicio": null,
+      "ementa": "Institui o Programa Primeira Infância Acreana – PIA.",
+      "link": "https://legis.ac.gov.br/detalhar/2084",
+      "naEmenta": false,
+      "ocorrencias": 20,
+      "trechos": [
+        {
+          "palavra": "infantil",
+          "trecho": "…se na faixa etária de zero a três anos, complementando a ação da família e da comunidade no estimulo ao desenvolvimento infantil.Parágrafo único.O desenvolvimento integral da criança de que trata este artigo concebe a criança como sujeito de direit…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…definição de estratégias de efetivação das políticas públicas, a fim de garantir a universalização do acesso a educação infantil (creche pré-escola) com qualidade, conforme a meta 1 do Plano Nacional de Educação - PNE, de 25 de julho de 2014, compl…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…escimento e desenvolvimento bio-psíquico-social;III– promover estratégias e ações de redução dos índices de desnutrição infantil e materna por meio ao estímulo do aleitamento materno e orientação sobre a importância da alimentação complementar na g…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…amília e da comunidade;II– realizar a chamada escolar, a fim de contemplar a oferta de matrícula e ingresso na educação infantil para as crianças de zero a três anos e onze meses (nas creches e para as crianças de quatro a cinco anos (na pré-escola…"
+        },
+        {
+          "palavra": "infantil",
+          "trecho": "…e zero a cinco anos e onze meses;VII– garantir atividades e materiais educativo-pedagógicos apropriados para a educação infantil valorizando as culturas indígenas, quilombolas, ribeirinhas, ciganas e do campo e o respeito às pessoas com deficiência…"
+        }
+      ]
+    },
+    {
+      "id": "Lei Ordinária-30",
+      "tipo": "Lei Ordinária",
+      "especie": "Lei",
+      "numero": "1.983",
+      "ano": 2008,
+      "exercicio": null,
+      "ementa": "Dispõe sobre a instalação de equipamentos de lazer e recreação para crianças cadeirantes.",
+      "link": "https://legis.ac.gov.br/detalhar/3495",
+      "naEmenta": false,
+      "ocorrencias": 2,
+      "trechos": [
+        {
+          "palavra": "Infantil",
+          "trecho": "…Naspraças e parques a que se refere o caput,deverão ser afixadas placas indicativas, com a seguinte informação: “Parque Infantil adaptado para integração de crianças cadeirantes.”Art. 6ºAs despesas decorrentes da execução desta lei correrão à conta…"
+        },
+        {
+          "palavra": "Infantil",
+          "trecho": "…praças e parques a que se refere o caput , deverão ser afixadas placas indicativas, com a seguinte informação: “Parque Infantil adaptado para integração de crianças cadeirantes.” Art. 6º As despesas decorrentes da execução desta lei correrão à con…"
+        }
+      ]
+    }
+  ]
+}

@@ -19,6 +19,8 @@
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
   --color-chart-6: var(--chart-6);
+  --color-ocad-apurado: var(--ocad-apurado);
+  --color-ocad-sem-apuracao: var(--ocad-sem-apuracao);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -74,6 +76,11 @@
   --chart-4: oklch(0.68 0.14 85);
   --chart-5: oklch(0.62 0.10 130);
   --chart-6: oklch(0.55 0.08 250);
+  /* Série do OCAD no gráfico do Histórico, em pastel: azul sereno para o
+     exercício apurado e damasco para o que ficou sem apuração — cor própria, e
+     não cinza, que faria a barra parecer desligada em vez de de outra origem. */
+  --ocad-apurado: oklch(0.82 0.07 245);
+  --ocad-sem-apuracao: oklch(0.86 0.07 60);
   --radius: 0.625rem;
   --sidebar: #a8c090;
   --sidebar-foreground: oklch(0.18 0.01 150);
@@ -110,6 +117,10 @@
   --chart-4: oklch(0.78 0.15 85);
   --chart-5: oklch(0.68 0.12 130);
   --chart-6: oklch(0.70 0.10 250);
+  /* No escuro os mesmos pastéis, com um pouco menos de luz para não estourar
+     sobre o fundo. */
+  --ocad-apurado: oklch(0.74 0.08 245);
+  --ocad-sem-apuracao: oklch(0.76 0.08 60);
   --sidebar: #a8c090;
   --sidebar-foreground: oklch(0.18 0.01 150);
   --sidebar-primary: oklch(0.72 0.075 142);

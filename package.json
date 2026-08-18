@@ -9,7 +9,7 @@
     "lint": "eslint",
     "dados": "node scripts/gerar-base-ocad.mjs",
     "dados:historico": "node scripts/gerar-historico-pond.mjs",
-    "logos": "node scripts/gerar-logos.mjs"
+    "historico:leis": "node scripts/gerar-historico-leis.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
@@ -35,12 +35,14 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.7",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "pdfjs-dist": "^6.2.108",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

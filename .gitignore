@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# PDFs das LOAs baixados para apuração (grandes e reproduzíveis pelo script)
+/.cache
+
 # next.js
 /.next/
 /out/
@@ -39,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# arquivos de trava do Excel
+~$*.xlsx

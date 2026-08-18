@@ -1,0 +1,175 @@
+{
+  "geradoEm": "2026-08-18",
+  "origem": "Programa de Trabalho do Órgão/Unidade (Anexo 6 da Lei 4.320) das leis orçamentárias do Acre",
+  "acervos": {
+    "2014": "caderno suplementar do DOE de 30/12/2013, cujas tabelas são desenhadas como glifos JBIG2, sem texto extraível. As unidades integrais foram lidas na renderização das páginas, uma a uma; a varredura por descritores não alcança o exercício.",
+    "2010-2013": "Diário Oficial do Estado, pela data de publicação da lei",
+    "2015-2026": "acervo de LOAs da SEPLAN, conferido com os anexos do Legis a partir de 2020",
+    "1991-2009": "anexos anteriores à publicação eletrônica do Diário Oficial, que começa no fim de 2009; os cadernos desses exercícios existem apenas em versões físicas e o texto das leis traz apenas quadros agregados."
+  },
+  "regras": [
+    "Unidades de ensino (gestora da SEE, Instituto Estadual de Educação e FUNDEB), ISE e unidades da infância entram pelo total, sem busca por descritor.",
+    "Cultura, esporte e patrimônio, embora no mesmo órgão da educação, não entram pelo total: seguem para a busca por descritor.",
+    "Nas demais unidades entram as ações cujo nome traz um dos descritores (menino, menina, criança, adolescente, adolescência, infância, infantil, juventude, filho e filhos).",
+    "Ações marcadas como sugestão (infantil) ficam fora da soma até revisão.",
+    "A unidade 001 de cada órgão é a gestora dele; onde o caderno não imprime o nome dela, herda a natureza do órgão."
+  ],
+  "exerciciosSemApuracao": "19 dos 36 exercícios: 1991 a 2009, cujos anexos antecedem a publicação eletrônica do Diário Oficial e existem apenas em versões físicas. Ausência de fonte digital, não ausência de orçamento nem de registro.",
+  "conferencia": "Por unidade, a soma das ações lidas é comparada ao TOTAL GERAL que a própria lei declara; onde as duas leituras do caderno divergem, vale a que chega mais perto do declarado. As linhas com descritor que ficaram fora da apuração vão para a aba 'Conferir no caderno' da planilha.",
+  "exercicios": [
+    {
+      "exercicio": 2010,
+      "ocad": 606461936.1,
+      "unidades": 158,
+      "divergentes": 5,
+      "origens": [
+        "doe-2009-12-30-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2011,
+      "ocad": 658693432.77,
+      "unidades": 166,
+      "divergentes": 1,
+      "origens": [
+        "doe-2010-12-31-1.pdf"
+      ]
+    },
+    {
+      "exercicio": 2012,
+      "ocad": 714331561.0799999,
+      "unidades": 170,
+      "divergentes": 0,
+      "origens": [
+        "doe-2011-12-29-1.pdf"
+      ]
+    },
+    {
+      "exercicio": 2013,
+      "ocad": 869450537.76,
+      "unidades": 233,
+      "divergentes": 4,
+      "origens": [
+        "doe-2012-12-28-0.pdf",
+        "doe-2012-12-28-1.pdf"
+      ]
+    },
+    {
+      "exercicio": 2014,
+      "ocad": 803050983.28,
+      "unidades": 11,
+      "divergentes": 0,
+      "origens": [
+        "Caderno suplementar do DOE de 30/12/2013 (edição 11.210), páginas lidas na renderização"
+      ]
+    },
+    {
+      "exercicio": 2015,
+      "ocad": 894498453.47,
+      "unidades": 178,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2016,
+      "ocad": 888725785.86,
+      "unidades": 173,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2017,
+      "ocad": 847205316.2,
+      "unidades": 176,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2018,
+      "ocad": 954252247.84,
+      "unidades": 173,
+      "divergentes": 1,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2019,
+      "ocad": 983845097.4900001,
+      "unidades": 175,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2020,
+      "ocad": 1098212287.73,
+      "unidades": 108,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2021,
+      "ocad": 1192798282.97,
+      "unidades": 109,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2022,
+      "ocad": 1354710324.06,
+      "unidades": 112,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2023,
+      "ocad": 1705095391.57,
+      "unidades": 109,
+      "divergentes": 0,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2024,
+      "ocad": 1927644693.5,
+      "unidades": 117,
+      "divergentes": 35,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2025,
+      "ocad": 2181926229.2400002,
+      "unidades": 122,
+      "divergentes": 41,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    },
+    {
+      "exercicio": 2026,
+      "ocad": 2477877090.7000003,
+      "unidades": 122,
+      "divergentes": 60,
+      "origens": [
+        "seplan-0.pdf"
+      ]
+    }
+  ]
+}
