@@ -502,7 +502,7 @@ export default function HistoricoPage() {
             Acervo normativo
           </h2>
           <p className="text-sm text-muted-foreground">
-            Escolha um tipo de norma para ver a lista.
+            Escolha um tipo de norma para visualizar a lista.
           </p>
         </div>
 
