@@ -23,7 +23,12 @@ export const CORES_NORMA: Record<TipoNorma, string> = {
   Decreto: "var(--chart-6)",
   "Estrutura Administrativa": "var(--chart-3)",
   PPA: "var(--chart-4)",
-  LDO: "var(--chart-1)",
+  /* O único que não entra cru: `--chart-1` é o mais claro dos seis
+   * (oklch L 0.89) e, lavado no `--card`, o botão e os cartões da LDO ficavam
+   * quase brancos. Aqui ele desce um degrau de luminosidade e mantém croma e
+   * matiz — continua sendo a cor do token, só que mais firme, e acompanha
+   * qualquer mudança futura em `--chart-1`. */
+  LDO: "oklch(from var(--chart-1) calc(l - 0.08) c h)",
   LOA: "var(--chart-2)",
 };
 

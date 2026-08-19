@@ -95,20 +95,31 @@ function CartaoNorma({
     setAberto(destacado);
   }
 
+  const cor = CORES_NORMA[norma.tipo];
+
   return (
     <div
       data-norma-id={norma.id}
       /*
        * Sem contorno, o cartão precisa de fundo próprio para existir: no tema
        * claro `--card` e `--background` são o mesmo branco, e um cartão branco
-       * sobre página branca some. `--muted` dá o degrau — cinza claríssimo no
-       * claro, cinza mais alto que o fundo no escuro —, e a sombra sutil separa
-       * um cartão do outro sem desenhar linha. O anel continua reservado ao
-       * cartão que o gráfico destaca, onde ele tem função.
+       * sobre página branca some. O fundo é a cor do tipo da norma lavada no
+       * `--card`, a mesma receita do botão da aba em `SeletorAbas` — a lista só
+       * existe depois de escolher uma aba, então o painel inteiro fica na cor do
+       * seletor que o abriu. Em variável, e não em `background` direto, porque o
+       * hover precisa de uma segunda mistura. A sombra sutil separa um cartão do
+       * outro sem desenhar linha, e o anel continua reservado ao cartão que o
+       * gráfico destaca, onde ele tem função.
        */
+      style={
+        {
+          "--tinta": `color-mix(in oklab, ${cor} 25%, var(--card))`,
+          "--tinta-forte": `color-mix(in oklab, ${cor} 40%, var(--card))`,
+        } as React.CSSProperties
+      }
       className={cn(
-        "mb-2 break-inside-avoid rounded-lg bg-muted/60 shadow-sm transition-all hover:bg-muted hover:shadow-md",
-        destacado && "bg-muted shadow-md ring-2 ring-ring",
+        "mb-2 break-inside-avoid rounded-lg bg-(--tinta) shadow-sm transition-all hover:bg-(--tinta-forte) hover:shadow-md",
+        destacado && "bg-(--tinta-forte) shadow-md ring-2 ring-ring",
       )}
     >
       <button
