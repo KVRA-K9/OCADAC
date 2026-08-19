@@ -491,7 +491,7 @@ export default function HistoricoPage() {
         <KpiCard
           titulo="Leis orçamentárias"
           valor={metaLeis.porTipo["LOA"] + metaLeis.porTipo["LDO"]}
-          dica={`${metaLeis.porTipo["LOA"]} LOAs e ${metaLeis.porTipo["LDO"]} LDOs, desde 1990`}
+          dica={`${metaLeis.porTipo["LOA"]} LOAs e ${metaLeis.porTipo["LDO"]} LDOs`}
           icone={Landmark}
         />
       </div>
