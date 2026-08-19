@@ -485,7 +485,7 @@ export default function HistoricoPage() {
         <KpiCard
           titulo="Período coberto"
           valor={`${anosNormas[anosNormas.length - 1]}–${anosNormas[0]}`}
-          dica="Dos jardins de infância, em 1964, à LOA de 2026"
+          dica={`${anosNormas[0] - anosNormas[anosNormas.length - 1]} anos de normas sobre criança e adolescente`}
           icone={CalendarRange}
         />
         <KpiCard
@@ -499,22 +499,15 @@ export default function HistoricoPage() {
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold tracking-tight">
-            Acervo por aba da planilha
+            Acervo normativo
           </h2>
           <p className="text-sm text-muted-foreground">
-            Cada bloco é um tipo de norma. Escolha um para ver a lista, com
-            ementa, metas e valores.
+            Escolha um tipo de norma para ver a lista.
           </p>
         </div>
 
         <SeletorAbas selecionada={aba} onSelecionar={escolherAba} />
       </div>
-
-      {!aba && (
-        <p className="text-center text-sm text-muted-foreground">
-          Escolha um tipo acima para ver as normas.
-        </p>
-      )}
 
       {aba && (
         <div className="flex animate-in flex-col gap-4 rounded-xl ring-1 ring-foreground/10 duration-300 fade-in-0 slide-in-from-bottom-4">
