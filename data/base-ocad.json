@@ -11,7 +11,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 26708031.91,
+        "ocadInicial": 9614891.49,
+        "ocadAtualizado": 9614891.49,
+        "ocadEmpenhado": 6187876.27,
+        "ocadLiquidado": 6164965.14,
+        "ocadPago": 6185085.66,
+        "ocadDisponivel": 3449926.35
+      }
+    ],
     "dotacaoInicial": 26708031.91,
     "ocadInicial": 9614891.49,
     "ocadAtualizado": 9614891.49,
@@ -32,7 +44,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 33074838.87,
+        "ocadInicial": 11906941.99,
+        "ocadAtualizado": 11906941.99,
+        "ocadEmpenhado": 6627955.4,
+        "ocadLiquidado": 6624763.48,
+        "ocadPago": 6624191.78,
+        "ocadDisponivel": 5282178.51
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5377150.32,
+        "ocadInicial": 1935774.12,
+        "ocadAtualizado": 1935774.12,
+        "ocadEmpenhado": 823886.99,
+        "ocadLiquidado": 823886.99,
+        "ocadPago": 823886.99,
+        "ocadDisponivel": 1111887.13
+      },
+      {
+        "codigo": "16050400",
+        "nome": "COMP. PAGAMENTO DO PISO SALARIAL DA ENFERMAGEM",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 43778.91,
+        "ocadEmpenhado": 43778.91,
+        "ocadLiquidado": 43778.91,
+        "ocadPago": 43778.91,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 38451989.19,
     "ocadInicial": 13842716.11,
     "ocadAtualizado": 13886495.02,
@@ -53,7 +99,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 38004104.56,
+        "ocadInicial": 38004104.56,
+        "ocadAtualizado": 38004104.56,
+        "ocadEmpenhado": 20296825.89,
+        "ocadLiquidado": 20296825.89,
+        "ocadPago": 20288854.25,
+        "ocadDisponivel": 17707278.67
+      }
+    ],
     "dotacaoInicial": 38004104.56,
     "ocadInicial": 38004104.56,
     "ocadAtualizado": 38004104.56,
@@ -74,7 +132,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 928611618.48,
+        "ocadInicial": 334300182.65,
+        "ocadAtualizado": 334300182.65,
+        "ocadEmpenhado": 216188138.12,
+        "ocadLiquidado": 216135802.22,
+        "ocadPago": 216091953.51,
+        "ocadDisponivel": 118164380.43
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 179440539.96,
+        "ocadInicial": 64598594.39,
+        "ocadAtualizado": 64598594.39,
+        "ocadEmpenhado": 23586918.68,
+        "ocadLiquidado": 23586918.68,
+        "ocadPago": 23586918.68,
+        "ocadDisponivel": 41011675.71
+      },
+      {
+        "codigo": "16050400",
+        "nome": "COMP. PAGAMENTO DO PISO SALARIAL DA ENFERMAGEM",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 3333395.08,
+        "ocadEmpenhado": 3333395.08,
+        "ocadLiquidado": 3333395.08,
+        "ocadPago": 3333395.08,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 1108052158.44,
     "ocadInicial": 398898777.04,
     "ocadAtualizado": 402232172.12,
@@ -95,7 +187,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 995000,
+        "ocadInicial": 995000,
+        "ocadAtualizado": 268930,
+        "ocadEmpenhado": 174123.25,
+        "ocadLiquidado": 174123.25,
+        "ocadPago": 174123.25,
+        "ocadDisponivel": 94806.75
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 10000,
+        "ocadInicial": 10000,
+        "ocadAtualizado": 10000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 10000
+      }
+    ],
     "dotacaoInicial": 1005000,
     "ocadInicial": 1005000,
     "ocadAtualizado": 278930,
@@ -116,7 +231,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 5000,
+        "ocadAtualizado": 5000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 5000
+      }
+    ],
     "dotacaoInicial": 5000,
     "ocadInicial": 5000,
     "ocadAtualizado": 5000,
@@ -137,7 +264,63 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 5,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 14000000,
+        "ocadInicial": 14000000,
+        "ocadAtualizado": 23404625.7,
+        "ocadEmpenhado": 21028417.13,
+        "ocadLiquidado": 9435278.27,
+        "ocadPago": 8472444.36,
+        "ocadDisponivel": 13969347.43
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 8000000,
+        "ocadInicial": 8000000,
+        "ocadAtualizado": 8000000,
+        "ocadEmpenhado": 673236,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 8000000
+      },
+      {
+        "codigo": "15703120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA (EDUCAÇÃO)",
+        "dotacaoInicial": 1450000,
+        "ocadInicial": 1450000,
+        "ocadAtualizado": 1450000,
+        "ocadEmpenhado": 916014.23,
+        "ocadLiquidado": 390448.51,
+        "ocadPago": 143786.95,
+        "ocadDisponivel": 1059551.49
+      },
+      {
+        "codigo": "15703130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO (EDUCAÇÃO)",
+        "dotacaoInicial": 900000,
+        "ocadInicial": 900000,
+        "ocadAtualizado": 1659455.86,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1659455.86
+      },
+      {
+        "codigo": "15703110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS (EDUCAÇÃO)",
+        "dotacaoInicial": 600000,
+        "ocadInicial": 600000,
+        "ocadAtualizado": 600000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 600000
+      }
+    ],
     "dotacaoInicial": 24950000,
     "ocadInicial": 24950000,
     "ocadAtualizado": 35114081.56,
@@ -158,7 +341,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 4900000,
+        "ocadInicial": 4900000,
+        "ocadAtualizado": 2900000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2900000
+      },
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 3750000,
+        "ocadInicial": 3750000,
+        "ocadAtualizado": 2891697.22,
+        "ocadEmpenhado": 2687620.62,
+        "ocadLiquidado": 1189151.47,
+        "ocadPago": 825589.96,
+        "ocadDisponivel": 1702545.75
+      }
+    ],
     "dotacaoInicial": 8650000,
     "ocadInicial": 8650000,
     "ocadAtualizado": 5791697.22,
@@ -179,7 +385,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 4700000,
+        "ocadInicial": 4700000,
+        "ocadAtualizado": 3502000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 3502000
+      },
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 1300000,
+        "ocadInicial": 1300000,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 6000000,
     "ocadInicial": 6000000,
     "ocadAtualizado": 3502000,
@@ -200,7 +429,63 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 5,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 90000000,
+        "ocadInicial": 90000000,
+        "ocadAtualizado": 89250000,
+        "ocadEmpenhado": 77137228.62,
+        "ocadLiquidado": 22728369.58,
+        "ocadPago": 12132308.71,
+        "ocadDisponivel": 66521630.42
+      },
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 15000000,
+        "ocadInicial": 15000000,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 500000,
+        "ocadInicial": 500000,
+        "ocadAtualizado": 1447966.52,
+        "ocadEmpenhado": 969559.47,
+        "ocadLiquidado": 969559.47,
+        "ocadPago": 0,
+        "ocadDisponivel": 478407.05
+      },
+      {
+        "codigo": "15703110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS (EDUCAÇÃO)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 198000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 198000
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 398000,
+        "ocadEmpenhado": 198375.6,
+        "ocadLiquidado": 198375.6,
+        "ocadPago": 198375.6,
+        "ocadDisponivel": 199624.4
+      }
+    ],
     "dotacaoInicial": 105500000,
     "ocadInicial": 105500000,
     "ocadAtualizado": 91293966.52,
@@ -221,7 +506,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 73000000,
+        "ocadInicial": 73000000,
+        "ocadAtualizado": 73000000,
+        "ocadEmpenhado": 60361336.73,
+        "ocadLiquidado": 30558705.57,
+        "ocadPago": 20935853.41,
+        "ocadDisponivel": 42441294.43
+      },
+      {
+        "codigo": "15530200",
+        "nome": "TRANSF. DE RECURSOS DO FNDE REFERENTES AO PNATE",
+        "dotacaoInicial": 7000000,
+        "ocadInicial": 7000000,
+        "ocadAtualizado": 7000000,
+        "ocadEmpenhado": 1500000,
+        "ocadLiquidado": 1493568.33,
+        "ocadPago": 1493568.33,
+        "ocadDisponivel": 5506431.67
+      }
+    ],
     "dotacaoInicial": 80000000,
     "ocadInicial": 80000000,
     "ocadAtualizado": 80000000,
@@ -242,7 +550,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15500102",
+        "nome": "TRANSFERÊNCIAS DO SALÁRIO-EDUCAÇÃO",
+        "dotacaoInicial": 71311146.49,
+        "ocadInicial": 71311146.49,
+        "ocadAtualizado": 55312254.84,
+        "ocadEmpenhado": 40715154.84,
+        "ocadLiquidado": 24118087.8,
+        "ocadPago": 24112887.8,
+        "ocadDisponivel": 31194167.04
+      }
+    ],
     "dotacaoInicial": 71311146.49,
     "ocadInicial": 71311146.49,
     "ocadAtualizado": 55312254.84,
@@ -263,7 +583,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15730100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC. À EDUCAÇÃO (75%)",
+        "dotacaoInicial": 32000000,
+        "ocadInicial": 32000000,
+        "ocadAtualizado": 31680000,
+        "ocadEmpenhado": 19170113.54,
+        "ocadLiquidado": 8078520.71,
+        "ocadPago": 7768566.03,
+        "ocadDisponivel": 23601479.29
+      }
+    ],
     "dotacaoInicial": 32000000,
     "ocadInicial": 32000000,
     "ocadAtualizado": 31680000,
@@ -284,7 +616,41 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 96050000,
+        "ocadInicial": 34578000,
+        "ocadAtualizado": 29326450.41,
+        "ocadEmpenhado": 25532792.01,
+        "ocadLiquidado": 15375741.48,
+        "ocadPago": 12011813.18,
+        "ocadDisponivel": 13950708.93
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 4890000,
+        "ocadInicial": 1760400,
+        "ocadAtualizado": 1400400,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1400400
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 340000,
+        "ocadInicial": 122400,
+        "ocadAtualizado": 122400,
+        "ocadEmpenhado": 32835.21,
+        "ocadLiquidado": 32835.21,
+        "ocadPago": 32835.21,
+        "ocadDisponivel": 89564.79
+      }
+    ],
     "dotacaoInicial": 101280000,
     "ocadInicial": 36460800,
     "ocadAtualizado": 30849250.41,
@@ -305,7 +671,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 354475129.35,
+        "ocadInicial": 354475129.35,
+        "ocadAtualizado": 354475129.35,
+        "ocadEmpenhado": 221957961.59,
+        "ocadLiquidado": 221957961.59,
+        "ocadPago": 214726275.23,
+        "ocadDisponivel": 132517167.76
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 53058142.89,
+        "ocadInicial": 53058142.89,
+        "ocadAtualizado": 53058142.89,
+        "ocadEmpenhado": 39463164.89,
+        "ocadLiquidado": 38661863.45,
+        "ocadPago": 33414603.05,
+        "ocadDisponivel": 14396279.44
+      }
+    ],
     "dotacaoInicial": 407533272.24,
     "ocadInicial": 407533272.24,
     "ocadAtualizado": 407533272.24,
@@ -326,7 +715,41 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 101500000,
+        "ocadInicial": 101500000,
+        "ocadAtualizado": 79627662.82,
+        "ocadEmpenhado": 58300789.11,
+        "ocadLiquidado": 53348016.49,
+        "ocadPago": 42268020.42,
+        "ocadDisponivel": 26279646.33
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 7440000,
+        "ocadInicial": 7440000,
+        "ocadAtualizado": 5438000,
+        "ocadEmpenhado": 51422.5,
+        "ocadLiquidado": 51422.5,
+        "ocadPago": 51422.5,
+        "ocadDisponivel": 5386577.5
+      },
+      {
+        "codigo": "25700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 3875965.5,
+        "ocadEmpenhado": 2763234.08,
+        "ocadLiquidado": 2763234.08,
+        "ocadPago": 1101912.15,
+        "ocadDisponivel": 1112731.42
+      }
+    ],
     "dotacaoInicial": 108940000,
     "ocadInicial": 108940000,
     "ocadAtualizado": 88941628.32,
@@ -347,7 +770,74 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 6,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 19000000,
+        "ocadInicial": 19000000,
+        "ocadAtualizado": 29621131.56,
+        "ocadEmpenhado": 29473328.76,
+        "ocadLiquidado": 14969885.39,
+        "ocadPago": 7425656.26,
+        "ocadDisponivel": 14651246.17
+      },
+      {
+        "codigo": "17540501",
+        "nome": "BIRD - PROGESTÃO",
+        "dotacaoInicial": 13130000,
+        "ocadInicial": 13130000,
+        "ocadAtualizado": 13130000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 13130000
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 10640000,
+        "ocadInicial": 10640000,
+        "ocadAtualizado": 7397500,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 7397500
+      },
+      {
+        "codigo": "15703110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS (EDUCAÇÃO)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 742500,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 742500
+      },
+      {
+        "codigo": "25700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 662824.6,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 662824.6
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 3572217,
+        "ocadEmpenhado": 2638846.31,
+        "ocadLiquidado": 22258.51,
+        "ocadPago": 22258.51,
+        "ocadDisponivel": 3549958.49
+      }
+    ],
     "dotacaoInicial": 42770000,
     "ocadInicial": 42770000,
     "ocadAtualizado": 55126173.16,
@@ -368,7 +858,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001001",
+        "nome": "RECURSOS DESTINADOS À MAN. E DES. DO ENSINO (25%)",
+        "dotacaoInicial": 7210000,
+        "ocadInicial": 7210000,
+        "ocadAtualizado": 7210000,
+        "ocadEmpenhado": 5783673.52,
+        "ocadLiquidado": 4794441.99,
+        "ocadPago": 3505976.95,
+        "ocadDisponivel": 2415558.01
+      }
+    ],
     "dotacaoInicial": 7210000,
     "ocadInicial": 7210000,
     "ocadAtualizado": 7210000,
@@ -389,7 +891,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 2300000,
+        "ocadInicial": 2300000,
+        "ocadAtualizado": 2025101.5,
+        "ocadEmpenhado": 762772.46,
+        "ocadLiquidado": 160495.86,
+        "ocadPago": 152671.55,
+        "ocadDisponivel": 1864605.64
+      }
+    ],
     "dotacaoInicial": 2300000,
     "ocadInicial": 2300000,
     "ocadAtualizado": 2025101.5,
@@ -410,7 +924,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 65200,
+        "ocadInicial": 65200,
+        "ocadAtualizado": 65200,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 65200
+      }
+    ],
     "dotacaoInicial": 65200,
     "ocadInicial": 65200,
     "ocadAtualizado": 65200,
@@ -431,7 +957,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 450000,
+        "ocadInicial": 450000,
+        "ocadAtualizado": 450000,
+        "ocadEmpenhado": 50000,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 450000
+      }
+    ],
     "dotacaoInicial": 450000,
     "ocadInicial": 450000,
     "ocadAtualizado": 450000,
@@ -452,7 +990,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5555052.22,
+        "ocadInicial": 1999818.8,
+        "ocadAtualizado": 1999818.8,
+        "ocadEmpenhado": 1344103.24,
+        "ocadLiquidado": 1344103.24,
+        "ocadPago": 1329702.7,
+        "ocadDisponivel": 655715.56
+      }
+    ],
     "dotacaoInicial": 5555052.22,
     "ocadInicial": 1999818.8,
     "ocadAtualizado": 1999818.8,
@@ -473,7 +1023,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 1650000,
+        "ocadInicial": 594000,
+        "ocadAtualizado": 582758.36,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 582758.36
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 360,
+        "ocadAtualizado": 360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360
+      }
+    ],
     "dotacaoInicial": 1651000,
     "ocadInicial": 594360,
     "ocadAtualizado": 583118.36,
@@ -494,7 +1067,63 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 5,
+    "fontes": [
+      {
+        "codigo": "15010700",
+        "nome": "RECURSOS PRÓPRIOS DA ADM. INDIRETA ¿ REC. NÃO VINCULADOS",
+        "dotacaoInicial": 22222460.7,
+        "ocadInicial": 22222460.7,
+        "ocadAtualizado": 22222460.7,
+        "ocadEmpenhado": 6714783.71,
+        "ocadLiquidado": 6227405.57,
+        "ocadPago": 6163675.57,
+        "ocadDisponivel": 15995055.13
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 550000,
+        "ocadInicial": 550000,
+        "ocadAtualizado": 550000,
+        "ocadEmpenhado": 2966,
+        "ocadLiquidado": 2966,
+        "ocadPago": 1294,
+        "ocadDisponivel": 547034
+      },
+      {
+        "codigo": "17010200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS ESTADOS",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 10725133.33,
+        "ocadEmpenhado": 10424228.71,
+        "ocadLiquidado": 9821116.57,
+        "ocadPago": 9785458.57,
+        "ocadDisponivel": 904016.76
+      },
+      {
+        "codigo": "25010700",
+        "nome": "RECURSOS PRÓPRIOS ADM INDIRETA ¿ NÃO VINCULADOS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 2887870.67,
+        "ocadEmpenhado": 1740308.15,
+        "ocadLiquidado": 1646657.89,
+        "ocadPago": 1639473.89,
+        "ocadDisponivel": 1241212.78
+      },
+      {
+        "codigo": "27010200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS ESTADOS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 116199.08,
+        "ocadEmpenhado": 115052.61,
+        "ocadLiquidado": 112398.41,
+        "ocadPago": 104500.41,
+        "ocadDisponivel": 3800.67
+      }
+    ],
     "dotacaoInicial": 22772460.7,
     "ocadInicial": 22772460.7,
     "ocadAtualizado": 36501663.78,
@@ -515,7 +1144,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 500,
+        "ocadInicial": 180,
+        "ocadAtualizado": 180,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 180
+      }
+    ],
     "dotacaoInicial": 500,
     "ocadInicial": 180,
     "ocadAtualizado": 180,
@@ -536,7 +1177,107 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 9,
+    "fontes": [
+      {
+        "codigo": "15010700",
+        "nome": "RECURSOS PRÓPRIOS DA ADM. INDIRETA ¿ REC. NÃO VINCULADOS",
+        "dotacaoInicial": 3366400,
+        "ocadInicial": 1211904,
+        "ocadAtualizado": 1200089.98,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1200089.98
+      },
+      {
+        "codigo": "15700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO",
+        "dotacaoInicial": 2196474.75,
+        "ocadInicial": 790730.91,
+        "ocadAtualizado": 790730.91,
+        "ocadEmpenhado": 62554.21,
+        "ocadLiquidado": 32825.91,
+        "ocadPago": 32825.91,
+        "ocadDisponivel": 757905
+      },
+      {
+        "codigo": "17003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 912000,
+        "ocadInicial": 328320,
+        "ocadAtualizado": 328320,
+        "ocadEmpenhado": 266071.32,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 328320
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 470913,
+        "ocadInicial": 169528.68,
+        "ocadAtualizado": 169528.68,
+        "ocadEmpenhado": 24131.11,
+        "ocadLiquidado": 21438.36,
+        "ocadPago": 18503.64,
+        "ocadDisponivel": 148090.32
+      },
+      {
+        "codigo": "17010200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS ESTADOS",
+        "dotacaoInicial": 2000,
+        "ocadInicial": 720,
+        "ocadAtualizado": 720,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 720
+      },
+      {
+        "codigo": "17020200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS MUNICÍPIOS",
+        "dotacaoInicial": 2000,
+        "ocadInicial": 720,
+        "ocadAtualizado": 720,
+        "ocadEmpenhado": 118.45,
+        "ocadLiquidado": 118.45,
+        "ocadPago": 118.45,
+        "ocadDisponivel": 601.55
+      },
+      {
+        "codigo": "25700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 1445650.66,
+        "ocadEmpenhado": 489059.6,
+        "ocadLiquidado": 460677.14,
+        "ocadPago": 455057.54,
+        "ocadDisponivel": 984973.52
+      },
+      {
+        "codigo": "27010200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS ESTADOS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 228165.3,
+        "ocadEmpenhado": 211861.07,
+        "ocadLiquidado": 155664.35,
+        "ocadPago": 155664.35,
+        "ocadDisponivel": 72500.95
+      },
+      {
+        "codigo": "27020200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU INSTRUMENTOS CONGÊNERES DOS MUNICÍPIOS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 6834.56,
+        "ocadEmpenhado": 6834.56,
+        "ocadLiquidado": 6834.56,
+        "ocadPago": 6834.56,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 6949787.75,
     "ocadInicial": 2501923.59,
     "ocadAtualizado": 4170760.09,
@@ -557,7 +1298,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 15616587.01,
+        "ocadInicial": 5621971.32,
+        "ocadAtualizado": 5621971.32,
+        "ocadEmpenhado": 3812717.87,
+        "ocadLiquidado": 2723403.14,
+        "ocadPago": 2650500.56,
+        "ocadDisponivel": 2898568.18
+      }
+    ],
     "dotacaoInicial": 15616587.01,
     "ocadInicial": 5621971.32,
     "ocadAtualizado": 5621971.32,
@@ -578,7 +1331,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 1170000,
+        "ocadInicial": 421200,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 584472.27,
+        "ocadInicial": 210410.02,
+        "ocadAtualizado": 99085.03,
+        "ocadEmpenhado": 98726.14,
+        "ocadLiquidado": 94858.05,
+        "ocadPago": 36851.45,
+        "ocadDisponivel": 4226.98
+      }
+    ],
     "dotacaoInicial": 1754472.27,
     "ocadInicial": 631610.02,
     "ocadAtualizado": 99085.03,
@@ -599,7 +1375,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "17190013",
+        "nome": "TRANSF POLÍTICA NAC DE FOMENTO À CULTURA-LEI Nº 14.399/2022",
+        "dotacaoInicial": 21000000,
+        "ocadInicial": 7560000,
+        "ocadAtualizado": 7560000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 7560000
+      },
+      {
+        "codigo": "27190013",
+        "nome": "TRANSF POLÍTICA NAC DE FOMENTO À CULTURA-LEI Nº 14.399/2022 (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 4716049.75,
+        "ocadEmpenhado": 3722750.06,
+        "ocadLiquidado": 3611038.59,
+        "ocadPago": 3598385.58,
+        "ocadDisponivel": 1105011.16
+      }
+    ],
     "dotacaoInicial": 21000000,
     "ocadInicial": 7560000,
     "ocadAtualizado": 12276049.75,
@@ -620,7 +1419,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "17150013",
+        "nome": "TRANSF DEST AO SETOR CULTURAL-LC Nº195/2022-ART.5º AUDIOVIS",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 360,
+        "ocadAtualizado": 360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360
+      },
+      {
+        "codigo": "17160013",
+        "nome": "TRANSF AO SETOR CULTURAL-LC Nº195/2022-ART.8º-DEMAIS SETORES",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 360,
+        "ocadAtualizado": 360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360
+      }
+    ],
     "dotacaoInicial": 2000,
     "ocadInicial": 720,
     "ocadAtualizado": 720,
@@ -641,7 +1463,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 9061605,
+        "ocadInicial": 3262177.8,
+        "ocadAtualizado": 2141725.67,
+        "ocadEmpenhado": 2123341.32,
+        "ocadLiquidado": 1962217.72,
+        "ocadPago": 1543681.16,
+        "ocadDisponivel": 179507.95
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 153252,
+        "ocadEmpenhado": 153252,
+        "ocadLiquidado": 153252,
+        "ocadPago": 153252,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 9061605,
     "ocadInicial": 3262177.8,
     "ocadAtualizado": 2294977.67,
@@ -662,7 +1507,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 2000,
+        "ocadInicial": 720,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 2000,
     "ocadInicial": 720,
     "ocadAtualizado": 0,
@@ -683,7 +1540,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 146000,
+        "ocadInicial": 52560,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 146000,
     "ocadInicial": 52560,
     "ocadAtualizado": 0,
@@ -704,7 +1573,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 48802.26,
+        "ocadInicial": 17568.81,
+        "ocadAtualizado": 1133.55,
+        "ocadEmpenhado": 1133.55,
+        "ocadLiquidado": 1133.55,
+        "ocadPago": 1133.55,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 48802.26,
     "ocadInicial": 17568.81,
     "ocadAtualizado": 1133.55,
@@ -725,7 +1606,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 42000,
+        "ocadInicial": 15120,
+        "ocadAtualizado": 5544.98,
+        "ocadEmpenhado": 5544.98,
+        "ocadLiquidado": 5544.98,
+        "ocadPago": 5544.98,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 42000,
     "ocadInicial": 15120,
     "ocadAtualizado": 5544.98,
@@ -746,7 +1639,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 97604.54,
+        "ocadInicial": 35137.63,
+        "ocadAtualizado": 3449.42,
+        "ocadEmpenhado": 3449.42,
+        "ocadLiquidado": 1657.7,
+        "ocadPago": 542.43,
+        "ocadDisponivel": 1791.72
+      }
+    ],
     "dotacaoInicial": 97604.54,
     "ocadInicial": 35137.63,
     "ocadAtualizado": 3449.42,
@@ -767,7 +1672,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 6448672.76,
+        "ocadInicial": 2321522.19,
+        "ocadAtualizado": 1625376.99,
+        "ocadEmpenhado": 1579378.07,
+        "ocadLiquidado": 887569.15,
+        "ocadPago": 606923.21,
+        "ocadDisponivel": 737807.84
+      }
+    ],
     "dotacaoInicial": 6448672.76,
     "ocadInicial": 2321522.19,
     "ocadAtualizado": 1625376.99,
@@ -788,7 +1705,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 6816843.17,
+        "ocadInicial": 2454063.54,
+        "ocadAtualizado": 3943009.29,
+        "ocadEmpenhado": 3865757.48,
+        "ocadLiquidado": 3739017.17,
+        "ocadPago": 3599148.57,
+        "ocadDisponivel": 203992.12
+      },
+      {
+        "codigo": "15010700",
+        "nome": "RECURSOS PRÓPRIOS DA ADM. INDIRETA ¿ REC. NÃO VINCULADOS",
+        "dotacaoInicial": 26100,
+        "ocadInicial": 9396,
+        "ocadAtualizado": 8804.8,
+        "ocadEmpenhado": 5906.84,
+        "ocadLiquidado": 5906.84,
+        "ocadPago": 5906.84,
+        "ocadDisponivel": 2897.96
+      }
+    ],
     "dotacaoInicial": 6842943.17,
     "ocadInicial": 2463459.54,
     "ocadAtualizado": 3951814.09,
@@ -809,7 +1749,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 195959097.3,
+        "ocadInicial": 195959097.3,
+        "ocadAtualizado": 195959097.3,
+        "ocadEmpenhado": 173787169.77,
+        "ocadLiquidado": 110747895.95,
+        "ocadPago": 110747895.95,
+        "ocadDisponivel": 85211201.35
+      }
+    ],
     "dotacaoInicial": 195959097.3,
     "ocadInicial": 195959097.3,
     "ocadAtualizado": 195959097.3,
@@ -830,7 +1782,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 48100000,
+        "ocadInicial": 48100000,
+        "ocadAtualizado": 48100000,
+        "ocadEmpenhado": 47075624.87,
+        "ocadLiquidado": 37331124.71,
+        "ocadPago": 37224678.73,
+        "ocadDisponivel": 10768875.29
+      },
+      {
+        "codigo": "15460000",
+        "nome": "TRANSFERÊNCIAS DO FUNDEB - COMPLEMENTAÇÃO DA UNIÃO - ETI",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 1731939.67,
+        "ocadEmpenhado": 1402754.44,
+        "ocadLiquidado": 234435.7,
+        "ocadPago": 234435.7,
+        "ocadDisponivel": 1497503.97
+      }
+    ],
     "dotacaoInicial": 48100000,
     "ocadInicial": 48100000,
     "ocadAtualizado": 49831939.67,
@@ -851,7 +1826,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15401070",
+        "nome": "IDENT. DO PERC. APLIC. NA REMUN. PROF. DA EDUCAÇÃO BÁSICA",
+        "dotacaoInicial": 875000000,
+        "ocadInicial": 875000000,
+        "ocadAtualizado": 875000000,
+        "ocadEmpenhado": 520774866.97,
+        "ocadLiquidado": 520774866.97,
+        "ocadPago": 505364241.03,
+        "ocadDisponivel": 354225133.03
+      },
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 57500000,
+        "ocadInicial": 57500000,
+        "ocadAtualizado": 57500000,
+        "ocadEmpenhado": 32980586,
+        "ocadLiquidado": 32980586,
+        "ocadPago": 32980586,
+        "ocadDisponivel": 24519414
+      }
+    ],
     "dotacaoInicial": 932500000,
     "ocadInicial": 932500000,
     "ocadAtualizado": 932500000,
@@ -872,7 +1870,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 1000,
+        "ocadAtualizado": 1000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1000
+      },
+      {
+        "codigo": "15401070",
+        "nome": "IDENT. DO PERC. APLIC. NA REMUN. PROF. DA EDUCAÇÃO BÁSICA",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 1000,
+        "ocadAtualizado": 1000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1000
+      }
+    ],
     "dotacaoInicial": 2000,
     "ocadInicial": 2000,
     "ocadAtualizado": 2000,
@@ -893,7 +1914,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15420300",
+        "nome": "TRANSF. DO FUNDEB - COMPLEMENTAÇÃO DA UNIÃO - VAAT",
+        "dotacaoInicial": 2000,
+        "ocadInicial": 2000,
+        "ocadAtualizado": 2000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2000
+      },
+      {
+        "codigo": "15430300",
+        "nome": "TRANSF. DO FUNDEB - COMPLEMENTAÇÃO DA UNIÃO - VAAR",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 1000,
+        "ocadAtualizado": 1000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1000
+      }
+    ],
     "dotacaoInicial": 3000,
     "ocadInicial": 3000,
     "ocadAtualizado": 3000,
@@ -914,7 +1958,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 41000000,
+        "ocadInicial": 41000000,
+        "ocadAtualizado": 41000000,
+        "ocadEmpenhado": 31256136,
+        "ocadLiquidado": 21952423.46,
+        "ocadPago": 21952423.46,
+        "ocadDisponivel": 19047576.54
+      }
+    ],
     "dotacaoInicial": 41000000,
     "ocadInicial": 41000000,
     "ocadAtualizado": 41000000,
@@ -935,7 +1991,30 @@
     "eixo": "EDUCACAO",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15401070",
+        "nome": "IDENT. DO PERC. APLIC. NA REMUN. PROF. DA EDUCAÇÃO BÁSICA",
+        "dotacaoInicial": 168800226.36,
+        "ocadInicial": 168800226.36,
+        "ocadAtualizado": 138800226.36,
+        "ocadEmpenhado": 94292085.78,
+        "ocadLiquidado": 94292085.78,
+        "ocadPago": 94292085.78,
+        "ocadDisponivel": 44508140.58
+      },
+      {
+        "codigo": "15400300",
+        "nome": "TRANSF. DO FUNDEB - IMPOSTOS E TRANSF. DE IMPOSTOS",
+        "dotacaoInicial": 14500000,
+        "ocadInicial": 14500000,
+        "ocadAtualizado": 11300000,
+        "ocadEmpenhado": 4270874.66,
+        "ocadLiquidado": 4270874.66,
+        "ocadPago": 4270874.66,
+        "ocadDisponivel": 7029125.34
+      }
+    ],
     "dotacaoInicial": 183300226.36,
     "ocadInicial": 183300226.36,
     "ocadAtualizado": 150100226.36,
@@ -956,7 +2035,63 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 5,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 3361519.51,
+        "ocadInicial": 1210147.02,
+        "ocadAtualizado": 3354928.79,
+        "ocadEmpenhado": 3303947.77,
+        "ocadLiquidado": 3259896.59,
+        "ocadPago": 3036200.03,
+        "ocadDisponivel": 95032.2
+      },
+      {
+        "codigo": "17003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1000000,
+        "ocadInicial": 360000,
+        "ocadAtualizado": 360000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360000
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 317871.5,
+        "ocadEmpenhado": 66799.67,
+        "ocadLiquidado": 66799.67,
+        "ocadPago": 66799.67,
+        "ocadDisponivel": 251071.83
+      },
+      {
+        "codigo": "25700200",
+        "nome": "TRANSF. DO GOV. FEDERAL-CONVÊNIOS/REPASSES VINC. A EDUCAÇÃO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 15766.4,
+        "ocadEmpenhado": 15528.11,
+        "ocadLiquidado": 15528.11,
+        "ocadPago": 15528.11,
+        "ocadDisponivel": 238.29
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 792000,
+        "ocadEmpenhado": 684000,
+        "ocadLiquidado": 684000,
+        "ocadPago": 0,
+        "ocadDisponivel": 108000
+      }
+    ],
     "dotacaoInicial": 4361519.51,
     "ocadInicial": 1570147.02,
     "ocadAtualizado": 4840566.7,
@@ -977,7 +2112,19 @@
     "eixo": "EDUCACAO",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 10180550.44,
+        "ocadInicial": 3664998.16,
+        "ocadAtualizado": 3793586.7,
+        "ocadEmpenhado": 3456050.3,
+        "ocadLiquidado": 3056047.04,
+        "ocadPago": 2681072.91,
+        "ocadDisponivel": 737539.66
+      }
+    ],
     "dotacaoInicial": 10180550.44,
     "ocadInicial": 3664998.16,
     "ocadAtualizado": 3793586.7,
@@ -998,7 +2145,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 963000,
+        "ocadInicial": 963000,
+        "ocadAtualizado": 1917000,
+        "ocadEmpenhado": 1073358.19,
+        "ocadLiquidado": 408415.77,
+        "ocadPago": 224779.06,
+        "ocadDisponivel": 1508584.23
+      }
+    ],
     "dotacaoInicial": 963000,
     "ocadInicial": 963000,
     "ocadAtualizado": 1917000,
@@ -1019,7 +2178,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 94106.18,
+        "ocadInicial": 94106.18,
+        "ocadAtualizado": 94106.18,
+        "ocadEmpenhado": 43202,
+        "ocadLiquidado": 43202,
+        "ocadPago": 43202,
+        "ocadDisponivel": 50904.18
+      }
+    ],
     "dotacaoInicial": 94106.18,
     "ocadInicial": 94106.18,
     "ocadAtualizado": 94106.18,
@@ -1040,7 +2211,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 11975719.52,
+        "ocadInicial": 11975719.52,
+        "ocadAtualizado": 12925719.52,
+        "ocadEmpenhado": 8708612.23,
+        "ocadLiquidado": 6577939.77,
+        "ocadPago": 5163183.88,
+        "ocadDisponivel": 6347779.75
+      }
+    ],
     "dotacaoInicial": 11975719.52,
     "ocadInicial": 11975719.52,
     "ocadAtualizado": 12925719.52,
@@ -1061,7 +2244,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 76550,
+        "ocadInicial": 76550,
+        "ocadAtualizado": 126550,
+        "ocadEmpenhado": 99561.6,
+        "ocadLiquidado": 99561.6,
+        "ocadPago": 99561.6,
+        "ocadDisponivel": 26988.4
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 2000,
+        "ocadInicial": 2000,
+        "ocadAtualizado": 2000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2000
+      }
+    ],
     "dotacaoInicial": 78550,
     "ocadInicial": 78550,
     "ocadAtualizado": 128550,
@@ -1082,7 +2288,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 5000,
+        "ocadAtualizado": 5000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 5000
+      }
+    ],
     "dotacaoInicial": 5000,
     "ocadInicial": 5000,
     "ocadAtualizado": 5000,
@@ -1103,7 +2321,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 4910384.93,
+        "ocadInicial": 4910384.93,
+        "ocadAtualizado": 2910384.93,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2910384.93
+      }
+    ],
     "dotacaoInicial": 4910384.93,
     "ocadInicial": 4910384.93,
     "ocadAtualizado": 2910384.93,
@@ -1124,7 +2354,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 4000,
+        "ocadInicial": 4000,
+        "ocadAtualizado": 50000,
+        "ocadEmpenhado": 50000,
+        "ocadLiquidado": 50000,
+        "ocadPago": 50000,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 4000,
     "ocadInicial": 4000,
     "ocadAtualizado": 50000,
@@ -1145,7 +2387,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 10000,
+        "ocadInicial": 3600,
+        "ocadAtualizado": 3600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 3600
+      }
+    ],
     "dotacaoInicial": 10000,
     "ocadInicial": 3600,
     "ocadAtualizado": 3600,
@@ -1166,7 +2420,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 60000,
+        "ocadInicial": 21600,
+        "ocadAtualizado": 21600,
+        "ocadEmpenhado": 16196.4,
+        "ocadLiquidado": 16196.4,
+        "ocadPago": 16196.4,
+        "ocadDisponivel": 5403.6
+      }
+    ],
     "dotacaoInicial": 60000,
     "ocadInicial": 21600,
     "ocadAtualizado": 21600,
@@ -1187,7 +2453,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 2500000,
+        "ocadInicial": 900000,
+        "ocadAtualizado": 756000,
+        "ocadEmpenhado": 180000,
+        "ocadLiquidado": 149772.17,
+        "ocadPago": 149772.17,
+        "ocadDisponivel": 606227.83
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 1300000,
+        "ocadInicial": 468000,
+        "ocadAtualizado": 468000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 468000
+      }
+    ],
     "dotacaoInicial": 3800000,
     "ocadInicial": 1368000,
     "ocadAtualizado": 1224000,
@@ -1208,7 +2497,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 40000,
+        "ocadInicial": 14400,
+        "ocadAtualizado": 14400,
+        "ocadEmpenhado": 14380.31,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 14400
+      }
+    ],
     "dotacaoInicial": 40000,
     "ocadInicial": 14400,
     "ocadAtualizado": 14400,
@@ -1229,7 +2530,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 3000000,
+        "ocadInicial": 1080000,
+        "ocadAtualizado": 1080000,
+        "ocadEmpenhado": 392965.68,
+        "ocadLiquidado": 109160.29,
+        "ocadPago": 51182.13,
+        "ocadDisponivel": 970839.71
+      }
+    ],
     "dotacaoInicial": 3000000,
     "ocadInicial": 1080000,
     "ocadAtualizado": 1080000,
@@ -1250,7 +2563,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 35000000,
+        "ocadInicial": 12600000,
+        "ocadAtualizado": 12600000,
+        "ocadEmpenhado": 12571219.67,
+        "ocadLiquidado": 8932123.22,
+        "ocadPago": 4745501.44,
+        "ocadDisponivel": 3667876.78
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 13000000,
+        "ocadInicial": 4680000,
+        "ocadAtualizado": 5940000,
+        "ocadEmpenhado": 5063569.95,
+        "ocadLiquidado": 5063569.95,
+        "ocadPago": 5063569.95,
+        "ocadDisponivel": 876430.05
+      }
+    ],
     "dotacaoInicial": 48000000,
     "ocadInicial": 17280000,
     "ocadAtualizado": 18540000,
@@ -1271,7 +2607,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 15000000,
+        "ocadInicial": 5400000,
+        "ocadAtualizado": 5400000,
+        "ocadEmpenhado": 5137150.76,
+        "ocadLiquidado": 3085798.58,
+        "ocadPago": 2441806.05,
+        "ocadDisponivel": 2314201.42
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 3500000,
+        "ocadInicial": 1260000,
+        "ocadAtualizado": 3042000.94,
+        "ocadEmpenhado": 704042.43,
+        "ocadLiquidado": 704042.43,
+        "ocadPago": 450000.94,
+        "ocadDisponivel": 2337958.51
+      }
+    ],
     "dotacaoInicial": 18500000,
     "ocadInicial": 6660000,
     "ocadAtualizado": 8442000.94,
@@ -1292,7 +2651,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 32216624,
+        "ocadInicial": 11597984.64,
+        "ocadAtualizado": 11590784.64,
+        "ocadEmpenhado": 9445339.68,
+        "ocadLiquidado": 7109526.91,
+        "ocadPago": 6042317.38,
+        "ocadDisponivel": 4481257.73
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 5000000,
+        "ocadInicial": 1800000,
+        "ocadAtualizado": 1616400,
+        "ocadEmpenhado": 1343494.29,
+        "ocadLiquidado": 1292387.88,
+        "ocadPago": 1048692.93,
+        "ocadDisponivel": 324012.12
+      }
+    ],
     "dotacaoInicial": 37216624,
     "ocadInicial": 13397984.64,
     "ocadAtualizado": 13207184.64,
@@ -1313,7 +2695,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 103000,
+        "ocadInicial": 37080,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 103000,
     "ocadInicial": 37080,
     "ocadAtualizado": 0,
@@ -1334,7 +2728,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 103000,
+        "ocadInicial": 37080,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 103000,
     "ocadInicial": 37080,
     "ocadAtualizado": 0,
@@ -1355,7 +2761,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 103000,
+        "ocadInicial": 37080,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 103000,
     "ocadInicial": 37080,
     "ocadAtualizado": 0,
@@ -1376,7 +2794,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 1701000,
+        "ocadInicial": 612360,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 151000,
+        "ocadInicial": 54360,
+        "ocadAtualizado": 79560,
+        "ocadEmpenhado": 43447.66,
+        "ocadLiquidado": 36425.21,
+        "ocadPago": 30839.95,
+        "ocadDisponivel": 43134.79
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 125520,
+        "ocadInicial": 45187.2,
+        "ocadAtualizado": 45187.2,
+        "ocadEmpenhado": 19063.8,
+        "ocadLiquidado": 15989.18,
+        "ocadPago": 15989.18,
+        "ocadDisponivel": 29198.02
+      }
+    ],
     "dotacaoInicial": 1977520,
     "ocadInicial": 711907.2,
     "ocadAtualizado": 124747.2,
@@ -1397,7 +2849,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 2001000,
+        "ocadInicial": 720360,
+        "ocadAtualizado": 1055096.2,
+        "ocadEmpenhado": 1055096.2,
+        "ocadLiquidado": 1055096.2,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 595000,
+        "ocadInicial": 214200,
+        "ocadAtualizado": 820425.74,
+        "ocadEmpenhado": 761002.61,
+        "ocadLiquidado": 733614.6,
+        "ocadPago": 733614.6,
+        "ocadDisponivel": 86811.14
+      }
+    ],
     "dotacaoInicial": 2596000,
     "ocadInicial": 934560,
     "ocadAtualizado": 1875521.95,
@@ -1418,7 +2893,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 92700,
+        "ocadInicial": 33372,
+        "ocadAtualizado": 54972,
+        "ocadEmpenhado": 9106.65,
+        "ocadLiquidado": 6990.6,
+        "ocadPago": 3159.08,
+        "ocadDisponivel": 47981.4
+      }
+    ],
     "dotacaoInicial": 92700,
     "ocadInicial": 33372,
     "ocadAtualizado": 54972,
@@ -1439,7 +2926,206 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 18,
+    "fontes": [
+      {
+        "codigo": "17540501",
+        "nome": "BIRD - PROGESTÃO",
+        "dotacaoInicial": 16068250,
+        "ocadInicial": 5784570,
+        "ocadAtualizado": 5784570,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 5784570
+      },
+      {
+        "codigo": "16313140",
+        "nome": "EMENDAS PARLAMENTARES DE RELATOR (SAÚDE)",
+        "dotacaoInicial": 8596000,
+        "ocadInicial": 3094560,
+        "ocadAtualizado": 3094560,
+        "ocadEmpenhado": 2000700,
+        "ocadLiquidado": 1372236.38,
+        "ocadPago": 1372236.38,
+        "ocadDisponivel": 1722323.62
+      },
+      {
+        "codigo": "16313120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA (SAÚDE)",
+        "dotacaoInicial": 6896000,
+        "ocadInicial": 2482560,
+        "ocadAtualizado": 2481483.73,
+        "ocadEmpenhado": 1777861.5,
+        "ocadLiquidado": 474527.89,
+        "ocadPago": 434265.76,
+        "ocadDisponivel": 2006955.84
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5006000,
+        "ocadInicial": 1802160,
+        "ocadAtualizado": 2280038.76,
+        "ocadEmpenhado": 2268130.5,
+        "ocadLiquidado": 1273282.86,
+        "ocadPago": 1121602.17,
+        "ocadDisponivel": 1006755.9
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 5006000,
+        "ocadInicial": 1802160,
+        "ocadAtualizado": 1334724.56,
+        "ocadEmpenhado": 1334084.55,
+        "ocadLiquidado": 1023361.95,
+        "ocadPago": 713273.83,
+        "ocadDisponivel": 311362.61
+      },
+      {
+        "codigo": "16313110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS (SAÚDE)",
+        "dotacaoInicial": 3204000,
+        "ocadInicial": 1153440,
+        "ocadAtualizado": 1512945.28,
+        "ocadEmpenhado": 567560.34,
+        "ocadLiquidado": 126149.67,
+        "ocadPago": 126149.67,
+        "ocadDisponivel": 1386795.61
+      },
+      {
+        "codigo": "16310200",
+        "nome": "TRANSFERÊNCIAS DO GOVERNO FEDERAL REFERENTES A CONVÊNIOS E INSTRUMENTOS CONGÊNERES VINCULADOS À SAÚD",
+        "dotacaoInicial": 2804000,
+        "ocadInicial": 1009440,
+        "ocadAtualizado": 1009440,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1009440
+      },
+      {
+        "codigo": "16010400",
+        "nome": "SUS - INVESTIMENTOS",
+        "dotacaoInicial": 2802000,
+        "ocadInicial": 1008720,
+        "ocadAtualizado": 1008720,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1008720
+      },
+      {
+        "codigo": "16013110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1815000,
+        "ocadInicial": 653400,
+        "ocadAtualizado": 2420640,
+        "ocadEmpenhado": 2420640,
+        "ocadLiquidado": 319207.33,
+        "ocadPago": 319207.33,
+        "ocadDisponivel": 2101432.67
+      },
+      {
+        "codigo": "16013120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1815000,
+        "ocadInicial": 653400,
+        "ocadAtualizado": 653400,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 653400
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 322000,
+        "ocadInicial": 115920,
+        "ocadAtualizado": 115920,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 115920
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 322000,
+        "ocadInicial": 115920,
+        "ocadAtualizado": 115920,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 115920
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 322000,
+        "ocadInicial": 115920,
+        "ocadAtualizado": 115920,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 115920
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 322000,
+        "ocadInicial": 115920,
+        "ocadAtualizado": 115920,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 115920
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 100437.98,
+        "ocadInicial": 36157.67,
+        "ocadAtualizado": 36157.67,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 36157.67
+      },
+      {
+        "codigo": "16313130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO (SAÚDE)",
+        "dotacaoInicial": 7000,
+        "ocadInicial": 2520,
+        "ocadAtualizado": 2520,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2520
+      },
+      {
+        "codigo": "16013130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 1800,
+        "ocadAtualizado": 1800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1800
+      },
+      {
+        "codigo": "16013140",
+        "nome": "EMENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 1800,
+        "ocadAtualizado": 1800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1800
+      }
+    ],
     "dotacaoInicial": 55417687.98,
     "ocadInicial": 19950367.67,
     "ocadAtualizado": 22086480.01,
@@ -1460,7 +3146,96 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 8,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 182102500,
+        "ocadInicial": 65556900,
+        "ocadAtualizado": 54756900,
+        "ocadEmpenhado": 40077677.06,
+        "ocadLiquidado": 37284165.84,
+        "ocadPago": 37261548.33,
+        "ocadDisponivel": 17472734.16
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 102929000,
+        "ocadInicial": 37054440,
+        "ocadAtualizado": 44156691.86,
+        "ocadEmpenhado": 42105011.09,
+        "ocadLiquidado": 41756557.63,
+        "ocadPago": 37228552.53,
+        "ocadDisponivel": 2400134.23
+      },
+      {
+        "codigo": "16050400",
+        "nome": "COMP. PAGAMENTO DO PISO SALARIAL DA ENFERMAGEM",
+        "dotacaoInicial": 3231000,
+        "ocadInicial": 1163160,
+        "ocadAtualizado": 2658139.46,
+        "ocadEmpenhado": 2197160.06,
+        "ocadLiquidado": 2194634.82,
+        "ocadPago": 2194634.82,
+        "ocadDisponivel": 463504.64
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1288000,
+        "ocadInicial": 463680,
+        "ocadAtualizado": 463680,
+        "ocadEmpenhado": 149109.75,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 463680
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1288000,
+        "ocadInicial": 463680,
+        "ocadAtualizado": 463680,
+        "ocadEmpenhado": 1717.2,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 463680
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 1288000,
+        "ocadInicial": 463680,
+        "ocadAtualizado": 463680,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 463680
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 1288000,
+        "ocadInicial": 463680,
+        "ocadAtualizado": 463680,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 463680
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 987846.88,
+        "ocadInicial": 355624.88,
+        "ocadAtualizado": 1564877.99,
+        "ocadEmpenhado": 994533.18,
+        "ocadLiquidado": 892779.27,
+        "ocadPago": 892779.27,
+        "ocadDisponivel": 672098.72
+      }
+    ],
     "dotacaoInicial": 294402346.88,
     "ocadInicial": 105984844.88,
     "ocadAtualizado": 104991329.31,
@@ -1481,7 +3256,85 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 7,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 43002000,
+        "ocadInicial": 15480720,
+        "ocadAtualizado": 9372776.17,
+        "ocadEmpenhado": 9369118.57,
+        "ocadLiquidado": 9323832.46,
+        "ocadPago": 8702895.99,
+        "ocadDisponivel": 48943.71
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 3501000,
+        "ocadInicial": 1260360,
+        "ocadAtualizado": 6300360,
+        "ocadEmpenhado": 4682500.31,
+        "ocadLiquidado": 4557066.73,
+        "ocadPago": 4365403.55,
+        "ocadDisponivel": 1743293.27
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1449000,
+        "ocadInicial": 521640,
+        "ocadAtualizado": 521640,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 521640
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1449000,
+        "ocadInicial": 521640,
+        "ocadAtualizado": 521640,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 521640
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 1449000,
+        "ocadInicial": 521640,
+        "ocadAtualizado": 521640,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 521640
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 1449000,
+        "ocadInicial": 521640,
+        "ocadAtualizado": 521640,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 521640
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 557340.14,
+        "ocadInicial": 200642.45,
+        "ocadAtualizado": 807796.68,
+        "ocadEmpenhado": 750563.86,
+        "ocadLiquidado": 740709.22,
+        "ocadPago": 740709.22,
+        "ocadDisponivel": 67087.46
+      }
+    ],
     "dotacaoInicial": 52856340.14,
     "ocadInicial": 19028282.45,
     "ocadAtualizado": 18567492.85,
@@ -1502,7 +3355,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 1680000,
+        "ocadInicial": 604800,
+        "ocadAtualizado": 603180.93,
+        "ocadEmpenhado": 142517.36,
+        "ocadLiquidado": 82105.92,
+        "ocadPago": 61608.42,
+        "ocadDisponivel": 521075.01
+      }
+    ],
     "dotacaoInicial": 1680000,
     "ocadInicial": 604800,
     "ocadAtualizado": 603180.93,
@@ -1523,7 +3388,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 3900000,
+        "ocadInicial": 1404000,
+        "ocadAtualizado": 140658.04,
+        "ocadEmpenhado": 36007.2,
+        "ocadLiquidado": 23911.2,
+        "ocadPago": 23911.2,
+        "ocadDisponivel": 116746.84
+      }
+    ],
     "dotacaoInicial": 3900000,
     "ocadInicial": 1404000,
     "ocadAtualizado": 140658.04,
@@ -1544,7 +3421,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 10000,
+        "ocadInicial": 3600,
+        "ocadAtualizado": 3600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 3600
+      }
+    ],
     "dotacaoInicial": 10000,
     "ocadInicial": 3600,
     "ocadAtualizado": 3600,
@@ -1565,7 +3454,19 @@
     "eixo": "SAUDE",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 24461000,
+        "ocadInicial": 24461000,
+        "ocadAtualizado": 800480,
+        "ocadEmpenhado": 280491.19,
+        "ocadLiquidado": 208080.93,
+        "ocadPago": 177250.13,
+        "ocadDisponivel": 592399.07
+      }
+    ],
     "dotacaoInicial": 24461000,
     "ocadInicial": 24461000,
     "ocadAtualizado": 800480,
@@ -1586,7 +3487,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 2100000,
+        "ocadInicial": 756000,
+        "ocadAtualizado": 157113.65,
+        "ocadEmpenhado": 37722.14,
+        "ocadLiquidado": 28309.85,
+        "ocadPago": 25619.27,
+        "ocadDisponivel": 128803.8
+      }
+    ],
     "dotacaoInicial": 2100000,
     "ocadInicial": 756000,
     "ocadAtualizado": 157113.65,
@@ -1607,7 +3520,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 743600,
+        "ocadInicial": 267696,
+        "ocadAtualizado": 30096,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 30096
+      }
+    ],
     "dotacaoInicial": 743600,
     "ocadInicial": 267696,
     "ocadAtualizado": 30096,
@@ -1628,7 +3553,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 84000000,
+        "ocadInicial": 30240000,
+        "ocadAtualizado": 637833.6,
+        "ocadEmpenhado": 18974.57,
+        "ocadLiquidado": 4574.57,
+        "ocadPago": 4574.57,
+        "ocadDisponivel": 633259.03
+      }
+    ],
     "dotacaoInicial": 84000000,
     "ocadInicial": 30240000,
     "ocadAtualizado": 637833.6,
@@ -1649,7 +3586,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 705000,
+        "ocadInicial": 253800,
+        "ocadAtualizado": 253800,
+        "ocadEmpenhado": 94590.54,
+        "ocadLiquidado": 62310.72,
+        "ocadPago": 57556.18,
+        "ocadDisponivel": 191489.28
+      }
+    ],
     "dotacaoInicial": 705000,
     "ocadInicial": 253800,
     "ocadAtualizado": 253800,
@@ -1670,7 +3619,74 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 6,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 2002000,
+        "ocadInicial": 720720,
+        "ocadAtualizado": 360720,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360720
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 1602000,
+        "ocadInicial": 576720,
+        "ocadAtualizado": 603631.62,
+        "ocadEmpenhado": 426959.8,
+        "ocadLiquidado": 238694.88,
+        "ocadPago": 194148.63,
+        "ocadDisponivel": 364936.74
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 644000,
+        "ocadInicial": 231840,
+        "ocadAtualizado": 231840,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 231840
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 644000,
+        "ocadInicial": 231840,
+        "ocadAtualizado": 231840,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 231840
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 644000,
+        "ocadInicial": 231840,
+        "ocadAtualizado": 231840,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 231840
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 644000,
+        "ocadInicial": 231840,
+        "ocadAtualizado": 231840,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 231840
+      }
+    ],
     "dotacaoInicial": 6180000,
     "ocadInicial": 2224800,
     "ocadAtualizado": 1891711.62,
@@ -1691,7 +3707,19 @@
     "eixo": "SAUDE",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 4212000,
+        "ocadInicial": 4212000,
+        "ocadAtualizado": 4212000,
+        "ocadEmpenhado": 3413954.7,
+        "ocadLiquidado": 2527835.54,
+        "ocadPago": 2170438.32,
+        "ocadDisponivel": 1684164.46
+      }
+    ],
     "dotacaoInicial": 4212000,
     "ocadInicial": 4212000,
     "ocadAtualizado": 4212000,
@@ -1712,7 +3740,19 @@
     "eixo": "SAUDE",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 312000,
+        "ocadInicial": 312000,
+        "ocadAtualizado": 312000,
+        "ocadEmpenhado": 34241.51,
+        "ocadLiquidado": 16482.08,
+        "ocadPago": 6840.26,
+        "ocadDisponivel": 295517.92
+      }
+    ],
     "dotacaoInicial": 312000,
     "ocadInicial": 312000,
     "ocadAtualizado": 312000,
@@ -1733,7 +3773,85 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 7,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 181052000,
+        "ocadInicial": 65178720,
+        "ocadAtualizado": 58551960.45,
+        "ocadEmpenhado": 58271408.28,
+        "ocadLiquidado": 51141911.45,
+        "ocadPago": 43022546.04,
+        "ocadDisponivel": 7410049
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 12235819.19,
+        "ocadInicial": 4404894.91,
+        "ocadAtualizado": 2011407.57,
+        "ocadEmpenhado": 1328308.49,
+        "ocadLiquidado": 217607.21,
+        "ocadPago": 213193.53,
+        "ocadDisponivel": 1793800.36
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 7003000,
+        "ocadInicial": 2521080,
+        "ocadAtualizado": 43379561.37,
+        "ocadEmpenhado": 39528132.25,
+        "ocadLiquidado": 28190706.38,
+        "ocadPago": 17722741.41,
+        "ocadDisponivel": 15188854.99
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 6920.91,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      }
+    ],
     "dotacaoInicial": 206730819.19,
     "ocadInicial": 74423094.91,
     "ocadAtualizado": 106261329.39,
@@ -1754,7 +3872,206 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 18,
+    "fontes": [
+      {
+        "codigo": "16313140",
+        "nome": "EMENDAS PARLAMENTARES DE RELATOR (SAÚDE)",
+        "dotacaoInicial": 7404000,
+        "ocadInicial": 2665440,
+        "ocadAtualizado": 2665440,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2665440
+      },
+      {
+        "codigo": "16313110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS (SAÚDE)",
+        "dotacaoInicial": 2796000,
+        "ocadInicial": 1006560,
+        "ocadAtualizado": 646560,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 646560
+      },
+      {
+        "codigo": "16313120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA (SAÚDE)",
+        "dotacaoInicial": 2704000,
+        "ocadInicial": 973440,
+        "ocadAtualizado": 973440,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 973440
+      },
+      {
+        "codigo": "16310200",
+        "nome": "TRANSFERÊNCIAS DO GOVERNO FEDERAL REFERENTES A CONVÊNIOS E INSTRUMENTOS CONGÊNERES VINCULADOS À SAÚD",
+        "dotacaoInicial": 2196000,
+        "ocadInicial": 790560,
+        "ocadAtualizado": 790560,
+        "ocadEmpenhado": 708.98,
+        "ocadLiquidado": 708.98,
+        "ocadPago": 412.2,
+        "ocadDisponivel": 789851.02
+      },
+      {
+        "codigo": "17540501",
+        "nome": "BIRD - PROGESTÃO",
+        "dotacaoInicial": 2068250,
+        "ocadInicial": 744570,
+        "ocadAtualizado": 744570,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 744570
+      },
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 2005000,
+        "ocadInicial": 721800,
+        "ocadAtualizado": 2429190,
+        "ocadEmpenhado": 2429190,
+        "ocadLiquidado": 2137320,
+        "ocadPago": 0,
+        "ocadDisponivel": 291870
+      },
+      {
+        "codigo": "16010400",
+        "nome": "SUS - INVESTIMENTOS",
+        "dotacaoInicial": 1897000,
+        "ocadInicial": 682920,
+        "ocadAtualizado": 682920,
+        "ocadEmpenhado": 514782,
+        "ocadLiquidado": 173466,
+        "ocadPago": 113256,
+        "ocadDisponivel": 509454
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 1751000,
+        "ocadInicial": 630360,
+        "ocadAtualizado": 189560.16,
+        "ocadEmpenhado": 189200.16,
+        "ocadLiquidado": 131062.32,
+        "ocadPago": 131062.32,
+        "ocadDisponivel": 58497.84
+      },
+      {
+        "codigo": "16013110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1003000,
+        "ocadInicial": 361080,
+        "ocadAtualizado": 0,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 0
+      },
+      {
+        "codigo": "16013120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1003000,
+        "ocadInicial": 361080,
+        "ocadAtualizado": 361080,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 361080
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 483000,
+        "ocadInicial": 173880,
+        "ocadAtualizado": 173880,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 173880
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 483000,
+        "ocadInicial": 173880,
+        "ocadAtualizado": 173880,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 173880
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 483000,
+        "ocadInicial": 173880,
+        "ocadAtualizado": 173880,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 173880
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 483000,
+        "ocadInicial": 173880,
+        "ocadAtualizado": 173880,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 173880
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 60900,
+        "ocadInicial": 21924,
+        "ocadAtualizado": 21924,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 21924
+      },
+      {
+        "codigo": "16313130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO (SAÚDE)",
+        "dotacaoInicial": 7000,
+        "ocadInicial": 2520,
+        "ocadAtualizado": 2520,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 2520
+      },
+      {
+        "codigo": "16013130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 1800,
+        "ocadAtualizado": 1800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1800
+      },
+      {
+        "codigo": "16013140",
+        "nome": "EMENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 5000,
+        "ocadInicial": 1800,
+        "ocadAtualizado": 1800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1800
+      }
+    ],
     "dotacaoInicial": 26837150,
     "ocadInicial": 9661374,
     "ocadAtualizado": 10206884.16,
@@ -1775,7 +4092,96 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 8,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 25972376.86,
+        "ocadInicial": 9350055.67,
+        "ocadAtualizado": 7411693.63,
+        "ocadEmpenhado": 7411693.49,
+        "ocadLiquidado": 6241900.32,
+        "ocadPago": 5566229.27,
+        "ocadDisponivel": 1169793.31
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 7003000,
+        "ocadInicial": 2521080,
+        "ocadAtualizado": 6997940.5,
+        "ocadEmpenhado": 4341707,
+        "ocadLiquidado": 3021720.15,
+        "ocadPago": 2022118,
+        "ocadDisponivel": 3976220.35
+      },
+      {
+        "codigo": "16003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003130",
+        "nome": "EMENDAS PARLAMENTARES DE COMISSÃO.",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16003140",
+        "nome": "MENDAS PARLAMENTARES DE RELATOR.",
+        "dotacaoInicial": 1610000,
+        "ocadInicial": 579600,
+        "ocadAtualizado": 579600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 579600
+      },
+      {
+        "codigo": "16050400",
+        "nome": "COMP. PAGAMENTO DO PISO SALARIAL DA ENFERMAGEM",
+        "dotacaoInicial": 1000000,
+        "ocadInicial": 360000,
+        "ocadAtualizado": 360000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360000
+      },
+      {
+        "codigo": "16350100",
+        "nome": "ROYALTIES DO PETRÓLEO E GÁS NATURAL VINC À SAÚDE (25%)",
+        "dotacaoInicial": 932135.81,
+        "ocadInicial": 335568.89,
+        "ocadAtualizado": 515568.89,
+        "ocadEmpenhado": 282585.69,
+        "ocadLiquidado": 217421.76,
+        "ocadPago": 215513.22,
+        "ocadDisponivel": 298147.13
+      }
+    ],
     "dotacaoInicial": 41347512.67,
     "ocadInicial": 14885104.56,
     "ocadAtualizado": 17603603.02,
@@ -1796,7 +4202,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15001002",
+        "nome": "RECURSOS DEST. AO DES. DAS AÇÕES DE SAÚDE (12%)",
+        "dotacaoInicial": 1045000,
+        "ocadInicial": 376200,
+        "ocadAtualizado": 197556.22,
+        "ocadEmpenhado": 195308.4,
+        "ocadLiquidado": 61086.67,
+        "ocadPago": 49820.98,
+        "ocadDisponivel": 136469.55
+      },
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 853000,
+        "ocadInicial": 307080,
+        "ocadAtualizado": 631080,
+        "ocadEmpenhado": 628886.76,
+        "ocadLiquidado": 170685.9,
+        "ocadPago": 87100.2,
+        "ocadDisponivel": 460394.1
+      }
+    ],
     "dotacaoInicial": 1898000,
     "ocadInicial": 683280,
     "ocadAtualizado": 828636.22,
@@ -1817,7 +4246,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 1100000,
+        "ocadInicial": 396000,
+        "ocadAtualizado": 292822.94,
+        "ocadEmpenhado": 178918.11,
+        "ocadLiquidado": 141374.64,
+        "ocadPago": 122871.52,
+        "ocadDisponivel": 151448.3
+      }
+    ],
     "dotacaoInicial": 1100000,
     "ocadInicial": 396000,
     "ocadAtualizado": 292822.94,
@@ -1838,7 +4279,19 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "16000400",
+        "nome": "SUS - MANUTENÇÃO",
+        "dotacaoInicial": 2962000,
+        "ocadInicial": 1066320,
+        "ocadAtualizado": 1434414.79,
+        "ocadEmpenhado": 1115917.65,
+        "ocadLiquidado": 840253.3,
+        "ocadPago": 664627.26,
+        "ocadDisponivel": 594161.49
+      }
+    ],
     "dotacaoInicial": 2962000,
     "ocadInicial": 1066320,
     "ocadAtualizado": 1434414.79,
@@ -1859,7 +4312,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "17540500",
+        "nome": "OPERAÇÕES DE CRÉDITO",
+        "dotacaoInicial": 7536842.2,
+        "ocadInicial": 2713263.19,
+        "ocadAtualizado": 2713263.19,
+        "ocadEmpenhado": 2030975.55,
+        "ocadLiquidado": 432355.9,
+        "ocadPago": 432355.9,
+        "ocadDisponivel": 2280907.29
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 2908000,
+        "ocadInicial": 1046880,
+        "ocadAtualizado": 1054019.86,
+        "ocadEmpenhado": 422359.59,
+        "ocadLiquidado": 179636.74,
+        "ocadPago": 146840.74,
+        "ocadDisponivel": 874383.12
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 800000,
+        "ocadInicial": 288000,
+        "ocadAtualizado": 1331194.85,
+        "ocadEmpenhado": 150866.16,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1331194.85
+      }
+    ],
     "dotacaoInicial": 11244842.2,
     "ocadInicial": 4048143.19,
     "ocadAtualizado": 5098477.9,
@@ -1880,7 +4367,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1358000,
+        "ocadInicial": 488880,
+        "ocadAtualizado": 296836.75,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 296836.75
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 1228000,
+        "ocadInicial": 442080,
+        "ocadAtualizado": 442080,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 442080
+      },
+      {
+        "codigo": "17003110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 635000,
+        "ocadInicial": 228600,
+        "ocadAtualizado": 228600,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 228600
+      }
+    ],
     "dotacaoInicial": 3221000,
     "ocadInicial": 1159560,
     "ocadAtualizado": 967516.75,
@@ -1901,7 +4422,41 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1000000,
+        "ocadInicial": 360000,
+        "ocadAtualizado": 180000,
+        "ocadEmpenhado": 33805.16,
+        "ocadLiquidado": 33805.16,
+        "ocadPago": 33805.16,
+        "ocadDisponivel": 146194.84
+      },
+      {
+        "codigo": "25000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 80777.54,
+        "ocadEmpenhado": 80777.54,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 80777.54
+      },
+      {
+        "codigo": "27000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 446940,
+        "ocadEmpenhado": 446940,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 446940
+      }
+    ],
     "dotacaoInicial": 1000000,
     "ocadInicial": 360000,
     "ocadAtualizado": 707717.54,
@@ -1922,7 +4477,30 @@
     "eixo": "SAUDE",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 4750000,
+        "ocadInicial": 1710000,
+        "ocadAtualizado": 1701455.09,
+        "ocadEmpenhado": 1038859.97,
+        "ocadLiquidado": 671575.51,
+        "ocadPago": 574227.76,
+        "ocadDisponivel": 1029879.58
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 3800000,
+        "ocadInicial": 1368000,
+        "ocadAtualizado": 1368000,
+        "ocadEmpenhado": 180000,
+        "ocadLiquidado": 609.51,
+        "ocadPago": 609.51,
+        "ocadDisponivel": 1367390.49
+      }
+    ],
     "dotacaoInicial": 8550000,
     "ocadInicial": 3078000,
     "ocadAtualizado": 3069455.09,
@@ -1943,7 +4521,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 7532000,
+        "ocadInicial": 2711520,
+        "ocadAtualizado": 2736720,
+        "ocadEmpenhado": 2136392.6,
+        "ocadLiquidado": 1662377.91,
+        "ocadPago": 1470949.52,
+        "ocadDisponivel": 1074342.09
+      }
+    ],
     "dotacaoInicial": 7532000,
     "ocadInicial": 2711520,
     "ocadAtualizado": 2736720,
@@ -1964,7 +4554,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 220000,
+        "ocadInicial": 79200,
+        "ocadAtualizado": 72000,
+        "ocadEmpenhado": 22133.61,
+        "ocadLiquidado": 19144.41,
+        "ocadPago": 14245.51,
+        "ocadDisponivel": 52855.59
+      }
+    ],
     "dotacaoInicial": 220000,
     "ocadInicial": 79200,
     "ocadAtualizado": 72000,
@@ -1985,7 +4587,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 190000,
+        "ocadInicial": 68400,
+        "ocadAtualizado": 96659.76,
+        "ocadEmpenhado": 25833.18,
+        "ocadLiquidado": 17393.05,
+        "ocadPago": 11932.83,
+        "ocadDisponivel": 79266.71
+      }
+    ],
     "dotacaoInicial": 190000,
     "ocadInicial": 68400,
     "ocadAtualizado": 96659.76,
@@ -2006,7 +4620,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 69000,
+        "ocadInicial": 24840,
+        "ocadAtualizado": 24840,
+        "ocadEmpenhado": 4310.21,
+        "ocadLiquidado": 3623.06,
+        "ocadPago": 3623.06,
+        "ocadDisponivel": 21216.94
+      }
+    ],
     "dotacaoInicial": 69000,
     "ocadInicial": 24840,
     "ocadAtualizado": 24840,
@@ -2027,7 +4653,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5000000,
+        "ocadInicial": 1800000,
+        "ocadAtualizado": 1800000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 1800000
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 43200,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 43200
+      }
+    ],
     "dotacaoInicial": 5000000,
     "ocadInicial": 1800000,
     "ocadAtualizado": 1843200,
@@ -2048,7 +4697,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 79000,
+        "ocadInicial": 28440,
+        "ocadAtualizado": 28440,
+        "ocadEmpenhado": 2452.72,
+        "ocadLiquidado": 2452.72,
+        "ocadPago": 2452.72,
+        "ocadDisponivel": 25987.28
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 703568.52,
+        "ocadEmpenhado": 367247.88,
+        "ocadLiquidado": 367247.88,
+        "ocadPago": 367247.88,
+        "ocadDisponivel": 336320.64
+      }
+    ],
     "dotacaoInicial": 79000,
     "ocadInicial": 28440,
     "ocadAtualizado": 732008.52,
@@ -2069,7 +4741,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1000000,
+        "ocadInicial": 360000,
+        "ocadAtualizado": 218950.47,
+        "ocadEmpenhado": 42390.98,
+        "ocadLiquidado": 29523.14,
+        "ocadPago": 29523.14,
+        "ocadDisponivel": 189427.33
+      },
+      {
+        "codigo": "26653120",
+        "nome": "EMENDAS PARLAMENTARES DE BANCADA - ASSISTÊNCIA SOCIAL (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 32428.34,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 32428.34
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 2441415.96,
+        "ocadEmpenhado": 1125266.95,
+        "ocadLiquidado": 412687.8,
+        "ocadPago": 131711.58,
+        "ocadDisponivel": 2028728.16
+      }
+    ],
     "dotacaoInicial": 1000000,
     "ocadInicial": 360000,
     "ocadAtualizado": 2692794.78,
@@ -2090,7 +4796,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 5640000,
+        "ocadInicial": 2030400,
+        "ocadAtualizado": 815400,
+        "ocadEmpenhado": 103698.87,
+        "ocadLiquidado": 64632.95,
+        "ocadPago": 55699.57,
+        "ocadDisponivel": 750767.05
+      },
+      {
+        "codigo": "16650200",
+        "nome": "Transferências de Convênios e outros Repasses vinculados à Assistência Social",
+        "dotacaoInicial": 2500000,
+        "ocadInicial": 900000,
+        "ocadAtualizado": 557408.33,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 557408.33
+      }
+    ],
     "dotacaoInicial": 8140000,
     "ocadInicial": 2930400,
     "ocadAtualizado": 1372808.33,
@@ -2111,7 +4840,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 190000,
+        "ocadInicial": 68400,
+        "ocadAtualizado": 67958.95,
+        "ocadEmpenhado": 29350.37,
+        "ocadLiquidado": 21154.44,
+        "ocadPago": 19021.24,
+        "ocadDisponivel": 46804.51
+      }
+    ],
     "dotacaoInicial": 190000,
     "ocadInicial": 68400,
     "ocadAtualizado": 67958.95,
@@ -2132,7 +4873,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 580000,
+        "ocadInicial": 208800,
+        "ocadAtualizado": 232092.6,
+        "ocadEmpenhado": 166239.09,
+        "ocadLiquidado": 118903.24,
+        "ocadPago": 95534.31,
+        "ocadDisponivel": 113189.36
+      }
+    ],
     "dotacaoInicial": 580000,
     "ocadInicial": 208800,
     "ocadAtualizado": 232092.6,
@@ -2153,7 +4906,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 36000,
+        "ocadAtualizado": 35558.95,
+        "ocadEmpenhado": 11042.37,
+        "ocadLiquidado": 10340.81,
+        "ocadPago": 8805.16,
+        "ocadDisponivel": 25218.14
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 35558.95,
@@ -2174,7 +4939,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 36000,
+        "ocadAtualizado": 35558.95,
+        "ocadEmpenhado": 18352.44,
+        "ocadLiquidado": 5020.15,
+        "ocadPago": 3219.3,
+        "ocadDisponivel": 30538.8
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 35558.95,
@@ -2195,7 +4972,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 190000,
+        "ocadInicial": 68400,
+        "ocadAtualizado": 39699.19,
+        "ocadEmpenhado": 8968.26,
+        "ocadLiquidado": 7758.66,
+        "ocadPago": 7758.66,
+        "ocadDisponivel": 31940.53
+      },
+      {
+        "codigo": "26650200",
+        "nome": "Transferências de Convênios e outros Repasses vinculados à Assistência Social (Superávit)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 245169.26,
+        "ocadEmpenhado": 244698.56,
+        "ocadLiquidado": 244698.56,
+        "ocadPago": 244698.56,
+        "ocadDisponivel": 470.7
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 77708.54,
+        "ocadEmpenhado": 77708.54,
+        "ocadLiquidado": 77708.54,
+        "ocadPago": 77708.54,
+        "ocadDisponivel": 0
+      }
+    ],
     "dotacaoInicial": 190000,
     "ocadInicial": 68400,
     "ocadAtualizado": 362576.98,
@@ -2216,7 +5027,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 280000,
+        "ocadInicial": 100800,
+        "ocadAtualizado": 82358.95,
+        "ocadEmpenhado": 56986.08,
+        "ocadLiquidado": 38541.16,
+        "ocadPago": 30705.34,
+        "ocadDisponivel": 43817.79
+      }
+    ],
     "dotacaoInicial": 280000,
     "ocadInicial": 100800,
     "ocadAtualizado": 82358.95,
@@ -2237,7 +5060,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 36000,
+        "ocadAtualizado": 35558.95,
+        "ocadEmpenhado": 6899.22,
+        "ocadLiquidado": 3958.43,
+        "ocadPago": 2680.92,
+        "ocadDisponivel": 31600.52
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 35558.95,
@@ -2258,7 +5093,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 200000,
+        "ocadInicial": 72000,
+        "ocadAtualizado": 71558.95,
+        "ocadEmpenhado": 17471.74,
+        "ocadLiquidado": 7485.08,
+        "ocadPago": 4599.23,
+        "ocadDisponivel": 64073.87
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 18360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 18360
+      }
+    ],
     "dotacaoInicial": 200000,
     "ocadInicial": 72000,
     "ocadAtualizado": 89918.95,
@@ -2279,7 +5137,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 36000,
+        "ocadAtualizado": 100358.95,
+        "ocadEmpenhado": 6120,
+        "ocadLiquidado": 205.2,
+        "ocadPago": 205.2,
+        "ocadDisponivel": 100153.75
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 105120,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 105120
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 205478.95,
@@ -2300,7 +5181,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1060000,
+        "ocadInicial": 381600,
+        "ocadAtualizado": 737898.64,
+        "ocadEmpenhado": 721188.57,
+        "ocadLiquidado": 713659.92,
+        "ocadPago": 713479.38,
+        "ocadDisponivel": 24238.72
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 1000000,
+        "ocadInicial": 360000,
+        "ocadAtualizado": 360000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360000
+      }
+    ],
     "dotacaoInicial": 2060000,
     "ocadInicial": 741600,
     "ocadAtualizado": 1097898.64,
@@ -2321,7 +5225,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 860000,
+        "ocadInicial": 860000,
+        "ocadAtualizado": 858774.86,
+        "ocadEmpenhado": 725286.25,
+        "ocadLiquidado": 286.25,
+        "ocadPago": 286.25,
+        "ocadDisponivel": 858488.61
+      },
+      {
+        "codigo": "17000200",
+        "nome": "OUTRAS TRANSFERÊNCIAS DE CONVÊNIOS OU REPASSES DA UNIÃO",
+        "dotacaoInicial": 700000,
+        "ocadInicial": 700000,
+        "ocadAtualizado": 700000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 700000
+      }
+    ],
     "dotacaoInicial": 1560000,
     "ocadInicial": 1560000,
     "ocadAtualizado": 1558774.86,
@@ -2342,7 +5269,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 600000,
+        "ocadInicial": 216000,
+        "ocadAtualizado": 190800,
+        "ocadEmpenhado": 29291.41,
+        "ocadLiquidado": 815.4,
+        "ocadPago": 815.4,
+        "ocadDisponivel": 189984.6
+      },
+      {
+        "codigo": "17540501",
+        "nome": "BIRD - PROGESTÃO",
+        "dotacaoInicial": 300000,
+        "ocadInicial": 108000,
+        "ocadAtualizado": 108000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 108000
+      }
+    ],
     "dotacaoInicial": 900000,
     "ocadInicial": 324000,
     "ocadAtualizado": 298800,
@@ -2363,7 +5313,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 500000,
+        "ocadInicial": 500000,
+        "ocadAtualizado": 498774.86,
+        "ocadEmpenhado": 400301.72,
+        "ocadLiquidado": 332805.36,
+        "ocadPago": 304338.84,
+        "ocadDisponivel": 165969.5
+      }
+    ],
     "dotacaoInicial": 500000,
     "ocadInicial": 500000,
     "ocadAtualizado": 498774.86,
@@ -2384,7 +5346,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 499000,
+        "ocadInicial": 499000,
+        "ocadAtualizado": 499000,
+        "ocadEmpenhado": 136299.08,
+        "ocadLiquidado": 102036.54,
+        "ocadPago": 64659.07,
+        "ocadDisponivel": 396963.46
+      },
+      {
+        "codigo": "15010700",
+        "nome": "RECURSOS PRÓPRIOS DA ADM. INDIRETA ¿ REC. NÃO VINCULADOS",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 100000,
+        "ocadAtualizado": 100000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 100000
+      }
+    ],
     "dotacaoInicial": 599000,
     "ocadInicial": 599000,
     "ocadAtualizado": 599000,
@@ -2405,7 +5390,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 360,
+        "ocadAtualizado": 360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360
+      }
+    ],
     "dotacaoInicial": 1000,
     "ocadInicial": 360,
     "ocadAtualizado": 360,
@@ -2426,7 +5423,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 135000,
+        "ocadInicial": 48600,
+        "ocadAtualizado": 56664.01,
+        "ocadEmpenhado": 34272.94,
+        "ocadLiquidado": 22965.99,
+        "ocadPago": 21935.49,
+        "ocadDisponivel": 33698.02
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 19723.59,
+        "ocadEmpenhado": 8436.86,
+        "ocadLiquidado": 8436.86,
+        "ocadPago": 8436.86,
+        "ocadDisponivel": 11286.73
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 106920,
+        "ocadEmpenhado": 58607.41,
+        "ocadLiquidado": 39483.05,
+        "ocadPago": 39483.05,
+        "ocadDisponivel": 67436.95
+      }
+    ],
     "dotacaoInicial": 135000,
     "ocadInicial": 48600,
     "ocadAtualizado": 183307.59,
@@ -2447,7 +5478,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 250000,
+        "ocadInicial": 90000,
+        "ocadAtualizado": 90000,
+        "ocadEmpenhado": 89990.71,
+        "ocadLiquidado": 27936,
+        "ocadPago": 13968,
+        "ocadDisponivel": 62064
+      }
+    ],
     "dotacaoInicial": 250000,
     "ocadInicial": 90000,
     "ocadAtualizado": 90000,
@@ -2468,7 +5511,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 549000,
+        "ocadInicial": 197640,
+        "ocadAtualizado": 197640,
+        "ocadEmpenhado": 80455.77,
+        "ocadLiquidado": 55073.41,
+        "ocadPago": 35664.22,
+        "ocadDisponivel": 142566.59
+      }
+    ],
     "dotacaoInicial": 549000,
     "ocadInicial": 197640,
     "ocadAtualizado": 197640,
@@ -2489,7 +5544,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "16600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS",
+        "dotacaoInicial": 350000,
+        "ocadInicial": 126000,
+        "ocadAtualizado": 126000,
+        "ocadEmpenhado": 48440.3,
+        "ocadLiquidado": 40681.43,
+        "ocadPago": 40681.43,
+        "ocadDisponivel": 85318.57
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 30000,
+        "ocadInicial": 10800,
+        "ocadAtualizado": 7200,
+        "ocadEmpenhado": 1906.74,
+        "ocadLiquidado": 1906.74,
+        "ocadPago": 1803.69,
+        "ocadDisponivel": 5293.26
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 59777.52,
+        "ocadEmpenhado": 40216.14,
+        "ocadLiquidado": 27786.64,
+        "ocadPago": 27786.64,
+        "ocadDisponivel": 31990.88
+      }
+    ],
     "dotacaoInicial": 380000,
     "ocadInicial": 136800,
     "ocadAtualizado": 192977.52,
@@ -2510,7 +5599,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 200000,
+        "ocadInicial": 72000,
+        "ocadAtualizado": 90000,
+        "ocadEmpenhado": 44305.65,
+        "ocadLiquidado": 34731.22,
+        "ocadPago": 32464.12,
+        "ocadDisponivel": 55268.78
+      }
+    ],
     "dotacaoInicial": 200000,
     "ocadInicial": 72000,
     "ocadAtualizado": 90000,
@@ -2531,7 +5632,52 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 4,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 970000,
+        "ocadInicial": 349200,
+        "ocadAtualizado": 146351.75,
+        "ocadEmpenhado": 101769.36,
+        "ocadLiquidado": 38894.91,
+        "ocadPago": 25615.07,
+        "ocadDisponivel": 107456.84
+      },
+      {
+        "codigo": "16603110",
+        "nome": "EMENDAS PARLAMENTARES INDIVIDUAIS",
+        "dotacaoInicial": 500000,
+        "ocadInicial": 180000,
+        "ocadAtualizado": 133200,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 133200
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 27767.49,
+        "ocadEmpenhado": 5800.76,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 27767.49
+      },
+      {
+        "codigo": "27063110",
+        "nome": "TRANSFERÊNCIA ESPECIAL DA UNIÃO - SUPERÁVIT",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 36000,
+        "ocadEmpenhado": 14667.12,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 36000
+      }
+    ],
     "dotacaoInicial": 1470000,
     "ocadInicial": 529200,
     "ocadAtualizado": 343319.23,
@@ -2552,7 +5698,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1000,
+        "ocadInicial": 360,
+        "ocadAtualizado": 360,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 360
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 103915.53,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 103915.53
+      }
+    ],
     "dotacaoInicial": 1000,
     "ocadInicial": 360,
     "ocadAtualizado": 104275.53,
@@ -2573,7 +5742,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 529000,
+        "ocadInicial": 190440,
+        "ocadAtualizado": 190440,
+        "ocadEmpenhado": 64180.35,
+        "ocadLiquidado": 59462.65,
+        "ocadPago": 56029.6,
+        "ocadDisponivel": 130977.35
+      }
+    ],
     "dotacaoInicial": 529000,
     "ocadInicial": 190440,
     "ocadAtualizado": 190440,
@@ -2594,7 +5775,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "16600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS",
+        "dotacaoInicial": 90000,
+        "ocadInicial": 90000,
+        "ocadAtualizado": 90000,
+        "ocadEmpenhado": 33818.5,
+        "ocadLiquidado": 15818.5,
+        "ocadPago": 15818.5,
+        "ocadDisponivel": 74181.5
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 70000,
+        "ocadInicial": 70000,
+        "ocadAtualizado": 70000,
+        "ocadEmpenhado": 20000,
+        "ocadLiquidado": 4519.67,
+        "ocadPago": 2937.48,
+        "ocadDisponivel": 65480.33
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 76904.12,
+        "ocadEmpenhado": 37231,
+        "ocadLiquidado": 36079.2,
+        "ocadPago": 36079.2,
+        "ocadDisponivel": 40824.92
+      }
+    ],
     "dotacaoInicial": 160000,
     "ocadInicial": 160000,
     "ocadAtualizado": 236904.12,
@@ -2615,7 +5830,41 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Exclusivo",
     "ponderador": 1,
-    "fontes": 3,
+    "fontes": [
+      {
+        "codigo": "16600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS",
+        "dotacaoInicial": 500000,
+        "ocadInicial": 500000,
+        "ocadAtualizado": 500000,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 500000
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 30000,
+        "ocadInicial": 30000,
+        "ocadAtualizado": 30000,
+        "ocadEmpenhado": 15010.25,
+        "ocadLiquidado": 12288.91,
+        "ocadPago": 12288.91,
+        "ocadDisponivel": 17711.09
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 588274.78,
+        "ocadEmpenhado": 136932.75,
+        "ocadLiquidado": 91422.35,
+        "ocadPago": 91422.35,
+        "ocadDisponivel": 496852.43
+      }
+    ],
     "dotacaoInicial": 530000,
     "ocadInicial": 530000,
     "ocadAtualizado": 1118274.78,
@@ -2636,7 +5885,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 30000,
+        "ocadInicial": 10800,
+        "ocadAtualizado": 10800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 10800
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 256.54,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 256.54
+      }
+    ],
     "dotacaoInicial": 30000,
     "ocadInicial": 10800,
     "ocadAtualizado": 11056.54,
@@ -2657,7 +5929,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "16600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS",
+        "dotacaoInicial": 80000,
+        "ocadInicial": 28800,
+        "ocadAtualizado": 28800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 28800
+      },
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 20000,
+        "ocadInicial": 7200,
+        "ocadAtualizado": 7200,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 7200
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 36000,
@@ -2678,7 +5973,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 20000,
+        "ocadInicial": 7200,
+        "ocadAtualizado": 7200,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 7200
+      }
+    ],
     "dotacaoInicial": 20000,
     "ocadInicial": 7200,
     "ocadAtualizado": 7200,
@@ -2699,7 +6006,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 900000,
+        "ocadInicial": 324000,
+        "ocadAtualizado": 640248.25,
+        "ocadEmpenhado": 410124.12,
+        "ocadLiquidado": 410124.12,
+        "ocadPago": 410124.12,
+        "ocadDisponivel": 230124.13
+      }
+    ],
     "dotacaoInicial": 900000,
     "ocadInicial": 324000,
     "ocadAtualizado": 640248.25,
@@ -2720,7 +6039,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 4000000,
+        "ocadInicial": 1440000,
+        "ocadAtualizado": 1440000,
+        "ocadEmpenhado": 1329956.67,
+        "ocadLiquidado": 650295.82,
+        "ocadPago": 0,
+        "ocadDisponivel": 789704.18
+      }
+    ],
     "dotacaoInicial": 4000000,
     "ocadInicial": 1440000,
     "ocadAtualizado": 1440000,
@@ -2741,7 +6072,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 50000,
+        "ocadInicial": 18000,
+        "ocadAtualizado": 18000,
+        "ocadEmpenhado": 951.19,
+        "ocadLiquidado": 951.19,
+        "ocadPago": 704.43,
+        "ocadDisponivel": 17048.81
+      }
+    ],
     "dotacaoInicial": 50000,
     "ocadInicial": 18000,
     "ocadAtualizado": 18000,
@@ -2762,7 +6105,52 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 4,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 2804000,
+        "ocadInicial": 1009440,
+        "ocadAtualizado": 1067400,
+        "ocadEmpenhado": 976064.4,
+        "ocadLiquidado": 764344.75,
+        "ocadPago": 744727.32,
+        "ocadDisponivel": 303055.25
+      },
+      {
+        "codigo": "15010700",
+        "nome": "RECURSOS PRÓPRIOS DA ADM. INDIRETA ¿ REC. NÃO VINCULADOS",
+        "dotacaoInicial": 150000,
+        "ocadInicial": 54000,
+        "ocadAtualizado": 46800,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 46800
+      },
+      {
+        "codigo": "25010700",
+        "nome": "RECURSOS PRÓPRIOS ADM INDIRETA ¿ NÃO VINCULADOS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 17442.6,
+        "ocadEmpenhado": 15480,
+        "ocadLiquidado": 12598.45,
+        "ocadPago": 12598.45,
+        "ocadDisponivel": 4844.15
+      },
+      {
+        "codigo": "26600200",
+        "nome": "TRANSF DE RECURSOS DO FUNDO NACIONAL DE ASSIST SOCIAL - FNAS (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 942,
+        "ocadEmpenhado": 0,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 942
+      }
+    ],
     "dotacaoInicial": 2954000,
     "ocadInicial": 1063440,
     "ocadAtualizado": 1132584.6,
@@ -2783,7 +6171,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 3557000,
+        "ocadInicial": 1280520,
+        "ocadAtualizado": 993546,
+        "ocadEmpenhado": 914350.96,
+        "ocadLiquidado": 619535.54,
+        "ocadPago": 612881.99,
+        "ocadDisponivel": 374010.46
+      }
+    ],
     "dotacaoInicial": 3557000,
     "ocadInicial": 1280520,
     "ocadAtualizado": 993546,
@@ -2804,7 +6204,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 100000,
+        "ocadInicial": 36000,
+        "ocadAtualizado": 21600,
+        "ocadEmpenhado": 4097.88,
+        "ocadLiquidado": 4097.88,
+        "ocadPago": 4097.88,
+        "ocadDisponivel": 17502.12
+      }
+    ],
     "dotacaoInicial": 100000,
     "ocadInicial": 36000,
     "ocadAtualizado": 21600,
@@ -2825,7 +6237,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 20999,
+        "ocadInicial": 7559.64,
+        "ocadAtualizado": 7559.64,
+        "ocadEmpenhado": 417.6,
+        "ocadLiquidado": 0,
+        "ocadPago": 0,
+        "ocadDisponivel": 7559.64
+      }
+    ],
     "dotacaoInicial": 20999,
     "ocadInicial": 7559.64,
     "ocadAtualizado": 7559.64,
@@ -2846,7 +6270,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 300000,
+        "ocadInicial": 108000,
+        "ocadAtualizado": 88765.2,
+        "ocadEmpenhado": 12323.89,
+        "ocadLiquidado": 11240.65,
+        "ocadPago": 11240.65,
+        "ocadDisponivel": 77524.55
+      }
+    ],
     "dotacaoInicial": 300000,
     "ocadInicial": 108000,
     "ocadAtualizado": 88765.2,
@@ -2867,7 +6303,19 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 1,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 478000,
+        "ocadInicial": 172080,
+        "ocadAtualizado": 179033.91,
+        "ocadEmpenhado": 127802.13,
+        "ocadLiquidado": 119172.91,
+        "ocadPago": 118861.2,
+        "ocadDisponivel": 59861
+      }
+    ],
     "dotacaoInicial": 478000,
     "ocadInicial": 172080,
     "ocadAtualizado": 179033.91,
@@ -2888,7 +6336,30 @@
     "eixo": "ASSISTENCIA_SOCIAL",
     "classificacao": "Não exclusivo",
     "ponderador": 0.36,
-    "fontes": 2,
+    "fontes": [
+      {
+        "codigo": "15000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO",
+        "dotacaoInicial": 1937560,
+        "ocadInicial": 697521.6,
+        "ocadAtualizado": 729792.45,
+        "ocadEmpenhado": 673360.69,
+        "ocadLiquidado": 425880.84,
+        "ocadPago": 424953.39,
+        "ocadDisponivel": 303911.61
+      },
+      {
+        "codigo": "25000100",
+        "nome": "RECURSOS PRÓPRIOS DO TESOURO (SUPERÁVIT)",
+        "dotacaoInicial": 0,
+        "ocadInicial": 0,
+        "ocadAtualizado": 1200,
+        "ocadEmpenhado": 1200,
+        "ocadLiquidado": 600,
+        "ocadPago": 600,
+        "ocadDisponivel": 600
+      }
+    ],
     "dotacaoInicial": 1937560,
     "ocadInicial": 697521.6,
     "ocadAtualizado": 730992.45,

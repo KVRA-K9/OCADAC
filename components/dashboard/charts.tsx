@@ -33,14 +33,12 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { CADEIA_EXECUCAO } from "@/lib/types";
-import { ROTULOS_ESTAGIO, SERIES_COLORS, siglaOrgao } from "@/lib/estagios";
-
-const EIXO_COLORS: Record<string, string> = {
-  "Educação": "#f7bb75",
-  "Saúde": "#d15c57",
-  "Assistência Social": "#92bf9f",
-  "Outras": "var(--muted-foreground)",
-};
+import {
+  CORES_EIXO,
+  ROTULOS_ESTAGIO,
+  SERIES_COLORS,
+  siglaOrgao,
+} from "@/lib/estagios";
 
 interface TooltipPayload {
   name?: string;
@@ -208,7 +206,7 @@ export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
           {fatias.map((d, i) => (
             <Cell
               key={i}
-              fill={EIXO_COLORS[d.funcao] ?? "var(--muted-foreground)"}
+              fill={CORES_EIXO[d.funcao] ?? "var(--muted-foreground)"}
             />
           ))}
         </Pie>

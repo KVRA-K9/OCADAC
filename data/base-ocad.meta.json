@@ -2,12 +2,13 @@
   "arquivoFonte": "OCAD_2026.xlsx",
   "origem": "Planilha OCAD — mesma base do BI",
   "dataArquivo": "2026-08-04",
-  "geradoEm": "2026-08-04",
+  "geradoEm": "2026-08-24",
   "anos": [
     2026
   ],
   "linhasFonte": 303,
   "acoes": 138,
+  "fontesDistintas": 57,
   "eixoDerivado": true,
   "totais": {
     "dotacaoInicial": 4742429246.81,

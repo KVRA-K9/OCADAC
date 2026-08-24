@@ -1,5 +1,6 @@
 import type { OrcamentoItem } from "@/lib/types";
 import { PONDERACAO, dataBase, metaBase } from "@/data/base-ocad";
+import { CREDITOS_EQUIPE } from "@/lib/equipe";
 
 const moedaExport = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -111,6 +112,9 @@ type JsPDFWithAutoTable = {
   splitTextToSize: (t: string, w: number) => string[];
   setFillColor: (r: number, g: number, b: number) => void;
   setTextColor: (r: number, g: number, b: number) => void;
+  setDrawColor: (r: number, g: number, b: number) => void;
+  setLineWidth: (n: number) => void;
+  line: (x1: number, y1: number, x2: number, y2: number) => void;
   rect: (x: number, y: number, w: number, h: number, style: string) => void;
   lastAutoTable?: { finalY: number };
 };
@@ -201,14 +205,19 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
 
   let cursorY = 95;
 
+  const novaPagina = () => {
+    d.addPage();
+    // O número sai do próprio documento: entre um bloco e outro o autoTable
+    // pode ter aberto páginas por conta própria, e um contador local ficaria
+    // para trás no cabeçalho.
+    paginaAtual = d.internal.getNumberOfPages();
+    desenharCabecalho();
+    desenharRodape();
+    cursorY = 95;
+  };
+
   const garantirEspaco = (min: number) => {
-    if (cursorY + min > alturaPagina - 40) {
-      d.addPage();
-      paginaAtual += 1;
-      desenharCabecalho();
-      desenharRodape();
-      cursorY = 95;
-    }
+    if (cursorY + min > alturaPagina - 40) novaPagina();
   };
 
   for (const bloco of blocos) {
@@ -313,6 +322,47 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
 
     cursorY = (d.lastAutoTable?.finalY ?? cursorY) + 20;
   }
+
+  /*
+   * Créditos ao final do documento, uma vez só. Quem recebe o PDF solto, fora
+   * do site, fica sem saber quem respondeu pelos números — o rodapé de cada
+   * página nomeia o departamento, mas não a equipe.
+   */
+  // A medição usa a fonte com que o texto será desenhado, e vem antes de uma
+  // eventual virada de página, que redefine fonte e cor no cabeçalho.
+  d.setFontSize(7.5);
+  d.setFont("helvetica", "normal");
+  const linhasCreditos = d.splitTextToSize(CREDITOS_EQUIPE, larguraUtil);
+  const alturaCreditos = 26 + linhasCreditos.length * 10;
+
+  /*
+   * O bloco é ancorado ao pé da página, logo acima do rodapé institucional, e
+   * não emendado onde a última tabela parou. Solto no fluxo ele caía no alto de
+   * uma página nova e deixava meia folha em branco abaixo — colado ao pé, a
+   * página termina onde o olho espera que termine.
+   */
+  const topoCreditos = alturaPagina - 34 - alturaCreditos;
+  if (cursorY > topoCreditos) novaPagina();
+  cursorY = topoCreditos;
+
+  d.setDrawColor(0, 128, 48);
+  d.setLineWidth(0.8);
+  d.line(margemEsq, cursorY, margemEsq + larguraUtil, cursorY);
+  cursorY += 14;
+
+  d.setFontSize(8);
+  d.setFont("helvetica", "bold");
+  d.text("Elaboração", margemEsq, cursorY);
+  cursorY += 12;
+
+  d.setFontSize(7.5);
+  d.setFont("helvetica", "normal");
+  d.setTextColor(90, 90, 90);
+  linhasCreditos.forEach((linha: string) => {
+    d.text(linha, margemEsq, cursorY);
+    cursorY += 10;
+  });
+  d.setTextColor(0, 0, 0);
 
   d.save(nomeArquivo("pdf"));
 }

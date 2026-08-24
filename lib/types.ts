@@ -35,6 +35,18 @@ export interface ValoresOrcamentarios {
   ocadDisponivel: number;
 }
 
+/**
+ * Uma fonte de recurso dentro de uma ação, com os mesmos estágios da ação.
+ *
+ * A planilha vem no grão ação × fonte, então estes valores são os das próprias
+ * linhas — não há rateio, e a soma das fontes reproduz a ação.
+ */
+export interface FonteAcao extends ValoresOrcamentarios {
+  /** Código de 8 dígitos da fonte, como na coluna "Fonte de Recursos". */
+  codigo: string;
+  nome: string;
+}
+
 export interface OrcamentoItem {
   id: string;
   ano: number;
@@ -49,6 +61,8 @@ export interface OrcamentoItem {
   unidadeCodigo: string;
   categoriaEconomica: CategoriaEconomica;
   valores: ValoresOrcamentarios;
+  /** Decomposição de `valores` por fonte de recurso. */
+  fontes: FonteAcao[];
 }
 
 export interface FiltrosOrcamento {

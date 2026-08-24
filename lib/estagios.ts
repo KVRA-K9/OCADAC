@@ -16,6 +16,14 @@ export const SERIES_COLORS: Record<string, string> = {
   ocadDisponivel: "var(--chart-6)",
 };
 
+/** Tom de cada eixo do OCAD, usado nos gráficos e nas pílulas das tabelas. */
+export const CORES_EIXO: Record<string, string> = {
+  "Educação": "#f7bb75",
+  "Saúde": "#d15c57",
+  "Assistência Social": "#92bf9f",
+  "Outras": "var(--muted-foreground)",
+};
+
 export const ROTULOS_ESTAGIO: Record<string, string> = {
   ocadInicial: "Orçamento Inicial",
   ocadAtualizado: "Orçamento Atualizado",

@@ -91,10 +91,40 @@ function numero(valor) {
 
 const centavos = (v) => Math.round(v * 100) / 100;
 
+/** Campos monetários da ação, que a decomposição por fonte precisa reproduzir. */
+const CAMPOS_VALOR = [
+  "dotacaoInicial",
+  "ocadInicial",
+  "ocadAtualizado",
+  "ocadEmpenhado",
+  "ocadLiquidado",
+  "ocadPago",
+  "ocadDisponivel",
+];
+
 /** "Órgão: 714 SECRETARIA DE ESTADO DE ADMINISTRAÇÃO - SEAD" → código e nome. */
 function separarCodigoNome(texto, prefixo) {
   const limpo = String(texto ?? "").replace(prefixo, "").trim();
   return { codigo: limpo.slice(0, 3), nome: limpo.slice(3).trim() };
+}
+
+/**
+ * "15000100 RECURSOS PRÓPRIOS DO TESOURO" → código e nome.
+ *
+ * A planilha é reemitida a cada mês, então o formato é conferido aqui: um
+ * código fora do padrão precisa estourar no `npm run dados`, e não virar uma
+ * opção sem sentido no filtro do site.
+ */
+function separarFonte(texto, chave) {
+  const limpo = String(texto ?? "").trim();
+  const codigo = limpo.slice(0, 8);
+  if (!/^\d{8}$/.test(codigo)) {
+    throw new Error(
+      `Fonte de Recursos fora do padrão na ação ${chave}: "${limpo}". ` +
+        `Esperado um código de 8 dígitos seguido do nome.`,
+    );
+  }
+  return { codigo, nome: limpo.slice(8).trim() };
 }
 
 function lerPlanilha(caminho) {
@@ -153,7 +183,7 @@ function lerPlanilha(caminho) {
       eixo,
       classificacao: tipo === "EX" ? "Exclusivo" : "Não exclusivo",
       ponderador: ref,
-      fontes: new Set(),
+      fontes: new Map(),
       dotacaoInicial: 0,
       ocadInicial: 0,
       ocadAtualizado: 0,
@@ -166,22 +196,59 @@ function lerPlanilha(caminho) {
       throw new Error(`Tipo ou Ref. % divergente entre as fontes da ação ${chave}`);
     }
 
-    a.fontes.add(String(r[COL.fonte] ?? "").slice(0, 8));
-    a.dotacaoInicial += numero(r[COL.inicial]);
-    a.ocadInicial += numero(r[COL.inicial]) * ref;
-    a.ocadAtualizado += numero(r[COL.atual]) * ref;
-    a.ocadEmpenhado += numero(r[COL.empenhadoPonderado]);
-    a.ocadLiquidado += numero(r[COL.liquidadoPonderado]);
-    a.ocadPago += numero(r[COL.pagoPonderado]);
+    // A mesma linha alimenta a ação e a sua fonte. Como a planilha já vem no
+    // grão ação × fonte, o valor por fonte é o da própria linha — não há rateio
+    // a fazer, e a soma das fontes fecha com a ação por construção.
+    const fonte = separarFonte(r[COL.fonte], chave);
+    const f = a.fontes.get(fonte.codigo) ?? {
+      codigo: fonte.codigo,
+      nome: fonte.nome,
+      dotacaoInicial: 0,
+      ocadInicial: 0,
+      ocadAtualizado: 0,
+      ocadEmpenhado: 0,
+      ocadLiquidado: 0,
+      ocadPago: 0,
+    };
+
+    for (const alvo of [a, f]) {
+      alvo.dotacaoInicial += numero(r[COL.inicial]);
+      alvo.ocadInicial += numero(r[COL.inicial]) * ref;
+      alvo.ocadAtualizado += numero(r[COL.atual]) * ref;
+      alvo.ocadEmpenhado += numero(r[COL.empenhadoPonderado]);
+      alvo.ocadLiquidado += numero(r[COL.liquidadoPonderado]);
+      alvo.ocadPago += numero(r[COL.pagoPonderado]);
+    }
+
+    a.fontes.set(fonte.codigo, f);
     acoes.set(chave, a);
   }
 
   const registros = [...acoes.values()].map((a) => {
     const ocadAtualizado = centavos(a.ocadAtualizado);
     const ocadLiquidado = centavos(a.ocadLiquidado);
-    return {
+
+    const fontes = [...a.fontes.values()]
+      .map((f) => {
+        const atualizado = centavos(f.ocadAtualizado);
+        const liquidado = centavos(f.ocadLiquidado);
+        return {
+          codigo: f.codigo,
+          nome: f.nome,
+          dotacaoInicial: centavos(f.dotacaoInicial),
+          ocadInicial: centavos(f.ocadInicial),
+          ocadAtualizado: atualizado,
+          ocadEmpenhado: centavos(f.ocadEmpenhado),
+          ocadLiquidado: liquidado,
+          ocadPago: centavos(f.ocadPago),
+          ocadDisponivel: centavos(atualizado - liquidado),
+        };
+      })
+      .sort((x, y) => y.ocadInicial - x.ocadInicial);
+
+    const registro = {
       ...a,
-      fontes: a.fontes.size,
+      fontes,
       dotacaoInicial: centavos(a.dotacaoInicial),
       ocadInicial: centavos(a.ocadInicial),
       ocadAtualizado,
@@ -191,6 +258,28 @@ function lerPlanilha(caminho) {
       // A planilha não traz saldo disponível; ele é derivado dos ponderados.
       ocadDisponivel: centavos(ocadAtualizado - ocadLiquidado),
     };
+
+    /*
+     * O filtro por fonte recorta a tabela somando as fontes escolhidas. Se a
+     * soma das partes não fechar com o todo, o total sem filtro e o total com
+     * todas as fontes marcadas divergiriam.
+     *
+     * A comparação é em centavos inteiros, e a folga é de um centavo por fonte:
+     * cada parcela é arredondada por si, então N fontes acumulam até N centavos
+     * de desvio contra o total, que foi arredondado uma vez só. Qualquer coisa
+     * além disso é erro de leitura, não arredondamento.
+     */
+    for (const campo of CAMPOS_VALOR) {
+      const soma = fontes.reduce((t, f) => t + Math.round(f[campo] * 100), 0);
+      if (Math.abs(soma - Math.round(registro[campo] * 100)) > fontes.length) {
+        throw new Error(
+          `Soma das fontes diverge do total da ação em ${campo}: ` +
+            `${soma / 100} ≠ ${registro[campo]} (${a.secretariaCodigo}|${a.unidadeCodigo}|${a.programaFuncional})`,
+        );
+      }
+    }
+
+    return registro;
   });
 
   return { registros, linhasUteis };
@@ -223,6 +312,9 @@ async function main() {
     anos: [ANO],
     linhasFonte: linhasUteis,
     acoes: registros.length,
+    fontesDistintas: new Set(
+      registros.flatMap((r) => r.fontes.map((f) => f.codigo)),
+    ).size,
     eixoDerivado: true,
     totais: {
       dotacaoInicial: soma("dotacaoInicial"),

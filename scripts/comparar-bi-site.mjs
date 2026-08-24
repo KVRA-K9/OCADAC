@@ -136,6 +136,7 @@ function lerSite(nome) {
             ocadInicial: r.ocadInicial,
             ocadAtualizado: r.ocadAtualizado,
             ocadLiquidado: r.ocadLiquidado,
+            fontes: new Set(r.fontes.map((f) => f.codigo)),
           },
         ];
       }),
@@ -163,6 +164,8 @@ function lerSite(nome) {
       ocadInicial: r["Planejado ponderado"],
       ocadAtualizado: r["Orçamento atualizado ponderado"],
       ocadLiquidado: r["Liquidado ponderado"],
+      // O export do painel consolida a ação: não há coluna de fonte nele.
+      fontes: null,
     });
   }
   return mapa;
@@ -287,14 +290,44 @@ function main() {
   console.log(
     `\nsó no BI: empenhado ${reais(soma(bi, "ocadEmpenhado"))} · pago ${reais(soma(bi, "ocadPago"))}`,
   );
-  const fontes = new Set();
-  for (const a of bi.values()) for (const x of a.fontes) fontes.add(x);
-  console.log(
-    `só no BI: detalhe por fonte de recurso (${fontes.size} fontes) — o export do painel consolida`,
-  );
+  /* ------------------------- 5. fontes de recurso ----------------------- */
+  titulo("5. FONTES DE RECURSO");
+  const fontesBI = new Set();
+  for (const a of bi.values()) for (const x of a.fontes) fontesBI.add(x);
+
+  const temFontes = [...site.values()].every((a) => a.fontes);
+  if (!temFontes) {
+    console.log(
+      `${fontesBI.size} fontes no BI — o export do painel consolida a ação e não as traz`,
+    );
+    return;
+  }
+
+  const fontesSite = new Set();
+  for (const a of site.values()) for (const x of a.fontes) fontesSite.add(x);
+  console.log(`BI: ${fontesBI.size} fontes · site: ${fontesSite.size} fontes`);
+
+  // O filtro por fonte da tabela detalhada se apoia nessa decomposição, então
+  // ela é conferida ação a ação, e não só no conjunto global.
+  let divergentes = 0;
+  for (const a of site.values()) {
+    const daBI = bi.get(a.chave)?.fontes;
+    if (!daBI) continue;
+    const faltando = [...daBI].filter((f) => !a.fontes.has(f));
+    const sobrando = [...a.fontes].filter((f) => !daBI.has(f));
+    if (faltando.length === 0 && sobrando.length === 0) continue;
+    divergentes += 1;
+    console.log(
+      `   ${a.orgao}/${a.unidade}  ${a.acaoCodigo}  ` +
+        `faltando [${faltando.join(", ")}]  sobrando [${sobrando.join(", ")}]`,
+    );
+  }
+  console.log(`ações com fontes divergentes: ${divergentes}`);
 }
 
-main().catch((e) => {
+try {
+  main();
+} catch (e) {
   console.error(e);
   process.exit(1);
-});
+}

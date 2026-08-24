@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 
 import { Separator } from "@/components/ui/separator";
+import { CREDITOS_EQUIPE } from "@/lib/equipe";
 
 const LINKS_INSTITUCIONAIS = [
   {
@@ -115,12 +116,7 @@ export function LandingFooter() {
             </p>
           </div>
           <Separator className="my-2" />
-          <p className="leading-relaxed">
-            Coordenador: Denyscley Oliveira Bandeira (Gestor de Políticas
-            Públicas); Equipe Técnica: Ícaro Lebre Gundim (Economista), Luísa
-            Nascimento Ribeiro (Economista), Roseneide Sena (Especialista
-            Executiva Administradora), Vinícius Carneiro de Farias (Economista).
-          </p>
+          <p className="leading-relaxed">{CREDITOS_EQUIPE}</p>
         </div>
       </div>
     </footer>

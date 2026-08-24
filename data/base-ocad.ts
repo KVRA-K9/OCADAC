@@ -9,6 +9,7 @@
 import type {
   CategoriaEconomica,
   FiltrosOrcamento,
+  FonteAcao,
   OrcamentoItem,
   ValoresOrcamentarios,
 } from "@/lib/types";
@@ -42,7 +43,7 @@ interface RegistroBase {
   eixo: string;
   classificacao: string;
   ponderador: number;
-  fontes: number;
+  fontes: FonteAcao[];
   dotacaoInicial: number;
   ocadInicial: number;
   ocadAtualizado: number;
@@ -60,6 +61,8 @@ export interface MetaBase {
   anos: number[];
   linhasFonte: number;
   acoes: number;
+  /** Quantas fontes de recurso distintas aparecem na planilha. */
+  fontesDistintas: number;
   eixoDerivado: boolean;
   totais: ValoresOrcamentarios & { ocadEmpenhado: number; ocadPago: number };
 }
@@ -128,6 +131,7 @@ function gerarDados(): OrcamentoItem[] {
       ocadPago: d.ocadPago,
       ocadDisponivel: d.ocadDisponivel,
     },
+    fontes: d.fontes,
   }));
 }
 
@@ -150,19 +154,80 @@ export const categoriasDisponiveis: CategoriaEconomica[] = [
 
 export const OPCAO_TODOS = "todos";
 
-export function somaValores(itens: OrcamentoItem[]): ValoresOrcamentarios {
-  return itens.reduce<ValoresOrcamentarios>(
-    (acc, item) => ({
-      dotacaoInicial: acc.dotacaoInicial + item.valores.dotacaoInicial,
-      ocadInicial: acc.ocadInicial + item.valores.ocadInicial,
-      ocadAtualizado: acc.ocadAtualizado + item.valores.ocadAtualizado,
-      ocadEmpenhado: acc.ocadEmpenhado + item.valores.ocadEmpenhado,
-      ocadLiquidado: acc.ocadLiquidado + item.valores.ocadLiquidado,
-      ocadPago: acc.ocadPago + item.valores.ocadPago,
-      ocadDisponivel: acc.ocadDisponivel + item.valores.ocadDisponivel,
+/** Soma estágio a estágio. Serve tanto para ações quanto para fontes. */
+export function somarValores(
+  valores: ValoresOrcamentarios[],
+): ValoresOrcamentarios {
+  return valores.reduce<ValoresOrcamentarios>(
+    (acc, v) => ({
+      dotacaoInicial: acc.dotacaoInicial + v.dotacaoInicial,
+      ocadInicial: acc.ocadInicial + v.ocadInicial,
+      ocadAtualizado: acc.ocadAtualizado + v.ocadAtualizado,
+      ocadEmpenhado: acc.ocadEmpenhado + v.ocadEmpenhado,
+      ocadLiquidado: acc.ocadLiquidado + v.ocadLiquidado,
+      ocadPago: acc.ocadPago + v.ocadPago,
+      ocadDisponivel: acc.ocadDisponivel + v.ocadDisponivel,
     }),
     { ...VALORES_NULOS },
   );
+}
+
+export function somaValores(itens: OrcamentoItem[]): ValoresOrcamentarios {
+  return somarValores(itens.map((item) => item.valores));
+}
+
+export interface OpcaoFonte {
+  /** Código de 8 dígitos, como na coluna "Fonte de Recursos" da planilha. */
+  codigo: string;
+  nome: string;
+  /**
+   * Orçamento atualizado da fonte no recorte. É ele, e não o inicial, que
+   * dimensiona a barra da lista: há fontes abertas no meio do exercício, cuja
+   * dotação inicial é zero — pelo inicial elas apareceriam como R$ 0.
+   */
+  valor: number;
+  /** Em quantas ações do recorte a fonte aparece. */
+  acoes: number;
+}
+
+/** As fontes presentes num recorte, da maior para a menor. */
+export function fontesDisponiveis(itens: OrcamentoItem[]): OpcaoFonte[] {
+  const porCodigo = new Map<string, OpcaoFonte>();
+  for (const item of itens) {
+    for (const fonte of item.fontes) {
+      const opcao = porCodigo.get(fonte.codigo) ?? {
+        codigo: fonte.codigo,
+        nome: fonte.nome,
+        valor: 0,
+        acoes: 0,
+      };
+      opcao.valor += fonte.ocadAtualizado;
+      opcao.acoes += 1;
+      porCodigo.set(fonte.codigo, opcao);
+    }
+  }
+  return [...porCodigo.values()].sort((a, b) => b.valor - a.valor);
+}
+
+/**
+ * Recorta as ações às fontes escolhidas: os valores passam a ser só os das
+ * fontes marcadas, e as ações que não usam nenhuma delas saem da lista.
+ *
+ * Nada é rateado — a planilha já traz cada estágio por fonte —, e uma ação
+ * custeada por duas fontes selecionadas entra uma vez só, com a soma das duas.
+ */
+export function aplicarFontes(
+  itens: OrcamentoItem[],
+  codigos: string[],
+): OrcamentoItem[] {
+  if (codigos.length === 0) return itens;
+  const escolhidas = new Set(codigos);
+
+  return itens.flatMap((item) => {
+    const fontes = item.fontes.filter((f) => escolhidas.has(f.codigo));
+    if (fontes.length === 0) return [];
+    return [{ ...item, fontes, valores: somarValores(fontes) }];
+  });
 }
 
 export function filtrarOrcamento(
@@ -201,6 +266,54 @@ export function agregarPorOrgao(itens: OrcamentoItem[]): AgregadoOrgao[] {
     })
     .filter((d) => d.ocadInicial > 0)
     .sort((a, b) => b.ocadInicial - a.ocadInicial);
+}
+
+export interface LinhaOrgao extends ValoresOrcamentarios {
+  orgao: string;
+  orgaoCodigo: string;
+  /** Orçamento atualizado das ações exclusivas do órgão. */
+  exclusivo: number;
+  /** Orçamento atualizado das ações não exclusivas. */
+  naoExclusivo: number;
+  /** Eixos presentes no órgão, na ordem de `FUNCOES`. */
+  funcoes: string[];
+  unidades: number;
+  acoes: number;
+}
+
+/**
+ * Uma linha por órgão, para a visão em tabela plana.
+ *
+ * Diferente de `agregarPorOrgao`, que serve aos gráficos, esta parte do próprio
+ * recorte em vez da lista global de órgãos e não descarta quem tem dotação
+ * inicial zero — um órgão custeado só por crédito adicional some de um gráfico
+ * sem prejuízo, mas some de uma tabela levando o total junto.
+ */
+export function agregarOrgaos(itens: OrcamentoItem[]): LinhaOrgao[] {
+  const porOrgao = new Map<string, OrcamentoItem[]>();
+  for (const item of itens) {
+    porOrgao.set(item.orgaoCodigo, [
+      ...(porOrgao.get(item.orgaoCodigo) ?? []),
+      item,
+    ]);
+  }
+
+  const atualizadoDe = (sub: OrcamentoItem[], categoria: CategoriaEconomica) =>
+    somaValores(sub.filter((i) => i.categoriaEconomica === categoria))
+      .ocadAtualizado;
+
+  return [...porOrgao.values()]
+    .map((sub) => ({
+      orgao: sub[0].orgao,
+      orgaoCodigo: sub[0].orgaoCodigo,
+      exclusivo: atualizadoDe(sub, "Exclusivo"),
+      naoExclusivo: atualizadoDe(sub, "Não Exclusivo"),
+      funcoes: FUNCOES.filter((f) => sub.some((i) => i.funcao === f)),
+      unidades: new Set(sub.map((i) => i.unidadeCodigo)).size,
+      acoes: sub.length,
+      ...somaValores(sub),
+    }))
+    .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
 }
 
 export interface AgregadoUnidade extends ValoresOrcamentarios {
