@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { agregarOrgaos, type LinhaOrgao } from "@/data/base-ocad";
 import { CORES_EIXO, corSecretaria, nomeOrgao, siglaOrgao } from "@/lib/estagios";
-import { formatMoeda, formatPercent } from "@/lib/format";
+import { formatMoeda, formatParticipacao } from "@/lib/format";
 import type { OrcamentoItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -248,7 +248,7 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
       <TableCell className="text-right font-medium tabular-nums">
         {formatMoeda(linha.ocadAtualizado)}
         <span className="block text-xs font-normal text-muted-foreground">
-          {formatPercent(total > 0 ? linha.ocadAtualizado / total : 0)}
+          {formatParticipacao(total > 0 ? linha.ocadAtualizado / total : 0)}
         </span>
       </TableCell>
       <TableCell className="text-right tabular-nums">
@@ -314,7 +314,7 @@ function Classificacao({ linha }: { linha: LinhaOrgao }) {
         <React.Fragment key={parte.rotulo}>
           {i > 0 ? <span className="text-muted-foreground">·</span> : null}
           {parte.rotulo}{" "}
-          <span className="tabular-nums">{formatPercent(parte.valor / total)}</span>
+          <span className="tabular-nums">{formatParticipacao(parte.valor / total)}</span>
         </React.Fragment>
       ))}
     </Badge>

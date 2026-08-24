@@ -1,5 +1,5 @@
 import type { OpcaoFonte } from "@/data/base-ocad";
-import { formatMoeda, formatMoedaCompacta, formatPercent } from "@/lib/format";
+import { formatMoeda, formatMoedaCompacta, formatParticipacao } from "@/lib/format";
 import type { ValoresOrcamentarios } from "@/lib/types";
 
 /**
@@ -43,7 +43,7 @@ export function FichaFonte({
         <span className="font-medium text-foreground tabular-nums">
           {formatMoeda(valor)}
         </span>{" "}
-        · {formatPercent(total > 0 ? valor / total : 0)} do recorte · {acoes}{" "}
+        · {formatParticipacao(total > 0 ? valor / total : 0)} do recorte · {acoes}{" "}
         {acoes === 1 ? "ação" : "ações"}
       </p>
 

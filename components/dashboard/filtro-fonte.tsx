@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { OpcaoFonte } from "@/data/base-ocad";
-import { formatMoedaCompacta, formatPercent } from "@/lib/format";
+import { formatMoedaCompacta, formatParticipacao } from "@/lib/format";
 import { normalizar } from "@/lib/texto";
 import { cn } from "@/lib/utils";
 
@@ -226,7 +226,7 @@ function LinhaFonte({
           </span>
           <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
             {formatMoedaCompacta(opcao.valor)} ·{" "}
-            {formatPercent(total > 0 ? opcao.valor / total : 0)}
+            {formatParticipacao(total > 0 ? opcao.valor / total : 0)}
           </span>
         </span>
 
