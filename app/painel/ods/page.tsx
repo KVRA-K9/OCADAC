@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { ArrowLeft, BookOpen, HandHeart, HeartPulse, Search, Target } from "lucide-react";
+import { BookOpen, HandHeart, HeartPulse, Search, Target, X } from "lucide-react";
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { KpiCard } from "@/components/dashboard/kpi-card";
@@ -82,7 +82,7 @@ function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: E
   );
 }
 
-function OdsColuna({ ods, eixosFiltro, onVoltar }: { ods: Ods; eixosFiltro: EixoOds[]; onVoltar?: () => void }) {
+function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: EixoOds[]; onRemover?: () => void }) {
   const vazio = ods.indicadoresContemplados.length === 0;
   return (
     <div className="flex w-full animate-in fade-in-0 slide-in-from-bottom-4 duration-400 flex-col gap-3 rounded-xl ring-1 ring-foreground/10">
@@ -99,10 +99,16 @@ function OdsColuna({ ods, eixosFiltro, onVoltar }: { ods: Ods; eixosFiltro: Eixo
             />
             <span className="text-sm font-semibold leading-tight">{ods.titulo}</span>
           </div>
-          {onVoltar && (
-            <Button variant="ghost" size="sm" onClick={onVoltar} className="shrink-0">
-              <ArrowLeft className="size-4" />
-              Voltar
+          {onRemover && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onRemover}
+              className="shrink-0"
+              aria-label={`Remover ODS ${ods.numero} da seleção`}
+            >
+              <X className="size-4" />
+              Remover
             </Button>
           )}
         </div>
@@ -126,7 +132,7 @@ export default function OdsPage() {
   const [eixosFiltro, setEixosFiltro] = React.useState<EixoOds[]>([]);
   const [statusFiltro, setStatusFiltro] = React.useState<StatusIndicador[]>([]);
   const [busca, setBusca] = React.useState("");
-  const [odsSelecionado, setOdsSelecionado] = React.useState<number | null>(null);
+  const [odsSelecionados, setOdsSelecionados] = React.useState<number[]>([]);
 
   const toggleEixo = React.useCallback((valor: EixoOds) => {
     setEixosFiltro((prev) =>
@@ -179,13 +185,15 @@ export default function OdsPage() {
     [lista],
   );
 
-  const odsAtual = React.useMemo(
-    () => lista.find((o) => o.numero === odsSelecionado) ?? null,
-    [lista, odsSelecionado],
+  const odsAtuais = React.useMemo(
+    () => lista.filter((o) => odsSelecionados.includes(o.numero)),
+    [lista, odsSelecionados],
   );
 
   const toggleOds = React.useCallback((numero: number) => {
-    setOdsSelecionado((prev) => (prev === numero ? null : numero));
+    setOdsSelecionados((prev) =>
+      prev.includes(numero) ? prev.filter((n) => n !== numero) : [...prev, numero],
+    );
   }, []);
 
   return (
@@ -333,7 +341,7 @@ export default function OdsPage() {
 
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-12 xl:grid-cols-[repeat(18,minmax(0,1fr))]">
           {ODS_LISTA.map((ods, index) => {
-            const selecionado = odsSelecionado === ods.numero;
+            const selecionado = odsSelecionados.includes(ods.numero);
             return (
               <button
                 key={ods.numero}
@@ -362,11 +370,28 @@ export default function OdsPage() {
           })}
         </div>
 
-      {odsAtual && <OdsColuna ods={odsAtual} eixosFiltro={eixosFiltro} onVoltar={() => setOdsSelecionado(null)} />}
+      {odsSelecionados.length > 1 && (
+        <div className="flex justify-end">
+          <Button variant="outline" size="sm" onClick={() => setOdsSelecionados([])}>
+            <X className="size-4" />
+            Limpar seleção ({odsSelecionados.length})
+          </Button>
+        </div>
+      )}
 
-      {!odsSelecionado && (
+      {odsAtuais.map((ods) => (
+        <OdsColuna
+          key={ods.numero}
+          ods={ods}
+          eixosFiltro={eixosFiltro}
+          onRemover={() => toggleOds(ods.numero)}
+        />
+      ))}
+
+      {odsSelecionados.length === 0 && (
         <p className="text-center text-sm text-muted-foreground">
-          Clique em um ODS acima para visualizar seus indicadores contemplados.
+          Clique nos ODS acima para visualizar seus indicadores contemplados. Você pode selecionar
+          mais de um.
         </p>
       )}
     </div>
