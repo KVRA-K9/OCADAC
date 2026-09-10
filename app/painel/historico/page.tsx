@@ -14,7 +14,6 @@ import {
 } from "recharts";
 import {
   ArrowDownUp,
-  ArrowLeft,
   CalendarRange,
   Info,
   Landmark,
@@ -512,14 +511,24 @@ export default function HistoricoPage() {
       {aba && (
         <div className="flex animate-in flex-col gap-4 rounded-xl ring-1 ring-foreground/10 duration-300 fade-in-0 slide-in-from-bottom-4">
           <div
-            className="flex flex-col gap-1 rounded-t-xl p-3"
+            className="relative flex flex-col gap-1 overflow-hidden rounded-t-xl p-3"
             style={{
               background: `color-mix(in oklab, ${CORES_NORMA[aba]} 20%, var(--card))`,
             }}
           >
-            <div className="flex items-center justify-between gap-2">
+            {/* Marca d'água do tipo: reforça a identidade da aba sem competir
+              * com o título. Fica atrás do conteúdo e sangra na borda, aparada
+              * pelo overflow-hidden do cabeçalho. */}
+            {IconeAba && (
+              <IconeAba
+                aria-hidden
+                strokeWidth={1.5}
+                className="pointer-events-none absolute top-1/2 -right-4 size-24 -translate-y-1/2"
+                style={{ color: CORES_NORMA[aba], opacity: 0.25 }}
+              />
+            )}
+            <div className="relative flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                {IconeAba && <IconeAba aria-hidden className="size-5" />}
                 <h3 className="text-base font-semibold">{aba}</h3>
                 <span className="text-xs text-muted-foreground tabular-nums">
                   {metaLeis.porTipo[aba]} na planilha
@@ -531,11 +540,11 @@ export default function HistoricoPage() {
                 onClick={() => escolherAba(null)}
                 className="shrink-0"
               >
-                <ArrowLeft className="size-4" />
-                Voltar
+                <X className="size-4" />
+                Fechar
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="relative text-xs text-muted-foreground">
               {DESCRICOES_NORMA[aba]}
             </p>
           </div>
@@ -564,9 +573,13 @@ export default function HistoricoPage() {
               </div>
 
               <Select value={decada} onValueChange={setDecada}>
+                {/* Largura ditada pela opção mais longa, "Todas as décadas
+                  * (45)": o gatilho tem 62px de moldura (ícone, seta, gaps e
+                  * recuos) e o rótulo não quebra linha, então em 11rem ele
+                  * truncava. A busca ao lado é flex-1 e cede esse espaço. */}
                 <SelectTrigger
                   aria-label="Filtrar por década"
-                  className="h-9 w-full sm:w-[11rem]"
+                  className="h-9 w-full sm:w-[13rem]"
                 >
                   <CalendarRange className="size-4 text-muted-foreground" />
                   <SelectValue />
@@ -575,9 +588,9 @@ export default function HistoricoPage() {
                   <SelectItem value={TODOS}>
                     Todas as décadas ({daAba.length})
                   </SelectItem>
-                  {decadas.map(([d, quantas]) => (
+                  {decadas.map(([d]) => (
                     <SelectItem key={d} value={String(d)}>
-                      Anos {d} ({quantas})
+                      {d}
                     </SelectItem>
                   ))}
                 </SelectContent>

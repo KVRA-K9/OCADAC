@@ -15,6 +15,11 @@ import {
 
 const dataBR = (iso: string) => iso.split("-").reverse().join("/");
 
+/** O rótulo de um campo do cartão. Em constante porque `ListaOrgaos` monta o
+ * seu à mão, num <button>, e os dois têm de continuar idênticos. */
+const ROTULO =
+  "text-xs font-medium tracking-wide text-muted-foreground uppercase";
+
 function Detalhe({
   rotulo,
   children,
@@ -24,10 +29,92 @@ function Detalhe({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-        {rotulo}
-      </span>
+      <span className={ROTULO}>{rotulo}</span>
       <div className="text-sm leading-relaxed">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * Os órgãos da norma, um por linha, com o código orçamentário à esquerda.
+ *
+ * Nome e código chegam da planilha como duas listas separadas por barra — coluna
+ * E e coluna D —, paralelas posição a posição. Só as LOAs de 2009 em diante têm
+ * código; antes disso, e nas leis de estrutura administrativa, resta o nome.
+ */
+function ListaOrgaos({ norma }: { norma: Norma }) {
+  /* Começa fechada: é o bloco mais alto do cartão, e quem abre a norma quase
+   * sempre vem pela dotação. A contagem no rótulo diz o que há dentro, e abrir
+   * é escolha de quem lê. Os hooks ficam antes da saída antecipada, senão a
+   * ordem deles mudaria entre um cartão com órgãos e um sem. */
+  const [aberto, setAberto] = React.useState(false);
+  const idLista = React.useId();
+
+  if (!norma.orgaos) return null;
+
+  /* Segmentos vazios saem: a coluna E do exercício de 2023 tem uma barra dupla,
+   * que sem esta limpeza daria seis nomes para cinco códigos. */
+  const partes = (texto: string) =>
+    texto
+      .split("/")
+      .map((p) => p.trim())
+      .filter(Boolean);
+
+  const nomes = partes(norma.orgaos);
+  /* A planilha fecha alguns códigos com sublinhado ("608_"), que não significa
+   * nada na tela e sai. O bullet que entra no lugar é outro: é o separador entre
+   * o código e o nome, e por isso vai em todos, tenham ou não sublinhado. Ele
+   * também evita confusão com os hífens que os próprios nomes trazem
+   * ("... - SEASDH"). */
+  const codigos = norma.loa?.codigos
+    ? partes(norma.loa.codigos).map((c) => c.replace(/_+$/, ""))
+    : [];
+  /* Parear só quando as contagens batem. A planilha é editada à mão, e um
+   * desencontro deslocaria o código de um órgão para o vizinho — pior do que
+   * não mostrar código nenhum. */
+  const pareado = codigos.length === nomes.length;
+
+  return (
+    <div className="flex flex-col gap-0.5">
+      <button
+        type="button"
+        onClick={() => setAberto((v) => !v)}
+        aria-expanded={aberto}
+        aria-controls={idLista}
+        className="flex cursor-pointer items-center gap-1.5 self-start rounded focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+      >
+        <ChevronRight
+          aria-hidden
+          className={cn(
+            "size-3.5 shrink-0 text-muted-foreground transition-transform motion-reduce:transition-none",
+            aberto && "rotate-90",
+          )}
+        />
+        <span className={ROTULO}>Órgãos</span>
+        {/* Fechada, a contagem é o que resta da lista; aberta, ela está à vista. */}
+        {!aberto && (
+          <span className={cn(ROTULO, "tabular-nums")}>({nomes.length})</span>
+        )}
+      </button>
+      {aberto && (
+        <ul
+          id={idLista}
+          className="flex flex-col gap-1 text-sm leading-relaxed"
+        >
+          {nomes.map((nome, i) => (
+            /* Código e nome correm no mesmo fluxo de texto, e não em duas
+             * colunas: com largura fixa, "760" abria um vazio até o nome. */
+            <li key={i}>
+              {pareado && (
+                <span className="text-muted-foreground tabular-nums">
+                  {codigos[i]} •{" "}
+                </span>
+              )}
+              {nome}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -168,7 +255,7 @@ function CartaoNorma({
       </button>
 
       {aberto && (
-        <div className="flex flex-col gap-3 border-t px-3 py-3 pl-9">
+        <div className="space-y-3.5 border-t border-foreground/10 px-4 pt-3.5 pb-4">
           {norma.publicacao && (
             <Detalhe rotulo="Publicação no DOE">
               {dataBR(norma.publicacao)}
@@ -187,7 +274,6 @@ function CartaoNorma({
               </a>
             </Detalhe>
           )}
-          {norma.orgaos && <Detalhe rotulo="Órgãos">{norma.orgaos}</Detalhe>}
           {(norma.abas?.length ?? 0) > 1 && (
             /* A norma está em mais de uma aba da planilha e é contada uma vez
              * só; sem esta linha, quem procurasse na outra aba não a acharia. */
@@ -201,6 +287,7 @@ function CartaoNorma({
             </Detalhe>
           )}
           <ValoresLOA norma={norma} />
+          <ListaOrgaos norma={norma} />
           {norma.metas.length > 0 && (
             <Detalhe rotulo="Metas e prioridades">
               <ul className="flex list-disc flex-col gap-1 pl-4">
