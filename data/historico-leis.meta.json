@@ -1,15 +1,15 @@
 {
   "arquivoFonte": "HISTÓRICO DE LEIS ORÇAMENTO CRIANÇA E ADOLESCENTE.xlsx",
   "origem": "Histórico de leis do Orçamento Criança e Adolescente — SEPLAN/AC",
-  "dataArquivo": "2026-08-14",
+  "dataArquivo": "2026-09-09",
   "atualizadoEm": "8/12/26",
-  "geradoEm": "2026-08-18",
-  "normas": 145,
+  "geradoEm": "2026-09-09",
+  "normas": 146,
   "porTipo": {
+    "Decreto": 6,
     "Lei Ordinária": 45,
     "LDO": 36,
     "LOA": 36,
-    "Decreto": 5,
     "Estrutura Administrativa": 13,
     "PPA": 10
   },

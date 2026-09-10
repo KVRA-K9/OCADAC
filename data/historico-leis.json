@@ -1,5 +1,25 @@
 [
   {
+    "id": "Decreto-46",
+    "tipo": "Decreto",
+    "especie": "Decreto",
+    "numero": "11.934",
+    "ementa": "Dispõe sobre o Centro de Atendimento Integrado à Criança e Adolescente - CAICA.",
+    "ano": 2026,
+    "data": "2026-08-03",
+    "publicacao": null,
+    "link": "https://legis.ac.gov.br/detalhar/6878",
+    "exercicio": null,
+    "quadrienio": null,
+    "orgaos": null,
+    "citacoes": null,
+    "metas": [],
+    "loa": null,
+    "abas": [
+      "Decreto"
+    ]
+  },
+  {
     "id": "Lei Ordinária-0",
     "tipo": "Lei Ordinária",
     "especie": "Lei",
@@ -20,7 +40,7 @@
     ]
   },
   {
-    "id": "LDO-74",
+    "id": "LDO-75",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "4.627",
@@ -162,7 +182,7 @@
     ]
   },
   {
-    "id": "LOA-110",
+    "id": "LOA-111",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "4.753",
@@ -189,7 +209,7 @@
     ]
   },
   {
-    "id": "LDO-75",
+    "id": "LDO-76",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "4.380",
@@ -273,7 +293,7 @@
     ]
   },
   {
-    "id": "LOA-111",
+    "id": "LOA-112",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "4.511",
@@ -300,7 +320,7 @@
     ]
   },
   {
-    "id": "Decreto-46",
+    "id": "Decreto-47",
     "tipo": "Decreto",
     "especie": "Decreto",
     "numero": "11.345",
@@ -320,7 +340,7 @@
     ]
   },
   {
-    "id": "Decreto-47",
+    "id": "Decreto-48",
     "tipo": "Decreto",
     "especie": "Decreto",
     "numero": "11.287",
@@ -340,7 +360,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-51",
+    "id": "Estrutura Administrativa-52",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei",
     "numero": "4.167",
@@ -360,7 +380,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-52",
+    "id": "Estrutura Administrativa-53",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei",
     "numero": "4.085",
@@ -380,7 +400,7 @@
     ]
   },
   {
-    "id": "LDO-76",
+    "id": "LDO-77",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "4.144",
@@ -462,7 +482,7 @@
     ]
   },
   {
-    "id": "LOA-112",
+    "id": "LOA-113",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "4.281",
@@ -489,7 +509,7 @@
     ]
   },
   {
-    "id": "PPA-64",
+    "id": "PPA-65",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "4.282",
@@ -512,7 +532,7 @@
     ]
   },
   {
-    "id": "Decreto-48",
+    "id": "Decreto-49",
     "tipo": "Decreto",
     "especie": "Decreto",
     "numero": "11.049",
@@ -532,7 +552,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-53",
+    "id": "Estrutura Administrativa-54",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "419",
@@ -552,7 +572,7 @@
     ]
   },
   {
-    "id": "LDO-77",
+    "id": "LDO-78",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.975",
@@ -576,7 +596,7 @@
     ]
   },
   {
-    "id": "LOA-113",
+    "id": "LOA-114",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "4.075",
@@ -603,7 +623,7 @@
     ]
   },
   {
-    "id": "Decreto-49",
+    "id": "Decreto-50",
     "tipo": "Decreto",
     "especie": "Decreto",
     "numero": "8.232",
@@ -623,7 +643,7 @@
     ]
   },
   {
-    "id": "Decreto-50",
+    "id": "Decreto-51",
     "tipo": "Decreto",
     "especie": "Decreto",
     "numero": "8.155",
@@ -643,7 +663,7 @@
     ]
   },
   {
-    "id": "LDO-78",
+    "id": "LDO-79",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.763",
@@ -743,7 +763,7 @@
     ]
   },
   {
-    "id": "LOA-114",
+    "id": "LOA-115",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.891",
@@ -770,7 +790,7 @@
     ]
   },
   {
-    "id": "LOA-115",
+    "id": "LOA-116",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.715",
@@ -797,7 +817,7 @@
     ]
   },
   {
-    "id": "LDO-79",
+    "id": "LDO-80",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.642",
@@ -837,7 +857,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-54",
+    "id": "Estrutura Administrativa-55",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "359",
@@ -857,7 +877,7 @@
     ]
   },
   {
-    "id": "LDO-80",
+    "id": "LDO-81",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.520",
@@ -877,7 +897,7 @@
     ]
   },
   {
-    "id": "LOA-116",
+    "id": "LOA-117",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.588",
@@ -904,7 +924,7 @@
     ]
   },
   {
-    "id": "PPA-65",
+    "id": "PPA-66",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "3.589",
@@ -927,7 +947,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-55",
+    "id": "Estrutura Administrativa-56",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "355",
@@ -947,7 +967,7 @@
     ]
   },
   {
-    "id": "LDO-81",
+    "id": "LDO-82",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.393",
@@ -1027,7 +1047,7 @@
     ]
   },
   {
-    "id": "LOA-117",
+    "id": "LOA-118",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.470",
@@ -1054,7 +1074,7 @@
     ]
   },
   {
-    "id": "LDO-82",
+    "id": "LDO-83",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.276",
@@ -1114,7 +1134,7 @@
     ]
   },
   {
-    "id": "LOA-118",
+    "id": "LOA-119",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.370",
@@ -1141,7 +1161,7 @@
     ]
   },
   {
-    "id": "LDO-83",
+    "id": "LDO-84",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "3.160",
@@ -1181,7 +1201,7 @@
     ]
   },
   {
-    "id": "LOA-119",
+    "id": "LOA-120",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.205",
@@ -1208,7 +1228,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-56",
+    "id": "Estrutura Administrativa-57",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "314",
@@ -1228,7 +1248,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-57",
+    "id": "Estrutura Administrativa-58",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei",
     "numero": "2.967",
@@ -1248,7 +1268,7 @@
     ]
   },
   {
-    "id": "LDO-84",
+    "id": "LDO-85",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.966",
@@ -1348,7 +1368,7 @@
     ]
   },
   {
-    "id": "LOA-120",
+    "id": "LOA-121",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "3.098",
@@ -1375,7 +1395,7 @@
     ]
   },
   {
-    "id": "PPA-66",
+    "id": "PPA-67",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "3.100",
@@ -1398,7 +1418,7 @@
     ]
   },
   {
-    "id": "LDO-85",
+    "id": "LDO-86",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.880",
@@ -1418,7 +1438,7 @@
     ]
   },
   {
-    "id": "LOA-121",
+    "id": "LOA-122",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.882",
@@ -1445,7 +1465,7 @@
     ]
   },
   {
-    "id": "LDO-86",
+    "id": "LDO-87",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.719",
@@ -1505,7 +1525,7 @@
     ]
   },
   {
-    "id": "LOA-122",
+    "id": "LOA-123",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.831",
@@ -1532,7 +1552,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-58",
+    "id": "Estrutura Administrativa-59",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "247",
@@ -1552,7 +1572,7 @@
     ]
   },
   {
-    "id": "LDO-87",
+    "id": "LDO-88",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.589",
@@ -1572,7 +1592,7 @@
     ]
   },
   {
-    "id": "LOA-123",
+    "id": "LOA-124",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.678",
@@ -1599,7 +1619,7 @@
     ]
   },
   {
-    "id": "LDO-88",
+    "id": "LDO-89",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.424",
@@ -1619,7 +1639,7 @@
     ]
   },
   {
-    "id": "LOA-124",
+    "id": "LOA-125",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.523",
@@ -1646,7 +1666,7 @@
     ]
   },
   {
-    "id": "PPA-67",
+    "id": "PPA-68",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "2.524",
@@ -1669,7 +1689,7 @@
     ]
   },
   {
-    "id": "LDO-89",
+    "id": "LDO-90",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.299",
@@ -1691,7 +1711,7 @@
     ]
   },
   {
-    "id": "LOA-125",
+    "id": "LOA-126",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.412",
@@ -1718,7 +1738,7 @@
     ]
   },
   {
-    "id": "LDO-90",
+    "id": "LDO-91",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.142",
@@ -1742,7 +1762,7 @@
     ]
   },
   {
-    "id": "LOA-126",
+    "id": "LOA-127",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.253",
@@ -1769,7 +1789,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-59",
+    "id": "Estrutura Administrativa-60",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "191",
@@ -1789,7 +1809,7 @@
     ]
   },
   {
-    "id": "LDO-91",
+    "id": "LDO-92",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "2.014",
@@ -1851,7 +1871,7 @@
     ]
   },
   {
-    "id": "LOA-127",
+    "id": "LOA-128",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "2.093",
@@ -1878,7 +1898,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-60",
+    "id": "Estrutura Administrativa-61",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "171",
@@ -1898,7 +1918,7 @@
     ]
   },
   {
-    "id": "LDO-92",
+    "id": "LDO-93",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.913",
@@ -1918,7 +1938,7 @@
     ]
   },
   {
-    "id": "LOA-128",
+    "id": "LOA-129",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.971",
@@ -1945,7 +1965,7 @@
     ]
   },
   {
-    "id": "PPA-68",
+    "id": "PPA-69",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.972",
@@ -1968,7 +1988,7 @@
     ]
   },
   {
-    "id": "LDO-93",
+    "id": "LDO-94",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.789",
@@ -2048,7 +2068,7 @@
     ]
   },
   {
-    "id": "LOA-129",
+    "id": "LOA-130",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.804",
@@ -2075,7 +2095,7 @@
     ]
   },
   {
-    "id": "LDO-94",
+    "id": "LDO-95",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.651",
@@ -2175,7 +2195,7 @@
     ]
   },
   {
-    "id": "LOA-130",
+    "id": "LOA-131",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.690",
@@ -2202,7 +2222,7 @@
     ]
   },
   {
-    "id": "LDO-95",
+    "id": "LDO-96",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.567",
@@ -2264,7 +2284,7 @@
     ]
   },
   {
-    "id": "LOA-131",
+    "id": "LOA-132",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.593",
@@ -2291,7 +2311,7 @@
     ]
   },
   {
-    "id": "LDO-96",
+    "id": "LDO-97",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.504",
@@ -2331,7 +2351,7 @@
     ]
   },
   {
-    "id": "LOA-132",
+    "id": "LOA-133",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.522",
@@ -2358,7 +2378,7 @@
     ]
   },
   {
-    "id": "PPA-69",
+    "id": "PPA-70",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.521",
@@ -2381,7 +2401,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-61",
+    "id": "Estrutura Administrativa-62",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "115",
@@ -2401,7 +2421,7 @@
     ]
   },
   {
-    "id": "LDO-97",
+    "id": "LDO-98",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.468",
@@ -2441,7 +2461,7 @@
     ]
   },
   {
-    "id": "LOA-133",
+    "id": "LOA-134",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.470",
@@ -2468,7 +2488,7 @@
     ]
   },
   {
-    "id": "LDO-98",
+    "id": "LDO-99",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.399",
@@ -2508,7 +2528,7 @@
     ]
   },
   {
-    "id": "LOA-134",
+    "id": "LOA-135",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.425",
@@ -2535,7 +2555,7 @@
     ]
   },
   {
-    "id": "LDO-99",
+    "id": "LDO-100",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.346",
@@ -2595,7 +2615,7 @@
     ]
   },
   {
-    "id": "LOA-135",
+    "id": "LOA-136",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.347",
@@ -2622,7 +2642,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-62",
+    "id": "Estrutura Administrativa-63",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei Complementar",
     "numero": "63",
@@ -2642,7 +2662,7 @@
     ]
   },
   {
-    "id": "LDO-100",
+    "id": "LDO-101",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.292",
@@ -2677,7 +2697,7 @@
     ]
   },
   {
-    "id": "LOA-136",
+    "id": "LOA-137",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.306",
@@ -2704,7 +2724,7 @@
     ]
   },
   {
-    "id": "LOA-137",
+    "id": "LOA-138",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.276",
@@ -2731,7 +2751,7 @@
     ]
   },
   {
-    "id": "PPA-70",
+    "id": "PPA-71",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.307",
@@ -2754,7 +2774,7 @@
     ]
   },
   {
-    "id": "LDO-101",
+    "id": "LDO-102",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.269",
@@ -2774,7 +2794,7 @@
     ]
   },
   {
-    "id": "LDO-102",
+    "id": "LDO-103",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.228",
@@ -2794,7 +2814,7 @@
     ]
   },
   {
-    "id": "LOA-138",
+    "id": "LOA-139",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.257",
@@ -2821,7 +2841,7 @@
     ]
   },
   {
-    "id": "LDO-103",
+    "id": "LDO-104",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.184",
@@ -2841,7 +2861,7 @@
     ]
   },
   {
-    "id": "LOA-139",
+    "id": "LOA-140",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.221",
@@ -2868,7 +2888,7 @@
     ]
   },
   {
-    "id": "LDO-104",
+    "id": "LDO-105",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.156",
@@ -2888,7 +2908,7 @@
     ]
   },
   {
-    "id": "LDO-105",
+    "id": "LDO-106",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.156",
@@ -2908,7 +2928,7 @@
     ]
   },
   {
-    "id": "LOA-140",
+    "id": "LOA-141",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.174",
@@ -2935,7 +2955,7 @@
     ]
   },
   {
-    "id": "LOA-141",
+    "id": "LOA-142",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.152",
@@ -2962,7 +2982,7 @@
     ]
   },
   {
-    "id": "PPA-71",
+    "id": "PPA-72",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.162",
@@ -2985,7 +3005,7 @@
     ]
   },
   {
-    "id": "LDO-106",
+    "id": "LDO-107",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.082",
@@ -3005,7 +3025,7 @@
     ]
   },
   {
-    "id": "LDO-107",
+    "id": "LDO-108",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "1.082",
@@ -3025,7 +3045,7 @@
     ]
   },
   {
-    "id": "LOA-142",
+    "id": "LOA-143",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.106",
@@ -3052,7 +3072,7 @@
     ]
   },
   {
-    "id": "LOA-143",
+    "id": "LOA-144",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.075",
@@ -3079,7 +3099,7 @@
     ]
   },
   {
-    "id": "PPA-72",
+    "id": "PPA-73",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.054",
@@ -3102,7 +3122,7 @@
     ]
   },
   {
-    "id": "Estrutura Administrativa-63",
+    "id": "Estrutura Administrativa-64",
     "tipo": "Estrutura Administrativa",
     "especie": "Lei",
     "numero": "1.011",
@@ -3123,7 +3143,7 @@
     ]
   },
   {
-    "id": "LDO-108",
+    "id": "LDO-109",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "988",
@@ -3143,7 +3163,7 @@
     ]
   },
   {
-    "id": "LOA-144",
+    "id": "LOA-145",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "1.017",
@@ -3170,7 +3190,7 @@
     ]
   },
   {
-    "id": "PPA-73",
+    "id": "PPA-74",
     "tipo": "PPA",
     "especie": "Lei",
     "numero": "1.005",
@@ -3193,7 +3213,7 @@
     ]
   },
   {
-    "id": "LDO-109",
+    "id": "LDO-110",
     "tipo": "LDO",
     "especie": "Lei",
     "numero": "943",
@@ -3217,7 +3237,7 @@
     ]
   },
   {
-    "id": "LOA-145",
+    "id": "LOA-146",
     "tipo": "LOA",
     "especie": "Lei",
     "numero": "965",
