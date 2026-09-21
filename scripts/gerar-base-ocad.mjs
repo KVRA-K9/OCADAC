@@ -14,18 +14,21 @@
  *   2. Não existe coluna de eixo. Ele é derivado da função orçamentária (os dois
  *      primeiros dígitos da funcional programática), com as exceções abaixo.
  *
- * Uso: npm run dados
+ * Uso: npm run dados [-- caminho/para/planilha.xls]
  */
 
 import { stat, writeFile } from "node:fs/promises";
-import { resolve, dirname } from "node:path";
+import { basename, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import XLSX from "xlsx";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const raiz = resolve(__dirname, "..");
 
-const FONTE = "Planilhas/OCAD_2026.xlsx";
+// A planilha é reemitida todo mês; a fonte corrente pode ser passada na linha
+// de comando — `npm run dados -- Planilhas/Agosto_2026/arquivo.xls` — e, sem
+// argumento, fica a do exercício vigente.
+const FONTE = process.argv[2] ?? "Planilhas/OCAD_2026.xlsx";
 const ANO = 2026;
 
 const COLUNAS_ESPERADAS = [
@@ -304,7 +307,7 @@ async function main() {
   const { mtime } = await stat(caminho);
 
   const meta = {
-    arquivoFonte: FONTE.replace("Planilhas/", ""),
+    arquivoFonte: basename(FONTE),
     origem: "Planilha OCAD — mesma base do BI",
     // A planilha não carimba a data de extração; fica registrada a do arquivo.
     dataArquivo: new Date(mtime).toISOString().slice(0, 10),

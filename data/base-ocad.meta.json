@@ -1,8 +1,8 @@
 {
-  "arquivoFonte": "OCAD_2026.xlsx",
+  "arquivoFonte": "OCAD_Orcamento_Crianca_Adolescente-2776-20260921.xls",
   "origem": "Planilha OCAD — mesma base do BI",
-  "dataArquivo": "2026-08-04",
-  "geradoEm": "2026-08-24",
+  "dataArquivo": "2026-09-21",
+  "geradoEm": "2026-09-21",
   "anos": [
     2026
   ],
@@ -13,22 +13,22 @@
   "totais": {
     "dotacaoInicial": 4742429246.81,
     "ocadInicial": 3250119500.54,
-    "ocadAtualizado": 3192685148.03,
-    "ocadEmpenhado": 2134080222.72,
-    "ocadLiquidado": 1832993680.23,
-    "ocadPago": 1714867827.06,
-    "ocadDisponivel": 1359691467.8
+    "ocadAtualizado": 3379375850.69,
+    "ocadEmpenhado": 2411848468.4,
+    "ocadLiquidado": 2138691681.34,
+    "ocadPago": 2014931644.37,
+    "ocadDisponivel": 1240684169.35
   },
   "porClassificacao": {
     "Não exclusivo": {
       "acoes": 98,
       "ocadInicial": 839424232.26,
-      "ocadLiquidado": 525711473.78
+      "ocadLiquidado": 611887972.67
     },
     "Exclusivo": {
       "acoes": 40,
       "ocadInicial": 2410695268.28,
-      "ocadLiquidado": 1307282206.45
+      "ocadLiquidado": 1526803708.67
     }
   }
 }
