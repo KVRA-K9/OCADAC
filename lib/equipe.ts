@@ -29,3 +29,22 @@ const comCargo = (p: Integrante) => `${p.nome} (${p.cargo})`;
 export const CREDITOS_EQUIPE =
   `Coordenador: ${comCargo(COORDENADOR)}; ` +
   `Equipe Técnica: ${EQUIPE_TECNICA.map(comCargo).join(", ")}.`;
+
+import type { Locale } from "@/lib/messages";
+
+const CARGOS_EN: Record<string, string> = {
+  "Gestor de Políticas Públicas": "Public Policy Manager",
+  Economista: "Economist",
+  "Especialista Executiva Administradora": "Executive Administrative Specialist",
+};
+
+const comCargoEn = (p: Integrante) => `${p.nome} (${CARGOS_EN[p.cargo] ?? p.cargo})`;
+
+export const CREDITOS_EQUIPE_EN: string =
+  `Coordinator: ${comCargoEn(COORDENADOR)}; ` +
+  `Technical Team: ${EQUIPE_TECNICA.map(comCargoEn).join(", ")}.`;
+
+/** Créditos da equipe no idioma ativo. */
+export function getCreditosEquipe(locale: Locale): string {
+  return locale === "en" ? CREDITOS_EQUIPE_EN : CREDITOS_EQUIPE;
+}

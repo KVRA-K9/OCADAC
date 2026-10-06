@@ -1,18 +1,25 @@
+"use client";
+
 import { Section } from "@/components/landing/section";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { EIXOS_OCAD } from "@/lib/conteudo-ocad";
+import { getEixosOcad } from "@/lib/conteudo-ocad";
+import { useLocale, useT } from "@/lib/i18n";
 
 export function Eixos() {
+  const { locale } = useLocale();
+  const t = useT();
+  const eixos = getEixosOcad(locale);
+
   return (
     <Section
       id="eixos"
       className="bg-muted/30"
-      titulo="Eixos do OCAD"
-      subtitulo="O orçamento está organizado em três eixos temáticos que reúnem funções correlatas, conforme a metodologia adotada pela Seplan/AC."
+      titulo={t.landing.eixos.titulo}
+      subtitulo={t.landing.eixos.subtitulo}
     >
       <div className="grid gap-6 md:grid-cols-3">
-        {EIXOS_OCAD.map((eixo) => (
+        {eixos.map((eixo) => (
           <Card key={eixo.titulo} className="border border-primary/40 ring-0 relative overflow-hidden">
             <eixo.icone
               className="pointer-events-none absolute -right-4 -bottom-4 size-32 opacity-25"

@@ -1,3 +1,5 @@
+"use client";
+
 import { Download } from "lucide-react";
 
 import { Section } from "@/components/landing/section";
@@ -9,18 +11,23 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { relatoriosOcad } from "@/data/relatorios";
+import { getRelatoriosOcad } from "@/data/relatorios";
+import { useLocale, useT } from "@/lib/i18n";
 
 export function Relatorios() {
+  const { locale } = useLocale();
+  const t = useT();
+  const relatorios = getRelatoriosOcad(locale);
+
   return (
     <Section
       id="relatorios"
       className="bg-muted/30"
-      titulo="Relatórios anuais"
-      subtitulo="Publicações oficiais da Seplan/AC com a apuração do OCAD, disponíveis para download."
+      titulo={t.landing.relatorios.titulo}
+      subtitulo={t.landing.relatorios.subtitulo}
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {relatoriosOcad.map((r) => (
+        {relatorios.map((r) => (
           <Card key={r.ano} className="border border-primary/40 ring-0 flex flex-col">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -37,7 +44,7 @@ export function Relatorios() {
                   download
                 >
                   <Download />
-                  Baixar PDF
+                  {t.landing.relatorios.baixarPdf}
                 </a>
               </Button>
             </CardContent>
@@ -46,7 +53,7 @@ export function Relatorios() {
       </div>
 
       <p className="mt-6 text-center text-xs text-muted-foreground">
-        Relatórios Publicados em{" "}
+        {t.landing.relatorios.publicadosEm}{" "}
         <a
           href="https://seplan.ac.gov.br/planejamento-governamental/orcamentos-tematicos/orcamento-crianca-e-adolescente-ocad/"
           target="_blank"

@@ -40,6 +40,7 @@ import {
   formatVariacao,
   formatVariacaoMoeda,
 } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_TODOS,
@@ -53,6 +54,8 @@ import {
 } from "@/data/base-ocad";
 
 export default function VisaoGeralPage() {
+  const t = useT();
+
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
     ano: OPCAO_TODOS,
     funcao: [],
@@ -109,51 +112,56 @@ export default function VisaoGeralPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        titulo="Visão Geral"
-        descricao="Orçamento e execução da despesa para a Criança e o Adolescente no Estado do Acre, do valor inicial ao efetivamente pago."
+        titulo={t.painel.titulo}
+        descricao={t.painel.descricao}
       />
 
       <FiltersForm onApply={onApply} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
-          titulo="Orçamento Inicial"
+          titulo={t.painel.orcamentoInicial}
           valor={semDados ? "—" : formatMoeda(totais.ocadInicial)}
-          dica={semDados ? "Sem dados" : `${filtrados.length} ações`}
+          dica={semDados ? t.common.semDados : t.painel.acoes(filtrados.length)}
           icone={Wallet}
         />
         <KpiCard
-          titulo="Orçamento Atualizado"
+          titulo={t.painel.orcamentoAtualizado}
           valor={semDados ? "—" : formatMoeda(totais.ocadAtualizado)}
           dica={
             variacaoAtualizado === null
               ? "—"
-              : `${formatVariacao(variacaoAtualizado)} sobre o inicial · ${formatVariacaoMoeda(deltaAtualizado)}`
+              : t.painel.variacaoSobreInicial(
+                  formatVariacao(variacaoAtualizado),
+                  formatVariacaoMoeda(deltaAtualizado),
+                )
           }
           icone={FileText}
         />
         <KpiCard
-          titulo="Empenhado"
+          titulo={t.painel.empenhado}
           valor={semDados ? "—" : formatMoeda(totais.ocadEmpenhado)}
-          dica={`${doAtualizado(totais.ocadEmpenhado)} do atualizado`}
+          dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadEmpenhado))}
           icone={FileSignature}
         />
         <KpiCard
-          titulo="Liquidado"
+          titulo={t.painel.liquidado}
           valor={semDados ? "—" : formatMoeda(totais.ocadLiquidado)}
-          dica={`${doAtualizado(totais.ocadLiquidado)} do atualizado`}
+          dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadLiquidado))}
           icone={CheckCircle2}
         />
         <KpiCard
-          titulo="Pago"
+          titulo={t.painel.pago}
           valor={semDados ? "—" : formatMoeda(totais.ocadPago)}
-          dica={`${doAtualizado(totais.ocadPago)} do atualizado`}
+          dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadPago))}
           icone={Banknote}
         />
         <KpiCard
-          titulo="Disponível"
+          titulo={t.painel.disponivel}
           valor={semDados ? "—" : formatMoeda(totais.ocadDisponivel)}
-          dica={`${doAtualizado(totais.ocadDisponivel)} do atualizado — ainda não liquidado`}
+          dica={t.painel.pctDoAtualizadoNaoLiquidado(
+            doAtualizado(totais.ocadDisponivel),
+          )}
           icone={PiggyBank}
         />
       </div>
@@ -161,7 +169,7 @@ export default function VisaoGeralPage() {
       <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
         <CardHeader>
           <CardTitle className="text-base">
-            Cadeia de execução da despesa
+            {t.painel.cadeiaExecucaoTitulo}
           </CardTitle>
           <CardAction>
             <Tooltip>
@@ -169,14 +177,13 @@ export default function VisaoGeralPage() {
                 <button
                   type="button"
                   className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label="Informação sobre o gráfico"
+                  aria-label={t.painel.infoGrafico}
                 >
                   <Info className="size-4" />
                 </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-[280px]">
-                Do orçamento inicial ao valor efetivamente pago. Os percentuais
-                são calculados sobre o orçamento atualizado.
+                {t.painel.cadeiaExecucaoDica}
               </TooltipContent>
             </Tooltip>
           </CardAction>
@@ -192,7 +199,7 @@ export default function VisaoGeralPage() {
         <Card className="flex flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
           <CardHeader>
             <CardTitle className="text-base">
-              Distribuição por Eixo Temático
+              {t.painel.distribuicaoEixoTitulo}
             </CardTitle>
             <CardAction>
               <Tooltip>
@@ -200,14 +207,13 @@ export default function VisaoGeralPage() {
                   <button
                     type="button"
                     className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                    aria-label="Informação sobre o gráfico"
+                    aria-label={t.painel.infoGrafico}
                   >
                     <Info className="size-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-[240px]">
-                  Valores baseados no Orçamento Inicial previsto para o
-                  exercício, distribuídos pelos eixos temáticos.
+                  {t.painel.distribuicaoEixoDica}
                 </TooltipContent>
               </Tooltip>
             </CardAction>
@@ -222,7 +228,7 @@ export default function VisaoGeralPage() {
         <Card className="flex flex-1 flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
           <CardHeader>
             <CardTitle className="text-base">
-              Composição do Orçamento Criança e Adolescente - OCAD
+              {t.painel.composicaoOcadTitulo}
             </CardTitle>
             <CardAction>
               <Tooltip>
@@ -230,14 +236,13 @@ export default function VisaoGeralPage() {
                   <button
                     type="button"
                     className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                    aria-label="Informação sobre o gráfico"
+                    aria-label={t.painel.infoGrafico}
                   >
                     <Info className="size-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-[240px]">
-                  Clique em uma fatia do gráfico para visualizar a quantidade de
-                  ações por secretaria.
+                  {t.painel.composicaoOcadDica}
                 </TooltipContent>
               </Tooltip>
             </CardAction>
@@ -253,7 +258,7 @@ export default function VisaoGeralPage() {
       <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
         <CardHeader>
           <CardTitle className="text-base">
-            Exclusivo x Não Exclusivo por eixo
+            {t.painel.exclusivoPorEixoTitulo}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -266,7 +271,7 @@ export default function VisaoGeralPage() {
       <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
         <CardHeader>
           <CardTitle className="text-base">
-            Execução por eixo × classificação
+            {t.painel.execucaoEixoTitulo}
           </CardTitle>
           <CardAction>
             <Tooltip>
@@ -274,15 +279,13 @@ export default function VisaoGeralPage() {
                 <button
                   type="button"
                   className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label="Informação sobre o gráfico"
+                  aria-label={t.painel.infoGrafico}
                 >
                   <Info className="size-4" />
                 </button>
               </TooltipTrigger>
               <TooltipContent className="max-w-[240px]">
-                Clique em uma barra para ver o detalhamento das ações que
-                compõem aquele intervalo de valor liquidado, dentro do eixo
-                correspondente.
+                {t.painel.execucaoEixoDica}
               </TooltipContent>
             </Tooltip>
           </CardAction>
@@ -295,22 +298,20 @@ export default function VisaoGeralPage() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1">
           <h2 className="text-lg font-semibold tracking-tight">
-            Execução por unidade orçamentária
+            {t.painel.execucaoUnidadeTitulo}
           </h2>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
                 className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Informação sobre os cards de unidade"
+                aria-label={t.painel.infoCardsUnidade}
               >
                 <Info className="size-4" />
               </button>
             </TooltipTrigger>
             <TooltipContent className="max-w-[280px]">
-              Mesmo recorte usado nos filtros do BI: um órgão aparece em mais de
-              um card quando executa por fundos distintos. Clique sobre o card
-              para obter as informações de orçamento e execução.
+              {t.painel.execucaoUnidadeDica}
             </TooltipContent>
           </Tooltip>
         </div>

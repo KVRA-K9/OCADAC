@@ -413,3 +413,16 @@ export function filtraIndicadores(filtro: FiltroOds): Ods[] {
     return { ...ods, indicadoresContemplados: indicadores };
   });
 }
+
+import type { Locale } from "@/lib/messages";
+import { ODS_EN, ODS_TITULOS_EN } from "./ods-ocad-en";
+
+export function getOdsTitulos(
+  locale: Locale,
+): Record<number, { titulo: string; descricaoCurta: string }> {
+  return locale === "en" ? ODS_TITULOS_EN : ODS_TITULOS;
+}
+
+export function getOds(locale: Locale): Ods[] {
+  return locale === "en" ? ODS_EN : ODS;
+}

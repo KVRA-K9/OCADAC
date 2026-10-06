@@ -14,9 +14,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatMoeda } from "@/lib/format";
+import { useLocale, useT } from "@/lib/i18n";
 import {
-  ROTULOS_ESTAGIO,
   corSecretaria,
+  getRotulosEstagio,
   nomeOrgao,
   nomeUnidade,
   siglaOrgao,
@@ -153,6 +154,8 @@ function LinhaOrgao({
   aberto: boolean;
   aoAlternar: () => void;
 }) {
+  const t = useT();
+
   return (
     <TableRow className="bg-muted/30">
       <TableCell
@@ -162,7 +165,8 @@ function LinhaOrgao({
         <Expansor aberto={aberto} aoAlternar={aoAlternar}>
           {siglaOrgao(orgao.orgao)}
           <span className="ml-2 text-xs font-normal text-muted-foreground">
-            {orgao.unidades.length} un. · {orgao.totalAcoes} ações
+            {t.tabela.unidadesAbrev(orgao.unidades.length)} ·{" "}
+            {t.tabela.acoes(orgao.totalAcoes)}
           </span>
           <span className="block text-xs font-normal text-muted-foreground">
             {nomeOrgao(orgao.orgao)}
@@ -188,13 +192,15 @@ function LinhaUnidade({
   aberto: boolean;
   aoAlternar: () => void;
 }) {
+  const t = useT();
+
   return (
     <TableRow className={ENTRADA}>
       <TableCell className={cn(CELULA_NOME, "pl-6 font-medium")}>
         <Expansor aberto={aberto} aoAlternar={aoAlternar}>
           {unidade.rotulo}
           <span className="ml-2 text-xs font-normal text-muted-foreground">
-            {unidade.acoes.length} ações
+            {t.tabela.acoes(unidade.acoes.length)}
           </span>
           <span className="block text-xs font-normal text-muted-foreground">
             {nomeUnidade(unidade.unidade, secretaria)}
@@ -234,6 +240,10 @@ function LinhaAcao({ acao }: { acao: NoAcao }) {
  * o de dentro, com as colunas de execução alinhadas em todos eles.
  */
 export function DataTable({ data }: { data: OrcamentoItem[] }) {
+  const t = useT();
+  const { locale } = useLocale();
+  const rotulosEstagio = getRotulosEstagio(locale);
+
   const [sortKey, setSortKey] = React.useState<ChaveSort>("ocadAtualizado");
   const [dir, setDir] = React.useState<Dir>("desc");
   const [abertos, setAbertos] = React.useState<ReadonlySet<string>>(new Set());
@@ -301,9 +311,8 @@ export function DataTable({ data }: { data: OrcamentoItem[] }) {
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">
-          {arvore.length} {arvore.length === 1 ? "órgão" : "órgãos"} ·{" "}
-          {totalUnidades} {totalUnidades === 1 ? "unidade" : "unidades"} ·{" "}
-          {data.length} {data.length === 1 ? "ação" : "ações"}
+          {t.tabela.orgaos(arvore.length)} · {t.tabela.unidades(totalUnidades)}{" "}
+          · {t.tabela.acoes(data.length)}
         </p>
         <Button
           variant="outline"
@@ -311,7 +320,7 @@ export function DataTable({ data }: { data: OrcamentoItem[] }) {
           disabled={chaves.length === 0}
           onClick={() => setAbertos(tudoAberto ? new Set() : new Set(chaves))}
         >
-          {tudoAberto ? "Recolher tudo" : "Expandir tudo"}
+          {tudoAberto ? t.tabela.recolherTudo : t.tabela.expandirTudo}
         </Button>
       </div>
 
@@ -320,20 +329,20 @@ export function DataTable({ data }: { data: OrcamentoItem[] }) {
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40">
               <TableHead>
-                {cabecalhoOrdenavel("nome", "Órgão / Unidade / Ação")}
+                {cabecalhoOrdenavel("nome", t.tabela.orgaoUnidadeAcao)}
               </TableHead>
               <TableHead className="text-xs tracking-wide text-muted-foreground uppercase">
-                Classificação
+                {t.tabela.classificacao}
               </TableHead>
               <TableHead className="text-xs tracking-wide text-muted-foreground uppercase">
-                Eixo
+                {t.tabela.eixo}
               </TableHead>
               <TableHead className="text-xs tracking-wide text-muted-foreground uppercase">
-                Ano
+                {t.tabela.ano}
               </TableHead>
               {COLUNAS_VALOR.map((chave) => (
                 <TableHead key={chave} className="text-right">
-                  {cabecalhoOrdenavel(chave, ROTULOS_ESTAGIO[chave])}
+                  {cabecalhoOrdenavel(chave, rotulosEstagio[chave])}
                 </TableHead>
               ))}
             </TableRow>
@@ -345,7 +354,7 @@ export function DataTable({ data }: { data: OrcamentoItem[] }) {
                   colSpan={TOTAL_COLUNAS}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  Nenhum registro para os filtros selecionados.
+                  {t.tabela.nenhumRegistro}
                 </TableCell>
               </TableRow>
             ) : (

@@ -29,7 +29,8 @@ import {
   anosDisponiveis,
   orgaosDisponiveis,
 } from "@/data/base-ocad";
-import { EIXOS_OCAD } from "@/lib/conteudo-ocad";
+import { EIXOS_OCAD, getEixosOcad } from "@/lib/conteudo-ocad";
+import { useLocale, useT } from "@/lib/i18n";
 
 const filtrosSchema = z.object({
   ano: z.string(),
@@ -52,30 +53,6 @@ interface Opcao {
   label: string;
 }
 
-const OPCOES_ANO: Opcao[] = [
-  { value: OPCAO_TODOS, label: "Todos os anos" },
-  ...anosDisponiveis
-    .slice()
-    .sort((a, b) => b - a)
-    .map((a) => ({ value: String(a), label: String(a) })),
-];
-
-const OPCOES_FUNCAO: Opcao[] = EIXOS_OCAD.map((e) => ({
-  value: e.titulo,
-  label: e.titulo,
-}));
-
-const OPCOES_CATEGORIA: Opcao[] = [
-  { value: OPCAO_TODOS, label: "Todas as Classificações" },
-  { value: "Exclusivo", label: "Exclusivo" },
-  { value: "Não Exclusivo", label: "Não Exclusivo" },
-];
-
-const OPCOES_SECRETARIA: Opcao[] = orgaosDisponiveis.map((s) => ({
-  value: s,
-  label: s,
-}));
-
 interface CampoSimples {
   type: "single";
   name: "ano" | "categoriaEconomica";
@@ -93,19 +70,15 @@ interface CampoMulti {
 
 type Campo = CampoSimples | CampoMulti;
 
-const TODOS_CAMPOS: Campo[] = [
-  { type: "single", name: "ano", label: "Ano", opcoes: OPCOES_ANO },
-  { type: "multi", name: "funcao", label: "Eixo", opcoes: OPCOES_FUNCAO, placeholder: "Todos os Eixos" },
-  { type: "single", name: "categoriaEconomica", label: "Classificação", opcoes: OPCOES_CATEGORIA },
-  { type: "multi", name: "secretaria", label: "Secretaria", opcoes: OPCOES_SECRETARIA, placeholder: "Todas as Secretarias" },
-];
-
 interface FiltersFormProps {
   onApply: (filtros: FiltrosOrcamento) => void;
   ocultar?: (keyof FiltrosOrcamento)[];
 }
 
 export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
+  const t = useT();
+  const { locale } = useLocale();
+
   const form = useForm<FiltrosFormValues>({
     resolver: zodResolver(filtrosSchema),
     defaultValues: VALORES_PADRAO,
@@ -120,6 +93,59 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
 
   const limpar = () => form.reset(VALORES_PADRAO);
 
+  const eixos = getEixosOcad(locale);
+
+  const OPCOES_ANO: Opcao[] = [
+    { value: OPCAO_TODOS, label: t.tabela.todosOsAnos },
+    ...anosDisponiveis
+      .slice()
+      .sort((a, b) => b - a)
+      .map((a) => ({ value: String(a), label: String(a) })),
+  ];
+
+  const OPCOES_FUNCAO: Opcao[] = eixos.map((e, i) => ({
+    value: EIXOS_OCAD[i].titulo,
+    label: t.common.eixoRotulo(e.titulo),
+  }));
+
+  const OPCOES_CATEGORIA: Opcao[] = [
+    { value: OPCAO_TODOS, label: t.tabela.todasAsClassificacoes },
+    { value: "Exclusivo", label: t.common.categoriaRotulo("Exclusivo") },
+    {
+      value: "Não Exclusivo",
+      label: t.common.categoriaRotulo("Não Exclusivo"),
+    },
+  ];
+
+  const OPCOES_SECRETARIA: Opcao[] = orgaosDisponiveis.map((s) => ({
+    value: s,
+    label: s,
+  }));
+
+  const TODOS_CAMPOS: Campo[] = [
+    { type: "single", name: "ano", label: t.tabela.ano, opcoes: OPCOES_ANO },
+    {
+      type: "multi",
+      name: "funcao",
+      label: t.tabela.eixo,
+      opcoes: OPCOES_FUNCAO,
+      placeholder: t.tabela.todosOsEixos,
+    },
+    {
+      type: "single",
+      name: "categoriaEconomica",
+      label: t.tabela.classificacao,
+      opcoes: OPCOES_CATEGORIA,
+    },
+    {
+      type: "multi",
+      name: "secretaria",
+      label: t.tabela.secretaria,
+      opcoes: OPCOES_SECRETARIA,
+      placeholder: t.tabela.todasAsSecretarias,
+    },
+  ];
+
   const campos = TODOS_CAMPOS.filter((c) => !ocultar.includes(c.name));
 
   return (
@@ -127,7 +153,7 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-sm text-foreground">
           <Filter className="size-4" />
-          Filtros
+          {t.tabela.filtros}
         </CardTitle>
         <CardAction>
           <Button
@@ -138,7 +164,7 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
             className="text-foreground hover:bg-foreground/10 hover:text-foreground"
           >
             <RotateCcw className="size-3.5" />
-            Limpar filtros
+            {t.tabela.limparFiltros}
           </Button>
         </CardAction>
       </CardHeader>

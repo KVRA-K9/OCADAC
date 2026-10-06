@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import type { TipoNorma } from "@/data/historico-leis";
+import type { Locale } from "@/lib/messages";
 
 export const CORES_NORMA: Record<TipoNorma, string> = {
   "Lei Ordinária": "var(--chart-5)",
@@ -67,3 +68,20 @@ export const DESCRICOES_NORMA: Record<TipoNorma, string> = {
   LDO: "Lei de Diretrizes Orçamentárias: orienta a elaboração do orçamento seguinte e fixa suas metas e prioridades.",
   LOA: "Lei Orçamentária Anual: estima a receita e fixa a despesa do exercício, com o OCAD apurado onde houve curadoria.",
 };
+
+export const DESCRICOES_NORMA_EN: Record<TipoNorma, string> = {
+  "Lei Ordinária":
+    "Ordinary laws that create programs, services and obligations aimed at protecting children and adolescents in Acre.",
+  Decreto:
+    "Acts of the Executive Branch, including those that establish and amend the OCAD Assessment Committee.",
+  "Estrutura Administrativa":
+    "Laws that define which Executive Branch agency is responsible for children and adolescents, and how this has changed since 1991.",
+  PPA: "Multi-Year Plan: the government programs of each four-year period, and where they mention children and adolescents.",
+  LDO: "Budget Guidelines Law: guides the preparation of the following year's budget and sets its goals and priorities.",
+  LOA: "Annual Budget Law: estimates revenue and fixes expenditure for the fiscal year, with the OCAD calculated wherever curation took place.",
+} as Record<TipoNorma, string>;
+
+/** Descrições dos tipos de norma no idioma ativo. */
+export function getDescricoesNorma(locale: Locale): Record<TipoNorma, string> {
+  return locale === "en" ? DESCRICOES_NORMA_EN : DESCRICOES_NORMA;
+}

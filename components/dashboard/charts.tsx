@@ -33,10 +33,11 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { CADEIA_EXECUCAO } from "@/lib/types";
+import { useLocale, useT } from "@/lib/i18n";
 import {
   CORES_EIXO,
-  ROTULOS_ESTAGIO,
   SERIES_COLORS,
+  getRotulosEstagio,
   siglaOrgao,
 } from "@/lib/estagios";
 
@@ -102,9 +103,12 @@ function AxisFormat(value: number): string {
  * diferentes sem avisar.
  */
 export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }) {
+  const t = useT();
+  const { locale } = useLocale();
+  const rotulosEstagio = getRotulosEstagio(locale);
   const base = totais.ocadAtualizado;
   const dados = CADEIA_EXECUCAO.map((key) => ({
-    estagio: ROTULOS_ESTAGIO[key],
+    estagio: rotulosEstagio[key],
     valor: totais[key],
     pct: base > 0 ? (totais[key] / base) * 100 : 0,
     cor: SERIES_COLORS[key],
@@ -142,7 +146,7 @@ export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }
         />
         <Bar
           dataKey="valor"
-          name="Valor"
+          name={t.evolucao.valor}
           radius={[0, 4, 4, 0]}
           maxBarSize={38}
           isAnimationActive
@@ -168,20 +172,24 @@ export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }
 
 interface FatiaFuncao {
   funcao: string;
+  cor: string;
   ocadInicial: number;
 }
 
 export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
+  const t = useT();
   const ordenado = [...data].sort((a, b) => b.ocadInicial - a.ocadInicial);
   const topo = ordenado.slice(0, 5);
   const outras = ordenado.slice(5);
   const fatias: FatiaFuncao[] = topo.map((d) => ({
-    funcao: d.funcao,
+    funcao: t.common.eixoRotulo(d.funcao),
+    cor: CORES_EIXO[d.funcao] ?? "var(--muted-foreground)",
     ocadInicial: d.ocadInicial,
   }));
   if (outras.length > 0) {
     fatias.push({
-      funcao: "Outras",
+      funcao: t.evolucao.outras,
+      cor: CORES_EIXO["Outras"] ?? "var(--muted-foreground)",
       ocadInicial: outras.reduce((acc, d) => acc + d.ocadInicial, 0),
     });
   }
@@ -204,10 +212,7 @@ export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
           animationEasing="ease-out"
         >
           {fatias.map((d, i) => (
-            <Cell
-              key={i}
-              fill={CORES_EIXO[d.funcao] ?? "var(--muted-foreground)"}
-            />
+            <Cell key={i} fill={d.cor} />
           ))}
         </Pie>
         <Legend
@@ -224,6 +229,8 @@ export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
 /* --------------------------- Linha - série histórica ----------------------- */
 
 export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
+  const { locale } = useLocale();
+  const rotulosEstagio = getRotulosEstagio(locale);
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={data} margin={{ top: 8, right: 8, left: 8, bottom: 0 }}>
@@ -252,7 +259,7 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
             key={key}
             type="monotone"
             dataKey={key}
-            name={ROTULOS_ESTAGIO[key]}
+            name={rotulosEstagio[key]}
             stroke={SERIES_COLORS[key]}
             strokeWidth={2}
             dot={{ r: 3, fill: SERIES_COLORS[key] }}
@@ -269,10 +276,14 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
 /* --------------------- Barras empilhadas - comparação ---------------------- */
 
 export function BudgetStackedBar({ data }: { data: PontoComparacao[] }) {
-  const dados = data.map((d) => ({
-    ...d,
-    funcaoCurta: d.funcao.length > 22 ? d.funcao.slice(0, 20) + "…" : d.funcao,
-  }));
+  const t = useT();
+  const dados = data.map((d) => {
+    const funcao = t.common.eixoRotulo(d.funcao);
+    return {
+      ...d,
+      funcaoCurta: funcao.length > 22 ? funcao.slice(0, 20) + "…" : funcao,
+    };
+  });
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -302,8 +313,8 @@ export function BudgetStackedBar({ data }: { data: PontoComparacao[] }) {
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        <Bar dataKey="Exclusivo" name="Exclusivo" stackId="a" fill="#e3d49c" maxBarSize={28} isAnimationActive animationDuration={900} />
-        <Bar dataKey="Não Exclusivo" name="Não Exclusivo" stackId="a" fill="#766862" radius={[0, 4, 4, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
+        <Bar dataKey="Exclusivo" name={t.common.categoriaRotulo("Exclusivo")} stackId="a" fill="#e3d49c" maxBarSize={28} isAnimationActive animationDuration={900} />
+        <Bar dataKey="Não Exclusivo" name={t.common.categoriaRotulo("Não Exclusivo")} stackId="a" fill="#766862" radius={[0, 4, 4, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -314,12 +325,12 @@ export function BudgetStackedBar({ data }: { data: PontoComparacao[] }) {
 const EIXO_ORDEM = ["Educação", "Saúde", "Assistência Social"];
 
 const HIST_BINS = [
-  { max: 10_000, label: "< 10 mil" },
-  { max: 100_000, label: "10k – 100k" },
-  { max: 1_000_000, label: "100k – 1 mi" },
-  { max: 10_000_000, label: "1 – 10 mi" },
-  { max: 100_000_000, label: "10 – 100 mi" },
-  { max: Infinity, label: "100 mi +" },
+  { max: 10_000 },
+  { max: 100_000 },
+  { max: 1_000_000 },
+  { max: 10_000_000 },
+  { max: 100_000_000 },
+  { max: Infinity },
 ] as const;
 
 function binIndex(valor: number): number {
@@ -338,10 +349,10 @@ interface BinDado {
   "Não Exclusivo Valor": number;
 }
 
-function histogramaEixo(itens: OrcamentoItem[]): BinDado[] {
-  const bins: BinDado[] = HIST_BINS.map((b) => ({
-    bin: b.label,
-    intervalo: b.label,
+function histogramaEixo(itens: OrcamentoItem[], faixas: string[]): BinDado[] {
+  const bins: BinDado[] = HIST_BINS.map((_b, i) => ({
+    bin: faixas[i],
+    intervalo: faixas[i],
     Exclusivo: 0,
     "Não Exclusivo": 0,
     ExclusivoValor: 0,
@@ -369,6 +380,7 @@ function HistogramaTooltip({
   payload?: TooltipPayload[];
   label?: string | number;
 }) {
+  const t = useT();
   if (!active || !payload || payload.length === 0) return null;
   const p = (payload[0]?.payload ?? {}) as Record<string, number>;
   const total = p.Exclusivo + p["Não Exclusivo"];
@@ -377,7 +389,9 @@ function HistogramaTooltip({
   return (
     <div className="rounded-lg border bg-popover px-3 py-2 text-xs shadow-md ring-1 ring-foreground/10">
       {label !== undefined && (
-        <p className="mb-1 font-medium text-foreground">Faixa: {String(label)}</p>
+        <p className="mb-1 font-medium text-foreground">
+          {t.evolucao.faixa(String(label))}
+        </p>
       )}
       <div className="flex flex-col gap-0.5">
         <div className="flex items-center gap-2">
@@ -385,9 +399,11 @@ function HistogramaTooltip({
             className="size-2.5 rounded-sm"
             style={{ background: "var(--chart-1)" }}
           />
-          <span className="text-muted-foreground">Exclusivo:</span>
+          <span className="text-muted-foreground">
+            {t.common.categoriaRotulo("Exclusivo")}:
+          </span>
           <span className="font-medium text-foreground tabular-nums">
-            {p.Exclusivo} ações
+            {t.evolucao.acoes(p.Exclusivo)}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -395,16 +411,23 @@ function HistogramaTooltip({
             className="size-2.5 rounded-sm"
             style={{ background: "var(--chart-3)" }}
           />
-          <span className="text-muted-foreground">Não Exclusivo:</span>
+          <span className="text-muted-foreground">
+            {t.common.categoriaRotulo("Não Exclusivo")}:
+          </span>
           <span className="font-medium text-foreground tabular-nums">
-            {p["Não Exclusivo"]} ações
+            {t.evolucao.acoes(p["Não Exclusivo"])}
           </span>
         </div>
         <div className="mt-1 border-t pt-1 text-muted-foreground">
-          Total na faixa: <span className="font-medium text-foreground tabular-nums">{total}</span> ações
+          {t.evolucao.totalNaFaixa}{" "}
+          <span className="font-medium text-foreground tabular-nums">
+            {total}
+          </span>{" "}
+          {t.evolucao.acoesLabel}
           {totalExec > 0 && (
             <>
-              {" · "}liquidado:{" "}
+              {" · "}
+              {t.evolucao.liquidadoRotulo}{" "}
               <span className="font-medium text-foreground tabular-nums">
                 {formatMoeda(totalExec)}
               </span>
@@ -434,11 +457,16 @@ function HistogramaEixo({
   itens: OrcamentoItem[];
   eixo: string;
 }) {
+  const t = useT();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const balloonRef = React.useRef<HTMLDivElement>(null);
   const [selecionado, setSelecionado] = React.useState<SelecionadoHistograma>(null);
 
-  const dados = React.useMemo(() => histogramaEixo(itens), [itens]);
+  const faixas = t.evolucao.faixas;
+  const dados = React.useMemo(
+    () => histogramaEixo(itens, faixas),
+    [itens, faixas],
+  );
 
   React.useEffect(() => {
     if (!selecionado) return;
@@ -508,7 +536,7 @@ function HistogramaEixo({
       })()
     : null;
 
-  const faixaLabel = selecionado ? HIST_BINS[selecionado.binIndex].label : "";
+  const faixaLabel = selecionado ? faixas[selecionado.binIndex] : "";
 
   return (
     <div
@@ -557,7 +585,7 @@ function HistogramaEixo({
           />
           <Bar
             dataKey="Exclusivo"
-            name="Exclusivo"
+            name={t.common.categoriaRotulo("Exclusivo")}
             stackId="a"
             maxBarSize={8}
             background={{ fill: "transparent" }}
@@ -574,7 +602,7 @@ function HistogramaEixo({
           </Bar>
           <Bar
             dataKey="Não Exclusivo"
-            name="Não Exclusivo"
+            name={t.common.categoriaRotulo("Não Exclusivo")}
             stackId="a"
             radius={[4, 4, 0, 0]}
             maxBarSize={8}
@@ -600,18 +628,23 @@ function HistogramaEixo({
           <div
             ref={balloonRef}
             role="dialog"
-            aria-label={`Ações da faixa ${faixaLabel} em ${eixo}`}
+            aria-label={t.evolucao.acoesFaixaAria(
+              faixaLabel,
+              t.common.eixoRotulo(eixo),
+            )}
             className="fixed z-50 flex w-80 max-h-[440px] flex-col rounded-lg border bg-popover p-3 text-xs shadow-md ring-1 ring-foreground/10"
             style={{ left: pos.left, top: pos.top }}
           >
             <div className="mb-1 flex items-center gap-2">
-              <span className="font-medium text-foreground">{eixo}</span>
+              <span className="font-medium text-foreground">
+                {t.common.eixoRotulo(eixo)}
+              </span>
               <span className="text-muted-foreground">· {faixaLabel}</span>
               <button
                 type="button"
                 onClick={() => setSelecionado(null)}
                 className="ml-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
-                aria-label="Fechar"
+                aria-label={t.evolucao.fechar}
               >
                 <X className="size-3.5" />
               </button>
@@ -622,19 +655,21 @@ function HistogramaEixo({
                   className="size-2 rounded-sm"
                   style={{ background: CLASSIFICACAO_HIST_COLORS.Exclusivo }}
                 />
-                Exclusivo
+                {t.common.categoriaRotulo("Exclusivo")}
               </span>
               <span className="inline-flex items-center gap-1">
                 <span
                   className="size-2 rounded-sm"
                   style={{ background: CLASSIFICACAO_HIST_COLORS["Não Exclusivo"] }}
                 />
-                Não Exclusivo
+                {t.common.categoriaRotulo("Não Exclusivo")}
               </span>
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto pr-1">
               {detalhe.length === 0 ? (
-                <p className="text-muted-foreground">Sem ações nesta faixa.</p>
+                <p className="text-muted-foreground">
+                  {t.evolucao.semAcoesFaixa}
+                </p>
               ) : (
                 detalhe.map((d) => (
                   <div
@@ -663,13 +698,13 @@ function HistogramaEixo({
               )}
             </div>
             <div className="mt-2 border-t pt-1 text-muted-foreground">
-              Total liquidado:{" "}
+              {t.evolucao.totalLiquidado}{" "}
               <span className="font-medium text-foreground tabular-nums">
                 {formatMoeda(totalLiquidadoFaixa)}
               </span>
               {" · "}
               <span className="font-medium text-foreground tabular-nums">{detalhe.length}</span>{" "}
-              ações
+              {t.evolucao.acoesLabel}
             </div>
           </div>,
           document.body,
@@ -683,6 +718,7 @@ export function ExecucaoClassificacaoBar({
 }: {
   data: OrcamentoItem[];
 }) {
+  const t = useT();
   const porEixo = React.useMemo(() => {
     const grupos: Record<string, OrcamentoItem[]> = {};
     EIXO_ORDEM.forEach((eixo) => {
@@ -698,7 +734,7 @@ export function ExecucaoClassificacaoBar({
       {porEixo.map(({ eixo, itens }) => (
         <div key={eixo} className="flex flex-col gap-2">
           <p className="text-center text-sm font-medium text-foreground">
-            {eixo}
+            {t.common.eixoRotulo(eixo)}
           </p>
           <div className="h-[260px] w-full">
             <HistogramaEixo itens={itens} eixo={eixo} />
@@ -716,6 +752,7 @@ export function AcoesClassificacaoBar({
 }: {
   data: ContagemAcoesSecretaria[];
 }) {
+  const t = useT();
   const dados = data.map((d) => ({
     ...d,
     orgaoCurto: siglaOrgao(d.orgao),
@@ -753,8 +790,8 @@ export function AcoesClassificacaoBar({
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        <Bar dataKey="Exclusivo" name="Exclusivo" fill="var(--chart-1)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} />
-        <Bar dataKey="Não Exclusivo" name="Não Exclusivo" fill="var(--chart-3)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
+        <Bar dataKey="Exclusivo" name={t.common.categoriaRotulo("Exclusivo")} fill="var(--chart-1)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} />
+        <Bar dataKey="Não Exclusivo" name={t.common.categoriaRotulo("Não Exclusivo")} fill="var(--chart-3)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
       </BarChart>
     </ResponsiveContainer>
   );
@@ -772,6 +809,7 @@ export function AcoesClassificacaoDonut({
 }: {
   data: ContagemAcoesSecretaria[];
 }) {
+  const t = useT();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const balloonRef = React.useRef<HTMLDivElement>(null);
   const [selecionada, setSelecionada] = React.useState<{
@@ -806,8 +844,16 @@ export function AcoesClassificacaoDonut({
   const totalExclusivo = data.reduce((acc, d) => acc + d.Exclusivo, 0);
   const totalNaoExclusivo = data.reduce((acc, d) => acc + d["Não Exclusivo"], 0);
   const fatias = [
-    { classificacao: "Exclusivo", count: totalExclusivo },
-    { classificacao: "Não Exclusivo", count: totalNaoExclusivo },
+    {
+      classificacao: "Exclusivo",
+      rotulo: t.common.categoriaRotulo("Exclusivo"),
+      count: totalExclusivo,
+    },
+    {
+      classificacao: "Não Exclusivo",
+      rotulo: t.common.categoriaRotulo("Não Exclusivo"),
+      count: totalNaoExclusivo,
+    },
   ].filter((d) => d.count > 0);
 
   const handleClick = (
@@ -816,7 +862,10 @@ export function AcoesClassificacaoDonut({
     e: React.MouseEvent<SVGGraphicsElement>,
   ) => {
     e.stopPropagation();
-    const classificacao = String(payload?.classificacao ?? payload?.name ?? "");
+    const classificacao =
+      payload?.classificacao ??
+      fatias.find((f) => f.rotulo === payload?.name)?.classificacao ??
+      "";
     setSelecionada({
       classificacao,
       x: e.clientX,
@@ -868,11 +917,13 @@ export function AcoesClassificacaoDonut({
     >
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
-          <Tooltip content={<ChartTooltip format={(v) => `${v} ações`} />} />
+          <Tooltip
+            content={<ChartTooltip format={(v) => t.evolucao.acoes(v)} />}
+          />
           <Pie
             data={fatias}
             dataKey="count"
-            nameKey="classificacao"
+            nameKey="rotulo"
             innerRadius="55%"
             outerRadius="80%"
             paddingAngle={2}
@@ -905,7 +956,9 @@ export function AcoesClassificacaoDonut({
           <div
             ref={balloonRef}
             role="dialog"
-            aria-label={`Ações ${selecionada.classificacao} por secretaria`}
+            aria-label={t.evolucao.acoesSecretariaAria(
+              t.common.categoriaRotulo(selecionada.classificacao),
+            )}
             className="fixed z-50 flex w-64 max-h-[260px] flex-col rounded-lg border bg-popover p-3 text-xs shadow-md ring-1 ring-foreground/10"
             style={{ left: pos.left, top: pos.top }}
           >
@@ -919,21 +972,25 @@ export function AcoesClassificacaoDonut({
                 }}
               />
               <span className="font-medium text-foreground">
-                {selecionada.classificacao}
+                {t.common.categoriaRotulo(selecionada.classificacao)}
               </span>
-              <span className="text-muted-foreground">· {totalDetalhe} ações</span>
+              <span className="text-muted-foreground">
+                · {t.evolucao.acoes(totalDetalhe)}
+              </span>
               <button
                 type="button"
                 onClick={() => setSelecionada(null)}
                 className="ml-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
-                aria-label="Fechar"
+                aria-label={t.evolucao.fechar}
               >
                 <X className="size-3.5" />
               </button>
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto pr-1">
               {detalhe.length === 0 ? (
-                <p className="text-muted-foreground">Sem ações nesta categoria.</p>
+                <p className="text-muted-foreground">
+                  {t.evolucao.semAcoesCategoria}
+                </p>
               ) : (
                 detalhe.map((d) => (
                   <div
@@ -965,6 +1022,7 @@ export function AcoesClassificacaoDonut({
 /* --------- Top secretarias por valor liquidado (barras horizontais) ------- */
 
 export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
+  const t = useT();
   const dados = data.map((d) => ({
     ...d,
     orgaoCurto: siglaOrgao(d.orgao),
@@ -1001,7 +1059,7 @@ export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
         />
         <Bar
           dataKey="ocadLiquidado"
-          name="OCAD Liquidado"
+          name={t.evolucao.ocadLiquidado}
           fill={SERIES_COLORS.ocadLiquidado}
           radius={[0, 4, 4, 0]}
           maxBarSize={34}

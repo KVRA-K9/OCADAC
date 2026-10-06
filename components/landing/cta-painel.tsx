@@ -1,10 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useT } from "@/lib/i18n";
 
 export function CtaPainel() {
+  const t = useT();
+
   return (
     <section className="w-full py-16 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
@@ -24,12 +29,10 @@ export function CtaPainel() {
           />
           <div className="relative flex h-full max-w-2xl flex-col items-start justify-end gap-4 pb-4 [text-shadow:0_1px_4px_rgba(0,0,0,0.55)] md:pb-6">
             <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
-              Explore os dados do OCAD
+              {t.landing.cta.titulo}
             </h2>
             <p className="text-sm leading-relaxed text-white/90 md:text-base">
-              Acesse o painel interativo com indicadores, gráficos e a relação
-              detalhada das ações orçamentárias do Estado do Acre voltadas à
-              criança e ao adolescente.
+              {t.landing.cta.descricao}
             </p>
             <Button
               asChild
@@ -38,13 +41,13 @@ export function CtaPainel() {
               className="mt-2 bg-[#ede3b4] text-accent-foreground [text-shadow:none] hover:bg-[#ede3b4]/90"
             >
               <Link href="/painel">
-                Abrir painel interativo
+                {t.landing.cta.abrirPainel}
                 <ArrowRight />
               </Link>
             </Button>
           </div>
           <span className="absolute bottom-2 right-3 text-[10px] text-white/60 [text-shadow:0_1px_2px_rgba(0,0,0,0.6)]">
-            Fotografia: Cleiton Lopes - SECOM/AC
+            {t.landing.cta.creditoFoto}
           </span>
         </div>
       </div>

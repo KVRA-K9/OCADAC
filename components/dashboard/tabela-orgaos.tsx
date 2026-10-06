@@ -22,6 +22,7 @@ import {
 import { agregarOrgaos, type LinhaOrgao } from "@/data/base-ocad";
 import { CORES_EIXO, corSecretaria, nomeOrgao, siglaOrgao } from "@/lib/estagios";
 import { formatMoeda, formatParticipacao } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { OrcamentoItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -38,15 +39,6 @@ type Coluna = {
   rotulo: string;
   numerica?: boolean;
 };
-
-const COLUNAS: Coluna[] = [
-  { chave: "nome", rotulo: "Órgão" },
-  { chave: "ocadAtualizado", rotulo: "Orçamento atualizado", numerica: true },
-  { chave: "exclusivo", rotulo: "Exclusivo", numerica: true },
-  { chave: "naoExclusivo", rotulo: "Não exclusivo", numerica: true },
-  { chave: "classificacao", rotulo: "Classificação" },
-  { chave: "eixos", rotulo: "Eixos" },
-];
 
 /**
  * Valor de ordenação de cada coluna. As duas últimas não são números na tela:
@@ -76,6 +68,21 @@ const TAMANHO_PAGINA = 10;
  * quem quer comparar secretarias entre si não precisa expandir nada.
  */
 export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
+  const t = useT();
+
+  const COLUNAS: Coluna[] = [
+    { chave: "nome", rotulo: t.tabela.colOrgao },
+    {
+      chave: "ocadAtualizado",
+      rotulo: t.tabela.colOrcamentoAtualizado,
+      numerica: true,
+    },
+    { chave: "exclusivo", rotulo: t.tabela.colExclusivo, numerica: true },
+    { chave: "naoExclusivo", rotulo: t.tabela.colNaoExclusivo, numerica: true },
+    { chave: "classificacao", rotulo: t.tabela.classificacao },
+    { chave: "eixos", rotulo: t.tabela.colEixos },
+  ];
+
   const [ordem, setOrdem] = React.useState<{ chave: Chave; desc: boolean }>({
     chave: "ocadAtualizado",
     desc: true,
@@ -139,7 +146,7 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
                     <button
                       type="button"
                       onClick={() => alternar(coluna.chave)}
-                      aria-label={`Ordenar por ${coluna.rotulo}`}
+                      aria-label={t.tabela.ordenarPor(coluna.rotulo)}
                       className={cn(
                         "inline-flex items-center gap-1 text-xs font-medium tracking-wide text-muted-foreground uppercase transition-colors hover:text-foreground",
                         // Nas colunas de valor o ícone vai para a esquerda do
@@ -172,7 +179,7 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
                   colSpan={COLUNAS.length}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  Nenhum registro para os filtros selecionados.
+                  {t.tabela.nenhumRegistro}
                 </TableCell>
               </TableRow>
             ) : (
@@ -189,11 +196,10 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
       <div className="flex items-center justify-between gap-2 text-sm text-muted-foreground">
         <span>
           {linhas.length === 0 ? (
-            "Nenhum órgão"
+            t.tabela.nenhumOrgao
           ) : (
             <>
-              Mostrando {inicio + 1}–{fim} de {linhas.length}{" "}
-              {linhas.length === 1 ? "órgão" : "órgãos"} · total{" "}
+              {t.tabela.mostrando(inicio + 1, fim, linhas.length)}{" "}
               <span className="font-medium text-foreground tabular-nums">
                 {formatMoeda(total)}
               </span>
@@ -204,7 +210,7 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
           <Button
             variant="outline"
             size="icon-sm"
-            aria-label="Página anterior"
+            aria-label={t.tabela.paginaAnterior}
             disabled={paginaAtual === 0}
             onClick={() => setPagina(paginaAtual - 1)}
           >
@@ -216,7 +222,7 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
           <Button
             variant="outline"
             size="icon-sm"
-            aria-label="Próxima página"
+            aria-label={t.tabela.proximaPagina}
             disabled={paginaAtual >= totalPaginas - 1}
             onClick={() => setPagina(paginaAtual + 1)}
           >
@@ -229,6 +235,8 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
 }
 
 function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
+  const t = useT();
+
   return (
     <TableRow>
       <TableCell
@@ -237,9 +245,8 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
       >
         <span className="block font-medium">{siglaOrgao(linha.orgao)}</span>
         <span className="block text-xs text-muted-foreground">
-          {linha.orgaoCodigo} · {linha.unidades}{" "}
-          {linha.unidades === 1 ? "unidade" : "unidades"} · {linha.acoes}{" "}
-          {linha.acoes === 1 ? "ação" : "ações"}
+          {linha.orgaoCodigo} · {t.tabela.unidades(linha.unidades)} ·{" "}
+          {t.tabela.acoes(linha.acoes)}
         </span>
         <span className="block text-xs text-muted-foreground">
           {nomeOrgao(linha.orgao)}
@@ -265,7 +272,7 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
           {linha.funcoes.map((funcao) => (
             <span
               key={funcao}
-              title={funcao}
+              title={t.common.eixoRotulo(funcao)}
               className="inline-flex items-center gap-1 rounded border border-border px-1.5 py-0.5 text-xs"
             >
               <span
@@ -273,7 +280,7 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
                 className="size-2 rounded-[2px]"
                 style={{ backgroundColor: CORES_EIXO[funcao] }}
               />
-              {funcao}
+              {t.common.eixoRotulo(funcao)}
             </span>
           ))}
         </span>
@@ -296,15 +303,26 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
  * tipo.
  */
 function Classificacao({ linha }: { linha: LinhaOrgao }) {
-  if (linha.naoExclusivo === 0) return <Badge>Exclusivo</Badge>;
-  if (linha.exclusivo === 0) return <Badge variant="secondary">Não exclusivo</Badge>;
+  const t = useT();
+
+  if (linha.naoExclusivo === 0)
+    return <Badge>{t.common.categoriaRotulo("Exclusivo")}</Badge>;
+  if (linha.exclusivo === 0)
+    return (
+      <Badge variant="secondary">
+        {t.common.categoriaRotulo("Não exclusivo")}
+      </Badge>
+    );
 
   const total = linha.exclusivo + linha.naoExclusivo;
   const predomina = linha.exclusivo >= linha.naoExclusivo;
 
   const partes = [
-    { rotulo: "Exclusivo", valor: linha.exclusivo },
-    { rotulo: "Não exclusivo", valor: linha.naoExclusivo },
+    { rotulo: t.common.categoriaRotulo("Exclusivo"), valor: linha.exclusivo },
+    {
+      rotulo: t.common.categoriaRotulo("Não exclusivo"),
+      valor: linha.naoExclusivo,
+    },
   ];
   if (!predomina) partes.reverse();
 

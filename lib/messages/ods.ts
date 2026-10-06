@@ -1,0 +1,51 @@
+export const pt = {
+  titulo: "Objetivos de Desenvolvimento Sustentável — ODS",
+  descricao:
+    "Indicadores dos 18 ODS contemplados pelos eixos do Orçamento Criança e Adolescente (OCAD): Educação, Saúde e Assistência Social.",
+  kpiIndicadoresTitulo: "Indicadores contemplados",
+  kpiIndicadoresDica: "Total de indicadores nos 18 ODS",
+  kpiOdsTitulo: "ODS contemplados",
+  kpiOdsDica: "ODS com ao menos um indicador contemplado pelo OCAD",
+  kpiEixoTitulo: "Contemplação por eixo",
+  kpiEixoDica: "Indicadores contemplados por eixo",
+  kpiTransversaisTitulo: "Indicadores transversais",
+  kpiTransversaisDica: "Indicadores contemplados por mais de um eixo",
+  filtroEixo: "Eixo:",
+  filtroStatus: "Status:",
+  todos: "Todos",
+  buscaPlaceholder: "Buscar por código, descrição ou ODS...",
+  altOds: (numero: number) => `ODS ${numero}`,
+  altOdsTitulo: (numero: number, titulo: string) => `ODS ${numero} — ${titulo}`,
+  remover: "Remover",
+  removerAria: (numero: number) => `Remover ODS ${numero} da seleção`,
+  limparSelecao: (quantidade: number) => `Limpar seleção (${quantidade})`,
+  vazioOds: "Nenhum indicador contemplado neste ODS pelo escopo do OCAD.",
+  dicaSelecao:
+    "Clique nos ODS acima para visualizar seus indicadores contemplados. Você pode selecionar mais de um.",
+};
+
+export const en: typeof pt = {
+  titulo: "Sustainable Development Goals — SDGs",
+  descricao:
+    "Indicators of the 18 SDGs covered by the axes of the Child and Adolescent Budget (OCAD): Education, Health and Social Assistance.",
+  kpiIndicadoresTitulo: "Indicators covered",
+  kpiIndicadoresDica: "Total indicators across the 18 SDGs",
+  kpiOdsTitulo: "SDGs covered",
+  kpiOdsDica: "SDGs with at least one indicator covered by OCAD",
+  kpiEixoTitulo: "Coverage by axis",
+  kpiEixoDica: "Indicators covered by axis",
+  kpiTransversaisTitulo: "Cross-cutting indicators",
+  kpiTransversaisDica: "Indicators covered by more than one axis",
+  filtroEixo: "Axis:",
+  filtroStatus: "Status:",
+  todos: "All",
+  buscaPlaceholder: "Search by code, description or SDG...",
+  altOds: (numero: number) => `SDG ${numero}`,
+  altOdsTitulo: (numero: number, titulo: string) => `SDG ${numero} — ${titulo}`,
+  remover: "Remove",
+  removerAria: (numero: number) => `Remove SDG ${numero} from selection`,
+  limparSelecao: (quantidade: number) => `Clear selection (${quantidade})`,
+  vazioOds: "No indicator covered by this SDG within the OCAD scope.",
+  dicaSelecao:
+    "Click the SDGs above to view their covered indicators. You can select more than one.",
+};

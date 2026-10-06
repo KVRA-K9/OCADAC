@@ -1,5 +1,6 @@
 import type { OpcaoFonte } from "@/data/base-ocad";
 import { formatMoeda, formatMoedaCompacta, formatParticipacao } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import type { ValoresOrcamentarios } from "@/lib/types";
 
 /**
@@ -22,6 +23,7 @@ export function FichaFonte({
   /** Denominador da participação: o orçamento atualizado sem o filtro de fonte. */
   total: number;
 }) {
+  const t = useT();
   const varias = opcoes.length > 1;
   const valor = valores.ocadAtualizado;
 
@@ -29,8 +31,8 @@ export function FichaFonte({
     <div className="rounded-lg border-l-2 border-primary/40 bg-primary/15 p-3 dark:bg-primary/10">
       <p className="text-xs font-medium tracking-wide text-muted-foreground tabular-nums">
         {varias
-          ? `${opcoes.length} fontes selecionadas`
-          : `Fonte ${opcoes[0].codigo}`}
+          ? t.tabela.fontesSelecionadas(opcoes.length)
+          : t.tabela.fonteCodigo(opcoes[0].codigo)}
       </p>
 
       {varias ? null : (
@@ -43,8 +45,8 @@ export function FichaFonte({
         <span className="font-medium text-foreground tabular-nums">
           {formatMoeda(valor)}
         </span>{" "}
-        · {formatParticipacao(total > 0 ? valor / total : 0)} do recorte · {acoes}{" "}
-        {acoes === 1 ? "ação" : "ações"}
+        · {t.tabela.doRecorte(formatParticipacao(total > 0 ? valor / total : 0))}{" "}
+        · {t.tabela.acoes(acoes)}
       </p>
 
       {varias ? (
@@ -67,7 +69,7 @@ export function FichaFonte({
       ) : null}
 
       <p className="mt-2 text-xs text-muted-foreground">
-        Valores da própria fonte em cada ação, como na planilha — sem rateio.
+        {t.tabela.semRateio}
       </p>
     </div>
   );

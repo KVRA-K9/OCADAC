@@ -6,17 +6,20 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { LanguageToggle } from "@/components/layout/language-toggle";
 import { cn } from "@/lib/utils";
-
-const NAV_ANCORAS = [
-  { href: "/#sobre", label: "Sobre" },
-  { href: "/#eixos", label: "Eixos" },
-  { href: "/#base-legal", label: "Base Legal" },
-  { href: "/#relatorios", label: "Relatórios" },
-] as const;
+import { useT } from "@/lib/i18n";
 
 export function LandingHeader() {
   const [aberto, setAberto] = React.useState(false);
+  const t = useT();
+
+  const NAV_ANCORAS = [
+    { href: "/#sobre", label: t.landing.header.sobre },
+    { href: "/#eixos", label: t.landing.header.eixos },
+    { href: "/#base-legal", label: t.landing.header.baseLegal },
+    { href: "/#relatorios", label: t.landing.header.relatorios },
+  ] as const;
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/70">
@@ -26,11 +29,11 @@ export function LandingHeader() {
             href="https://seplan.ac.gov.br"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Seplan/AC - Página oficial"
+            aria-label={t.landing.header.paginaOficialSeplan}
           >
             <Image
               src="/logo-solo.png"
-              alt="Logo OCAD Acre"
+              alt={t.landing.header.logoOcadAcre}
               width={72}
               height={40}
               priority
@@ -44,13 +47,13 @@ export function LandingHeader() {
             target="_blank"
             rel="noopener noreferrer"
             className="hidden flex-col leading-tight sm:flex"
-            aria-label="OCAD Acre - Página oficial da Seplan"
+            aria-label={t.landing.header.paginaOficialOcad}
           >
             <span className="font-heading text-sm font-semibold" style={{ color: "#048D3E" }}>
               OCAD | Acre
             </span>
             <span className="text-xs text-muted-foreground">
-              Orçamento Criança e Adolescente
+              {t.landing.header.subtitulo}
             </span>
           </a>
         </div>
@@ -68,16 +71,17 @@ export function LandingHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-2">
+          <LanguageToggle className="mr-1" />
           <Button asChild size="sm" className="hidden sm:inline-flex">
             <Link href="/painel">
-              Acessar painel
+              {t.landing.header.acessarPainel}
             </Link>
           </Button>
           <Button
             variant="ghost"
             size="icon"
             className="md:hidden"
-            aria-label="Abrir menu"
+            aria-label={t.landing.header.abrirMenu}
             aria-expanded={aberto}
             onClick={() => setAberto((v) => !v)}
           >
@@ -105,9 +109,12 @@ export function LandingHeader() {
           ))}
           <Button asChild size="sm" className="mt-2">
             <Link href="/painel" onClick={() => setAberto(false)}>
-              Acessar painel
+              {t.landing.header.acessarPainel}
             </Link>
           </Button>
+          <div className="mt-3">
+            <LanguageToggle />
+          </div>
         </nav>
       </div>
     </header>

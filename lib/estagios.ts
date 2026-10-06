@@ -6,6 +6,7 @@
  */
 
 import type { Estagio } from "@/lib/types";
+import type { Locale } from "@/lib/messages";
 
 export const SERIES_COLORS: Record<string, string> = {
   ocadInicial: "var(--chart-1)",
@@ -32,6 +33,20 @@ export const ROTULOS_ESTAGIO: Record<string, string> = {
   ocadPago: "Pago",
   ocadDisponivel: "Disponível",
 };
+
+export const ROTULOS_ESTAGIO_EN: Record<string, string> = {
+  ocadInicial: "Initial Budget",
+  ocadAtualizado: "Updated Budget",
+  ocadEmpenhado: "Committed",
+  ocadLiquidado: "Settled",
+  ocadPago: "Paid",
+  ocadDisponivel: "Available",
+};
+
+/** Rótulos dos estágios da despesa no idioma ativo. */
+export function getRotulosEstagio(locale: Locale): Record<string, string> {
+  return locale === "en" ? ROTULOS_ESTAGIO_EN : ROTULOS_ESTAGIO;
+}
 
 /** Estágios exibidos no recorte por secretaria. */
 export const ESTAGIOS_SECRETARIA = [

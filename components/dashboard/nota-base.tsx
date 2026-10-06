@@ -1,4 +1,5 @@
-import { PONDERACAO, dataBase, metaBase } from "@/data/base-ocad";
+import { useT } from "@/lib/i18n";
+import { dataBase, metaBase } from "@/data/base-ocad";
 
 /**
  * Procedência dos números. Toda página que exibe valores declara de qual
@@ -6,12 +7,19 @@ import { PONDERACAO, dataBase, metaBase } from "@/data/base-ocad";
  * mostrarem o mesmo exercício com números diferentes.
  */
 export function NotaBase() {
+  const t = useT();
+
   return (
     <p className="text-xs leading-relaxed text-muted-foreground">
-      Fonte: <span className="font-medium">{metaBase.arquivoFonte}</span> —{" "}
-      {metaBase.origem}. Arquivo de {dataBase}, com {metaBase.acoes} ações
-      consolidadas de {metaBase.linhasFonte} linhas por fonte de recurso.{" "}
-      {PONDERACAO.descricao}
+      {t.painel.fonte}:{" "}
+      <span className="font-medium">{metaBase.arquivoFonte}</span> —{" "}
+      {metaBase.origem}.{" "}
+      {t.painel.notaBaseArquivo(
+        dataBase,
+        metaBase.acoes,
+        metaBase.linhasFonte,
+      )}{" "}
+      {t.common.ponderacao()}
     </p>
   );
 }

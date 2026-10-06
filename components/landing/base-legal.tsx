@@ -1,3 +1,5 @@
+"use client";
+
 import { ExternalLink, Gavel, Landmark, Globe, Scroll, ShieldCheck, ClipboardList, GraduationCap } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -8,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CONTEUDO_OCAD, BASES_LEGAIS } from "@/lib/conteudo-ocad";
+import { getBasesLegais, getConteudoOcad } from "@/lib/conteudo-ocad";
+import { useLocale, useT } from "@/lib/i18n";
 
 const ICONES: Record<number, LucideIcon> = {
   1: Landmark,
@@ -20,24 +23,29 @@ const ICONES: Record<number, LucideIcon> = {
 };
 
 export function BaseLegal() {
+  const { locale } = useLocale();
+  const t = useT();
+  const conteudo = getConteudoOcad(locale);
+  const basesLegais = getBasesLegais(locale);
+
   return (
     <Section
       id="base-legal"
-      titulo="Instrumentação Legal"
-      subtitulo="O OCAD está fundamentado em instrumentos jurídicos que garantem proteção integral à criança e ao adolescente."
+      titulo={t.landing.baseLegal.titulo}
+      subtitulo={t.landing.baseLegal.subtitulo}
     >
       <Card className="border border-primary/30 ring-0 relative mb-6 overflow-hidden bg-background">
         <Gavel className="pointer-events-none absolute -right-4 -bottom-4 size-32 text-primary opacity-25" />
         <CardContent className="relative flex flex-col gap-4 pt-1 md:flex-row md:items-start md:gap-6">
           <div className="flex flex-col gap-3">
             <h3 className="font-heading text-base font-semibold">
-              Lei nº 3.762, de 19 de julho de 2021
+              {t.landing.baseLegal.leiTitulo}
             </h3>
             <p className="text-sm leading-relaxed text-foreground/90">
-              {CONTEUDO_OCAD.baseLegal}
+              {conteudo.baseLegal}
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {CONTEUDO_OCAD.baseLegalDidatica}
+              {conteudo.baseLegalDidatica}
             </p>
             <a
               href="https://legis.ac.gov.br/detalhar/4706"
@@ -45,7 +53,7 @@ export function BaseLegal() {
               rel="noopener noreferrer"
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-primary underline-offset-2 hover:underline"
             >
-              Acessar íntegra da lei
+              {t.landing.baseLegal.acessarIntegra}
               <ExternalLink className="size-3.5" />
             </a>
           </div>
@@ -53,7 +61,7 @@ export function BaseLegal() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {BASES_LEGAIS.slice(1).map((item, i) => {
+        {basesLegais.slice(1).map((item, i) => {
           const Icone = ICONES[i + 1] ?? Scroll;
           return (
             <Card key={item.titulo} className="border border-primary/40 ring-0 relative overflow-hidden">
@@ -72,7 +80,7 @@ export function BaseLegal() {
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary underline-offset-2 hover:underline"
                   >
-                    Acessar Link
+                    {t.landing.baseLegal.acessarLink}
                     <ExternalLink className="size-3.5" />
                   </a>
                 )}

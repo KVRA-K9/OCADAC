@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/popover";
 import type { OpcaoFonte } from "@/data/base-ocad";
 import { formatMoedaCompacta, formatParticipacao } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import { normalizar } from "@/lib/texto";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +46,7 @@ export function FiltroFonte({
   /** Denominador das participações — o orçamento atualizado do recorte. */
   total: number;
 }) {
+  const t = useT();
   const [aberto, setAberto] = React.useState(false);
   const [busca, setBusca] = React.useState("");
 
@@ -63,8 +65,8 @@ export function FiltroFonte({
       : lista;
 
   const secoes = [
-    { titulo: "Maiores", itens: casa(maiores) },
-    { titulo: "Demais", itens: casa(demais) },
+    { titulo: t.tabela.maiores, itens: casa(maiores) },
+    { titulo: t.tabela.demais, itens: casa(demais) },
   ].filter((secao) => secao.itens.length > 0);
 
   return (
@@ -73,9 +75,9 @@ export function FiltroFonte({
         <Button
           variant="ghost"
           size="sm"
-          aria-label="Filtrar por fonte de recursos"
+          aria-label={t.tabela.filtrarFonte}
         >
-          Fonte
+          {t.tabela.fonte}
           {escolhidas.length > 0 ? (
             <span className="tabular-nums">· {escolhidas.length}</span>
           ) : null}
@@ -89,24 +91,21 @@ export function FiltroFonte({
             type="search"
             value={busca}
             onChange={(evento) => setBusca(evento.target.value)}
-            placeholder="Buscar por código ou nome..."
-            aria-label="Buscar fonte de recursos"
+            placeholder={t.tabela.buscarCodigoNome}
+            aria-label={t.tabela.buscarFonte}
             className="pl-9"
           />
         </div>
 
         {escolhidas.length > 0 ? (
           <div className="mt-2 flex items-center justify-between gap-2 px-2 text-xs text-muted-foreground">
-            <span>
-              {escolhidas.length}{" "}
-              {escolhidas.length === 1 ? "selecionada" : "selecionadas"}
-            </span>
+            <span>{t.tabela.selecionadas(escolhidas.length)}</span>
             <button
               type="button"
               onClick={limpar}
               className="font-medium text-foreground underline-offset-2 hover:underline"
             >
-              Limpar
+              {t.tabela.limpar}
             </button>
           </div>
         ) : null}
@@ -114,7 +113,7 @@ export function FiltroFonte({
         <div className="mt-2 max-h-80 overflow-y-auto">
           {secoes.length === 0 ? (
             <p className="px-2 py-6 text-center text-sm text-muted-foreground">
-              Nenhuma fonte com esse código ou nome.
+              {t.tabela.nenhumaFonte}
             </p>
           ) : (
             secoes.map((secao) => (

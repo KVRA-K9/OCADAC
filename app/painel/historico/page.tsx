@@ -40,7 +40,8 @@ import {
   formatMoeda,
   formatMoedaCompacta,
 } from "@/lib/format";
-import { CORES_NORMA, DESCRICOES_NORMA, ICONES_NORMA } from "@/lib/normas";
+import { useLocale, useT } from "@/lib/i18n";
+import { CORES_NORMA, ICONES_NORMA, getDescricoesNorma } from "@/lib/normas";
 import {
   anosNormas,
   exerciciosEmCruzeiro,
@@ -51,10 +52,7 @@ import {
   type PontoLOA,
   type TipoNorma,
 } from "@/data/historico-leis";
-import {
-  ocadPorExercicio,
-  razaoSemApuracao,
-} from "@/data/ocad-loas";
+import { ocadPorExercicio } from "@/data/ocad-loas";
 
 /**
  * Cores da série, em pastel, definidas em `globals.css` com valor próprio para
@@ -79,6 +77,8 @@ function TooltipLOA({
   payload?: { value?: number; payload?: PontoLOA }[];
   label?: string | number;
 }) {
+  const t = useT();
+
   if (!active || !payload || payload.length === 0) return null;
 
   const exercicio = Number(label);
@@ -87,7 +87,9 @@ function TooltipLOA({
 
   return (
     <div className="max-w-[20rem] rounded-lg border bg-popover px-3 py-2 text-xs shadow-md ring-1 ring-foreground/10">
-      <p className="mb-1.5 font-medium text-foreground">Exercício {label}</p>
+      <p className="mb-1.5 font-medium text-foreground">
+        {t.historico.exercicioRotulo(label ?? "")}
+      </p>
 
       {apuracao ? (
         <div className="flex flex-col gap-1">
@@ -98,36 +100,31 @@ function TooltipLOA({
               style={{ background: COR_APURADO }}
             />
             <span className="font-medium text-foreground tabular-nums">
-              OCAD apurado: {formatMoeda(apuracao.ocad ?? 0)}
+              {t.historico.ocadApurado(formatMoeda(apuracao.ocad ?? 0))}
             </span>
           </div>
           {apuracao.totalAcoes === null ? (
             <p className="leading-relaxed text-muted-foreground">
-              Só as unidades de ensino, do ISE e da infância, lidas página a
-              página: o caderno de 2014 desenha as tabelas como imagem, e a
-              varredura por descritores não alcança esse exercício. O valor é um
-              piso — nos anos vizinhos essa parcela fica abaixo de 1,5%.
+              {t.historico.apuracaoSemDetalhe}
             </p>
           ) : (
             <>
               <p className="leading-relaxed text-muted-foreground tabular-nums">
-                {formatMoeda(apuracao.totalIntegrais ?? 0)} nas unidades de
-                ensino, do ISE e da infância, somadas inteiras;{" "}
-                {formatMoeda(apuracao.totalAcoes ?? 0)} em{" "}
-                {apuracao.acoesCasadas}{" "}
-                {apuracao.acoesCasadas === 1 ? "ação" : "ações"} com os
-                descritores.
+                {t.historico.apuracaoDetalhada(
+                  formatMoeda(apuracao.totalIntegrais ?? 0),
+                  formatMoeda(apuracao.totalAcoes ?? 0),
+                  apuracao.acoesCasadas,
+                )}
               </p>
               {apuracao.naoDetalhado > 0 && (
                 /* O caderno de alguns exercícios imprime ações só com o nome,
                  * sem valor. Calar isso faria a soma parecer completa. */
                 <p className="mt-1 border-t pt-1 leading-relaxed text-muted-foreground">
-                  O caderno deste exercício imprime parte das ações sem valor:{" "}
+                  {t.historico.naoDetalhadoInicio}
                   <span className="tabular-nums">
                     {formatMoeda(apuracao.naoDetalhado)}
-                  </span>{" "}
-                  do que as unidades declaram não é detalhado por nenhuma linha
-                  publicada, e por isso não pôde passar pelos descritores.
+                  </span>
+                  {t.historico.naoDetalhadoFim}
                 </p>
               )}
             </>
@@ -142,16 +139,20 @@ function TooltipLOA({
               style={{ background: COR_SEM_APURACAO }}
             />
             <span className="font-medium text-foreground tabular-nums">
-              Dotação Total dos Órgãos: {formatMoeda(ponto?.total ?? 0)}
+              {t.historico.dotacaoTotalOrgaos(formatMoeda(ponto?.total ?? 0))}
             </span>
           </div>
           <p className="text-muted-foreground tabular-nums">
-            {formatMoeda(ponto?.rp ?? 0)} próprios · {" "}
-            {formatMoeda(ponto?.outrasFontes ?? 0)} outras fontes
+            {t.historico.propriosOutrasFontes(
+              formatMoeda(ponto?.rp ?? 0),
+              formatMoeda(ponto?.outrasFontes ?? 0),
+            )}
           </p>
           <p className="mt-0.5 border-t pt-1 leading-relaxed text-muted-foreground">
-            <span className="font-medium text-foreground">Sem curadoria.</span>{" "}
-            {razaoSemApuracao()}
+            <span className="font-medium text-foreground">
+              {t.historico.semCuradoria}
+            </span>{" "}
+            {t.historico.razaoSemApuracao}
           </p>
         </div>
       )}
@@ -175,13 +176,7 @@ const serieComApuracao = serieLOAReal.map((p) => {
 
 const semApuracao = (exercicio: number) => !ocadPorExercicio.has(exercicio);
 
-const ORDENS = {
-  recentes: "Mais recentes",
-  antigas: "Mais antigas",
-  numero: "Número da norma",
-} as const;
-
-type Ordem = keyof typeof ORDENS;
+type Ordem = "recentes" | "antigas" | "numero";
 
 const TODOS = "todos";
 
@@ -200,9 +195,6 @@ const MOSTRAR_EXERCICIOS_EM_CRUZEIRO = false;
  */
 const PANDEMIA_INICIO = 2020;
 const PANDEMIA_FIM = 2024;
-const PANDEMIA_TEXTO =
-  "Emergência declarada em março de 2020, encerrada no Brasil em maio de 2022 (Portaria GM/MS nº 913/2022) e pela OMS em maio de 2023. O recorte vai até 2024 pelos efeitos orçamentários.";
-const PANDEMIA_TITULO = `Pandemia de COVID-19 — exercícios de ${PANDEMIA_INICIO} a ${PANDEMIA_FIM}`;
 
 /** Espaço reservado acima da moldura para o rótulo "COVID-19". */
 const PANDEMIA_FOLGA_TOPO = 18;
@@ -253,13 +245,16 @@ function MarcaPandemia({
   height?: number;
   camada: "mancha" | "contorno";
 }) {
+  const t = useT();
+
   if (x == null || y == null || width == null || height == null) return null;
 
   const { meio, topo, ...moldura } = geometriaPandemia(x, y, width, height);
+  const titulo = t.historico.pandemiaTitulo(PANDEMIA_INICIO, PANDEMIA_FIM);
 
   return (
     <g role="img" style={{ pointerEvents: "none" }}>
-      <title>{`${PANDEMIA_TITULO}. ${PANDEMIA_TEXTO}`}</title>
+      <title>{`${titulo}. ${t.historico.pandemiaTexto}`}</title>
       {camada === "mancha" ? (
         <rect {...moldura} fill="var(--destructive)" fillOpacity={0.07} />
       ) : (
@@ -308,6 +303,8 @@ function BarrasCruzeiro({
   opacidade: (exercicio: number) => number;
   onEscolher: (exercicio: number) => void;
 }) {
+  const t = useT();
+
   return (
     <ul className="flex flex-col gap-1.5">
       {pontos.map((p) => {
@@ -345,7 +342,7 @@ function BarrasCruzeiro({
                 {formatMoeda(p.total)}
               </span>
               <span className="hidden w-48 shrink-0 text-right text-xs text-muted-foreground tabular-nums lg:block">
-                {formatCruzeiroMil(p.totalOriginal)} na lei
+                {t.historico.naLei(formatCruzeiroMil(p.totalOriginal))}
               </span>
             </button>
           </li>
@@ -356,6 +353,11 @@ function BarrasCruzeiro({
 }
 
 export default function HistoricoPage() {
+  const t = useT();
+  const { locale } = useLocale();
+  const descricoesNorma = getDescricoesNorma(locale);
+  const ordens = t.historico.ordens;
+
   /* A aba da planilha em exibição — uma por vez, como na página de ODS. */
   const [aba, setAba] = React.useState<TipoNorma | null>(null);
   const [busca, setBusca] = React.useState("");
@@ -464,33 +466,46 @@ export default function HistoricoPage() {
 
   const primeiroExercicio = serieLOAReal[0]?.exercicio;
   const ultimo = serieLOAReal[serieLOAReal.length - 1];
+  const pandemiaTitulo = t.historico.pandemiaTitulo(
+    PANDEMIA_INICIO,
+    PANDEMIA_FIM,
+  );
 
   const IconeAba = aba ? ICONES_NORMA[aba] : null;
 
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        titulo="Histórico"
-        descricao="O acervo normativo do OCAD no Acre e o orçamento apurado em cada lei orçamentária."
+        titulo={t.historico.titulo}
+        descricao={t.historico.descricao}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <KpiCard
-          titulo="Normas mapeadas"
+          titulo={t.historico.kpiNormasTitulo}
           valor={metaLeis.normas}
-          dica={`${metaLeis.porTipo["Lei Ordinária"]} leis, ${metaLeis.porTipo["Decreto"]} decretos, ${metaLeis.porTipo["Estrutura Administrativa"]} de estrutura`}
+          dica={t.historico.kpiNormasDica(
+            metaLeis.porTipo["Lei Ordinária"],
+            metaLeis.porTipo["Decreto"],
+            metaLeis.porTipo["Estrutura Administrativa"],
+          )}
           icone={Scale}
         />
         <KpiCard
-          titulo="Período coberto"
+          titulo={t.historico.kpiPeriodoTitulo}
           valor={`${anosNormas[anosNormas.length - 1]}–${anosNormas[0]}`}
-          dica={`${anosNormas[0] - anosNormas[anosNormas.length - 1]} anos de normas sobre criança e adolescente`}
+          dica={t.historico.kpiPeriodoDica(
+            anosNormas[0] - anosNormas[anosNormas.length - 1],
+          )}
           icone={CalendarRange}
         />
         <KpiCard
-          titulo="Leis orçamentárias"
+          titulo={t.historico.kpiOrcamentariasTitulo}
           valor={metaLeis.porTipo["LOA"] + metaLeis.porTipo["LDO"]}
-          dica={`${metaLeis.porTipo["LOA"]} LOAs e ${metaLeis.porTipo["LDO"]} LDOs`}
+          dica={t.historico.kpiOrcamentariasDica(
+            metaLeis.porTipo["LOA"],
+            metaLeis.porTipo["LDO"],
+          )}
           icone={Landmark}
         />
       </div>
@@ -498,10 +513,10 @@ export default function HistoricoPage() {
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <h2 className="text-lg font-semibold tracking-tight">
-            Acervo normativo
+            {t.historico.acervoTitulo}
           </h2>
           <p className="text-sm text-muted-foreground">
-            Escolha um tipo de norma para visualizar a lista.
+            {t.historico.acervoDescricao}
           </p>
         </div>
 
@@ -529,9 +544,11 @@ export default function HistoricoPage() {
             )}
             <div className="relative flex items-center justify-between gap-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-base font-semibold">{aba}</h3>
+                <h3 className="text-base font-semibold">
+                  {t.common.tipoNormaRotulo(aba)}
+                </h3>
                 <span className="text-xs text-muted-foreground tabular-nums">
-                  {metaLeis.porTipo[aba]} na planilha
+                  {t.historico.naPlanilha(metaLeis.porTipo[aba])}
                 </span>
               </div>
               <Button
@@ -541,11 +558,11 @@ export default function HistoricoPage() {
                 className="shrink-0"
               >
                 <X className="size-4" />
-                Fechar
+                {t.historico.fechar}
               </Button>
             </div>
             <p className="relative text-xs text-muted-foreground">
-              {DESCRICOES_NORMA[aba]}
+              {descricoesNorma[aba]}
             </p>
           </div>
 
@@ -556,15 +573,17 @@ export default function HistoricoPage() {
                 <Input
                   value={busca}
                   onChange={(e) => buscar(e.target.value)}
-                  placeholder="Buscar por número, ementa, órgão ou meta — por exemplo, OCAD"
-                  aria-label={`Buscar em ${aba}`}
+                  placeholder={t.historico.buscaPlaceholder}
+                  aria-label={t.historico.buscaAria(
+                    t.common.tipoNormaRotulo(aba),
+                  )}
                   className="pl-9"
                 />
                 {busca.length > 0 && (
                   <button
                     type="button"
                     onClick={() => buscar("")}
-                    aria-label="Limpar busca"
+                    aria-label={t.historico.limparBuscaAria}
                     className="absolute top-1/2 right-2 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
                   >
                     <X className="size-4" />
@@ -578,7 +597,7 @@ export default function HistoricoPage() {
                   * recuos) e o rótulo não quebra linha, então em 11rem ele
                   * truncava. A busca ao lado é flex-1 e cede esse espaço. */}
                 <SelectTrigger
-                  aria-label="Filtrar por década"
+                  aria-label={t.historico.filtroDecadaAria}
                   className="h-9 w-full sm:w-[13rem]"
                 >
                   <CalendarRange className="size-4 text-muted-foreground" />
@@ -586,7 +605,7 @@ export default function HistoricoPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={TODOS}>
-                    Todas as décadas ({daAba.length})
+                    {t.historico.todasDecadas(daAba.length)}
                   </SelectItem>
                   {decadas.map(([d]) => (
                     <SelectItem key={d} value={String(d)}>
@@ -601,14 +620,14 @@ export default function HistoricoPage() {
                 onValueChange={(v) => setOrdem(v as Ordem)}
               >
                 <SelectTrigger
-                  aria-label="Ordenar"
+                  aria-label={t.historico.ordenarAria}
                   className="h-9 w-full sm:w-[12rem]"
                 >
                   <ArrowDownUp className="size-4 text-muted-foreground" />
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ORDENS).map(([valor, rotulo]) => (
+                  {Object.entries(ordens).map(([valor, rotulo]) => (
                     <SelectItem key={valor} value={valor}>
                       {rotulo}
                     </SelectItem>
@@ -626,21 +645,20 @@ export default function HistoricoPage() {
                 className="h-9 w-full shrink-0 sm:w-auto"
               >
                 <X className="size-4" />
-                Limpar filtros
+                {t.historico.limparFiltros}
               </Button>
             </div>
 
             <p className="text-sm text-muted-foreground tabular-nums">
-              {filtradas.length} {filtradas.length === 1 ? "norma" : "normas"}
-              {filtroAtivo && ` de ${daAba.length}`}
+              {t.historico.resultadoNormas(filtradas.length)}
+              {filtroAtivo && t.historico.deTotal(daAba.length)}
             </p>
 
             {aba === "LOA" && (
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">
-                    OCAD por exercício ({primeiroExercicio}
-                    –{ultimo?.exercicio})
+                    {`${t.historico.ocadPorExercicio} (${primeiroExercicio}–${ultimo?.exercicio})`}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-3">
@@ -707,7 +725,7 @@ export default function HistoricoPage() {
                           * dotação dos órgãos da planilha. */}
                         <Bar
                           dataKey="valor"
-                          name="OCAD por exercício"
+                          name={t.historico.ocadPorExercicio}
                           radius={[4, 4, 0, 0]}
                           isAnimationActive
                           animationDuration={900}
@@ -738,7 +756,7 @@ export default function HistoricoPage() {
                         className="size-2.5 rounded-sm"
                         style={{ background: COR_APURADO }}
                       />
-                      Com curadoria — OCAD apurado na lei
+                      {t.historico.legendaComCuradoria}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <span
@@ -746,11 +764,13 @@ export default function HistoricoPage() {
                         className="size-2.5 rounded-sm"
                         style={{ background: COR_SEM_APURACAO }}
                       />
-                      Sem curadoria — dotação dos órgãos
+                      {t.historico.legendaSemCuradoria}
                     </span>
                     <span className="tabular-nums">
-                      {ocadPorExercicio.size} de {serieComApuracao.length}{" "}
-                      exercícios apurados
+                      {t.historico.exerciciosApurados(
+                        ocadPorExercicio.size,
+                        serieComApuracao.length,
+                      )}
                     </span>
                   </div>
 
@@ -771,7 +791,7 @@ export default function HistoricoPage() {
                       style={{ color: "var(--destructive)" }}
                     />
                     <p className="leading-relaxed">
-                      <span className="sr-only">Informação: </span>
+                      <span className="sr-only">{t.historico.informacao}</span>
                       {/* A mesma moldura do gráfico, inline antes do título: é
                         * o que liga o aviso à marca sem precisar de explicação. */}
                       <svg
@@ -796,10 +816,10 @@ export default function HistoricoPage() {
                         />
                       </svg>
                       <span className="font-medium text-foreground">
-                        {PANDEMIA_TITULO}.
+                        {pandemiaTitulo}.
                       </span>{" "}
                       <span className="text-muted-foreground">
-                        {PANDEMIA_TEXTO}
+                        {t.historico.pandemiaTexto}
                       </span>
                     </p>
                   </div>
@@ -809,22 +829,10 @@ export default function HistoricoPage() {
                     <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
                     <div className="flex flex-col gap-2">
                       <p>
-                        <span className="sr-only">Informação: </span>
-                        Cada barra é o OCAD apurado na lei do exercício: as
-                        unidades de ensino, do ISE e da infância somadas inteiras,
-                        mais as ações cujo nome traz um dos descritores (menino,
-                        menina, criança, adolescente, adolescência, infância,
-                        infantil, juventude, filho e filhos). O período de 1995 a
-                        2009 ainda não passou por curadoria — seus anexos são
-                        anteriores à publicação eletrônica do Diário Oficial e
-                        existem apenas em versões físicas. Nele a barra traz a
-                        dotação total dos órgãos.
+                        <span className="sr-only">{t.historico.informacao}</span>
+                        {t.historico.notaLeitura1}
                       </p>
-                      <p>
-                        Clique numa barra para ir à lei do exercício — sancionada
-                        no ano anterior, ela traz outra data no cabeçalho. Valores
-                        nominais, sem correção pela inflação.
-                      </p>
+                      <p>{t.historico.notaLeitura2}</p>
                     </div>
                   </div>
 
@@ -837,13 +845,12 @@ export default function HistoricoPage() {
                   {MOSTRAR_EXERCICIOS_EM_CRUZEIRO && (
                     <div className="mt-2 flex flex-col gap-2 border-t pt-4">
                       <h4 className="text-sm font-semibold">
-                        Antes do real — exercícios de{" "}
-                        {exerciciosEmCruzeiro[0]?.exercicio} a{" "}
-                        {
-                          exerciciosEmCruzeiro[exerciciosEmCruzeiro.length - 1]
-                            ?.exercicio
-                        }
-                        , convertidos para real
+                        {t.historico.antesDoRealTitulo(
+                          exerciciosEmCruzeiro[0]?.exercicio ?? 0,
+                          exerciciosEmCruzeiro[
+                            exerciciosEmCruzeiro.length - 1
+                          ]?.exercicio ?? 0,
+                        )}
                       </h4>
                       <BarrasCruzeiro
                         pontos={exerciciosEmCruzeiro}
@@ -851,19 +858,11 @@ export default function HistoricoPage() {
                         onEscolher={irParaExercicio}
                       />
                       <p className="text-xs leading-relaxed text-muted-foreground">
-                        Exercícios fixados em cruzeiro, convertidos para real
-                        pelos cortes monetários (Cr$ → CR$ → R$) e sem correção
-                        pela inflação — por isso ficam em escala própria, e não
-                        na do gráfico acima, onde sumiriam rentes ao eixo. A
-                        escala é logarítmica: cada dobro de comprimento vale dez
-                        vezes mais, o único jeito de as quatro barras caberem
-                        juntas. O salto de{" "}
-                        {
-                          exerciciosEmCruzeiro[exerciciosEmCruzeiro.length - 1]
-                            ?.exercicio
-                        }{" "}
-                        é a hiperinflação, não crescimento da política. Clique
-                        numa barra para ir até a lei correspondente.
+                        {t.historico.antesDoRealNota(
+                          exerciciosEmCruzeiro[
+                            exerciciosEmCruzeiro.length - 1
+                          ]?.exercicio ?? 0,
+                        )}
                       </p>
                     </div>
                   )}
@@ -877,12 +876,13 @@ export default function HistoricoPage() {
       )}
 
       <p className="text-xs leading-relaxed text-muted-foreground">
-        Fonte: <span className="font-medium">{metaLeis.arquivoFonte}</span> —{" "}
-        {metaLeis.origem}. Arquivo de {metaLeis.dataArquivo}
+        {t.historico.fonteRotulo}{" "}
+        <span className="font-medium">{metaLeis.arquivoFonte}</span> —{" "}
+        {metaLeis.origem}. {t.historico.arquivoDe(metaLeis.dataArquivo)}
         {metaLeis.atualizadoEm
-          ? `, atualizado na origem em ${metaLeis.atualizadoEm}`
+          ? t.historico.atualizadoNaOrigem(metaLeis.atualizadoEm)
           : ""}
-        , com {metaLeis.normas} normas. {metaLeis.observacoes.join(" ")}
+        {t.historico.comNormas(metaLeis.normas)}. {metaLeis.observacoes.join(" ")}
       </p>
     </div>
   );

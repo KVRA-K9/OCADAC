@@ -19,15 +19,16 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMoeda, formatMoedaCompacta } from "@/lib/format";
 import { serieExecucao } from "@/data/historico";
-import { PONDERACAO } from "@/data/base-ocad";
 import { NotaBase } from "@/components/dashboard/nota-base";
+import { useLocale, useT } from "@/lib/i18n";
+import { getRotulosEstagio } from "@/lib/estagios";
 
 const ESTAGIOS = [
-  { key: "ocadInicial", rotulo: "Orçamento Inicial", cor: "var(--chart-1)" },
-  { key: "ocadAtualizado", rotulo: "Orçamento Atualizado", cor: "var(--chart-2)" },
-  { key: "ocadEmpenhado", rotulo: "Empenhado", cor: "var(--chart-4)" },
-  { key: "ocadLiquidado", rotulo: "Liquidado", cor: "var(--chart-3)" },
-  { key: "ocadPago", rotulo: "Pago", cor: "var(--chart-5)" },
+  { key: "ocadInicial", cor: "var(--chart-1)" },
+  { key: "ocadAtualizado", cor: "var(--chart-2)" },
+  { key: "ocadEmpenhado", cor: "var(--chart-4)" },
+  { key: "ocadLiquidado", cor: "var(--chart-3)" },
+  { key: "ocadPago", cor: "var(--chart-5)" },
 ] as const;
 
 function ChartTooltip({
@@ -123,6 +124,10 @@ function MedidorLiquidado({
 }
 
 export default function EvolucaoPage() {
+  const t = useT();
+  const { locale } = useLocale();
+  const rotulosEstagio = getRotulosEstagio(locale);
+
   const primeiro = serieExecucao[0];
   const ultimo = serieExecucao[serieExecucao.length - 1];
   const variacaoPlanejado =
@@ -147,15 +152,15 @@ export default function EvolucaoPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        titulo="Evolução Temporal"
-        descricao="Comparativo ponderado do OCAD por exercício, do orçamento inicial ao valor pago. Cada ano identifica a planilha de origem e sua data."
+        titulo={t.evolucao.titulo}
+        descricao={t.evolucao.descricao}
       />
 
       <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
         <Card className="flex-1">
           <CardHeader>
             <CardTitle className="text-base">
-              Orçamento Inicial e Atualizado (ponderados) — por exercício
+              {t.evolucao.orcamentosTitulo}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -196,7 +201,7 @@ export default function EvolucaoPage() {
                   />
                   <Bar
                     dataKey="ocadInicial"
-                    name="Orçamento Inicial"
+                    name={rotulosEstagio["ocadInicial"]}
                     fill="var(--chart-1)"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={80}
@@ -205,7 +210,7 @@ export default function EvolucaoPage() {
                   />
                   <Bar
                     dataKey="ocadAtualizado"
-                    name="Orçamento Atualizado"
+                    name={rotulosEstagio["ocadAtualizado"]}
                     fill="var(--chart-2)"
                     radius={[4, 4, 0, 0]}
                     maxBarSize={80}
@@ -221,7 +226,7 @@ export default function EvolucaoPage() {
         <Card className="relative w-full overflow-hidden border-primary/30 bg-primary text-primary-foreground ring-primary/30 lg:w-52">
           <CardHeader>
             <CardTitle className="text-sm font-medium text-primary-foreground/80">
-              Variação {primeiro?.ano}–{ultimo?.ano}
+              {t.evolucao.variacaoTitulo(primeiro?.ano, ultimo?.ano)}
             </CardTitle>
           </CardHeader>
           <CardContent className="relative flex flex-col justify-center">
@@ -237,10 +242,11 @@ export default function EvolucaoPage() {
                 : "—"}
             </span>
             <p className="mt-1 text-xs text-primary-foreground/70">
-              {variacaoPlanejado !== null && variacaoPlanejado >= 0
-                ? "Aumento"
-                : "Redução"}{" "}
-              no orçamento inicial entre {primeiro?.ano} e {ultimo?.ano}
+              {t.evolucao.variacaoSentido(
+                variacaoPlanejado !== null && variacaoPlanejado >= 0,
+                primeiro?.ano,
+                ultimo?.ano,
+              )}
             </p>
           </CardContent>
         </Card>
@@ -249,18 +255,17 @@ export default function EvolucaoPage() {
 
       <div className="flex flex-col gap-2 pt-2">
         <h2 className="text-lg font-semibold tracking-tight">
-          Execução orçamentária
+          {t.evolucao.execucaoOrcamentaria}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {PONDERACAO.descricao} Todos os exercícios vêm de planilhas OCAD e
-          trazem os cinco estágios, do orçamento inicial ao valor pago.
+          {t.common.ponderacao()} {t.evolucao.ponderacaoNota}
         </p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Liquidado sobre o orçamento atualizado — por exercício
+            {t.evolucao.liquidadoTitulo}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -272,13 +277,18 @@ export default function EvolucaoPage() {
                 </span>
                 <MedidorLiquidado pct={g.pct} pctClamped={g.pctClamped} />
                 <span className="-mt-3 max-w-[280px] text-center text-xs text-muted-foreground">
-                  {formatMoedaCompacta(g.ocadLiquidado)} liquidado ·{" "}
+                  {t.evolucao.medidorLiquidado(
+                    formatMoedaCompacta(g.ocadLiquidado),
+                  )}
+                  {" · "}
                   <span style={{ color: "var(--chart-2)" }}>
-                    atualizado: {formatMoedaCompacta(g.ocadAtualizado)}
+                    {t.evolucao.medidorAtualizado(
+                      formatMoedaCompacta(g.ocadAtualizado),
+                    )}
                   </span>
                 </span>
                 <span className="text-center text-[11px] text-muted-foreground/80">
-                  {g.fonte} · corte {g.dataCorte}
+                  {t.evolucao.fonteCorte(g.fonte, g.dataCorte)}
                 </span>
               </div>
             ))}
@@ -289,7 +299,7 @@ export default function EvolucaoPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Estágios da despesa por exercício (ponderados)
+            {t.evolucao.estagiosTitulo}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -315,7 +325,7 @@ export default function EvolucaoPage() {
                             className="size-2 rounded-sm"
                             style={{ background: m.cor }}
                           />
-                          {m.rotulo}
+                          {rotulosEstagio[m.key]}
                         </span>
                         <span className="text-xs font-semibold tabular-nums">
                           {formatMoeda(valor)}
@@ -325,7 +335,7 @@ export default function EvolucaoPage() {
                   })}
                 </div>
                 <span className="text-[11px] text-muted-foreground/80">
-                  {p.fonte} · corte {p.dataCorte}
+                  {t.evolucao.fonteCorte(p.fonte, p.dataCorte)}
                 </span>
               </div>
             ))}

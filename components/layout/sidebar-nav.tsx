@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
+import { LanguageToggle } from "@/components/layout/language-toggle";
 import {
   Tooltip,
   TooltipContent,
@@ -21,12 +23,12 @@ import {
 } from "@/components/ui/tooltip";
 
 const NAV_ITENS = [
-  { href: "/", label: "Voltar à Página Inicial", icon: Home },
-  { href: "/painel", label: "Visão Geral", icon: LayoutDashboard },
-  { href: "/painel/tabela", label: "Tabela Detalhada", icon: Table2 },
-  { href: "/painel/evolucao", label: "Evolução Temporal", icon: TrendingUp },
-  { href: "/painel/historico", label: "Histórico", icon: Landmark },
-  { href: "/painel/ods", label: "ODS", icon: Target },
+  { href: "/", icon: Home, label: "voltarInicio" },
+  { href: "/painel", icon: LayoutDashboard, label: "visaoGeral" },
+  { href: "/painel/tabela", icon: Table2, label: "tabelaDetalhada" },
+  { href: "/painel/evolucao", icon: TrendingUp, label: "evolucaoTemporal" },
+  { href: "/painel/historico", icon: Landmark, label: "historico" },
+  { href: "/painel/ods", icon: Target, label: "ods" },
 ] as const;
 
 interface SidebarNavProps {
@@ -61,6 +63,7 @@ function LabelSpan({
 
 export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
   const pathname = usePathname();
+  const t = useT();
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
@@ -71,7 +74,7 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
       )}>
         <Image
           src="/bandeira-acre.png"
-          alt="Bandeira do Acre"
+          alt={t.nav.bandeiraAcre}
           width={500}
           height={350}
           unoptimized
@@ -92,15 +95,16 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
             OCAD | Acre
           </span>
           <span className="text-xs leading-tight text-sidebar-foreground/70">
-            Criança e Adolescente
+            {t.nav.subtitulo}
           </span>
         </div>
       </div>
 
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 px-2 overflow-hidden">
-        {NAV_ITENS.map(({ href, label, icon: Icon }) => {
+        {NAV_ITENS.map(({ href, label: chave, icon: Icon }) => {
           const ativo = pathname === href;
+          const label = t.nav[chave];
           return (
             <Tooltip key={href} open={collapsed ? undefined : false} disableHoverableContent={!collapsed}>
               <TooltipTrigger asChild>
@@ -128,6 +132,15 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
             </Tooltip>
           );
         })}
+
+        <div
+          className={cn(
+            "mt-1 flex overflow-hidden",
+            collapsed ? "justify-center" : "justify-start px-3",
+          )}
+        >
+          <LanguageToggle />
+        </div>
       </nav>
 
       {/* Footer note (animated collapse) */}
@@ -139,7 +152,7 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
           collapsed ? "max-h-0 opacity-0 py-0" : "max-h-10 opacity-100 py-1 pb-3",
         )}
       >
-        Fonte oficial: planilha OCAD — SEPLAN/AC, a mesma base do BI
+        {t.nav.fonteOficial}
       </div>
     </div>
   );

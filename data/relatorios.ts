@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/messages";
+
 export interface RelatorioOcad {
   ano: number;
   titulo: string;
@@ -6,7 +8,7 @@ export interface RelatorioOcad {
 
 const BASE = "https://seplan.ac.gov.br/wp-content/uploads";
 
-export const relatoriosOcad: RelatorioOcad[] = [
+const relatoriosPt: RelatorioOcad[] = [
   {
     ano: 2026,
     titulo: "Relatório OCAD 2026",
@@ -33,6 +35,18 @@ export const relatoriosOcad: RelatorioOcad[] = [
     url: `${BASE}/2024/12/RELATORIO-OCAD-2022.pdf`,
   },
 ];
+
+const relatoriosEn: RelatorioOcad[] = relatoriosPt.map((r) => ({
+  ...r,
+  titulo: `OCAD Report ${r.ano}`,
+}));
+
+export const relatoriosOcad: RelatorioOcad[] = relatoriosPt;
+
+/** Relatórios com título no idioma ativo. */
+export function getRelatoriosOcad(locale: Locale): RelatorioOcad[] {
+  return locale === "en" ? relatoriosEn : relatoriosPt;
+}
 
 export const URL_LEI_OCAD = "https://legis.ac.gov.br/detalhar/4706";
 export const URL_SEPLAN_OCAD =

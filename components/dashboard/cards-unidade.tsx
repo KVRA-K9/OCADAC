@@ -4,11 +4,12 @@ import * as React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatMoeda } from "@/lib/format";
+import { useLocale, useT } from "@/lib/i18n";
 import {
   ESTAGIOS_SECRETARIA,
-  ROTULOS_ESTAGIO,
   SERIES_COLORS,
   corSecretaria,
+  getRotulosEstagio,
   nomeUnidade,
 } from "@/lib/estagios";
 import type { AgregadoUnidade } from "@/data/base-ocad";
@@ -23,6 +24,9 @@ const FACE: React.CSSProperties = {
 };
 
 function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
+  const t = useT();
+  const { locale } = useLocale();
+  const rotulosEstagio = getRotulosEstagio(locale);
   // O card abre pelo nome: a identidade vem primeiro e os valores aparecem ao
   // clicar.
   const [mostrandoValores, setMostrandoValores] = React.useState(false);
@@ -57,7 +61,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
                 className="size-2.5 shrink-0 rounded-sm"
                 style={{ background: SERIES_COLORS[estagio] }}
               />
-              {ROTULOS_ESTAGIO[estagio]}
+              {rotulosEstagio[estagio]}
             </span>
             <span className="text-sm font-semibold tabular-nums">
               {formatMoeda(dados[estagio])}
@@ -76,8 +80,8 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
         aria-pressed={mostrandoValores}
         aria-label={
           mostrandoValores
-            ? `Mostrar o nome de ${dados.rotulo}`
-            : `Mostrar os valores de ${dados.rotulo}`
+            ? t.painel.mostrarNome(dados.rotulo)
+            : t.painel.mostrarValores(dados.rotulo)
         }
         className="relative grid h-full w-full cursor-pointer rounded-xl text-left transition-transform duration-500 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
         style={{
@@ -120,10 +124,12 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
  * mostrar os valores.
  */
 export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
+  const t = useT();
+
   if (data.length === 0) {
     return (
       <p className="rounded-lg border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
-        Nenhuma unidade corresponde aos filtros selecionados.
+        {t.painel.nenhumaUnidade}
       </p>
     );
   }

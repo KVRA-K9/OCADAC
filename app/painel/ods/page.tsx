@@ -11,52 +11,49 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useLocale, useT } from "@/lib/i18n";
 import {
   EIXOS_ODS_OCAD,
   ODS_IMAGEM,
-  ODS_LISTA,
+  getOds,
   type EixoOds,
   type IndicadorOds,
   type Ods,
   type StatusIndicador,
-  filtraIndicadores,
 } from "@/lib/ods-ocad";
 
-const EIXO_OPCOES: Array<{ valor: EixoOds; rotulo: string; icone: typeof BookOpen }> = [
-  { valor: "Educação", rotulo: "Educação", icone: BookOpen },
-  { valor: "Saúde", rotulo: "Saúde", icone: HeartPulse },
-  { valor: "Assistência Social", rotulo: "Assistência Social", icone: HandHeart },
+const EIXO_OPCOES: Array<{ valor: EixoOds; icone: typeof BookOpen }> = [
+  { valor: "Educação", icone: BookOpen },
+  { valor: "Saúde", icone: HeartPulse },
+  { valor: "Assistência Social", icone: HandHeart },
 ];
 
-const STATUS_ROTULO: Record<StatusIndicador, string> = {
-  "Produzido": "Produzido",
-  "Em análise/construção": "Em construção",
-  "Sem dados": "Sem dados",
-};
-
-const STATUS_OPCOES: Array<{ valor: StatusIndicador; rotulo: string }> = [
-  { valor: "Produzido", rotulo: "Produzido" },
-  { valor: "Em análise/construção", rotulo: "Em construção" },
-  { valor: "Sem dados", rotulo: "Sem dados" },
+const STATUS_OPCOES: StatusIndicador[] = [
+  "Produzido",
+  "Em análise/construção",
+  "Sem dados",
 ];
 
 function StatusDot({ status }: { status: StatusIndicador }) {
+  const t = useT();
   const cor =
     status === "Produzido"
       ? "bg-emerald-500"
       : status === "Em análise/construção"
         ? "bg-amber-500"
         : "bg-orange-500";
+  const rotulo = t.common.statusOdsRotulo(status);
   return (
     <span
       className={cn("inline-block size-2 shrink-0 rounded-full", cor)}
-      title={STATUS_ROTULO[status]}
-      aria-label={STATUS_ROTULO[status]}
+      title={rotulo}
+      aria-label={rotulo}
     />
   );
 }
 
 function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: EixoOds[] }) {
+  const t = useT();
   const eixosVisiveis =
     eixosFiltro.length === 0 ? ind.eixos : ind.eixos.filter((e) => eixosFiltro.includes(e));
   return (
@@ -74,7 +71,7 @@ function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: E
             className="text-white"
             style={{ backgroundColor: EIXOS_ODS_OCAD[eixo] }}
           >
-            {eixo}
+            {t.common.eixoRotulo(eixo)}
           </Badge>
         ))}
       </div>
@@ -83,6 +80,7 @@ function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: E
 }
 
 function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: EixoOds[]; onRemover?: () => void }) {
+  const t = useT();
   const vazio = ods.indicadoresContemplados.length === 0;
   return (
     <div className="flex w-full animate-in fade-in-0 slide-in-from-bottom-4 duration-400 flex-col gap-3 rounded-xl ring-1 ring-foreground/10">
@@ -91,7 +89,7 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
           <div className="flex items-center gap-2">
             <Image
               src={ODS_IMAGEM[ods.numero]}
-              alt={`ODS ${ods.numero}`}
+              alt={t.ods.altOds(ods.numero)}
               width={500}
               height={350}
               unoptimized
@@ -105,10 +103,10 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
               size="sm"
               onClick={onRemover}
               className="shrink-0"
-              aria-label={`Remover ODS ${ods.numero} da seleção`}
+              aria-label={t.ods.removerAria(ods.numero)}
             >
               <X className="size-4" />
-              Remover
+              {t.ods.remover}
             </Button>
           )}
         </div>
@@ -117,7 +115,7 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
       <div className="grid flex-1 grid-cols-1 gap-2 p-3 pt-0 sm:grid-cols-2 xl:grid-cols-3 auto-rows-fr">
         {vazio && (
           <p className="col-span-full px-1 py-6 text-center text-xs text-muted-foreground">
-            Nenhum indicador contemplado neste ODS pelo escopo do OCAD.
+            {t.ods.vazioOds}
           </p>
         )}
         {ods.indicadoresContemplados.map((ind) => (
@@ -129,6 +127,8 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
 }
 
 export default function OdsPage() {
+  const { locale } = useLocale();
+  const t = useT();
   const [eixosFiltro, setEixosFiltro] = React.useState<EixoOds[]>([]);
   const [statusFiltro, setStatusFiltro] = React.useState<StatusIndicador[]>([]);
   const [busca, setBusca] = React.useState("");
@@ -146,10 +146,26 @@ export default function OdsPage() {
     );
   }, []);
 
-  const lista = React.useMemo(
-    () => filtraIndicadores({ eixos: eixosFiltro, status: statusFiltro, busca }),
-    [eixosFiltro, statusFiltro, busca],
-  );
+  const odsLista = React.useMemo(() => getOds(locale), [locale]);
+
+  const lista = React.useMemo(() => {
+    const termo = busca.trim().toLowerCase();
+    return odsLista.map((ods) => {
+      const indicadores = ods.indicadoresContemplados.filter((ind) => {
+        const eixoOk = eixosFiltro.length === 0 || eixosFiltro.some((e) => ind.eixos.includes(e));
+        if (!eixoOk) return false;
+        const statusOk = statusFiltro.length === 0 || statusFiltro.includes(ind.status);
+        if (!statusOk) return false;
+        if (!termo) return true;
+        return (
+          ind.codigo.toLowerCase().includes(termo) ||
+          ind.descricao.toLowerCase().includes(termo) ||
+          ods.titulo.toLowerCase().includes(termo)
+        );
+      });
+      return { ...ods, indicadoresContemplados: indicadores };
+    });
+  }, [odsLista, eixosFiltro, statusFiltro, busca]);
 
   const totalIndicadores = React.useMemo(
     () => lista.reduce((acc, o) => acc + o.indicadoresContemplados.length, 0),
@@ -199,49 +215,49 @@ export default function OdsPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        titulo="Objetivos de Desenvolvimento Sustentável — ODS"
-        descricao="Indicadores dos 18 ODS contemplados pelos eixos do Orçamento Criança e Adolescente (OCAD): Educação, Saúde e Assistência Social."
+        titulo={t.ods.titulo}
+        descricao={t.ods.descricao}
         className="bg-sidebar text-sidebar-foreground ring-transparent"
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
-          titulo="Indicadores contemplados"
+          titulo={t.ods.kpiIndicadoresTitulo}
           valor={String(totalIndicadores)}
-          dica="Total de indicadores nos 18 ODS"
+          dica={t.ods.kpiIndicadoresDica}
           icone={Target}
           className="border-transparent bg-[linear-gradient(135deg,#da1a29_0%,#e3536c_100%)] text-white ring-transparent [text-shadow:0_1px_3px_rgba(0,0,0,0.45)]"
         />
         <KpiCard
-          titulo="ODS contemplados"
+          titulo={t.ods.kpiOdsTitulo}
           valor={`${odsComIndicadores}/18`}
-          dica="ODS com ao menos um indicador contemplado pelo OCAD"
+          dica={t.ods.kpiOdsDica}
           icone={BookOpen}
           className="border-transparent bg-[linear-gradient(135deg,#fcd036_0%,#f1731f_100%)] text-white ring-transparent [text-shadow:0_1px_3px_rgba(0,0,0,0.45)]"
         />
         <KpiCard
-          titulo="Contemplação por eixo"
+          titulo={t.ods.kpiEixoTitulo}
           valor={
             <div>
-              {EIXO_OPCOES.map(({ valor: eixo, rotulo }, i) => (
+              {EIXO_OPCOES.map(({ valor: eixo }, i) => (
                 <React.Fragment key={eixo}>
                   {i > 0 && <span aria-hidden className="text-white/40">·</span>}
                   <span>
-                    <span className="text-white">{rotulo}</span>
+                    <span className="text-white">{t.common.eixoRotulo(eixo)}</span>
                     <span>{contagemPorEixo[eixo]}</span>
                   </span>
                 </React.Fragment>
               ))}
             </div>
           }
-          dica="Indicadores contemplados por eixo"
+          dica={t.ods.kpiEixoDica}
           icone={HeartPulse}
           className="border-transparent bg-[linear-gradient(135deg,#cae081_0%,#b3c8a7_55%,#a9ccb9_100%)] text-white ring-transparent [text-shadow:0_1px_3px_rgba(0,0,0,0.45)]"
         />
         <KpiCard
-          titulo="Indicadores transversais"
+          titulo={t.ods.kpiTransversaisTitulo}
           valor={String(multiEixo)}
-          dica="Indicadores contemplados por mais de um eixo"
+          dica={t.ods.kpiTransversaisDica}
           icone={HandHeart}
           className="border-transparent bg-[linear-gradient(135deg,#afab50_0%,#89373d_100%)] text-white ring-transparent [text-shadow:0_1px_3px_rgba(0,0,0,0.45)]"
         />
@@ -250,7 +266,7 @@ export default function OdsPage() {
       <Card>
         <CardContent className="flex flex-col gap-4 pt-6">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground">Eixo:</span>
+            <span className="text-sm font-medium text-muted-foreground">{t.ods.filtroEixo}</span>
             <button
               type="button"
               onClick={() => setEixosFiltro([])}
@@ -261,9 +277,9 @@ export default function OdsPage() {
                   : "border-border text-muted-foreground hover:bg-muted",
               )}
             >
-              Todos
+              {t.ods.todos}
             </button>
-            {EIXO_OPCOES.map(({ valor, rotulo, icone: Icone }) => {
+            {EIXO_OPCOES.map(({ valor, icone: Icone }) => {
               const ativo = eixosFiltro.includes(valor);
               return (
                 <button
@@ -284,14 +300,14 @@ export default function OdsPage() {
                   }
                 >
                   <Icone className="size-3" />
-                  {rotulo}
+                  {t.common.eixoRotulo(valor)}
                 </button>
               );
             })}
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium text-muted-foreground">Status:</span>
+            <span className="text-sm font-medium text-muted-foreground">{t.ods.filtroStatus}</span>
             <button
               type="button"
               onClick={() => setStatusFiltro([])}
@@ -302,9 +318,9 @@ export default function OdsPage() {
                   : "border-border text-muted-foreground hover:bg-muted",
               )}
             >
-              Todos
+              {t.ods.todos}
             </button>
-            {STATUS_OPCOES.map(({ valor, rotulo }) => {
+            {STATUS_OPCOES.map((valor) => {
               const ativo = statusFiltro.includes(valor);
               return (
                 <button
@@ -320,7 +336,7 @@ export default function OdsPage() {
                   )}
                 >
                   <StatusDot status={valor} />
-                  {rotulo}
+                  {t.common.statusOdsRotulo(valor)}
                 </button>
               );
             })}
@@ -332,7 +348,7 @@ export default function OdsPage() {
               type="search"
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
-              placeholder="Buscar por código, descrição ou ODS..."
+              placeholder={t.ods.buscaPlaceholder}
               className="pl-9"
             />
           </div>
@@ -340,14 +356,14 @@ export default function OdsPage() {
       </Card>
 
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-6 md:grid-cols-9 lg:grid-cols-12 xl:grid-cols-[repeat(18,minmax(0,1fr))]">
-          {ODS_LISTA.map((ods, index) => {
+          {odsLista.map((ods, index) => {
             const selecionado = odsSelecionados.includes(ods.numero);
             return (
               <button
                 key={ods.numero}
                 type="button"
                 onClick={() => toggleOds(ods.numero)}
-                aria-label={`ODS ${ods.numero} — ${ods.titulo}`}
+                aria-label={t.ods.altOdsTitulo(ods.numero, ods.titulo)}
                 aria-pressed={selecionado}
                 style={{ animationDelay: `${index * 40}ms`, animationFillMode: "backwards" }}
                 className={cn(
@@ -359,7 +375,7 @@ export default function OdsPage() {
               >
                 <Image
                   src={ODS_IMAGEM[ods.numero]}
-                  alt={`ODS ${ods.numero} — ${ods.titulo}`}
+                  alt={t.ods.altOdsTitulo(ods.numero, ods.titulo)}
                   width={500}
                   height={350}
                   unoptimized
@@ -374,7 +390,7 @@ export default function OdsPage() {
         <div className="flex justify-end">
           <Button variant="outline" size="sm" onClick={() => setOdsSelecionados([])}>
             <X className="size-4" />
-            Limpar seleção ({odsSelecionados.length})
+            {t.ods.limparSelecao(odsSelecionados.length)}
           </Button>
         </div>
       )}
@@ -390,8 +406,7 @@ export default function OdsPage() {
 
       {odsSelecionados.length === 0 && (
         <p className="text-center text-sm text-muted-foreground">
-          Clique nos ODS acima para visualizar seus indicadores contemplados. Você pode selecionar
-          mais de um.
+          {t.ods.dicaSelecao}
         </p>
       )}
     </div>

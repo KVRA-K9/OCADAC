@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useLocale, useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_TODOS,
@@ -44,6 +45,9 @@ type Visao = "tabela" | "detalhado";
 const VAZIO: string[] = [];
 
 export default function TabelaPage() {
+  const t = useT();
+  const { locale } = useLocale();
+
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
     ano: OPCAO_TODOS,
     funcao: [],
@@ -106,15 +110,15 @@ export default function TabelaPage() {
 
   const handleExportPDF = async () => {
     if (recorte.length === 0) {
-      toast.error("Não há registros para exportar.");
+      toast.error(t.tabela.semRegistros);
       return;
     }
     setExportando("pdf");
     try {
-      await exportarPDF(recorte);
-      toast.success("PDF exportado com sucesso.");
+      await exportarPDF(recorte, locale);
+      toast.success(t.tabela.pdfExportado);
     } catch {
-      toast.error("Falha ao exportar PDF.");
+      toast.error(t.tabela.falhaPdf);
     } finally {
       setExportando(null);
     }
@@ -122,15 +126,15 @@ export default function TabelaPage() {
 
   const handleExportXLSX = async () => {
     if (recorte.length === 0) {
-      toast.error("Não há registros para exportar.");
+      toast.error(t.tabela.semRegistros);
       return;
     }
     setExportando("xlsx");
     try {
-      await exportarXLSX(recorte);
-      toast.success("Planilha exportada com sucesso.");
+      await exportarXLSX(recorte, locale);
+      toast.success(t.tabela.xlsxExportado);
     } catch {
-      toast.error("Falha ao exportar planilha.");
+      toast.error(t.tabela.falhaXlsx);
     } finally {
       setExportando(null);
     }
@@ -139,8 +143,8 @@ export default function TabelaPage() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
-        titulo="Tabela Detalhada"
-        descricao="Ações do Orçamento Criança e Adolescente por órgão, unidade orçamentária e ação, do orçamento inicial ao valor pago. Clique em uma linha para abrir o nível seguinte."
+        titulo={t.tabela.titulo}
+        descricao={t.tabela.descricao}
       />
 
       <FiltersForm onApply={onApply} />
@@ -148,9 +152,9 @@ export default function TabelaPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-base">
-            Execução por órgão, unidade e ação
+            {t.tabela.execucaoPorOrgao}
             <span className="ml-2 text-sm font-normal text-muted-foreground">
-              {recorte.length} registros
+              {t.tabela.registros(recorte.length)}
             </span>
           </CardTitle>
           <CardAction className="flex flex-wrap items-start gap-2">
@@ -181,14 +185,14 @@ export default function TabelaPage() {
                   setFontesEscolhidas(VAZIO);
                 }}
               >
-                Tabela
+                {t.tabela.visaoTabela}
               </Button>
               <Button
                 variant={visao === "detalhado" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setVisao("detalhado")}
               >
-                Detalhado
+                {t.tabela.visaoDetalhado}
               </Button>
             </div>
 
@@ -204,11 +208,11 @@ export default function TabelaPage() {
                     ) : (
                       <Download className="size-3.5" />
                     )}
-                    Exportar
+                    {t.tabela.exportar}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Formato de exportação</DropdownMenuLabel>
+                  <DropdownMenuLabel>{t.tabela.formatoExportacao}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleExportPDF}>
                     <FileText className="size-4" />

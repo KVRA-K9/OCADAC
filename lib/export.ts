@@ -1,6 +1,7 @@
 import type { OrcamentoItem } from "@/lib/types";
-import { PONDERACAO, dataBase, metaBase } from "@/data/base-ocad";
-import { CREDITOS_EQUIPE } from "@/lib/equipe";
+import { dataBase, metaBase } from "@/data/base-ocad";
+import { getCreditosEquipe } from "@/lib/equipe";
+import { MESSAGES, type Locale } from "@/lib/messages";
 
 const moedaExport = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -130,7 +131,12 @@ async function carregarLogo(): Promise<string> {
   });
 }
 
-export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
+export async function exportarPDF(
+  itens: OrcamentoItem[],
+  locale: Locale = "pt",
+): Promise<void> {
+  const t = MESSAGES[locale].exportar;
+  const { eixoRotulo, categoriaRotulo } = MESSAGES[locale].common;
   const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
     import("jspdf"),
     import("jspdf-autotable"),
@@ -171,24 +177,20 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
     d.setTextColor(255, 255, 255);
     d.setFontSize(12);
     d.setFont("helvetica", "bold");
-    const tituloLinhas = d.splitTextToSize(
-      "Orçamento Criança e Adolescente – Detalhamento por Secretaria",
-      larguraTitulo,
-    );
+    const tituloLinhas = d.splitTextToSize(t.titulo, larguraTitulo);
     d.text(tituloLinhas[0] ?? "", margemEsq, 32);
 
     d.setFontSize(10);
     d.setFont("helvetica", "normal");
     d.text(
-      `Exercício: ${exerciciosLabel(itens)}     Exportado em: ${dataExtenso()}     Página ${paginaAtual}`,
+      t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(), paginaAtual),
       margemEsq,
       50,
     );
     d.setTextColor(0, 0, 0);
   };
 
-  const RODAPE_TEXTO =
-    "Departamento de Estudos e Planejamento Orçamentário – DEPPO/SEPLAN | Secretaria de Estado de Planejamento – SEPLAN/AC | Governo do Estado do Acre";
+  const RODAPE_TEXTO = t.rodape;
 
   const desenharRodape = () => {
     d.setFontSize(7);
@@ -237,7 +239,7 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
     garantirEspaco(20);
     d.setFontSize(9);
     d.setFont("helvetica", "italic");
-    const eixoTxt = `Eixo: ${bloco.eixos.join(" | ")}`;
+    const eixoTxt = `${t.eixo}: ${bloco.eixos.map(eixoRotulo).join(" | ")}`;
     const linhasEixo = d.splitTextToSize(eixoTxt, larguraUtil);
     linhasEixo.forEach((linha: string) => {
       garantirEspaco(14);
@@ -249,20 +251,20 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
     garantirEspaco(40);
 
     const bodyRows = bloco.acoes.map((a) => [
-      `${a.acao} (${a.eixo})`,
-      a.classificacao,
+      `${a.acao} (${eixoRotulo(a.eixo)})`,
+      categoriaRotulo(a.classificacao),
       moedaExport.format(a.dotacao),
     ]);
 
     autoTable(doc, {
       startY: cursorY,
-      head: [["Aplicação Programada", "Classificação", "Dotação (R$)"]],
+      head: [[t.colAplicacao, t.colClassificacao, t.colDotacao]],
       body: bodyRows,
       foot: [
         [
-          `Exclusivo: ${moedaExport.format(bloco.totalExclusivo)}`,
-          `Não Exclusivo: ${moedaExport.format(bloco.totalNaoExclusivo)}`,
-          `TOTAL: ${moedaExport.format(bloco.total)}`,
+          t.rodapeExclusivo(moedaExport.format(bloco.totalExclusivo)),
+          t.rodapeNaoExclusivo(moedaExport.format(bloco.totalNaoExclusivo)),
+          t.rodapeTotal(moedaExport.format(bloco.total)),
         ],
       ],
       theme: "grid",
@@ -297,15 +299,12 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
         d.setTextColor(255, 255, 255);
         d.setFontSize(12);
         d.setFont("helvetica", "bold");
-        const tituloLinhas = d.splitTextToSize(
-          "Orçamento Criança e Adolescente – Detalhamento por Secretaria",
-          larguraTitulo,
-        );
+        const tituloLinhas = d.splitTextToSize(t.titulo, larguraTitulo);
         d.text(tituloLinhas[0] ?? "", margemEsq, 32);
         d.setFontSize(10);
         d.setFont("helvetica", "normal");
         d.text(
-          `Exercício: ${exerciciosLabel(itens)}     Exportado em: ${dataExtenso()}     Página ${numPaginas}`,
+          t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(), numPaginas),
           margemEsq,
           50,
         );
@@ -332,7 +331,10 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
   // eventual virada de página, que redefine fonte e cor no cabeçalho.
   d.setFontSize(7.5);
   d.setFont("helvetica", "normal");
-  const linhasCreditos = d.splitTextToSize(CREDITOS_EQUIPE, larguraUtil);
+  const linhasCreditos = d.splitTextToSize(
+    getCreditosEquipe(locale),
+    larguraUtil,
+  );
   const alturaCreditos = 26 + linhasCreditos.length * 10;
 
   /*
@@ -352,7 +354,7 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
 
   d.setFontSize(8);
   d.setFont("helvetica", "bold");
-  d.text("Elaboração", margemEsq, cursorY);
+  d.text(t.elaboracao, margemEsq, cursorY);
   cursorY += 12;
 
   d.setFontSize(7.5);
@@ -367,27 +369,32 @@ export async function exportarPDF(itens: OrcamentoItem[]): Promise<void> {
   d.save(nomeArquivo("pdf"));
 }
 
-export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
+export async function exportarXLSX(
+  itens: OrcamentoItem[],
+  locale: Locale = "pt",
+): Promise<void> {
+  const t = MESSAGES[locale].exportar;
+  const { eixoRotulo, categoriaRotulo } = MESSAGES[locale].common;
   const ExcelJS = await import("exceljs");
 
   const wb = new ExcelJS.Workbook();
-  const ws = wb.addWorksheet("Microdados");
+  const ws = wb.addWorksheet(t.sheetMicrodados);
 
   ws.columns = [
-    { header: "Ano", key: "ano", width: 8 },
-    { header: "Órgão", key: "orgao", width: 45 },
-    { header: "Unidade Gestora", key: "unidadeGestora", width: 45 },
-    { header: "Eixo", key: "funcao", width: 20 },
-    { header: "Programa", key: "programa", width: 20 },
-    { header: "Ação", key: "acao", width: 60 },
-    { header: "Classificação", key: "categoriaEconomica", width: 16 },
-    { header: "Dotação Inicial (bruta)", key: "dotacaoInicial", width: 20 },
-    { header: "Orçamento Inicial", key: "ocadInicial", width: 20 },
-    { header: "Orçamento Atualizado", key: "ocadAtualizado", width: 20 },
-    { header: "Empenhado", key: "ocadEmpenhado", width: 18 },
-    { header: "Liquidado", key: "ocadLiquidado", width: 18 },
-    { header: "Pago", key: "ocadPago", width: 18 },
-    { header: "Disponível", key: "ocadDisponivel", width: 18 },
+    { header: t.colAno, key: "ano", width: 8 },
+    { header: t.colOrgao, key: "orgao", width: 45 },
+    { header: t.colUnidadeGestora, key: "unidadeGestora", width: 45 },
+    { header: t.eixo, key: "funcao", width: 20 },
+    { header: t.colPrograma, key: "programa", width: 20 },
+    { header: t.colAcao, key: "acao", width: 60 },
+    { header: t.colClassificacao, key: "categoriaEconomica", width: 16 },
+    { header: t.colDotacaoInicial, key: "dotacaoInicial", width: 20 },
+    { header: t.colOrcamentoInicial, key: "ocadInicial", width: 20 },
+    { header: t.colOrcamentoAtualizado, key: "ocadAtualizado", width: 20 },
+    { header: t.colEmpenhado, key: "ocadEmpenhado", width: 18 },
+    { header: t.colLiquidado, key: "ocadLiquidado", width: 18 },
+    { header: t.colPago, key: "ocadPago", width: 18 },
+    { header: t.colDisponivel, key: "ocadDisponivel", width: 18 },
   ];
   ws.getRow(1).font = { bold: true };
 
@@ -396,10 +403,10 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
       ano: item.ano,
       orgao: item.orgao,
       unidadeGestora: item.unidadeGestora,
-      funcao: item.funcao,
+      funcao: eixoRotulo(item.funcao),
       programa: item.programa,
       acao: item.acao,
-      categoriaEconomica: item.categoriaEconomica,
+      categoriaEconomica: categoriaRotulo(item.categoriaEconomica),
       dotacaoInicial: item.valores.dotacaoInicial,
       ocadInicial: item.valores.ocadInicial,
       ocadAtualizado: item.valores.ocadAtualizado,
@@ -422,26 +429,23 @@ export async function exportarXLSX(itens: OrcamentoItem[]): Promise<void> {
     ws.getColumn(key).numFmt = "#,##0.00";
   }
 
-  const wsFonte = wb.addWorksheet("Procedência");
+  const wsFonte = wb.addWorksheet(t.sheetProcedencia);
   wsFonte.columns = [
-    { header: "Campo", key: "campo", width: 24 },
-    { header: "Valor", key: "valor", width: 110 },
+    { header: t.colCampo, key: "campo", width: 24 },
+    { header: t.colValor, key: "valor", width: 110 },
   ];
   wsFonte.getRow(1).font = { bold: true };
   for (const [campo, valor] of [
-    ["Fonte", `${metaBase.origem} — SEPLAN/AC`],
-    ["Arquivo", metaBase.arquivoFonte],
-    ["Data do arquivo", dataBase],
-    ["Ações", String(metaBase.acoes)],
+    [t.fonte, `${metaBase.origem} — SEPLAN/AC`],
+    [t.arquivo, metaBase.arquivoFonte],
+    [t.dataArquivo, dataBase],
+    [t.acoes, String(metaBase.acoes)],
+    [t.eixo, t.valorEixo],
+    [t.ponderacao, MESSAGES[locale].common.ponderacao()],
+    [t.colDisponivel, t.valorDisponivel],
     [
-      "Eixo",
-      "Derivado da função orçamentária da funcional programática; a planilha de origem não traz essa coluna.",
-    ],
-    ["Ponderação", PONDERACAO.descricao],
-    ["Disponível", "Derivado: Orçamento Atualizado − Liquidado."],
-    [
-      "Linhas de origem",
-      `${metaBase.linhasFonte} linhas por fonte de recurso, consolidadas em ${metaBase.acoes} ações.`,
+      t.linhasOrigem,
+      t.linhasOrigemValor(metaBase.linhasFonte, metaBase.acoes),
     ],
   ]) {
     wsFonte.addRow({ campo, valor });

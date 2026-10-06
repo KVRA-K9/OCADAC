@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { useT } from "@/lib/i18n";
 
 const STORAGE_KEY = "ocad:sidebar-collapsed";
 
@@ -47,6 +48,7 @@ function setCollapsedStorage(next: boolean) {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(false);
+  const t = useT();
   const stored = React.useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -104,7 +106,7 @@ className={[
       <button
         type="button"
         onClick={toggleCollapsed}
-        aria-label={collapsed ? "Expandir menu" : "Recolher menu"}
+        aria-label={collapsed ? t.nav.expandirMenu : t.nav.recolherMenu}
         className={cn(
           "fixed top-6 z-30 hidden h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-background/90 text-muted-foreground shadow-sm backdrop-blur-sm transition-[left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] hover:text-foreground hover:bg-background lg:flex",
           collapsed ? "left-16" : "left-64",
@@ -131,7 +133,7 @@ className={[
               variant="outline"
               size="icon"
               className="fixed left-4 top-4 z-30 lg:hidden"
-              aria-label="Abrir menu"
+              aria-label={t.nav.abrirMenu}
             >
               <Menu />
             </Button>

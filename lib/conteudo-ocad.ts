@@ -110,3 +110,22 @@ export const BASES_LEGAIS: BaseLegalItem[] = [
     externo: true,
   },
 ];
+
+import type { Locale } from "@/lib/messages";
+import {
+  BASES_LEGAIS_EN,
+  CONTEUDO_OCAD_EN,
+  EIXOS_OCAD_EN,
+} from "./conteudo-ocad-en";
+
+export function getConteudoOcad(locale: Locale) {
+  return locale === "en" ? CONTEUDO_OCAD_EN : CONTEUDO_OCAD;
+}
+
+export function getEixosOcad(locale: Locale): EixoOcad[] {
+  return locale === "en" ? EIXOS_OCAD_EN : EIXOS_OCAD;
+}
+
+export function getBasesLegais(locale: Locale): BaseLegalItem[] {
+  return locale === "en" ? BASES_LEGAIS_EN : BASES_LEGAIS;
+}

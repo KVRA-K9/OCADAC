@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+
+import { LOCALE_COOKIE, type Locale } from "@/lib/messages";
+import { LocaleProvider } from "@/lib/i18n";
 
 const geistSans = Geist({
   variable: "--font-sans",
@@ -13,20 +17,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "OCAD Acre | Orçamento Criança e Adolescente",
-  description:
-    "Dashboard interativo para monitoramento do Orçamento Criança e Adolescente (OCAD) no Estado do Acre.",
-};
+async function getLocale(): Promise<Locale> {
+  const store = await cookies();
+  return store.get(LOCALE_COOKIE)?.value === "en" ? "en" : "pt";
+}
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  return locale === "en"
+    ? {
+        title: "OCAD Acre | Child and Adolescent Budget",
+        description:
+          "Interactive dashboard for monitoring the Child and Adolescent Budget (OCAD) in the State of Acre, Brazil.",
+      }
+    : {
+        title: "OCAD Acre | Orçamento Criança e Adolescente",
+        description:
+          "Dashboard interativo para monitoramento do Orçamento Criança e Adolescente (OCAD) no Estado do Acre.",
+      };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="pt-BR"
+      lang={locale === "en" ? "en" : "pt-BR"}
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full">
@@ -37,7 +57,7 @@ export default function RootLayout({
             strategy="beforeInteractive"
           />
         )}
-        {children}
+        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
       </body>
     </html>
   );

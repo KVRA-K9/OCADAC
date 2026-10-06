@@ -5,6 +5,7 @@ import { ChevronRight, ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { formatCruzeiroMil, formatMoeda } from "@/lib/format";
+import { useT } from "@/lib/i18n";
 import { CORES_NORMA, ICONES_NORMA } from "@/lib/normas";
 import {
   TIPOS_NORMA,
@@ -47,6 +48,7 @@ function ListaOrgaos({ norma }: { norma: Norma }) {
    * sempre vem pela dotação. A contagem no rótulo diz o que há dentro, e abrir
    * é escolha de quem lê. Os hooks ficam antes da saída antecipada, senão a
    * ordem deles mudaria entre um cartão com órgãos e um sem. */
+  const t = useT();
   const [aberto, setAberto] = React.useState(false);
   const idLista = React.useId();
 
@@ -90,7 +92,7 @@ function ListaOrgaos({ norma }: { norma: Norma }) {
             aberto && "rotate-90",
           )}
         />
-        <span className={ROTULO}>Órgãos</span>
+        <span className={ROTULO}>{t.tabela.rotuloOrgaos}</span>
         {/* Fechada, a contagem é o que resta da lista; aberta, ela está à vista. */}
         {!aberto && (
           <span className={cn(ROTULO, "tabular-nums")}>({nomes.length})</span>
@@ -120,6 +122,7 @@ function ListaOrgaos({ norma }: { norma: Norma }) {
 }
 
 function ValoresLOA({ norma }: { norma: Norma }) {
+  const t = useT();
   const loa = norma.loa;
   if (!loa) return null;
 
@@ -131,15 +134,14 @@ function ValoresLOA({ norma }: { norma: Norma }) {
    */
   if (loa.moedaOriginal === "Cr$") {
     return (
-      <Detalhe rotulo="Dotação na lei">
+      <Detalhe rotulo={t.tabela.dotacaoNaLei}>
         <div className="flex flex-col gap-0.5">
           <span className="tabular-nums">
-            Total fixado na lei:{" "}
+            {t.tabela.totalFixado}{" "}
             <strong>{formatCruzeiroMil(loa.totalOriginal)}</strong>
           </span>
           <span className="mt-1 text-xs text-muted-foreground">
-            Equivale a {formatMoeda(loa.total)} pelos cortes monetários (Cr$ →
-            CR$ → R$), sem correção pela inflação.
+            {t.tabela.equivaleACortes(formatMoeda(loa.total))}
           </span>
         </div>
       </Detalhe>
@@ -147,16 +149,16 @@ function ValoresLOA({ norma }: { norma: Norma }) {
   }
 
   return (
-    <Detalhe rotulo="Dotação na lei">
+    <Detalhe rotulo={t.tabela.dotacaoNaLei}>
       <div className="flex flex-col gap-0.5 tabular-nums">
         <span>
-          Recursos próprios: <strong>{formatMoeda(loa.rp)}</strong>
+          {t.tabela.recursosProprios} <strong>{formatMoeda(loa.rp)}</strong>
         </span>
         <span>
-          Outras fontes: <strong>{formatMoeda(loa.outrasFontes)}</strong>
+          {t.tabela.outrasFontes} <strong>{formatMoeda(loa.outrasFontes)}</strong>
         </span>
         <span>
-          Total: <strong>{formatMoeda(loa.total)}</strong>
+          {t.tabela.total} <strong>{formatMoeda(loa.total)}</strong>
         </span>
       </div>
     </Detalhe>
@@ -171,6 +173,7 @@ function CartaoNorma({
   /** Alvo de um clique no gráfico: abre sozinho e ganha anel. */
   destacado?: boolean;
 }) {
+  const t = useT();
   const [aberto, setAberto] = React.useState(false);
 
   /* Ajuste durante a renderização: virou alvo do gráfico, abre; deixou de ser,
@@ -225,7 +228,7 @@ function CartaoNorma({
         <span className="flex min-w-0 flex-col gap-1">
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
             <span className="text-sm font-semibold">
-              {norma.especie} nº {norma.numero}
+              {t.tabela.numeroNorma(norma.especie, norma.numero)}
             </span>
             {norma.data && (
               <span className="text-xs text-muted-foreground">
@@ -234,7 +237,7 @@ function CartaoNorma({
             )}
             {norma.exercicio && (
               <span className="text-xs text-muted-foreground">
-                · exercício {norma.exercicio}
+                {t.tabela.exercicio(norma.exercicio)}
               </span>
             )}
             {norma.quadrienio && (
@@ -257,12 +260,12 @@ function CartaoNorma({
       {aberto && (
         <div className="space-y-3.5 border-t border-foreground/10 px-4 pt-3.5 pb-4">
           {norma.publicacao && (
-            <Detalhe rotulo="Publicação no DOE">
+            <Detalhe rotulo={t.tabela.publicacaoDoe}>
               {dataBR(norma.publicacao)}
             </Detalhe>
           )}
           {norma.link && (
-            <Detalhe rotulo="Texto da norma">
+            <Detalhe rotulo={t.tabela.textoNorma}>
               <a
                 href={norma.link}
                 target="_blank"
@@ -277,19 +280,19 @@ function CartaoNorma({
           {(norma.abas?.length ?? 0) > 1 && (
             /* A norma está em mais de uma aba da planilha e é contada uma vez
              * só; sem esta linha, quem procurasse na outra aba não a acharia. */
-            <Detalhe rotulo="Abas da planilha">
-              {norma.abas?.join(" · ")} — contada uma única vez no acervo
+            <Detalhe rotulo={t.tabela.abasPlanilha}>
+              {t.tabela.abasContagem((norma.abas ?? []).join(" · "))}
             </Detalhe>
           )}
           {norma.citacoes && (
-            <Detalhe rotulo="Citações (criança/adolescente)">
+            <Detalhe rotulo={t.tabela.citacoes}>
               {norma.citacoes}
             </Detalhe>
           )}
           <ValoresLOA norma={norma} />
           <ListaOrgaos norma={norma} />
           {norma.metas.length > 0 && (
-            <Detalhe rotulo="Metas e prioridades">
+            <Detalhe rotulo={t.tabela.metasPrioridades}>
               <ul className="flex list-disc flex-col gap-1 pl-4">
                 {norma.metas.map((meta, i) => (
                   <li key={i}>{meta}</li>
@@ -314,6 +317,8 @@ export function SeletorAbas({
   selecionada: TipoNorma | null;
   onSelecionar: (aba: TipoNorma | null) => void;
 }) {
+  const t = useT();
+
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
       {TIPOS_NORMA.map((tipo) => {
@@ -343,10 +348,11 @@ export function SeletorAbas({
             >
               <Icone className="size-5 text-primary-foreground" />
             </span>
-            <span className="text-xs leading-tight font-semibold">{tipo}</span>
+            <span className="text-xs leading-tight font-semibold">
+              {t.common.tipoNormaRotulo(tipo)}
+            </span>
             <span className="text-xs text-muted-foreground tabular-nums">
-              {metaLeis.porTipo[tipo]}{" "}
-              {metaLeis.porTipo[tipo] === 1 ? "norma" : "normas"}
+              {t.tabela.normas(metaLeis.porTipo[tipo])}
             </span>
           </button>
         );
@@ -367,6 +373,8 @@ export function ListaNormas({
   /** Norma para a qual rolar e destacar — vem do clique no gráfico da LOA. */
   normaFoco?: string | null;
 }) {
+  const t = useT();
+
   /* A rolagem agora é a da página, sem contêiner próprio: `scrollIntoView` é o
    * caminho direto. */
   React.useEffect(() => {
@@ -385,7 +393,7 @@ export function ListaNormas({
   if (normas.length === 0) {
     return (
       <p className="rounded-lg border border-dashed px-4 py-8 text-center text-sm text-muted-foreground">
-        Nenhuma norma desta aba corresponde à busca.
+        {t.tabela.nenhumaNorma}
       </p>
     );
   }
