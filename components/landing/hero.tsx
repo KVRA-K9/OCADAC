@@ -12,14 +12,14 @@ export function Hero() {
   const t = useT();
 
   return (
-    <section className="relative flex min-h-[380px] w-full items-center overflow-hidden border-b md:min-h-[480px]">
+    <section className="relative flex min-h-[420px] w-full items-center overflow-hidden border-b md:min-h-[520px]">
       <Image
         src="/criancas-rio-ilustracao.png"
         alt=""
         fill
         priority
         unoptimized
-        className="object-cover object-[50%_30%]"
+        className="object-cover object-[50%_65%]"
         aria-hidden
       />
       <div
