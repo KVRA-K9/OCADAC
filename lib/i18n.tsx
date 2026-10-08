@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { getFormatadores, type Formatadores } from "@/lib/format";
 import {
   MESSAGES,
   LOCALE_COOKIE,
@@ -56,4 +57,9 @@ export function useLocale(): LocaleContextValue {
 /** Os textos de interface do idioma ativo, já resolvidos por domínio. */
 export function useT(): Messages {
   return MESSAGES[React.useContext(LocaleContext).locale];
+}
+
+/** Formatadores de moeda, número, percentual e data do idioma ativo. */
+export function useFormat(): Formatadores {
+  return getFormatadores(React.useContext(LocaleContext).locale);
 }

@@ -35,12 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  formatCruzeiroMil,
-  formatMoeda,
-  formatMoedaCompacta,
-} from "@/lib/format";
-import { useLocale, useT } from "@/lib/i18n";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import { CORES_NORMA, ICONES_NORMA, getDescricoesNorma } from "@/lib/normas";
 import {
   anosNormas,
@@ -78,6 +73,7 @@ function TooltipLOA({
   label?: string | number;
 }) {
   const t = useT();
+  const { formatMoeda } = useFormat();
 
   if (!active || !payload || payload.length === 0) return null;
 
@@ -304,6 +300,7 @@ function BarrasCruzeiro({
   onEscolher: (exercicio: number) => void;
 }) {
   const t = useT();
+  const { formatCruzeiroMil, formatMoeda } = useFormat();
 
   return (
     <ul className="flex flex-col gap-1.5">
@@ -355,6 +352,7 @@ function BarrasCruzeiro({
 export default function HistoricoPage() {
   const t = useT();
   const { locale } = useLocale();
+  const { formatMoedaCompacta, formatData } = useFormat();
   const descricoesNorma = getDescricoesNorma(locale);
   const ordens = t.historico.ordens;
 
@@ -878,11 +876,11 @@ export default function HistoricoPage() {
       <p className="text-xs leading-relaxed text-muted-foreground">
         {t.historico.fonteRotulo}{" "}
         <span className="font-medium">{metaLeis.arquivoFonte}</span> —{" "}
-        {metaLeis.origem}. {t.historico.arquivoDe(metaLeis.dataArquivo)}
+        {t.historico.origemLeis}. {t.historico.arquivoDe(formatData(metaLeis.dataArquivo))}
         {metaLeis.atualizadoEm
           ? t.historico.atualizadoNaOrigem(metaLeis.atualizadoEm)
           : ""}
-        {t.historico.comNormas(metaLeis.normas)}. {metaLeis.observacoes.join(" ")}
+        {t.historico.comNormas(metaLeis.normas)}. {t.historico.observacoes.join(" ")}
       </p>
     </div>
   );

@@ -37,6 +37,7 @@ const TIPO_NORMA_EN: Record<string, string> = {
 };
 
 const pctPtBr = (fator: number) => (fator * 100).toLocaleString("pt-BR");
+const pctEn = (fator: number) => (fator * 100).toLocaleString("en-US");
 
 export const pt = {
   semDados: "Sem dados",
@@ -63,7 +64,7 @@ export const en: typeof pt = {
       partes.push(
         naoExclusivo.fator === 1
           ? "Non-exclusive actions enter in full"
-          : `Non-exclusive actions enter at ${pctPtBr(naoExclusivo.fator)}%`,
+          : `Non-exclusive actions enter at ${pctEn(naoExclusivo.fator)}%`,
       );
     }
 
@@ -72,7 +73,7 @@ export const en: typeof pt = {
       partes.push(
         exclusivo.fator === 1
           ? "exclusive actions enter in full"
-          : `exclusive actions enter at ${pctPtBr(exclusivo.fator)}%`,
+          : `exclusive actions enter at ${pctEn(exclusivo.fator)}%`,
       );
     }
 

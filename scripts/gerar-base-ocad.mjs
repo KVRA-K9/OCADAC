@@ -26,9 +26,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const raiz = resolve(__dirname, "..");
 
 // A planilha é reemitida todo mês; a fonte corrente pode ser passada na linha
-// de comando — `npm run dados -- Planilhas/Agosto_2026/arquivo.xls` — e, sem
+// de comando — `npm run dados -- Planilhas/Setembro_2026/arquivo.xls` — e, sem
 // argumento, fica a do exercício vigente.
-const FONTE = process.argv[2] ?? "Planilhas/OCAD_2026.xlsx";
+const FONTE =
+  process.argv[2] ??
+  "Planilhas/Setembro_2026/OCAD_Orcamento_Crianca_Adolescente-2776-20261008.xls";
 const ANO = 2026;
 
 const COLUNAS_ESPERADAS = [

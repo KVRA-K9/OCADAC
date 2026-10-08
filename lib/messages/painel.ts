@@ -36,6 +36,7 @@ export const pt = {
   mostrarNome: (rotulo: string) => `Mostrar o nome de ${rotulo}`,
   mostrarValores: (rotulo: string) => `Mostrar os valores de ${rotulo}`,
   fonte: "Fonte",
+  origemBase: "Planilha OCAD — mesma base do BI",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `Arquivo de ${data}, com ${acoes} ações consolidadas de ${linhas} linhas por fonte de recurso.`,
 };
@@ -78,6 +79,7 @@ export const en: typeof pt = {
   mostrarNome: (rotulo: string) => `Show the name of ${rotulo}`,
   mostrarValores: (rotulo: string) => `Show the values of ${rotulo}`,
   fonte: "Source",
+  origemBase: "OCAD spreadsheet — same database as the BI",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `File from ${data}, with ${acoes} consolidated actions from ${linhas} rows per funding source.`,
 };

@@ -1,6 +1,5 @@
 import type { OpcaoFonte } from "@/data/base-ocad";
-import { formatMoeda, formatMoedaCompacta, formatParticipacao } from "@/lib/format";
-import { useT } from "@/lib/i18n";
+import { useFormat, useT } from "@/lib/i18n";
 import type { ValoresOrcamentarios } from "@/lib/types";
 
 /**
@@ -24,6 +23,7 @@ export function FichaFonte({
   total: number;
 }) {
   const t = useT();
+  const { formatMoeda, formatMoedaCompacta, formatParticipacao } = useFormat();
   const varias = opcoes.length > 1;
   const valor = valores.ocadAtualizado;
 

@@ -17,10 +17,9 @@ import {
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatMoeda, formatMoedaCompacta } from "@/lib/format";
 import { serieExecucao } from "@/data/historico";
 import { NotaBase } from "@/components/dashboard/nota-base";
-import { useLocale, useT } from "@/lib/i18n";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import { getRotulosEstagio } from "@/lib/estagios";
 
 const ESTAGIOS = [
@@ -40,6 +39,7 @@ function ChartTooltip({
   payload?: { name?: string; value?: number; color?: string }[];
   label?: string | number;
 }) {
+  const { formatMoeda } = useFormat();
   if (!active || !payload || payload.length === 0) return null;
   return (
     <div className="rounded-lg border bg-popover px-3 py-2 text-xs shadow-md ring-1 ring-foreground/10">
@@ -126,6 +126,12 @@ function MedidorLiquidado({
 export default function EvolucaoPage() {
   const t = useT();
   const { locale } = useLocale();
+  const {
+    formatMoeda,
+    formatMoedaCompacta,
+    formatVariacao,
+    formatData,
+  } = useFormat();
   const rotulosEstagio = getRotulosEstagio(locale);
 
   const primeiro = serieExecucao[0];
@@ -238,7 +244,7 @@ export default function EvolucaoPage() {
               }`}
             >
               {variacaoPlanejado !== null
-                ? `${variacaoPlanejado >= 0 ? "+" : ""}${variacaoPlanejado.toFixed(1)}%`
+                ? formatVariacao(variacaoPlanejado / 100)
                 : "—"}
             </span>
             <p className="mt-1 text-xs text-primary-foreground/70">
@@ -288,7 +294,7 @@ export default function EvolucaoPage() {
                   </span>
                 </span>
                 <span className="text-center text-[11px] text-muted-foreground/80">
-                  {t.evolucao.fonteCorte(g.fonte, g.dataCorte)}
+                  {t.evolucao.fonteCorte(g.fonte, formatData(g.dataCorte))}
                 </span>
               </div>
             ))}
@@ -335,7 +341,7 @@ export default function EvolucaoPage() {
                   })}
                 </div>
                 <span className="text-[11px] text-muted-foreground/80">
-                  {t.evolucao.fonteCorte(p.fonte, p.dataCorte)}
+                  {t.evolucao.fonteCorte(p.fonte, formatData(p.dataCorte))}
                 </span>
               </div>
             ))}

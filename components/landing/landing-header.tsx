@@ -72,11 +72,6 @@ export function LandingHeader() {
 
         <div className="flex items-center justify-end gap-2">
           <LanguageToggle className="mr-1" />
-          <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link href="/painel">
-              {t.landing.header.acessarPainel}
-            </Link>
-          </Button>
           <Button
             variant="ghost"
             size="icon"
@@ -107,11 +102,6 @@ export function LandingHeader() {
               {item.label}
             </Link>
           ))}
-          <Button asChild size="sm" className="mt-2">
-            <Link href="/painel" onClick={() => setAberto(false)}>
-              {t.landing.header.acessarPainel}
-            </Link>
-          </Button>
           <div className="mt-3">
             <LanguageToggle />
           </div>

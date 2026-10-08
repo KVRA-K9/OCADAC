@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Cor de cada tipo de norma na linha do tempo.
  *
  * São os mesmos seis tokens de `--chart-*` que os gráficos e os cards usam —

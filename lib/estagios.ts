@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Cores, rótulos e siglas compartilhados entre gráficos e cards.
  *
  * Ficam num módulo só para que a legenda de um gráfico e o marcador de um card

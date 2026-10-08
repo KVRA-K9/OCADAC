@@ -19,7 +19,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { formatMoeda, formatMoedaCompacta } from "@/lib/format";
+
 import type {
   AgregadoFuncao,
   AgregadoOrgao,
@@ -33,7 +33,7 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { CADEIA_EXECUCAO } from "@/lib/types";
-import { useLocale, useT } from "@/lib/i18n";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import {
   CORES_EIXO,
   SERIES_COLORS,
@@ -53,13 +53,16 @@ function ChartTooltip({
   active,
   payload,
   label,
-  format = formatMoeda,
+  format,
 }: {
   active?: boolean;
   payload?: TooltipPayload[];
   label?: string | number;
   format?: (value: number) => string;
 }) {
+  const { formatMoeda } = useFormat();
+  const formatador = format ?? formatMoeda;
+
   if (!active || !payload || payload.length === 0) return null;
 
   const nomeCompleto =
@@ -81,7 +84,7 @@ function ChartTooltip({
             />
             <span className="text-muted-foreground">{entry.name}:</span>
             <span className="font-medium text-foreground tabular-nums">
-              {format(Number(entry.value ?? 0))}
+              {formatador(Number(entry.value ?? 0))}
             </span>
           </div>
         ))}
@@ -90,9 +93,6 @@ function ChartTooltip({
   );
 }
 
-function AxisFormat(value: number): string {
-  return formatMoedaCompacta(value);
-}
 
 /* ------------------------- Cadeia de execução ----------------------------- */
 
@@ -105,6 +105,7 @@ function AxisFormat(value: number): string {
 export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }) {
   const t = useT();
   const { locale } = useLocale();
+  const { formatMoedaCompacta } = useFormat();
   const rotulosEstagio = getRotulosEstagio(locale);
   const base = totais.ocadAtualizado;
   const dados = CADEIA_EXECUCAO.map((key) => ({
@@ -125,7 +126,7 @@ export function CadeiaExecucaoChart({ totais }: { totais: ValoresOrcamentarios }
         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
         <XAxis
           type="number"
-          tickFormatter={AxisFormat}
+          tickFormatter={formatMoedaCompacta}
           tickLine={false}
           axisLine={false}
           fontSize={12}
@@ -230,6 +231,7 @@ export function BudgetPieChart({ data }: { data: AgregadoFuncao[] }) {
 
 export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
   const { locale } = useLocale();
+  const { formatMoedaCompacta } = useFormat();
   const rotulosEstagio = getRotulosEstagio(locale);
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -243,7 +245,7 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
           stroke="var(--muted-foreground)"
         />
         <YAxis
-          tickFormatter={AxisFormat}
+          tickFormatter={formatMoedaCompacta}
           tickLine={false}
           axisLine={false}
           fontSize={12}
@@ -277,6 +279,7 @@ export function BudgetLineChart({ data }: { data: PontoSerie[] }) {
 
 export function BudgetStackedBar({ data }: { data: PontoComparacao[] }) {
   const t = useT();
+  const { formatMoedaCompacta } = useFormat();
   const dados = data.map((d) => {
     const funcao = t.common.eixoRotulo(d.funcao);
     return {
@@ -294,7 +297,7 @@ export function BudgetStackedBar({ data }: { data: PontoComparacao[] }) {
         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
         <XAxis
           type="number"
-          tickFormatter={AxisFormat}
+          tickFormatter={formatMoedaCompacta}
           tickLine={false}
           axisLine={false}
           fontSize={12}
@@ -381,6 +384,7 @@ function HistogramaTooltip({
   label?: string | number;
 }) {
   const t = useT();
+  const { formatMoeda } = useFormat();
   if (!active || !payload || payload.length === 0) return null;
   const p = (payload[0]?.payload ?? {}) as Record<string, number>;
   const total = p.Exclusivo + p["Não Exclusivo"];
@@ -458,6 +462,7 @@ function HistogramaEixo({
   eixo: string;
 }) {
   const t = useT();
+  const { formatMoeda } = useFormat();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const balloonRef = React.useRef<HTMLDivElement>(null);
   const [selecionado, setSelecionado] = React.useState<SelecionadoHistograma>(null);
@@ -1023,6 +1028,7 @@ export function AcoesClassificacaoDonut({
 
 export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
   const t = useT();
+  const { formatMoedaCompacta } = useFormat();
   const dados = data.map((d) => ({
     ...d,
     orgaoCurto: siglaOrgao(d.orgao),
@@ -1038,7 +1044,7 @@ export function BudgetTopLiquidado({ data }: { data: AgregadoOrgao[] }) {
         <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--border)" />
         <XAxis
           type="number"
-          tickFormatter={AxisFormat}
+          tickFormatter={formatMoedaCompacta}
           tickLine={false}
           axisLine={false}
           fontSize={12}

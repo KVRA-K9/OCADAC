@@ -1,5 +1,5 @@
-import { useT } from "@/lib/i18n";
-import { dataBase, metaBase } from "@/data/base-ocad";
+import { useFormat, useT } from "@/lib/i18n";
+import { metaBase } from "@/data/base-ocad";
 
 /**
  * Procedência dos números. Toda página que exibe valores declara de qual
@@ -8,14 +8,15 @@ import { dataBase, metaBase } from "@/data/base-ocad";
  */
 export function NotaBase() {
   const t = useT();
+  const { formatData } = useFormat();
 
   return (
     <p className="text-xs leading-relaxed text-muted-foreground">
       {t.painel.fonte}:{" "}
       <span className="font-medium">{metaBase.arquivoFonte}</span> —{" "}
-      {metaBase.origem}.{" "}
+      {t.painel.origemBase}.{" "}
       {t.painel.notaBaseArquivo(
-        dataBase,
+        formatData(metaBase.dataArquivo),
         metaBase.acoes,
         metaBase.linhasFonte,
       )}{" "}

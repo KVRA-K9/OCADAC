@@ -7,7 +7,7 @@
 
 import dadosHistoricos from "@/data/orcamento-historico.json";
 import metaHistorico from "@/data/orcamento-historico.meta.json";
-import { dataBase, metaBase, totaisBase } from "@/data/base-ocad";
+import { metaBase, totaisBase } from "@/data/base-ocad";
 
 interface RegistroHistorico {
   ano: number;
@@ -42,10 +42,6 @@ export interface PontoExecucao {
 const registros = dadosHistoricos as RegistroHistorico[];
 const meta = metaHistorico as MetaHistorico;
 
-const formatarData = (iso: string) => {
-  const [ano, mes, dia] = iso.split("-");
-  return `${dia}/${mes}/${ano}`;
-};
 
 /** Exercícios vindos das planilhas OCAD — têm os cinco estágios. */
 const dePlanilhas: PontoExecucao[] = (() => {
@@ -79,7 +75,7 @@ const dePlanilhas: PontoExecucao[] = (() => {
   return [...porAno.entries()].map(([ano, v]) => ({
     ano,
     ...v,
-    dataCorte: formatarData(meta.cortes[String(ano)]?.dataCorte ?? ""),
+    dataCorte: meta.cortes[String(ano)]?.dataCorte ?? "",
     fonte: meta.cortes[String(ano)]?.arquivoFonte ?? `Planilha OCAD ${ano}`,
   }));
 })();
@@ -92,7 +88,7 @@ const doExercicioCorrente: PontoExecucao[] = metaBase.anos.map((ano) => ({
   ocadEmpenhado: totaisBase.ocadEmpenhado,
   ocadLiquidado: totaisBase.ocadLiquidado,
   ocadPago: totaisBase.ocadPago,
-  dataCorte: dataBase,
+  dataCorte: metaBase.dataArquivo,
   fonte: metaBase.arquivoFonte,
 }));
 

@@ -1,4 +1,4 @@
-export type CategoriaEconomica = "Exclusivo" | "Não Exclusivo";
+﻿export type CategoriaEconomica = "Exclusivo" | "Não Exclusivo";
 
 /**
  * Estágios como nomeados na planilha OCAD. `dotacaoInicial` é o valor bruto;

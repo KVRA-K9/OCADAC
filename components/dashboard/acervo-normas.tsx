@@ -1,11 +1,10 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { ChevronRight, ExternalLink } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { formatCruzeiroMil, formatMoeda } from "@/lib/format";
-import { useT } from "@/lib/i18n";
+import { useFormat, useT } from "@/lib/i18n";
 import { CORES_NORMA, ICONES_NORMA } from "@/lib/normas";
 import {
   TIPOS_NORMA,
@@ -13,8 +12,6 @@ import {
   type Norma,
   type TipoNorma,
 } from "@/data/historico-leis";
-
-const dataBR = (iso: string) => iso.split("-").reverse().join("/");
 
 /** O rótulo de um campo do cartão. Em constante porque `ListaOrgaos` monta o
  * seu à mão, num <button>, e os dois têm de continuar idênticos. */
@@ -123,6 +120,7 @@ function ListaOrgaos({ norma }: { norma: Norma }) {
 
 function ValoresLOA({ norma }: { norma: Norma }) {
   const t = useT();
+  const { formatCruzeiroMil, formatMoeda } = useFormat();
   const loa = norma.loa;
   if (!loa) return null;
 
@@ -174,6 +172,7 @@ function CartaoNorma({
   destacado?: boolean;
 }) {
   const t = useT();
+  const { formatData } = useFormat();
   const [aberto, setAberto] = React.useState(false);
 
   /* Ajuste durante a renderização: virou alvo do gráfico, abre; deixou de ser,
@@ -232,7 +231,7 @@ function CartaoNorma({
             </span>
             {norma.data && (
               <span className="text-xs text-muted-foreground">
-                {dataBR(norma.data)}
+                {formatData(norma.data)}
               </span>
             )}
             {norma.exercicio && (
@@ -261,7 +260,7 @@ function CartaoNorma({
         <div className="space-y-3.5 border-t border-foreground/10 px-4 pt-3.5 pb-4">
           {norma.publicacao && (
             <Detalhe rotulo={t.tabela.publicacaoDoe}>
-              {dataBR(norma.publicacao)}
+              {formatData(norma.publicacao)}
             </Detalhe>
           )}
           {norma.link && (

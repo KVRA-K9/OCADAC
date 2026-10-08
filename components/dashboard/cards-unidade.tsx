@@ -3,8 +3,7 @@
 import * as React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatMoeda } from "@/lib/format";
-import { useLocale, useT } from "@/lib/i18n";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import {
   ESTAGIOS_SECRETARIA,
   SERIES_COLORS,
@@ -26,6 +25,7 @@ const FACE: React.CSSProperties = {
 function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
   const t = useT();
   const { locale } = useLocale();
+  const { formatMoeda } = useFormat();
   const rotulosEstagio = getRotulosEstagio(locale);
   // O card abre pelo nome: a identidade vem primeiro e os valores aparecem ao
   // clicar.

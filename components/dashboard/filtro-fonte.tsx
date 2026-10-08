@@ -11,8 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { OpcaoFonte } from "@/data/base-ocad";
-import { formatMoedaCompacta, formatParticipacao } from "@/lib/format";
-import { useT } from "@/lib/i18n";
+import { useFormat, useT } from "@/lib/i18n";
 import { normalizar } from "@/lib/texto";
 import { cn } from "@/lib/utils";
 
@@ -193,6 +192,7 @@ function LinhaFonte({
   marcada: boolean;
   onClick: () => void;
 }) {
+  const { formatMoedaCompacta, formatParticipacao } = useFormat();
   // Um piso de 2% de largura mantém visível a barra das menores fontes, que de
   // outro modo desapareceriam: nesta lista a maior vale milhares de vezes a
   // menor.

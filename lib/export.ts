@@ -1,14 +1,17 @@
 import type { OrcamentoItem } from "@/lib/types";
-import { dataBase, metaBase } from "@/data/base-ocad";
+import { metaBase } from "@/data/base-ocad";
 import { getCreditosEquipe } from "@/lib/equipe";
+import { getFormatadores } from "@/lib/format";
 import { MESSAGES, type Locale } from "@/lib/messages";
 
-const moedaExport = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
+function formatMoedaExport(valor: number, locale: Locale): string {
+  return new Intl.NumberFormat(locale === "en" ? "en-US" : "pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(valor);
+}
 
 interface BlocoSecretaria {
   orgao: string;
@@ -61,8 +64,15 @@ function estruturar(itens: OrcamentoItem[]): BlocoSecretaria[] {
     .filter((b) => b.acoes.length > 0);
 }
 
-function dataExtenso(): string {
+function dataExtenso(locale: Locale = "pt"): string {
   const d = new Date();
+  if (locale === "en") {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(d);
+  }
   const opts: Intl.DateTimeFormatOptions = {
     day: "2-digit",
     month: "2-digit",
@@ -183,7 +193,7 @@ export async function exportarPDF(
     d.setFontSize(10);
     d.setFont("helvetica", "normal");
     d.text(
-      t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(), paginaAtual),
+      t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(locale), paginaAtual),
       margemEsq,
       50,
     );
@@ -253,7 +263,7 @@ export async function exportarPDF(
     const bodyRows = bloco.acoes.map((a) => [
       `${a.acao} (${eixoRotulo(a.eixo)})`,
       categoriaRotulo(a.classificacao),
-      moedaExport.format(a.dotacao),
+      formatMoedaExport(a.dotacao, locale),
     ]);
 
     autoTable(doc, {
@@ -262,9 +272,9 @@ export async function exportarPDF(
       body: bodyRows,
       foot: [
         [
-          t.rodapeExclusivo(moedaExport.format(bloco.totalExclusivo)),
-          t.rodapeNaoExclusivo(moedaExport.format(bloco.totalNaoExclusivo)),
-          t.rodapeTotal(moedaExport.format(bloco.total)),
+          t.rodapeExclusivo(formatMoedaExport(bloco.totalExclusivo, locale)),
+          t.rodapeNaoExclusivo(formatMoedaExport(bloco.totalNaoExclusivo, locale)),
+          t.rodapeTotal(formatMoedaExport(bloco.total, locale)),
         ],
       ],
       theme: "grid",
@@ -304,7 +314,7 @@ export async function exportarPDF(
         d.setFontSize(10);
         d.setFont("helvetica", "normal");
         d.text(
-          t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(), numPaginas),
+          t.cabecalhoInfo(exerciciosLabel(itens), dataExtenso(locale), numPaginas),
           margemEsq,
           50,
         );
@@ -436,9 +446,9 @@ export async function exportarXLSX(
   ];
   wsFonte.getRow(1).font = { bold: true };
   for (const [campo, valor] of [
-    [t.fonte, `${metaBase.origem} — SEPLAN/AC`],
+    [t.fonte, `${MESSAGES[locale].painel.origemBase} — SEPLAN/AC`],
     [t.arquivo, metaBase.arquivoFonte],
-    [t.dataArquivo, dataBase],
+    [t.dataArquivo, getFormatadores(locale).formatData(metaBase.dataArquivo)],
     [t.acoes, String(metaBase.acoes)],
     [t.eixo, t.valorEixo],
     [t.ponderacao, MESSAGES[locale].common.ponderacao()],

@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { formatMoeda } from "@/lib/format";
-import { useLocale, useT } from "@/lib/i18n";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import {
   corSecretaria,
   getRotulosEstagio,
@@ -94,6 +93,7 @@ function ordenarArvore(
 }
 
 function CelulasValores({ no }: { no: ValoresOrcamentarios }) {
+  const { formatMoeda } = useFormat();
   return (
     <>
       {COLUNAS_VALOR.map((chave) => (

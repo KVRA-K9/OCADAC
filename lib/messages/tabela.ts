@@ -172,6 +172,6 @@ export const en: typeof pt = {
     `${especie} No. ${numero}`,
   exercicio: (n: number) => `· fiscal year ${n}`,
   normas: (n: number) =>
-    `${n} ${n === 1 ? "regulation" : "regulations"}`,
-  nenhumaNorma: "No regulation in this tab matches the search.",
+    `${n} ${n === 1 ? "norm" : "norms"}`,
+  nenhumaNorma: "No norm in this tab matches the search.",
 };

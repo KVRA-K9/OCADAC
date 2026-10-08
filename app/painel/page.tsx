@@ -34,13 +34,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  formatMoeda,
-  formatPercent,
-  formatVariacao,
-  formatVariacaoMoeda,
-} from "@/lib/format";
-import { useT } from "@/lib/i18n";
+import { useFormat, useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_TODOS,
@@ -55,6 +49,12 @@ import {
 
 export default function VisaoGeralPage() {
   const t = useT();
+  const {
+    formatMoeda,
+    formatPercent,
+    formatVariacao,
+    formatVariacaoMoeda,
+  } = useFormat();
 
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
     ano: OPCAO_TODOS,

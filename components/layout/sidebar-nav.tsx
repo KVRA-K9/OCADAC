@@ -15,7 +15,6 @@ import {
 
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
-import { LanguageToggle } from "@/components/layout/language-toggle";
 import {
   Tooltip,
   TooltipContent,
@@ -132,15 +131,6 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
             </Tooltip>
           );
         })}
-
-        <div
-          className={cn(
-            "mt-1 flex overflow-hidden",
-            collapsed ? "justify-center" : "justify-start px-3",
-          )}
-        >
-          <LanguageToggle />
-        </div>
       </nav>
 
       {/* Footer note (animated collapse) */}

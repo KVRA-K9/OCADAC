@@ -21,8 +21,7 @@ import {
 } from "@/components/ui/table";
 import { agregarOrgaos, type LinhaOrgao } from "@/data/base-ocad";
 import { CORES_EIXO, corSecretaria, nomeOrgao, siglaOrgao } from "@/lib/estagios";
-import { formatMoeda, formatParticipacao } from "@/lib/format";
-import { useT } from "@/lib/i18n";
+import { useFormat, useT } from "@/lib/i18n";
 import type { OrcamentoItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -69,6 +68,7 @@ const TAMANHO_PAGINA = 10;
  */
 export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
   const t = useT();
+  const { formatMoeda } = useFormat();
 
   const COLUNAS: Coluna[] = [
     { chave: "nome", rotulo: t.tabela.colOrgao },
@@ -236,6 +236,7 @@ export function TabelaOrgaos({ data }: { data: OrcamentoItem[] }) {
 
 function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
   const t = useT();
+  const { formatMoeda, formatParticipacao } = useFormat();
 
   return (
     <TableRow>
@@ -304,6 +305,7 @@ function LinhaTabela({ linha, total }: { linha: LinhaOrgao; total: number }) {
  */
 function Classificacao({ linha }: { linha: LinhaOrgao }) {
   const t = useT();
+  const { formatParticipacao } = useFormat();
 
   if (linha.naoExclusivo === 0)
     return <Badge>{t.common.categoriaRotulo("Exclusivo")}</Badge>;

@@ -79,9 +79,17 @@ export const pt = {
   naLei: (valor: string) => `${valor} na lei`,
 
   fonteRotulo: "Fonte:",
+  origemLeis: "Histórico de leis do Orçamento Criança e Adolescente — SEPLAN/AC",
   arquivoDe: (data: string) => `Arquivo de ${data}`,
   atualizadoNaOrigem: (data: string) => `, atualizado na origem em ${data}`,
   comNormas: (total: number) => `, com ${total} normas`,
+  observacoes: [
+    "O exercício de 1991 (Cr$ 4.518.657 mil) é menor que o de 1992 em plena hiperinflação, o que não fecha com a série.",
+    "A lei do exercício de 1994 é de dezembro de 1993, quando já vigorava o cruzeiro real; a planilha rotula os quatro primeiros exercícios como Cr$ mil.",
+    "A conversão de cruzeiro para real é nominal, pelos cortes monetários, sem correção pela inflação.",
+    "1 norma(s) aparecem em mais de uma aba da planilha e foram contadas uma única vez: Lei 1.011/1991 (Lei Ordinária e Estrutura Administrativa).",
+    "2 número(s) de lei aparecem em normas distintas, com links e ementas diferentes — inconsistência da fonte, mantida como está: Lei 1.156/1995; Lei 1.082/1993.",
+  ],
 };
 
 export const en: typeof pt = {
@@ -91,7 +99,7 @@ export const en: typeof pt = {
 
   kpiNormasTitulo: "Mapped norms",
   kpiNormasDica: (leis: number, decretos: number, estrutura: number) =>
-    `${leis} laws, ${decretos} decrees, ${estrutura} on structure`,
+    `${leis} laws, ${decretos} decrees, ${estrutura} on administrative structure`,
   kpiPeriodoTitulo: "Period covered",
   kpiPeriodoDica: (anos: number) =>
     `${anos} years of norms on children and adolescents`,
@@ -143,7 +151,7 @@ export const en: typeof pt = {
   exercicioRotulo: (label: string | number) => `Fiscal year ${label}`,
   ocadApurado: (valor: string) => `OCAD calculated: ${valor}`,
   apuracaoSemDetalhe:
-    "Only the education, ISE and early-childhood units, read page by page: the 2014 booklet draws its tables as images, and descriptor scanning does not reach this fiscal year. The value is a floor — in neighboring years this share stays below 1,5%.",
+    "Only the education, ISE and early-childhood units, read page by page: the 2014 booklet draws its tables as images, and descriptor scanning does not reach this fiscal year. The value is a floor — in neighboring years this share stays below 1.5%.",
   apuracaoDetalhada: (
     integrais: string,
     acoes: string,
@@ -166,7 +174,15 @@ export const en: typeof pt = {
   naLei: (valor: string) => `${valor} in the law`,
 
   fonteRotulo: "Source:",
+  origemLeis: "Child and Adolescent Budget legislation history — SEPLAN/AC",
   arquivoDe: (data: string) => `File dated ${data}`,
   atualizadoNaOrigem: (data: string) => `, updated at source on ${data}`,
   comNormas: (total: number) => `, with ${total} norms`,
+  observacoes: [
+    "The 1991 fiscal year (Cr$ 4,518,657 thousand) is lower than 1992 amidst hyperinflation, which does not align with the historical series.",
+    "The 1994 fiscal year law dates from December 1993, when the cruzeiro real was already in effect; the spreadsheet labels the first four fiscal years as Cr$ thousand.",
+    "The conversion from cruzeiro to real is nominal through currency cuts, without inflation adjustment.",
+    "1 norm appears in more than one spreadsheet tab and was counted only once: Law 1,011/1991 (Ordinary Law and Administrative Structure).",
+    "2 law numbers appear in distinct norms, with different links and summaries — source inconsistency, maintained as is: Law 1,156/1995; Law 1,082/1993.",
+  ],
 };
