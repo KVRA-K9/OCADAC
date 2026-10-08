@@ -19,7 +19,7 @@ export function Hero() {
         fill
         priority
         unoptimized
-        className="object-cover object-[50%_30%] [filter:contrast(1.1)_saturate(1.15)_brightness(1.05)]"
+        className="object-cover object-[50%_30%]"
         aria-hidden
       />
       <div
