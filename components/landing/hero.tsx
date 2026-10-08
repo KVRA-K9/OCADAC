@@ -23,7 +23,7 @@ export function Hero() {
         aria-hidden
       />
       <div
-        className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-black/5"
+        className="absolute inset-0 bg-gradient-to-r from-black/25 via-black/10 to-transparent"
         aria-hidden
       />
 
