@@ -41,6 +41,7 @@ const pctEn = (fator: number) => (fator * 100).toLocaleString("en-US");
 
 export const pt = {
   semDados: "Sem dados",
+  idioma: "Idioma",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
   ponderacao: () => PONDERACAO.descricao,
@@ -52,6 +53,7 @@ export const pt = {
 
 export const en: typeof pt = {
   semDados: "No data",
+  idioma: "Language",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
   ponderacao: () => {
@@ -63,8 +65,8 @@ export const en: typeof pt = {
     if (naoExclusivo) {
       partes.push(
         naoExclusivo.fator === 1
-          ? "Non-exclusive actions enter in full"
-          : `Non-exclusive actions enter at ${pctEn(naoExclusivo.fator)}%`,
+          ? "Non-exclusive actions are included in full"
+          : `Non-exclusive actions are weighted at ${pctEn(naoExclusivo.fator)}%`,
       );
     }
 
@@ -72,8 +74,8 @@ export const en: typeof pt = {
     if (exclusivo) {
       partes.push(
         exclusivo.fator === 1
-          ? "exclusive actions enter in full"
-          : `exclusive actions enter at ${pctEn(exclusivo.fator)}%`,
+          ? "exclusive actions are included in full"
+          : `exclusive actions are weighted at ${pctEn(exclusivo.fator)}%`,
       );
     }
 

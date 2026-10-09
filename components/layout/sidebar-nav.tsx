@@ -20,6 +20,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { LanguageToggle } from "@/components/layout/language-toggle";
 
 const NAV_ITENS = [
   { href: "/", icon: Home, label: "voltarInicio" },
@@ -132,6 +133,24 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
           );
         })}
       </nav>
+
+      {/* Language toggle */}
+      <div
+        className={cn(
+          "flex items-center transition-[padding,justify-content] duration-300",
+          collapsed ? "justify-center px-1 py-1.5" : "justify-between px-4 py-2 border-t border-border/40",
+        )}
+      >
+        <span
+          className={cn(
+            "text-xs font-medium text-sidebar-foreground/70 overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300",
+            collapsed ? "max-w-0 opacity-0" : "max-w-[120px] opacity-100",
+          )}
+        >
+          {t.common.idioma}
+        </span>
+        <LanguageToggle />
+      </div>
 
       {/* Footer note (animated collapse) */}
       <div

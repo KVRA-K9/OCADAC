@@ -7,6 +7,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
+import { useT } from "@/lib/i18n";
+
 interface Opcao {
   value: string;
   label: string;
@@ -30,6 +32,7 @@ export function MultiSelect({
   className,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
+  const t = useT();
 
   const toggle = (value: string) => {
     if (values.includes(value)) {
@@ -45,7 +48,7 @@ export function MultiSelect({
       ? placeholder
       : selecionados.length === 1
         ? selecionados[0].label
-        : `${selecionados.length} selecionados`;
+        : t.tabela.selecionadas(selecionados.length);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

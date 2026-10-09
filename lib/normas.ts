@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Cor de cada tipo de norma na linha do tempo.
  *
  * São os mesmos seis tokens de `--chart-*` que os gráficos e os cards usam —
@@ -71,14 +71,14 @@ export const DESCRICOES_NORMA: Record<TipoNorma, string> = {
 
 export const DESCRICOES_NORMA_EN: Record<TipoNorma, string> = {
   "Lei Ordinária":
-    "Ordinary laws that create programs, services and obligations aimed at protecting children and adolescents in Acre.",
+    "Ordinary laws that establish programs, services and statutory duties aimed at protecting children and adolescents in Acre.",
   Decreto:
-    "Acts of the Executive Branch, including those that establish and amend the OCAD Assessment Committee.",
+    "Executive acts, including those that establish and amend the OCAD Assessment Committee.",
   "Estrutura Administrativa":
-    "Laws that define which Executive Branch agency is responsible for children and adolescents, and how this has changed since 1991.",
-  PPA: "Multi-Year Plan: the government programs of each four-year period, and where they mention children and adolescents.",
-  LDO: "Budget Guidelines Law: guides the preparation of the following year's budget and sets its goals and priorities.",
-  LOA: "Annual Budget Law: estimates revenue and fixes expenditure for the fiscal year, with the OCAD calculated wherever curation took place.",
+    "Laws that define which Executive Branch agency is responsible for children and adolescents, and how this has evolved since 1991.",
+  PPA: "Multi-Year Plan: the government programs for each four-year cycle, and where they address children and adolescents.",
+  LDO: "Budget Guidelines Law: guides the preparation of the subsequent year's budget and sets its targets and priorities.",
+  LOA: "Annual Budget Law: estimates revenue and authorizes expenditure for the fiscal year, with the OCAD assessed where curation was conducted.",
 } as Record<TipoNorma, string>;
 
 /** Descrições dos tipos de norma no idioma ativo. */

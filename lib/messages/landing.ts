@@ -74,55 +74,55 @@ export const pt = {
 export const en: typeof pt = {
   header: {
     sobre: "About",
-    eixos: "Axes",
+    eixos: "Thematic Axes",
     baseLegal: "Legal Framework",
     relatorios: "Reports",
-    acessarPainel: "Access the dashboard",
+    acessarPainel: "Access Dashboard",
     abrirMenu: "Open menu",
-    paginaOficialSeplan: "Seplan/AC - Official page",
+    paginaOficialSeplan: "SEPLAN/AC - Official website",
     logoOcadAcre: "OCAD Acre logo",
-    paginaOficialOcad: "OCAD Acre - Seplan official page",
+    paginaOficialOcad: "OCAD Acre - Official SEPLAN page",
     subtitulo: "Child and Adolescent Budget",
   },
   hero: {
     titulo: "Child and Adolescent Budget",
     descricao:
-      "Monitoring of the State of Acre budget allocated to guaranteeing the rights of children and adolescents, based on the methodology of the Abrinq Foundation and backed by Law No. 3,762/2021.",
-    acessarPainel: "Access the interactive dashboard",
+      "Monitoring the State of Acre budget allocated to guaranteeing the rights of children and adolescents, based on the Abrinq Foundation methodology and backed by Law No. 3,762/2021.",
+    acessarPainel: "Access interactive dashboard",
     lei: "Law No. 3,762/2021",
   },
   sobre: {
     titulo: "What is OCAD?",
     subtitulo:
-      "Learn about the origin, methodology and purpose of the Child and Adolescent Budget in the State of Acre.",
+      "Understand the origins, methodology, and purpose of the Child and Adolescent Budget in the State of Acre.",
     fonte: "Source:",
     emOutrasPalavras: "In other words",
   },
   eixos: {
-    titulo: "OCAD Axes",
+    titulo: "OCAD Thematic Axes",
     subtitulo:
-      "The budget is organized into three thematic axes that bring together related functions, according to the methodology adopted by Seplan/AC.",
+      "The budget is structured around three thematic axes encompassing interrelated public functions, according to the methodology adopted by SEPLAN/AC.",
   },
   baseLegal: {
-    titulo: "Legal Instruments",
+    titulo: "Legal Framework",
     subtitulo:
-      "OCAD is grounded in legal instruments that guarantee full protection for children and adolescents.",
+      "OCAD is grounded in legal instruments that guarantee comprehensive protection for children and adolescents.",
     leiTitulo: "Law No. 3,762 of July 19, 2021",
-    acessarIntegra: "Access the full text of the law",
+    acessarIntegra: "Access full text of the law",
     acessarLink: "Access link",
   },
   relatorios: {
-    titulo: "Annual reports",
+    titulo: "Annual Reports",
     subtitulo:
-      "Official Seplan/AC publications containing the OCAD assessment, available for download.",
+      "Official SEPLAN/AC publications detailing the OCAD assessment, available for download.",
     baixarPdf: "Download PDF",
-    publicadosEm: "Reports published at",
+    publicadosEm: "Reports published on",
   },
   cta: {
-    titulo: "Explore OCAD data",
+    titulo: "Explore OCAD Data",
     descricao:
-      "Access the interactive dashboard with indicators, charts and the detailed list of budget actions of the State of Acre aimed at children and adolescents.",
-    abrirPainel: "Open the interactive dashboard",
+      "Access the interactive dashboard featuring indicators, charts, and the detailed list of Acre state budget actions dedicated to children and adolescents.",
+    abrirPainel: "Open interactive dashboard",
     creditoFoto: "Photograph: Cleiton Lopes - SECOM/AC",
   },
   footer: {
@@ -133,13 +133,13 @@ export const en: typeof pt = {
     sobreOcad: "About OCAD",
     relatorios: "Reports",
     institucional: "Institutional",
-    linkSeplan: "Seplan/AC",
+    linkSeplan: "SEPLAN/AC",
     linkTransparencia: "Transparency Portal",
     linkDiarioOficial: "Official Gazette",
-    linkLegislativo: "Acre Legislature",
+    linkLegislativo: "Acre Legislative Assembly",
     endereco:
-      "Av. Getúlio Vargas, 232 · Centro · Rio Branco · Acre · CEP 69900-060",
+      "Av. Getúlio Vargas, 232 · Centro · Rio Branco · Acre · ZIP Code 69900-060",
     copyright: (ano: number) =>
-      `© ${ano} Government of the State of Acre · Secretariat of State Planning of Acre - Department of Budget Studies and Planning - DEPPO/SEPLAN`,
+      `© ${ano} Government of the State of Acre · State Secretariat of Planning of Acre - Department of Budget Studies and Planning - DEPPO/SEPLAN`,
   },
 };

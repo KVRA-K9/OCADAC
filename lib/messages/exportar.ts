@@ -46,20 +46,20 @@ export const en: typeof pt = {
   cabecalhoInfo: (exercicio: string, data: string, pagina: number) =>
     `Fiscal year: ${exercicio}     Exported on: ${data}     Page ${pagina}`,
   rodape:
-    "Department of Budget Studies and Planning – DEPPO/SEPLAN | State Secretariat for Planning – SEPLAN/AC | Government of the State of Acre",
-  eixo: "Axis",
+    "Department of Budget Studies and Planning – DEPPO/SEPLAN | State Secretariat of Planning – SEPLAN/AC | Government of the State of Acre",
+  eixo: "Thematic Axis",
   colAplicacao: "Programmed Application",
   colClassificacao: "Classification",
   colDotacao: "Appropriation (R$)",
   rodapeExclusivo: (valor: string) => `Exclusive: ${valor}`,
   rodapeNaoExclusivo: (valor: string) => `Non-exclusive: ${valor}`,
   rodapeTotal: (valor: string) => `TOTAL: ${valor}`,
-  elaboracao: "Developed by",
+  elaboracao: "Prepared by",
   sheetMicrodados: "Microdata",
   sheetProcedencia: "Provenance",
   colAno: "Year",
   colOrgao: "Agency",
-  colUnidadeGestora: "Managing Unit",
+  colUnidadeGestora: "Budget Unit",
   colPrograma: "Program",
   colAcao: "Action",
   colDotacaoInicial: "Initial Appropriation (gross)",
@@ -76,10 +76,10 @@ export const en: typeof pt = {
   dataArquivo: "File date",
   acoes: "Actions",
   valorEixo:
-    "Derived from the budget function of the functional-programming entry; the source spreadsheet does not bring that column.",
+    "Derived from the budget function of the functional-programming classification; the source spreadsheet does not include this column.",
   ponderacao: "Weighting rule",
   valorDisponivel: "Derived: Updated Budget − Settled.",
   linhasOrigem: "Source rows",
   linhasOrigemValor: (linhas: number, acoes: number) =>
-    `${linhas} rows per funding source, consolidated into ${acoes} actions.`,
+    `${linhas} rows by funding source, consolidated into ${acoes} actions.`,
 };

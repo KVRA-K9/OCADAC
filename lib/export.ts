@@ -88,16 +88,20 @@ function exerciciosLabel(itens: OrcamentoItem[]): string {
   return `${anos[0]}–${anos[anos.length - 1]}`;
 }
 
-function nomeArquivo(extensao: string): string {
+function nomeArquivo(extensao: string, locale: Locale = "pt"): string {
   const d = new Date();
-  const data = new Intl.DateTimeFormat("pt-BR", {
+  const data = new Intl.DateTimeFormat(locale === "en" ? "en-US" : "pt-BR", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
   })
     .format(d)
     .replace(/\//g, "-");
-  return `relatorio_orcamento_crianca_adolescente_${data}.${extensao}`;
+  const prefixo =
+    locale === "en"
+      ? "ocad_child_and_adolescent_budget_report"
+      : "relatorio_orcamento_crianca_adolescente";
+  return `${prefixo}_${data}.${extensao}`;
 }
 
 type JsPDFWithAutoTable = {
@@ -376,7 +380,7 @@ export async function exportarPDF(
   });
   d.setTextColor(0, 0, 0);
 
-  d.save(nomeArquivo("pdf"));
+  d.save(nomeArquivo("pdf", locale));
 }
 
 export async function exportarXLSX(
@@ -469,7 +473,7 @@ export async function exportarXLSX(
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = nomeArquivo("xlsx");
+  link.download = nomeArquivo("xlsx", locale);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

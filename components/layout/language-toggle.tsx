@@ -56,7 +56,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         aria-label={t.common.ptBrasil}
         title={t.common.ptBrasil}
         className={cn(
-          "rounded p-1 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          "cursor-pointer rounded p-1 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           locale === "pt"
             ? "opacity-100 ring-1 ring-ring"
             : "opacity-50 hover:opacity-90",
@@ -70,7 +70,7 @@ export function LanguageToggle({ className }: { className?: string }) {
         aria-label={t.common.ingles}
         title={t.common.ingles}
         className={cn(
-          "rounded p-1 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          "cursor-pointer rounded p-1 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           locale === "en"
             ? "opacity-100 ring-1 ring-ring"
             : "opacity-50 hover:opacity-90",

@@ -44,42 +44,42 @@ export const pt = {
 export const en: typeof pt = {
   titulo: "Overview",
   descricao:
-    "Budget and expense execution for Children and Adolescents in the State of Acre, from the initial amount to the amount actually paid.",
+    "Budget and expenditure execution for Children and Adolescents in the State of Acre, from initial budget to amount actually paid.",
   orcamentoInicial: "Initial Budget",
   orcamentoAtualizado: "Updated Budget",
   empenhado: "Committed",
   liquidado: "Settled",
   pago: "Paid",
   disponivel: "Available",
-  acoes: (n: number) => `${n} actions`,
+  acoes: (n: number) => `${n} ${n === 1 ? "action" : "actions"}`,
   variacaoSobreInicial: (variacao: string, delta: string) =>
     `${variacao} vs. initial · ${delta}`,
-  pctDoAtualizado: (pct: string) => `${pct} of the updated budget`,
+  pctDoAtualizado: (pct: string) => `${pct} of updated budget`,
   pctDoAtualizadoNaoLiquidado: (pct: string) =>
-    `${pct} of the updated budget — not yet settled`,
-  cadeiaExecucaoTitulo: "Expense execution chain",
+    `${pct} of updated budget — not yet settled`,
+  cadeiaExecucaoTitulo: "Expenditure execution chain",
   cadeiaExecucaoDica:
-    "From the initial budget to the amount actually paid. Percentages are calculated over the updated budget.",
+    "From initial budget to amount actually paid. Percentages are calculated against the updated budget.",
   infoGrafico: "Chart information",
-  infoCardsUnidade: "Information about the unit cards",
+  infoCardsUnidade: "Information on budget unit cards",
   distribuicaoEixoTitulo: "Distribution by Thematic Axis",
   distribuicaoEixoDica:
-    "Values based on the Initial Budget provided for the fiscal year, distributed across the thematic axes.",
+    "Amounts based on the Initial Budget projected for the fiscal year, distributed across thematic axes.",
   composicaoOcadTitulo: "Composition of the Child and Adolescent Budget - OCAD",
   composicaoOcadDica:
-    "Click a slice of the chart to view the number of actions by secretariat.",
+    "Click a chart segment to view the number of actions by secretariat.",
   exclusivoPorEixoTitulo: "Exclusive vs. Non-exclusive by axis",
   execucaoEixoTitulo: "Execution by axis × classification",
   execucaoEixoDica:
-    "Click a bar to see the breakdown of the actions that make up that settled value range within the corresponding axis.",
+    "Click a bar to see the breakdown of actions comprising that settled expenditure range within the corresponding axis.",
   execucaoUnidadeTitulo: "Execution by budget unit",
   execucaoUnidadeDica:
-    "Same breakdown used in the BI filters: an agency appears in more than one card when it executes through distinct funds. Click a card to get budget and execution information.",
+    "Same breakdown used in the BI filters: an agency appears in more than one card when executing through different funds. Click a card to view budget and execution details.",
   nenhumaUnidade: "No budget unit matches the selected filters.",
-  mostrarNome: (rotulo: string) => `Show the name of ${rotulo}`,
-  mostrarValores: (rotulo: string) => `Show the values of ${rotulo}`,
+  mostrarNome: (rotulo: string) => `Show name of ${rotulo}`,
+  mostrarValores: (rotulo: string) => `Show amounts for ${rotulo}`,
   fonte: "Source",
   origemBase: "OCAD spreadsheet — same database as the BI",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
-    `File from ${data}, with ${acoes} consolidated actions from ${linhas} rows per funding source.`,
+    `File dated ${data}, with ${acoes} actions consolidated across ${linhas} rows by funding source.`,
 };

@@ -44,24 +44,24 @@ export const pt = {
 };
 
 export const en: typeof pt = {
-  titulo: "Time Evolution",
+  titulo: "Multi-Year Evolution",
   descricao:
-    "Weighted OCAD comparison by fiscal year, from the initial budget to the amount paid. Each year identifies the source spreadsheet and its date.",
+    "Weighted OCAD comparison by fiscal year, from initial budget to amount paid. Each year identifies the source spreadsheet and its date.",
   orcamentosTitulo: "Initial and Updated Budget (weighted) — by fiscal year",
-  variacaoTitulo: (de, ate) => `Variation ${de}–${ate}`,
+  variacaoTitulo: (de, ate) => `Change ${de}–${ate}`,
   variacaoSentido: (aumento, de, ate) =>
     aumento
-      ? `Increase in the initial budget between ${de} and ${ate}`
-      : `Decrease in the initial budget between ${de} and ${ate}`,
+      ? `Increase in initial budget between ${de} and ${ate}`
+      : `Decrease in initial budget between ${de} and ${ate}`,
   execucaoOrcamentaria: "Budget execution",
   ponderacaoNota:
-    "All fiscal years come from OCAD spreadsheets and carry the five stages, from the initial budget to the amount paid.",
-  liquidadoTitulo: "Settled over the updated budget — by fiscal year",
+    "All fiscal years come from OCAD spreadsheets and comprise the five stages, from initial budget to amount paid.",
+  liquidadoTitulo: "Settled vs. updated budget — by fiscal year",
   medidorLiquidado: (valor) => `${valor} settled`,
   medidorAtualizado: (valor) => `updated: ${valor}`,
   fonteCorte: (fonte, data) => `${fonte} · cut-off ${data}`,
-  estagiosTitulo: "Expense stages by fiscal year (weighted)",
-  valor: "Value",
+  estagiosTitulo: "Expenditure stages by fiscal year (weighted)",
+  valor: "Amount",
   outras: "Others",
   faixas: [
     "< 10k",
@@ -72,14 +72,14 @@ export const en: typeof pt = {
     "100M +",
   ],
   faixa: (rotulo) => `Range: ${rotulo}`,
-  acoes: (n) => `${n} actions`,
+  acoes: (n) => `${n} ${n === 1 ? "action" : "actions"}`,
   acoesLabel: "actions",
   totalNaFaixa: "Total in range:",
   liquidadoRotulo: "settled:",
   totalLiquidado: "Total settled:",
   acoesFaixaAria: (faixa, eixo) => `Actions in range ${faixa} in ${eixo}`,
   acoesSecretariaAria: (classificacao) =>
-    `Actions ${classificacao} by secretariat`,
+    `${classificacao} actions by secretariat`,
   semAcoesFaixa: "No actions in this range.",
   semAcoesCategoria: "No actions in this category.",
   fechar: "Close",

@@ -216,6 +216,7 @@ function LinhaUnidade({
 }
 
 function LinhaAcao({ acao }: { acao: NoAcao }) {
+  const t = useT();
   return (
     <TableRow className={ENTRADA}>
       {/* Recuo alinhado ao texto da unidade, já que a ação não tem seta. */}
@@ -226,8 +227,12 @@ function LinhaAcao({ acao }: { acao: NoAcao }) {
           {acao.programa}
         </span>
       </TableCell>
-      <TableCell className="text-sm">{acao.categoriaEconomica}</TableCell>
-      <TableCell className="text-sm">{acao.funcao}</TableCell>
+      <TableCell className="text-sm">
+        {t.common.categoriaRotulo(acao.categoriaEconomica)}
+      </TableCell>
+      <TableCell className="text-sm">
+        {t.common.eixoRotulo(acao.funcao)}
+      </TableCell>
       <TableCell className="text-sm tabular-nums">{acao.ano}</TableCell>
       <CelulasValores no={acao} />
     </TableRow>

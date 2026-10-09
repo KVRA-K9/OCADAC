@@ -15,16 +15,16 @@ export const pt = {
 };
 
 export const en: typeof pt = {
-  voltarInicio: "Back to Home Page",
+  voltarInicio: "Back to Home",
   visaoGeral: "Overview",
   tabelaDetalhada: "Detailed Table",
-  evolucaoTemporal: "Time Evolution",
+  evolucaoTemporal: "Multi-Year Evolution",
   historico: "History",
   ods: "SDGs",
   subtitulo: "Child and Adolescent",
   bandeiraAcre: "Flag of Acre",
   fonteOficial:
-    "Official source: OCAD spreadsheet — SEPLAN/AC, the same database as the BI",
+    "Official source: OCAD spreadsheet — SEPLAN/AC, same database as the BI",
   expandirMenu: "Expand menu",
   recolherMenu: "Collapse menu",
   abrirMenu: "Open menu",

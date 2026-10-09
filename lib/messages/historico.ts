@@ -95,25 +95,25 @@ export const pt = {
 export const en: typeof pt = {
   titulo: "History",
   descricao:
-    "The OCAD normative collection in Acre and the budget calculated in each budget law.",
+    "The OCAD legislative archive in Acre and the budget calculated across each budget law.",
 
-  kpiNormasTitulo: "Mapped norms",
+  kpiNormasTitulo: "Mapped legislation",
   kpiNormasDica: (leis: number, decretos: number, estrutura: number) =>
     `${leis} laws, ${decretos} decrees, ${estrutura} on administrative structure`,
   kpiPeriodoTitulo: "Period covered",
   kpiPeriodoDica: (anos: number) =>
-    `${anos} years of norms on children and adolescents`,
+    `${anos} years of legislation on children and adolescents`,
   kpiOrcamentariasTitulo: "Budget laws",
   kpiOrcamentariasDica: (loas: number, ldos: number) =>
     `${loas} LOAs and ${ldos} LDOs`,
 
-  acervoTitulo: "Normative collection",
-  acervoDescricao: "Choose a norm type to view the list.",
-  naPlanilha: (quantidade: number) => `${quantidade} in the spreadsheet`,
+  acervoTitulo: "Legislative archive",
+  acervoDescricao: "Select a category of legislation to view the list.",
+  naPlanilha: (quantidade: number) => `${quantidade} in spreadsheet`,
   fechar: "Close",
 
   buscaPlaceholder:
-    "Search by number, summary, agency or goal — for example, OCAD",
+    "Search by number, summary, agency, or goal — e.g., OCAD",
   buscaAria: (tipo: string) => `Search in ${tipo}`,
   limparBuscaAria: "Clear search",
   filtroDecadaAria: "Filter by decade",
@@ -122,67 +122,67 @@ export const en: typeof pt = {
   ordens: {
     recentes: "Most recent",
     antigas: "Oldest",
-    numero: "Norm number",
+    numero: "Act number",
   },
   limparFiltros: "Clear filters",
   resultadoNormas: (total: number) =>
-    `${total} ${total === 1 ? "norm" : "norms"}`,
+    `${total} ${total === 1 ? "legal act" : "legal acts"}`,
   deTotal: (total: number) => ` of ${total}`,
 
   ocadPorExercicio: "OCAD by fiscal year",
-  legendaComCuradoria: "Curated — OCAD calculated in the law",
-  legendaSemCuradoria: "Without curation — appropriation of the agencies",
+  legendaComCuradoria: "Curated — OCAD identified in budget law",
+  legendaSemCuradoria: "Uncurated — total agency appropriation",
   exerciciosApurados: (apurados: number, total: number) =>
     `${apurados} of ${total} fiscal years assessed`,
   informacao: "Information: ",
   pandemiaTitulo: (inicio: number, fim: number) =>
-    `COVID-19 pandemic — fiscal years from ${inicio} to ${fim}`,
+    `COVID-19 pandemic — fiscal years ${inicio} to ${fim}`,
   pandemiaTexto:
-    "Emergency declared in March 2020, ended in Brazil in May 2022 (GM/MS Ordinance No. 913/2022) and by WHO in May 2023. The span runs through 2024 for its budget effects.",
+    "Emergency declared in March 2020, terminated in Brazil in May 2022 (GM/MS Ordinance No. 913/2022) and by WHO in May 2023. The timeline extends through 2024 to account for budgetary effects.",
   notaLeitura1:
-    "Each bar is the OCAD calculated in the law for the fiscal year: the education, ISE and early-childhood units summed in full, plus the actions whose name carries one of the descriptors (boy, girl, child, adolescent, adolescence, childhood, child-related, youth, son and sons). The 1995–2009 period has not yet been curated — its annexes predate the electronic publication of the Official Gazette and exist only in physical versions. For those years the bar shows the total appropriation of the agencies.",
+    "Each bar represents the OCAD amount calculated in the budget law for that fiscal year: education, ISE, and early childhood units summed in full, plus actions containing target descriptors (menino, menina, criança, adolescente, adolescência, infância, infantil, juventude, filho, and filhos). The 1995–2009 period has not yet undergone curation — its annexes predate the digital publication of the Official Gazette and exist solely in physical format. For those years, the bar shows the total appropriation of the agencies.",
   notaLeitura2:
-    "Click a bar to go to the law for that fiscal year — sanctioned the previous year, it carries a different date in the header. Nominal values, without inflation adjustment.",
+    "Click a bar to view the budget law for that fiscal year — enacted the previous year, it displays an earlier date in the header. Nominal values, without inflation adjustment.",
   antesDoRealTitulo: (inicio: number, fim: number) =>
-    `Before the real — fiscal years from ${inicio} to ${fim}, converted to reais`,
+    `Pre-Real currency — fiscal years ${inicio} to ${fim}, converted to reais`,
   antesDoRealNota: (salto: number) =>
-    `Fiscal years fixed in cruzeiro, converted to reais through the monetary cuts (Cr$ → CR$ → R$) and without inflation adjustment — which is why they sit on their own scale, not on the one used by the chart above, where they would vanish against the axis. The scale is logarithmic: each doubling of length is worth ten times as much, the only way for the four bars to fit together. The jump to ${salto} is hyperinflation, not policy growth. Click a bar to go to the corresponding law.`,
+    `Fiscal years enacted in cruzeiros, converted to reais through statutory currency reforms (Cr$ → CR$ → R$) without inflation adjustment — which is why they are displayed on a dedicated scale rather than the chart above, where they would be imperceptible against the axis. The scale is logarithmic: each doubling in length represents a tenfold increase, the only way to display the four bars coherently. The surge to ${salto} reflects hyperinflation, not policy expansion. Click a bar to view the corresponding law.`,
 
   exercicioRotulo: (label: string | number) => `Fiscal year ${label}`,
   ocadApurado: (valor: string) => `OCAD calculated: ${valor}`,
   apuracaoSemDetalhe:
-    "Only the education, ISE and early-childhood units, read page by page: the 2014 booklet draws its tables as images, and descriptor scanning does not reach this fiscal year. The value is a floor — in neighboring years this share stays below 1.5%.",
+    "Covers only education, ISE, and early childhood units through page-by-page review: the 2014 budget publication formatted tables as images, preventing descriptor keyword scanning for that year. This amount represents a floor — in surrounding years, this share remains below 1.5%.",
   apuracaoDetalhada: (
     integrais: string,
     acoes: string,
     quantidade: number,
   ) =>
-    `${integrais} in the education, ISE and early-childhood units, summed in full; ${acoes} in ${quantidade} ${
+    `${integrais} in education, ISE, and early childhood units, summed in full; ${acoes} across ${quantidade} ${
       quantidade === 1 ? "action" : "actions"
-    } matched through the descriptors.`,
+    } matched via descriptors.`,
   naoDetalhadoInicio:
-    "The booklet for this fiscal year prints part of the actions without a value: ",
+    "The budget publication for this fiscal year lists several actions without values: ",
   naoDetalhadoFim:
-    " of what the units declare is not detailed on any published line, and therefore could not pass through the descriptors.",
+    " of amounts declared by agencies are not detailed across published line items, and thus could not be scanned by descriptors.",
   dotacaoTotalOrgaos: (valor: string) =>
-    `Total appropriation of the agencies: ${valor}`,
+    `Total agency appropriations: ${valor}`,
   propriosOutrasFontes: (rp: string, outras: string) =>
-    `${rp} own sources · ${outras} other sources`,
-  semCuradoria: "Without curation.",
+    `${rp} own resources · ${outras} other sources`,
+  semCuradoria: "Uncurated.",
   razaoSemApuracao:
-    "The annexes with the unit-level programming exist only in physical versions — electronic publication of the Official Gazette begins at the end of 2009.",
+    "Annexes detailing agency programming exist only in physical print — digital publication of the Official Gazette commenced in late 2009.",
   naLei: (valor: string) => `${valor} in the law`,
 
   fonteRotulo: "Source:",
-  origemLeis: "Child and Adolescent Budget legislation history — SEPLAN/AC",
+  origemLeis: "Child and Adolescent Budget legislative history — SEPLAN/AC",
   arquivoDe: (data: string) => `File dated ${data}`,
   atualizadoNaOrigem: (data: string) => `, updated at source on ${data}`,
-  comNormas: (total: number) => `, with ${total} norms`,
+  comNormas: (total: number) => `, comprising ${total} legal acts`,
   observacoes: [
-    "The 1991 fiscal year (Cr$ 4,518,657 thousand) is lower than 1992 amidst hyperinflation, which does not align with the historical series.",
-    "The 1994 fiscal year law dates from December 1993, when the cruzeiro real was already in effect; the spreadsheet labels the first four fiscal years as Cr$ thousand.",
-    "The conversion from cruzeiro to real is nominal through currency cuts, without inflation adjustment.",
-    "1 norm appears in more than one spreadsheet tab and was counted only once: Law 1,011/1991 (Ordinary Law and Administrative Structure).",
-    "2 law numbers appear in distinct norms, with different links and summaries — source inconsistency, maintained as is: Law 1,156/1995; Law 1,082/1993.",
+    "The 1991 fiscal year (Cr$ 4,518,657 thousand) is lower than 1992 despite prevailing hyperinflation, which does not align with the historical series.",
+    "The 1994 fiscal year law dates from December 1993, when the cruzeiro real was already in effect; the source spreadsheet labels the first four fiscal years as Cr$ thousand.",
+    "Conversion from cruzeiros to reais is nominal based on statutory currency reforms, without inflation adjustment.",
+    "1 legal act appears across multiple spreadsheet tabs and was counted only once: Law 1,011/1991 (Ordinary Law and Administrative Structure).",
+    "2 law numbers appear in separate legal acts with different links and summaries — source inconsistency, preserved as recorded: Law 1,156/1995; Law 1,082/1993.",
   ],
 };

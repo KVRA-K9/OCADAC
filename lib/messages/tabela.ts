@@ -86,26 +86,32 @@ export const pt = {
   nenhumaNorma: "Nenhuma norma desta aba corresponde à busca.",
 };
 
+const ESPECIE_NORMA_EN: Record<string, string> = {
+  Lei: "Law",
+  Decreto: "Decree",
+  "Lei Complementar": "Supplementary Law",
+};
+
 export const en: typeof pt = {
   titulo: "Detailed Table",
   descricao:
-    "Child and Adolescent Budget actions by agency, budget unit and action, from the initial budget to the amount paid. Click a row to open the next level.",
-  registros: (n: number) => `${n} records`,
-  execucaoPorOrgao: "Execution by agency, unit and action",
+    "Child and Adolescent Budget actions by agency, budget unit, and action, from initial budget to amount paid. Click a row to open the next level.",
+  registros: (n: number) => `${n} ${n === 1 ? "record" : "records"}`,
+  execucaoPorOrgao: "Execution by agency, unit, and action",
   visaoTabela: "Table",
   visaoDetalhado: "Detailed",
   exportar: "Export",
   formatoExportacao: "Export format",
   semRegistros: "There are no records to export.",
   pdfExportado: "PDF exported successfully.",
-  falhaPdf: "Failed to export the PDF.",
+  falhaPdf: "Failed to export PDF.",
   xlsxExportado: "Spreadsheet exported successfully.",
-  falhaXlsx: "Failed to export the spreadsheet.",
+  falhaXlsx: "Failed to export spreadsheet.",
 
   filtros: "Filters",
   limparFiltros: "Clear filters",
   ano: "Year",
-  eixo: "Axis",
+  eixo: "Thematic Axis",
   classificacao: "Classification",
   secretaria: "Secretariat",
   todosOsAnos: "All years",
@@ -149,29 +155,29 @@ export const en: typeof pt = {
 
   fontesSelecionadas: (n: number) => `${n} selected funding sources`,
   fonteCodigo: (codigo: string) => `Source ${codigo}`,
-  doRecorte: (pct: string) => `${pct} of the breakdown`,
+  doRecorte: (pct: string) => `${pct} of selection`,
   semRateio:
-    "Values of the funding source itself in each action, as in the spreadsheet — no allocation.",
+    "Direct values per action from source spreadsheet — without apportionment.",
 
   dotacaoNaLei: "Appropriation in the law",
-  totalFixado: "Total set by the law:",
+  totalFixado: "Total set by law:",
   equivaleACortes: (valor: string) =>
-    `Equivalent to ${valor} after the monetary conversions (Cr$ → CR$ → R$), without inflation adjustment.`,
+    `Equivalent to ${valor} following monetary conversions (Cr$ → CR$ → R$), without inflation adjustment.`,
   recursosProprios: "Own resources:",
   outrasFontes: "Other sources:",
   total: "Total:",
   rotuloOrgaos: "Agencies",
-  publicacaoDoe: "Publication in the official gazette",
-  textoNorma: "Full text of the regulation",
+  publicacaoDoe: "Publication in the Official Gazette",
+  textoNorma: "Full text of legislation",
   abasPlanilha: "Spreadsheet tabs",
   abasContagem: (abas: string) =>
-    `${abas} — counted only once in the collection`,
-  citacoes: "Citations (child/adolescent)",
+    `${abas} — counted only once in collection`,
+  citacoes: "Citations (children/adolescents)",
   metasPrioridades: "Goals and priorities",
   numeroNorma: (especie: string, numero: string) =>
-    `${especie} No. ${numero}`,
+    `${ESPECIE_NORMA_EN[especie] ?? especie} No. ${numero}`,
   exercicio: (n: number) => `· fiscal year ${n}`,
   normas: (n: number) =>
-    `${n} ${n === 1 ? "norm" : "norms"}`,
-  nenhumaNorma: "No norm in this tab matches the search.",
+    `${n} ${n === 1 ? "legal act" : "legal acts"}`,
+  nenhumaNorma: "No legal act in this tab matches the search.",
 };

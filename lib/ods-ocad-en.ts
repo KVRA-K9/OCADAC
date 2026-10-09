@@ -10,7 +10,7 @@ export const ODS_TITULOS_EN: Record<
   4: { titulo: "Quality Education", descricaoCurta: "Ensure inclusive and equitable quality education and promote lifelong learning opportunities for all" },
   5: { titulo: "Gender Equality", descricaoCurta: "Achieve gender equality and empower all women and girls" },
   6: { titulo: "Clean Water and Sanitation", descricaoCurta: "Ensure availability and sustainable management of water and sanitation for all" },
-  7: { titulo: "Affordable and Clean Energy", descricaoCurta: "Ensure access to affordable, reliable, sustainable and renewable energy for all" },
+  7: { titulo: "Affordable and Clean Energy", descricaoCurta: "Ensure access to affordable, reliable, sustainable and modern energy for all" },
   8: { titulo: "Decent Work and Economic Growth", descricaoCurta: "Promote sustained, inclusive and sustainable economic growth, full and productive employment and decent work for all" },
   9: { titulo: "Industry, Innovation and Infrastructure", descricaoCurta: "Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation" },
   10: { titulo: "Reduced Inequalities", descricaoCurta: "Reduce inequality within and among countries" },
@@ -20,7 +20,7 @@ export const ODS_TITULOS_EN: Record<
   14: { titulo: "Life Below Water", descricaoCurta: "Conserve and sustainably use the oceans, seas and marine resources for sustainable development" },
   15: { titulo: "Life on Land", descricaoCurta: "Protect, restore and promote sustainable use of terrestrial ecosystems" },
   16: { titulo: "Peace, Justice and Strong Institutions", descricaoCurta: "Promote peaceful and inclusive societies for sustainable development" },
-  17: { titulo: "Partnerships for the Goals", descricaoCurta: "Strengthen the means of implementation and revitalize the global partnership for sustainable development" },
+  17: { titulo: "Partnerships for the Goals", descricaoCurta: "Strengthen the means of implementation and revitalize the Global Partnership for Sustainable Development" },
   18: { titulo: "Ethnic-Racial Equality", descricaoCurta: "Eliminate racism and ethnic-racial discrimination against indigenous and Afro-descendant peoples" },
 };
 
