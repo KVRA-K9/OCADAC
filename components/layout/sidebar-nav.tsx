@@ -20,7 +20,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { LanguageToggle } from "@/components/layout/language-toggle";
 
 const NAV_ITENS = [
   { href: "/", icon: Home, label: "voltarInicio" },
@@ -134,31 +133,15 @@ export function SidebarNav({ collapsed = false, onNavigate }: SidebarNavProps) {
         })}
       </nav>
 
-      {/* Language toggle */}
-      <div
-        className={cn(
-          "flex items-center transition-[padding,justify-content] duration-300",
-          collapsed ? "justify-center px-1 py-1.5" : "justify-between px-4 py-2 border-t border-border/40",
-        )}
-      >
-        <span
-          className={cn(
-            "text-xs font-medium text-sidebar-foreground/70 overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300",
-            collapsed ? "max-w-0 opacity-0" : "max-w-[120px] opacity-100",
-          )}
-        >
-          {t.common.idioma}
-        </span>
-        <LanguageToggle />
-      </div>
-
       {/* Footer note (animated collapse) */}
       <div
         className={cn(
-          "px-4 whitespace-nowrap overflow-hidden text-xs text-sidebar-foreground/60 transition-[max-height,opacity,padding] will-change-[max-height,opacity]",
+          "px-4 overflow-hidden text-xs text-sidebar-foreground/60 transition-[max-height,opacity,padding] will-change-[max-height,opacity]",
           DURATION,
           EASE,
-          collapsed ? "max-h-0 opacity-0 py-0" : "max-h-10 opacity-100 py-1 pb-3",
+          collapsed
+            ? "max-h-0 opacity-0 py-0 whitespace-nowrap"
+            : "max-h-24 opacity-100 border-t border-border/40 py-2.5 whitespace-normal leading-snug",
         )}
       >
         {t.nav.fonteOficial}

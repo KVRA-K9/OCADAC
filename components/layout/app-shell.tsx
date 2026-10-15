@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
-import { useT } from "@/lib/i18n";
+import { LanguageToggle } from "@/components/layout/language-toggle";
+import { useLocale, useT } from "@/lib/i18n";
 
 const STORAGE_KEY = "ocad:sidebar-collapsed";
 
@@ -49,6 +50,42 @@ function setCollapsedStorage(next: boolean) {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(false);
   const t = useT();
+  const { locale } = useLocale();
+  const mainRef = React.useRef<HTMLElement>(null);
+  const pillRef = React.useRef<HTMLDivElement>(null);
+  const isFirstMount = React.useRef(true);
+
+  React.useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+
+    const mainEl = mainRef.current;
+    if (mainEl) {
+      mainEl.classList.remove("animate-locale-swap");
+      void mainEl.offsetWidth;
+      mainEl.classList.add("animate-locale-swap");
+
+      const handleAnimEnd = () => {
+        mainEl.classList.remove("animate-locale-swap");
+      };
+      mainEl.addEventListener("animationend", handleAnimEnd, { once: true });
+    }
+
+    const pillEl = pillRef.current;
+    if (pillEl) {
+      pillEl.classList.remove("animate-badge-pulse");
+      void pillEl.offsetWidth;
+      pillEl.classList.add("animate-badge-pulse");
+
+      const handlePillEnd = () => {
+        pillEl.classList.remove("animate-badge-pulse");
+      };
+      pillEl.addEventListener("animationend", handlePillEnd, { once: true });
+    }
+  }, [locale]);
+
   const stored = React.useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -143,7 +180,19 @@ className={[
           </SheetContent>
         </Sheet>
 
-        <main className="flex-1 p-4 md:p-6 bg-background/55">{children}</main>
+        {/* Balão flutuante de idioma no canto superior direito */}
+        <div
+          ref={pillRef}
+          className="fixed right-4 top-4 z-30 flex h-8 items-center rounded-full border border-border/80 bg-background/85 px-2 shadow-xs backdrop-blur-md transition-all"
+          role="region"
+          aria-label={t.common.idioma}
+        >
+          <LanguageToggle />
+        </div>
+
+        <main ref={mainRef} className="flex-1 p-4 md:p-6 bg-background/55">
+          {children}
+        </main>
       </div>
     </div>
   );

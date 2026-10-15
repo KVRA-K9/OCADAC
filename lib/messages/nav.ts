@@ -7,8 +7,7 @@ export const pt = {
   ods: "ODS",
   subtitulo: "Criança e Adolescente",
   bandeiraAcre: "Bandeira do Acre",
-  fonteOficial:
-    "Fonte oficial: planilha OCAD — SEPLAN/AC, a mesma base do BI",
+  fonteOficial: "Fonte Oficial: OCAD/SEPLAN-AC.",
   expandirMenu: "Expandir menu",
   recolherMenu: "Recolher menu",
   abrirMenu: "Abrir menu",
@@ -23,8 +22,7 @@ export const en: typeof pt = {
   ods: "SDGs",
   subtitulo: "Child and Adolescent",
   bandeiraAcre: "Flag of Acre",
-  fonteOficial:
-    "Official source: OCAD spreadsheet — SEPLAN/AC, same database as the BI",
+  fonteOficial: "Official Source: OCAD/SEPLAN-AC.",
   expandirMenu: "Expand menu",
   recolherMenu: "Collapse menu",
   abrirMenu: "Open menu",

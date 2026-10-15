@@ -150,3 +150,42 @@
   background-size: auto 280px;
   opacity: 0.55;
 }
+
+@keyframes localeSwap {
+  0% {
+    opacity: 0.35;
+    transform: translateY(8px) scale(0.995);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.85;
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes badgePulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.08);
+    box-shadow: 0 0 14px oklch(0.7 0.16 90 / 0.45);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-locale-swap {
+  animation: localeSwap 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform, filter;
+}
+
+.animate-badge-pulse {
+  animation: badgePulse 0.4s ease-out;
+}
