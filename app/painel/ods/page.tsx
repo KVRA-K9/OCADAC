@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { BookOpen, HandHeart, HeartPulse, Search, Target, X } from "lucide-react";
+import { BookOpen, ExternalLink, HandHeart, HeartPulse, Search, Target, TriangleAlert, X } from "lucide-react";
 
 import { PageHeader } from "@/components/dashboard/page-header";
 import { KpiCard } from "@/components/dashboard/kpi-card";
@@ -10,11 +10,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useLocale, useT } from "@/lib/i18n";
 import {
   EIXOS_ODS_OCAD,
   ODS_IMAGEM,
+  getIndicadorFichaUrl,
   getOds,
   type EixoOds,
   type IndicadorOds,
@@ -52,15 +58,43 @@ function StatusDot({ status }: { status: StatusIndicador }) {
   );
 }
 
-function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: EixoOds[] }) {
+function IndicadorCard({
+  ind,
+  odsNumero,
+  eixosFiltro,
+}: {
+  ind: IndicadorOds;
+  odsNumero: number;
+  eixosFiltro: EixoOds[];
+}) {
   const t = useT();
   const eixosVisiveis =
     eixosFiltro.length === 0 ? ind.eixos : ind.eixos.filter((e) => eixosFiltro.includes(e));
+
+  const isProduzido = ind.status === "Produzido";
+  const urlFicha = isProduzido ? getIndicadorFichaUrl(ind.codigo, odsNumero) : null;
+
   return (
-    <div className="flex flex-col gap-1.5 rounded-lg bg-muted/40 p-2.5 ring-1 ring-foreground/5">
-      <div className="flex items-start gap-1.5">
+    <div className="flex flex-col gap-1.5 rounded-lg bg-muted/40 p-2.5 ring-1 ring-foreground/5 transition-colors hover:bg-muted/60">
+      <div className="flex items-center gap-1.5">
         <StatusDot status={ind.status} />
-        <span className="text-xs font-semibold tabular-nums">{ind.codigo}</span>
+        {urlFicha ? (
+          <a
+            href={urlFicha}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={t.ods.verFichaAria(ind.codigo)}
+            aria-label={t.ods.verFichaAria(ind.codigo)}
+            className="group inline-flex items-center gap-1 text-xs font-semibold tabular-nums text-primary underline decoration-primary/30 underline-offset-2 hover:decoration-primary hover:text-primary/80 transition-colors"
+          >
+            <span>{ind.codigo}</span>
+            <ExternalLink className="size-3 opacity-60 transition-transform group-hover:scale-110 group-hover:opacity-100" />
+          </a>
+        ) : (
+          <span className="text-xs font-semibold tabular-nums text-foreground/80">
+            {ind.codigo}
+          </span>
+        )}
       </div>
       <p className="text-[11px] leading-snug text-muted-foreground">{ind.descricao}</p>
       <div className="flex flex-wrap gap-1">
@@ -76,6 +110,53 @@ function IndicadorCard({ ind, eixosFiltro }: { ind: IndicadorOds; eixosFiltro: E
         ))}
       </div>
     </div>
+  );
+}
+
+function SobreLinksButton({ className }: { className?: string }) {
+  const t = useT();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          aria-label={t.ods.sobreLinksTitulo}
+          title={t.ods.sobreLinksTitulo}
+          className={cn(
+            "inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/35 hover:bg-amber-500/30 hover:text-amber-300 transition-colors cursor-pointer select-none",
+            className,
+          )}
+        >
+          <span className="font-bold text-xs leading-none">i</span>
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        align="end"
+        side="bottom"
+        sideOffset={8}
+        className="w-[300px] sm:w-[340px] p-3.5 flex flex-col gap-2.5 rounded-xl border border-border/80 bg-popover/95 text-popover-foreground shadow-xl backdrop-blur-md"
+      >
+        <div className="flex items-center gap-2 text-foreground font-semibold text-sm">
+          <TriangleAlert className="size-4 text-amber-500 shrink-0" />
+          <span>{t.ods.sobreLinksTitulo}</span>
+        </div>
+        <div className="flex flex-col gap-2 text-xs text-muted-foreground leading-relaxed">
+          <p>{t.ods.sobreLinksP1}</p>
+          <p>{t.ods.sobreLinksP2}</p>
+        </div>
+        <div className="pt-2 border-t border-border/40">
+          <a
+            href="https://odsbrasil.gov.br/relatorio/sintese"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+          >
+            <span>{t.ods.linkRelatorioSintese}</span>
+            <ExternalLink className="size-3" />
+          </a>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -97,18 +178,20 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
             />
             <span className="text-sm font-semibold leading-tight">{ods.titulo}</span>
           </div>
-          {onRemover && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onRemover}
-              className="shrink-0"
-              aria-label={t.ods.removerAria(ods.numero)}
-            >
-              <X className="size-4" />
-              {t.ods.remover}
-            </Button>
-          )}
+          <div className="flex items-center gap-2 shrink-0">
+            <SobreLinksButton />
+            {onRemover && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onRemover}
+                className="shrink-0 font-medium text-xs px-2 h-7"
+                aria-label={t.ods.removerAria(ods.numero)}
+              >
+                {t.ods.remover}
+              </Button>
+            )}
+          </div>
         </div>
         <span className="line-clamp-2 text-xs text-muted-foreground">{ods.descricaoCurta}</span>
       </div>
@@ -119,7 +202,12 @@ function OdsColuna({ ods, eixosFiltro, onRemover }: { ods: Ods; eixosFiltro: Eix
           </p>
         )}
         {ods.indicadoresContemplados.map((ind) => (
-          <IndicadorCard key={ind.codigo} ind={ind} eixosFiltro={eixosFiltro} />
+          <IndicadorCard
+            key={ind.codigo}
+            ind={ind}
+            odsNumero={ods.numero}
+            eixosFiltro={eixosFiltro}
+          />
         ))}
       </div>
     </div>

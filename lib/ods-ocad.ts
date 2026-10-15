@@ -49,7 +49,7 @@ export const ODS: Ods[] = [
       { codigo: "1.2.1", descricao: "Proporção da população vivendo abaixo da linha de pobreza nacional, por sexo, idade, condição perante o trabalho e localização geográfica (urbano/rural).", status: "Produzido", eixos: ["Assistência Social"] },
       { codigo: "1.2.2", descricao: "Proporção de homens, mulheres e crianças de todas as idades vivendo na pobreza em todas as dimensões de acordo com as definições nacionais", status: "Produzido", eixos: ["Assistência Social"] },
       { codigo: "1.3.1", descricao: "Proporção da população abrangida por regimes de proteção social, por sexo e para os seguintes grupos populacionais: crianças, população desempregada, população idosa, população com deficiência, mulheres grávidas, crianças recém-nascidas, pessoas que sofreram acidentes de trabalho, população em risco de pobreza e outros grupos populacionais vulneráveis", status: "Em análise/construção", eixos: ["Assistência Social"] },
-      { codigo: "1.4.1", descricao: "Proporção da população que vive em domicílios com acesso a serviços básicos", status: "Em análise/construção", eixos: ["Saúde", "Assistência Social"] },
+      { codigo: "1.4.1", descricao: "Proporção da população que vive em domicílios com acesso a serviços básicos", status: "Produzido", eixos: ["Saúde", "Assistência Social"] },
       { codigo: "1.a.2", descricao: "Proporção do total das despesas públicas com serviços essenciais (educação, saúde e proteção social)", status: "Em análise/construção", eixos: ["Educação", "Saúde", "Assistência Social"] },
       { codigo: "1.b.1", descricao: "Gastos sociais públicos em favor dos pobres", status: "Em análise/construção", eixos: ["Assistência Social"] },
     ],
@@ -90,7 +90,7 @@ export const ODS: Ods[] = [
       { codigo: "3.7.2", descricao: "Número de nascidos vivos de mães adolescentes (grupos etários 10-14 e 15-19) por 1.000 mulheres destes grupos etários", status: "Produzido", eixos: ["Saúde", "Assistência Social"] },
       { codigo: "3.8.1", descricao: "Cobertura de serviços essenciais de saúde", status: "Em análise/construção", eixos: ["Saúde"] },
       { codigo: "3.8.2", descricao: "Proporção de pessoas em famílias com grandes gastos em saúde em relação ao total de despesas familiares", status: "Produzido", eixos: ["Saúde"] },
-      { codigo: "3.9.1", descricao: "Taxa de mortalidade por poluição ambiental (externa e doméstica) do ar", status: "Em análise/construção", eixos: ["Saúde"] },
+      { codigo: "3.9.1", descricao: "Taxa de mortalidade por poluição ambiental (externa e doméstica) do ar", status: "Produzido", eixos: ["Saúde"] },
       { codigo: "3.9.2", descricao: "Taxa de mortalidade atribuída a fontes de água inseguras, saneamento inseguro e falta de higiene", status: "Produzido", eixos: ["Saúde"] },
       { codigo: "3.9.3", descricao: "Taxa de mortalidade atribuída a intoxicação não intencional", status: "Produzido", eixos: ["Saúde"] },
       { codigo: "3.a.1", descricao: "Prevalência do consumo atual de tabaco na população de 15 anos ou mais", status: "Produzido", eixos: ["Saúde"] },
@@ -206,7 +206,7 @@ export const ODS: Ods[] = [
       { codigo: "11.3.2", descricao: "Proporção de cidades com uma estrutura de participação direta da sociedade civil no planejamento e gestão urbana que opera de forma regular e democrática", status: "Produzido", eixos: ["Assistência Social"] },
       { codigo: "11.4.1", descricao: "Total da despesa (pública e privada) per capita gasta na preservação, proteção e conservação de todo o patrimônio cultural e natural, por tipo de patrimônio", status: "Produzido", eixos: ["Educação"] },
       { codigo: "11.6.1", descricao: "Proporção de resíduos sólidos urbanos coletados e gerenciados em instalações controladas pelo total de resíduos urbanos gerados, por cidades", status: "Produzido", eixos: ["Saúde"] },
-      { codigo: "11.6.2", descricao: "Nível médio anual de partículas inaláveis (ex: com diâmetro inferior a 2,5 µm e 10 µm) nas cidades (população ponderada)", status: "Em análise/construção", eixos: ["Saúde"] },
+      { codigo: "11.6.2", descricao: "Nível médio anual de partículas inaláveis (ex: com diâmetro inferior a 2,5 µm e 10 µm) nas cidades (população ponderada)", status: "Produzido", eixos: ["Saúde"] },
       { codigo: "11.7.1", descricao: "Proporção da área construída nas cidades que é espaço público aberto para uso de todos, por sexo, idade e pessoas com deficiência", status: "Sem dados", eixos: ["Educação", "Assistência Social"] },
       { codigo: "11.7.2", descricao: "Proporção da população vítima de assédio físico ou sexual, por sexo, grupo etário, pessoas com deficiência e local da ocorrência, nos últimos 12 meses", status: "Sem dados", eixos: ["Assistência Social"] },
       { codigo: "11.a.1", descricao: "Número de países que possuem políticas urbanas nacionais ou planos de desenvolvimento regional que (a) respondem à dinâmica populacional; (b) garantem um desenvolvimento territorial equilibrado; e (c) possuem responsabilidade fiscal", status: "Produzido", eixos: ["Assistência Social"] },
@@ -366,6 +366,13 @@ export const ODS_IMAGEM: Record<number, string> = {
   17: "/ods/17_0.png",
   18: "/ods/18_0.png",
 };
+
+export function getIndicadorFichaUrl(codigo: string, odsNumero?: number): string | null {
+  const ods = odsNumero ?? parseInt(codigo.split(".")[0], 10);
+  if (!ods || isNaN(ods)) return null;
+  const cleanCode = codigo.replace(/\./g, "").toLowerCase();
+  return `https://odsbrasil.gov.br/objetivo${ods}/indicador${cleanCode}`;
+}
 
 export function contarIndicadoresPorEixo(): Record<EixoOds, number> {
   const contagem: Record<EixoOds, number> = {

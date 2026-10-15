@@ -42,6 +42,7 @@ const pctEn = (fator: number) => (fator * 100).toLocaleString("en-US");
 export const pt = {
   semDados: "Sem dados",
   idioma: "Idioma",
+  fechar: "Fechar",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
   ponderacao: () => PONDERACAO.descricao,
@@ -54,6 +55,7 @@ export const pt = {
 export const en: typeof pt = {
   semDados: "No data",
   idioma: "Language",
+  fechar: "Close",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
   ponderacao: () => {
