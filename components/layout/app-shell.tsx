@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
-import { LanguageToggle } from "@/components/layout/language-toggle";
+import { AtualizacaoBase, LanguageToggle } from "@/components/layout/language-toggle";
 import { useLocale, useT } from "@/lib/i18n";
 
 const STORAGE_KEY = "ocad:sidebar-collapsed";
@@ -180,14 +180,15 @@ className={[
           </SheetContent>
         </Sheet>
 
-        {/* Balão flutuante de idioma no canto superior direito */}
+        {/* Balão flutuante de idioma e atualização no canto superior direito */}
         <div
           ref={pillRef}
-          className="fixed right-4 top-4 z-30 flex h-8 items-center rounded-full border border-border/80 bg-background/85 px-2 shadow-xs backdrop-blur-md transition-all"
+          className="fixed right-4 top-4 z-30 flex h-8 items-center gap-2 rounded-full border border-border/80 bg-background/85 px-2.5 shadow-xs backdrop-blur-md transition-all"
           role="region"
           aria-label={t.common.idioma}
         >
           <LanguageToggle />
+          <AtualizacaoBase prefixClassName="hidden sm:inline" />
         </div>
 
         <main ref={mainRef} className="flex-1 p-4 md:p-6 bg-background/55">

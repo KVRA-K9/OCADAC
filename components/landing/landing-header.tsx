@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { LanguageToggle } from "@/components/layout/language-toggle";
+import { AtualizacaoBase, LanguageToggle } from "@/components/layout/language-toggle";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n";
 
@@ -71,7 +71,13 @@ export function LandingHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-2">
-          <LanguageToggle className="mr-1" />
+          <div className="mr-1 flex items-center gap-2">
+            <LanguageToggle />
+            <AtualizacaoBase
+              className="hidden md:inline-flex"
+              prefixClassName="hidden xl:inline"
+            />
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -102,8 +108,9 @@ export function LandingHeader() {
               {item.label}
             </Link>
           ))}
-          <div className="mt-3">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             <LanguageToggle />
+            <AtualizacaoBase />
           </div>
         </nav>
       </div>

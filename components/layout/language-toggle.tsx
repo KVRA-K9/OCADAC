@@ -1,8 +1,10 @@
 "use client";
 
+import { Clock } from "lucide-react";
+
+import { metaBase } from "@/data/base-ocad";
+import { useFormat, useLocale, useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/lib/i18n";
-import { useT } from "@/lib/i18n";
 
 function BandeiraBrasil({ className }: { className?: string }) {
   return (
@@ -79,5 +81,39 @@ export function LanguageToggle({ className }: { className?: string }) {
         <BandeiraReinoUnido className="block h-3.5 w-5" />
       </button>
     </div>
+  );
+}
+
+/**
+ * Selo discreto com a data e hora da última atualização da base, pensado para
+ * acompanhar as bandeiras de idioma sem disputar espaço com a navegação.
+ */
+export function AtualizacaoBase({
+  className,
+  prefixClassName,
+}: {
+  className?: string;
+  prefixClassName?: string;
+}) {
+  const t = useT();
+  const { formatDataHora } = useFormat();
+  const dataHora = formatDataHora(metaBase.atualizadoEm ?? metaBase.dataArquivo);
+  const textoCompleto = t.common.atualizadoEm(dataHora);
+
+  return (
+    <span
+      title={textoCompleto}
+      aria-label={textoCompleto}
+      className={cn(
+        "inline-flex items-center gap-1.5 whitespace-nowrap border-l border-border/70 pl-2 text-[11px] font-medium tabular-nums text-muted-foreground",
+        className,
+      )}
+    >
+      <Clock className="size-3 shrink-0 opacity-75" aria-hidden />
+      <span>
+        <span className={prefixClassName}>{t.common.atualizadoEmRotulo} </span>
+        {dataHora}
+      </span>
+    </span>
   );
 }

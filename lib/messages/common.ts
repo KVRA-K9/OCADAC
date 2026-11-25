@@ -45,6 +45,8 @@ export const pt = {
   fechar: "Fechar",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
+  atualizadoEmRotulo: "Atualizado em",
+  atualizadoEm: (dataHora: string) => `Atualizado em ${dataHora}`,
   ponderacao: () => PONDERACAO.descricao,
   eixoRotulo: (valor: string) => valor,
   categoriaRotulo: (valor: string) => valor,
@@ -58,6 +60,8 @@ export const en: typeof pt = {
   fechar: "Close",
   ptBrasil: "Português (Brasil)",
   ingles: "English",
+  atualizadoEmRotulo: "Updated",
+  atualizadoEm: (dataHora: string) => `Updated ${dataHora}`,
   ponderacao: () => {
     const de = (classificacao: string) =>
       PONDERACAO.porClassificacao.find((p) => p.classificacao === classificacao);

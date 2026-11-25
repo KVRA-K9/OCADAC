@@ -1,5 +1,5 @@
 import type { OrcamentoItem } from "@/lib/types";
-import { metaBase } from "@/data/base-ocad";
+import { metaBase, origemBase } from "@/data/base-ocad";
 import { getCreditosEquipe } from "@/lib/equipe";
 import { getFormatadores } from "@/lib/format";
 import { MESSAGES, type Locale } from "@/lib/messages";
@@ -450,7 +450,7 @@ export async function exportarXLSX(
   ];
   wsFonte.getRow(1).font = { bold: true };
   for (const [campo, valor] of [
-    [t.fonte, `${MESSAGES[locale].painel.origemBase} — SEPLAN/AC`],
+    [t.fonte, `${origemBase(MESSAGES[locale].painel)} — SEPLAN/AC`],
     [t.arquivo, metaBase.arquivoFonte],
     [t.dataArquivo, getFormatadores(locale).formatData(metaBase.dataArquivo)],
     [t.acoes, String(metaBase.acoes)],

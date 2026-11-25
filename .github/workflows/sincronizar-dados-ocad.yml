@@ -1,0 +1,107 @@
+name: Sincronizar dados do OCAD (API Orçamentos Temáticos)
+
+on:
+  schedule:
+    # 07:00 no horário de Brasília (UTC-3 = 10:00 UTC), de segunda a sexta.
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      ano:
+        description: "Exercício a sincronizar (vazio = ano corrente em Rio Branco)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Simular sem gravar arquivos nem fazer commit"
+        type: boolean
+        required: false
+        default: false
+      force:
+        description: "Ignorar trava de queda na quantidade de ações"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sincronizar-dados-ocad
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    name: Sincronizar base OCAD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificar configuração da API
+        env:
+          ORCAMENTOS_API_URL: ${{ vars.ORCAMENTOS_API_URL }}
+        run: |
+          if [ -z "$ORCAMENTOS_API_URL" ]; then
+            echo "::error::Variável ORCAMENTOS_API_URL não configurada em Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+
+      - name: Consultar API e atualizar base
+        env:
+          ORCAMENTOS_API_URL: ${{ vars.ORCAMENTOS_API_URL }}
+          ORCAMENTOS_API_TOKEN: ${{ secrets.ORCAMENTOS_API_TOKEN }}
+          INPUT_ANO: ${{ inputs.ano }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_FORCE: ${{ inputs.force }}
+        run: |
+          ARGS=()
+          if [ -n "$INPUT_ANO" ]; then
+            ARGS+=("--ano=$INPUT_ANO")
+          fi
+          if [ "$INPUT_DRY_RUN" = "true" ]; then
+            ARGS+=("--dry-run")
+          fi
+          if [ "$INPUT_FORCE" = "true" ]; then
+            ARGS+=("--force")
+          fi
+          npm run dados:api -- "${ARGS[@]}"
+
+      - name: Verificar alterações em data/
+        id: diff
+        run: |
+          if [ -n "$(git status --porcelain data/base-ocad.json data/base-ocad.meta.json)" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Validar integridade da base
+        if: steps.diff.outputs.changed == 'true'
+        run: npm run dados:validar
+
+      - name: Verificar TypeScript e build do Next.js
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          npx tsc --noEmit
+          npm run build
+
+      - name: Commitar e publicar atualização
+        if: steps.diff.outputs.changed == 'true' && inputs.dry_run != true
+        run: |
+          DATA_CORTE=$(node -e "console.log(require('./data/base-ocad.meta.json').dataArquivo)")
+          ANO_BASE=$(node -e "console.log(require('./data/base-ocad.meta.json').anos.join(','))")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/base-ocad.json data/base-ocad.meta.json
+          git commit -m "chore(dados): atualiza base OCAD ${ANO_BASE} (${DATA_CORTE})"
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin "HEAD:${{ github.ref_name }}"

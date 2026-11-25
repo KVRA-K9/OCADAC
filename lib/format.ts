@@ -57,6 +57,27 @@ function criarFormatadores(locale: Locale) {
           timeZone: "UTC",
         });
 
+  const dataHora =
+    locale === "en"
+      ? new Intl.DateTimeFormat(intl, {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hourCycle: "h23",
+          timeZone: "America/Rio_Branco",
+        })
+      : new Intl.DateTimeFormat(intl, {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hourCycle: "h23",
+          timeZone: "America/Rio_Branco",
+        });
+
   const formatMoeda = (valor: number): string => moeda.format(valor);
 
   const formatMoedaCompacta = (valor: number): string =>
@@ -119,6 +140,16 @@ function criarFormatadores(locale: Locale) {
     return Number.isNaN(d.getTime()) ? iso : data.format(d);
   };
 
+  /**
+   * Data e hora (ISO 8601) no fuso de Rio Branco (America/Rio_Branco).
+   * Entradas com apenas a data (AAAA-MM-DD) recorrem a `formatData`.
+   */
+  const formatDataHora = (iso: string): string => {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) return formatData(iso);
+    const d = new Date(iso);
+    return Number.isNaN(d.getTime()) ? iso : dataHora.format(d);
+  };
+
   return {
     formatMoeda,
     formatMoedaCompacta,
@@ -130,6 +161,7 @@ function criarFormatadores(locale: Locale) {
     formatNumero,
     formatDecimal,
     formatData,
+    formatDataHora,
   };
 }
 

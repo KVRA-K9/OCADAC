@@ -1,9 +1,9 @@
 import { useFormat, useT } from "@/lib/i18n";
-import { metaBase } from "@/data/base-ocad";
+import { metaBase, origemBase } from "@/data/base-ocad";
 
 /**
  * Procedência dos números. Toda página que exibe valores declara de qual
- * planilha eles saíram — foi a ausência disso que permitiu, antes, duas páginas
+ * fonte eles saíram — foi a ausência disso que permitiu, antes, duas páginas
  * mostrarem o mesmo exercício com números diferentes.
  */
 export function NotaBase() {
@@ -14,7 +14,7 @@ export function NotaBase() {
     <p className="text-xs leading-relaxed text-muted-foreground">
       {t.painel.fonte}:{" "}
       <span className="font-medium">{metaBase.arquivoFonte}</span> —{" "}
-      {t.painel.origemBase}.{" "}
+      {origemBase(t.painel)}.{" "}
       {t.painel.notaBaseArquivo(
         formatData(metaBase.dataArquivo),
         metaBase.acoes,

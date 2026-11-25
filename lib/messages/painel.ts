@@ -37,6 +37,7 @@ export const pt = {
   mostrarValores: (rotulo: string) => `Mostrar os valores de ${rotulo}`,
   fonte: "Fonte",
   origemBase: "Planilha OCAD — mesma base do BI",
+  origemBaseApi: "API Orçamentos Temáticos — base SICAF/SEPLAN",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `Arquivo de ${data}, com ${acoes} ações consolidadas de ${linhas} linhas por fonte de recurso.`,
 };
@@ -80,6 +81,7 @@ export const en: typeof pt = {
   mostrarValores: (rotulo: string) => `Show amounts for ${rotulo}`,
   fonte: "Source",
   origemBase: "OCAD spreadsheet — same database as the BI",
+  origemBaseApi: "Thematic Budgets API — SICAF/SEPLAN database",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `File dated ${data}, with ${acoes} actions consolidated across ${linhas} rows by funding source.`,
 };

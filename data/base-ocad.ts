@@ -56,8 +56,10 @@ interface RegistroBase {
 export interface MetaBase {
   arquivoFonte: string;
   origem: string;
+  origemTipo?: "api" | "planilha";
   dataArquivo: string;
   geradoEm: string;
+  atualizadoEm?: string;
   anos: number[];
   linhasFonte: number;
   acoes: number;
@@ -68,6 +70,16 @@ export interface MetaBase {
 }
 
 export const metaBase = metaBruta as MetaBase;
+
+/** Rótulo localizado da procedência da base vigente (planilha ou API). */
+export function origemBase(mensagens: {
+  origemBase: string;
+  origemBaseApi: string;
+}): string {
+  return metaBase.origemTipo === "api"
+    ? mensagens.origemBaseApi
+    : mensagens.origemBase;
+}
 
 /** Data do arquivo-fonte em dd/mm/aaaa, para exibição. */
 export const dataBase = (() => {
