@@ -1,9 +1,10 @@
 {
-  "arquivoFonte": "OCAD_Orcamento_Crianca_Adolescente-2776-20261008.xls",
-  "origem": "Planilha OCAD — mesma base do BI",
-  "dataArquivo": "2026-10-08",
-  "geradoEm": "2026-10-08",
-  "atualizadoEm": "2026-10-08T10:10:02-05:00",
+  "arquivoFonte": "OCAD_Orcamento_Crianca_Adolescente-2776-20261125.xls",
+  "origem": "SICAF/SEFAZ — Relatório OCAD (app.wprelocad)",
+  "origemTipo": "sicaf",
+  "dataArquivo": "2026-11-25",
+  "geradoEm": "2026-11-25",
+  "atualizadoEm": "2026-11-25T11:46:56-05:00",
   "anos": [
     2026
   ],
@@ -14,22 +15,22 @@
   "totais": {
     "dotacaoInicial": 4742429246.81,
     "ocadInicial": 3250119500.54,
-    "ocadAtualizado": 3402157945.38,
-    "ocadEmpenhado": 2645773614.9,
-    "ocadLiquidado": 2422580250.89,
-    "ocadPago": 2290897237.68,
-    "ocadDisponivel": 979577694.49
+    "ocadAtualizado": 3401238215.6,
+    "ocadEmpenhado": 3067801661.23,
+    "ocadLiquidado": 2923536734.99,
+    "ocadPago": 2814264716.01,
+    "ocadDisponivel": 477701480.61
   },
   "porClassificacao": {
     "Não exclusivo": {
       "acoes": 98,
       "ocadInicial": 839424232.26,
-      "ocadLiquidado": 702328497.95
+      "ocadLiquidado": 840491529.05
     },
     "Exclusivo": {
       "acoes": 40,
       "ocadInicial": 2410695268.28,
-      "ocadLiquidado": 1720251752.94
+      "ocadLiquidado": 2083045205.94
     }
   }
 }

@@ -38,6 +38,7 @@ export const pt = {
   fonte: "Fonte",
   origemBase: "Planilha OCAD — mesma base do BI",
   origemBaseApi: "API Orçamentos Temáticos — base SICAF/SEPLAN",
+  origemBaseSicaf: "SICAF/SEFAZ — Relatório OCAD (app.wprelocad)",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `Arquivo de ${data}, com ${acoes} ações consolidadas de ${linhas} linhas por fonte de recurso.`,
 };
@@ -82,6 +83,7 @@ export const en: typeof pt = {
   fonte: "Source",
   origemBase: "OCAD spreadsheet — same database as the BI",
   origemBaseApi: "Thematic Budgets API — SICAF/SEPLAN database",
+  origemBaseSicaf: "SICAF/SEFAZ — OCAD Report (app.wprelocad)",
   notaBaseArquivo: (data: string, acoes: number, linhas: number) =>
     `File dated ${data}, with ${acoes} actions consolidated across ${linhas} rows by funding source.`,
 };

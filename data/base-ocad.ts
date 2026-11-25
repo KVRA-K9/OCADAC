@@ -56,7 +56,7 @@ interface RegistroBase {
 export interface MetaBase {
   arquivoFonte: string;
   origem: string;
-  origemTipo?: "api" | "planilha";
+  origemTipo?: "api" | "planilha" | "sicaf";
   dataArquivo: string;
   geradoEm: string;
   atualizadoEm?: string;
@@ -71,14 +71,18 @@ export interface MetaBase {
 
 export const metaBase = metaBruta as MetaBase;
 
-/** Rótulo localizado da procedência da base vigente (planilha ou API). */
+/** Rótulo localizado da procedência da base vigente (planilha, SICAF ou API). */
 export function origemBase(mensagens: {
   origemBase: string;
   origemBaseApi: string;
+  origemBaseSicaf: string;
 }): string {
-  return metaBase.origemTipo === "api"
-    ? mensagens.origemBaseApi
-    : mensagens.origemBase;
+  const porTipo = {
+    api: mensagens.origemBaseApi,
+    sicaf: mensagens.origemBaseSicaf,
+    planilha: mensagens.origemBase,
+  } as const;
+  return porTipo[metaBase.origemTipo ?? "planilha"];
 }
 
 /** Data do arquivo-fonte em dd/mm/aaaa, para exibição. */

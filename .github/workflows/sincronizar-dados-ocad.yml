@@ -1,9 +1,6 @@
 name: Sincronizar dados do OCAD (API Orçamentos Temáticos)
 
 on:
-  schedule:
-    # 07:00 no horário de Brasília (UTC-3 = 10:00 UTC), de segunda a sexta.
-    - cron: "0 10 * * 1-5"
   workflow_dispatch:
     inputs:
       ano:

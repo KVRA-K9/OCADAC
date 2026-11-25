@@ -51,7 +51,7 @@ const RegistroSchema = ValoresSchema.extend({
 const MetaSchema = z.object({
   arquivoFonte: z.string().min(1),
   origem: z.string().min(1),
-  origemTipo: z.enum(["api", "planilha"]).optional(),
+  origemTipo: z.enum(["api", "planilha", "sicaf"]).optional(),
   dataArquivo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   geradoEm: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   atualizadoEm: z

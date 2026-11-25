@@ -9,6 +9,7 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import XLSX from "xlsx";
 
 /** Eixo por função orçamentária, conforme a composição do OCAD. */
 export const EIXO_POR_FUNCAO = {
@@ -81,6 +82,155 @@ export function formatarIsoRioBranco(data = new Date()) {
 
 export function chaveLogicaAcao(secretariaCodigo, unidadeCodigo, programaFuncional) {
   return `${secretariaCodigo}|${unidadeCodigo}|${programaFuncional}`;
+}
+
+const COLUNAS_PLANILHA_OCAD = [
+  "Órgão",
+  "Unidade",
+  "Funcional Programática",
+  "Fonte de Recursos",
+  "Orç. Inicial",
+  "Orç. Atual",
+  "Tipo",
+  "Ref. %",
+  "Empenhado",
+  "% Empenhado",
+  "Liquidado",
+  "% Liquidado",
+  "Pago",
+  "% Pago",
+];
+
+const COL_PLANILHA = {
+  orgao: 0,
+  unidade: 1,
+  funcional: 2,
+  fonte: 3,
+  inicial: 4,
+  atual: 5,
+  tipo: 6,
+  ref: 7,
+  empenhadoPonderado: 9,
+  liquidadoPonderado: 11,
+  pagoPonderado: 13,
+};
+
+function numeroPlanilha(valor) {
+  if (valor === null || valor === undefined || valor === "") return 0;
+  if (typeof valor === "number") return valor;
+  const limpo = String(valor).replace(/\./g, "").replace(",", ".").trim();
+  const n = Number(limpo);
+  return Number.isFinite(n) ? n : 0;
+}
+
+/** "Órgão: 714 SECRETARIA DE ESTADO DE ADMINISTRAÇÃO - SEAD" → código e nome. */
+function separarCodigoNomePlanilha(texto, prefixo) {
+  const limpo = String(texto ?? "").replace(prefixo, "").trim();
+  return { codigo: limpo.slice(0, 3), nome: limpo.slice(3).trim() };
+}
+
+/**
+ * "15000100 RECURSOS PRÓPRIOS DO TESOURO" → código e nome.
+ * Confere o formato para falhar cedo se o layout do relatório mudar.
+ */
+function separarFontePlanilha(texto, chave) {
+  const limpo = String(texto ?? "").trim();
+  const codigo = limpo.slice(0, 8);
+  if (!/^\d{8}$/.test(codigo)) {
+    throw new Error(
+      `Fonte de Recursos fora do padrão na ação ${chave}: "${limpo}". ` +
+        `Esperado um código de 8 dígitos seguido do nome.`,
+    );
+  }
+  return { codigo, nome: limpo.slice(8).trim() };
+}
+
+/**
+ * Lê um buffer Excel (.xls/.xlsx) exportado pelo relatório OCAD do SICAF
+ * (`app.wprelocad`, tipo "Por Unidade") e devolve os itens prontos para
+ * `consolidarRegistrosOcad`.
+ */
+export function lerPlanilhaOcadBuffer(buffer, { ano, origem = "planilha OCAD" }) {
+  const wb = XLSX.read(buffer, { type: "buffer", cellText: false, cellDates: true });
+  const nomeAba = wb.SheetNames[0];
+  if (!nomeAba) {
+    throw new Error(`Planilha vazia (${origem}): nenhuma aba encontrada.`);
+  }
+  const ws = wb.Sheets[nomeAba];
+  const linhas = XLSX.utils.sheet_to_json(ws, {
+    header: 1,
+    blankrows: false,
+    defval: null,
+  });
+
+  const cabecalho = (linhas[0] ?? []).map((c) => String(c ?? "").trim());
+  const faltando = COLUNAS_PLANILHA_OCAD.filter((c) => !cabecalho.includes(c));
+  if (faltando.length > 0) {
+    throw new Error(
+      `Cabeçalho inesperado em ${origem}.\nColunas ausentes: ${faltando.join(", ")}\nEncontrado: ${cabecalho.join(" | ")}`,
+    );
+  }
+
+  const acoes = new Map();
+  let linhasUteis = 0;
+
+  for (const r of linhas.slice(1)) {
+    const tipo = String(r?.[COL_PLANILHA.tipo] ?? "").trim().toUpperCase();
+    if (tipo !== "EX" && tipo !== "NEX") continue;
+    linhasUteis += 1;
+
+    const orgao = separarCodigoNomePlanilha(r[COL_PLANILHA.orgao], "Órgão:");
+    const unidade = separarCodigoNomePlanilha(r[COL_PLANILHA.unidade], "Unidade:");
+    const funcional = String(r[COL_PLANILHA.funcional] ?? "").trim();
+    const programaFuncional = funcional.slice(0, 17);
+    const chave = chaveLogicaAcao(orgao.codigo, unidade.codigo, programaFuncional);
+
+    const ref = numeroPlanilha(r[COL_PLANILHA.ref]) / 100;
+    if (ref <= 0 || ref > 1) {
+      throw new Error(`Ref. % inválido (${r[COL_PLANILHA.ref]}) na ação ${chave}`);
+    }
+
+    const eixo = resolverEixo(chave, programaFuncional);
+    const classificacao = tipo === "EX" ? "Exclusivo" : "Não exclusivo";
+
+    const a = acoes.get(chave) ?? {
+      ano,
+      secretariaCodigo: orgao.codigo,
+      secretariaNome: orgao.nome,
+      unidadeCodigo: unidade.codigo,
+      unidadeNome: unidade.nome,
+      acaoCodigo: programaFuncional.slice(-8),
+      acao: funcional.slice(20).trim(),
+      programaFuncional,
+      eixo,
+      classificacao,
+      ponderador: ref,
+      fontes: [],
+    };
+
+    if (a.ponderador !== ref || a.classificacao !== classificacao) {
+      throw new Error(`Tipo ou Ref. % divergente entre as fontes da ação ${chave}`);
+    }
+
+    const fonte = separarFontePlanilha(r[COL_PLANILHA.fonte], chave);
+    const inicialBruto = numeroPlanilha(r[COL_PLANILHA.inicial]);
+    const atualBruto = numeroPlanilha(r[COL_PLANILHA.atual]);
+
+    a.fontes.push({
+      codigo: fonte.codigo,
+      nome: fonte.nome,
+      dotacaoInicial: inicialBruto,
+      ocadInicial: inicialBruto * ref,
+      ocadAtualizado: atualBruto * ref,
+      ocadEmpenhado: numeroPlanilha(r[COL_PLANILHA.empenhadoPonderado]),
+      ocadLiquidado: numeroPlanilha(r[COL_PLANILHA.liquidadoPonderado]),
+      ocadPago: numeroPlanilha(r[COL_PLANILHA.pagoPonderado]),
+    });
+
+    acoes.set(chave, a);
+  }
+
+  return { itens: [...acoes.values()], linhasUteis };
 }
 
 /**
