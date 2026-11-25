@@ -32,6 +32,9 @@ jobs:
   coletar:
     name: Coletar OCAD (app.wprelocad)
     runs-on: [self-hosted, seplan-sicaf]
+    defaults:
+      run:
+        shell: bash
 
     steps:
       - name: Checkout
