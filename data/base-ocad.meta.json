@@ -4,7 +4,7 @@
   "origemTipo": "sicaf",
   "dataArquivo": "2026-11-25",
   "geradoEm": "2026-11-25",
-  "atualizadoEm": "2026-11-25T11:46:56-05:00",
+  "atualizadoEm": "2026-11-25T12:29:36-05:00",
   "anos": [
     2026
   ],
@@ -16,21 +16,21 @@
     "dotacaoInicial": 4742429246.81,
     "ocadInicial": 3250119500.54,
     "ocadAtualizado": 3401238215.6,
-    "ocadEmpenhado": 3067801661.23,
-    "ocadLiquidado": 2923536734.99,
-    "ocadPago": 2814264716.01,
-    "ocadDisponivel": 477701480.61
+    "ocadEmpenhado": 3067810265.63,
+    "ocadLiquidado": 2923706255.22,
+    "ocadPago": 2814321968.47,
+    "ocadDisponivel": 477531960.38
   },
   "porClassificacao": {
     "Não exclusivo": {
       "acoes": 98,
       "ocadInicial": 839424232.26,
-      "ocadLiquidado": 840491529.05
+      "ocadLiquidado": 840652444.88
     },
     "Exclusivo": {
       "acoes": 40,
       "ocadInicial": 2410695268.28,
-      "ocadLiquidado": 2083045205.94
+      "ocadLiquidado": 2083053810.34
     }
   }
 }

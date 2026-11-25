@@ -108,7 +108,7 @@
         "ocadAtualizado": 38004104.56,
         "ocadEmpenhado": 30652262.26,
         "ocadLiquidado": 30652262.26,
-        "ocadPago": 30593638.2,
+        "ocadPago": 30623088.19,
         "ocadDisponivel": 7351842.3
       }
     ],
@@ -117,7 +117,7 @@
     "ocadAtualizado": 38004104.56,
     "ocadEmpenhado": 30652262.26,
     "ocadLiquidado": 30652262.26,
-    "ocadPago": 30593638.2,
+    "ocadPago": 30623088.19,
     "ocadDisponivel": 7351842.3
   },
   {
@@ -624,9 +624,9 @@
         "ocadInicial": 34578000,
         "ocadAtualizado": 32106727.2,
         "ocadEmpenhado": 30762108.47,
-        "ocadLiquidado": 25038622.96,
+        "ocadLiquidado": 25040959.36,
         "ocadPago": 20842099.01,
-        "ocadDisponivel": 7068104.24
+        "ocadDisponivel": 7065767.84
       },
       {
         "codigo": "15700200",
@@ -655,9 +655,9 @@
     "ocadInicial": 36460800,
     "ocadAtualizado": 34962914.29,
     "ocadEmpenhado": 32935239.1,
-    "ocadLiquidado": 26799194.33,
+    "ocadLiquidado": 26801530.73,
     "ocadPago": 22433252.87,
-    "ocadDisponivel": 8163719.96
+    "ocadDisponivel": 8161383.56
   },
   {
     "ano": 2026,
@@ -3265,7 +3265,7 @@
         "ocadAtualizado": 15035498.29,
         "ocadEmpenhado": 14971593.81,
         "ocadLiquidado": 14825713.96,
-        "ocadPago": 14685665.28,
+        "ocadPago": 14703172.08,
         "ocadDisponivel": 209784.33
       },
       {
@@ -3340,7 +3340,7 @@
     "ocadAtualizado": 23494369.91,
     "ocadEmpenhado": 21292400.79,
     "ocadLiquidado": 21146314.84,
-    "ocadPago": 20936087.18,
+    "ocadPago": 20953593.98,
     "ocadDisponivel": 2348055.07
   },
   {
@@ -3461,19 +3461,19 @@
         "dotacaoInicial": 24461000,
         "ocadInicial": 24461000,
         "ocadAtualizado": 497480,
-        "ocadEmpenhado": 415375.6,
-        "ocadLiquidado": 301661.22,
+        "ocadEmpenhado": 423980,
+        "ocadLiquidado": 310265.62,
         "ocadPago": 301661.22,
-        "ocadDisponivel": 195818.78
+        "ocadDisponivel": 187214.38
       }
     ],
     "dotacaoInicial": 24461000,
     "ocadInicial": 24461000,
     "ocadAtualizado": 497480,
-    "ocadEmpenhado": 415375.6,
-    "ocadLiquidado": 301661.22,
+    "ocadEmpenhado": 423980,
+    "ocadLiquidado": 310265.62,
     "ocadPago": 301661.22,
-    "ocadDisponivel": 195818.78
+    "ocadDisponivel": 187214.38
   },
   {
     "ano": 2026,
@@ -3781,9 +3781,9 @@
         "ocadInicial": 65178720,
         "ocadAtualizado": 88465676.7,
         "ocadEmpenhado": 88239871.85,
-        "ocadLiquidado": 84161684.76,
-        "ocadPago": 79105348.03,
-        "ocadDisponivel": 4303991.94
+        "ocadLiquidado": 84189727.32,
+        "ocadPago": 79113091.3,
+        "ocadDisponivel": 4275949.38
       },
       {
         "codigo": "16350100",
@@ -3792,9 +3792,9 @@
         "ocadInicial": 4404894.91,
         "ocadAtualizado": 1695917.82,
         "ocadEmpenhado": 1692570.33,
-        "ocadLiquidado": 1632217.27,
+        "ocadLiquidado": 1635346.03,
         "ocadPago": 1605779.14,
-        "ocadDisponivel": 63700.55
+        "ocadDisponivel": 60571.79
       },
       {
         "codigo": "16000400",
@@ -3803,9 +3803,9 @@
         "ocadInicial": 2521080,
         "ocadAtualizado": 55904099.7,
         "ocadEmpenhado": 55504109.69,
-        "ocadLiquidado": 46746215.42,
+        "ocadLiquidado": 46864983.52,
         "ocadPago": 38571947.19,
-        "ocadDisponivel": 9157884.28
+        "ocadDisponivel": 9039116.18
       },
       {
         "codigo": "16003110",
@@ -3856,9 +3856,9 @@
     "ocadInicial": 74423094.91,
     "ocadAtualizado": 148384094.21,
     "ocadEmpenhado": 145440151.87,
-    "ocadLiquidado": 132543717.45,
-    "ocadPago": 119286674.37,
-    "ocadDisponivel": 15840376.76
+    "ocadLiquidado": 132693656.88,
+    "ocadPago": 119294417.64,
+    "ocadDisponivel": 15690437.33
   },
   {
     "ano": 2026,
@@ -4101,7 +4101,7 @@
         "ocadAtualizado": 11473549.28,
         "ocadEmpenhado": 11422722.39,
         "ocadLiquidado": 10596185.2,
-        "ocadPago": 9848178.63,
+        "ocadPago": 9850731.03,
         "ocadDisponivel": 877364.08
       },
       {
@@ -4111,9 +4111,9 @@
         "ocadInicial": 2521080,
         "ocadAtualizado": 5984910.42,
         "ocadEmpenhado": 5882767.4,
-        "ocadLiquidado": 4892581.9,
+        "ocadLiquidado": 4901221.9,
         "ocadPago": 3765525.7,
-        "ocadDisponivel": 1092328.52
+        "ocadDisponivel": 1083688.52
       },
       {
         "codigo": "16003110",
@@ -4186,9 +4186,9 @@
     "ocadInicial": 14885104.56,
     "ocadAtualizado": 20631102.96,
     "ocadEmpenhado": 17746866.85,
-    "ocadLiquidado": 15899825.01,
-    "ocadPago": 14024762.24,
-    "ocadDisponivel": 4731277.95
+    "ocadLiquidado": 15908465.01,
+    "ocadPago": 14027314.64,
+    "ocadDisponivel": 4722637.95
   },
   {
     "ano": 2026,
