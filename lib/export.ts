@@ -1,5 +1,5 @@
 import type { OrcamentoItem } from "@/lib/types";
-import { metaBase, origemBase } from "@/data/base-ocad";
+import { metaBase, origemBase, type MetaBase } from "@/data/base-ocad";
 import { getCreditosEquipe } from "@/lib/equipe";
 import { getFormatadores } from "@/lib/format";
 import { MESSAGES, type Locale } from "@/lib/messages";
@@ -88,7 +88,11 @@ function exerciciosLabel(itens: OrcamentoItem[]): string {
   return `${anos[0]}–${anos[anos.length - 1]}`;
 }
 
-function nomeArquivo(extensao: string, locale: Locale = "pt"): string {
+function nomeArquivo(
+  extensao: string,
+  locale: Locale = "pt",
+  meta: MetaBase = metaBase,
+): string {
   const d = new Date();
   const data = new Intl.DateTimeFormat(locale === "en" ? "en-US" : "pt-BR", {
     day: "2-digit",
@@ -101,7 +105,11 @@ function nomeArquivo(extensao: string, locale: Locale = "pt"): string {
     locale === "en"
       ? "ocad_child_and_adolescent_budget_report"
       : "relatorio_orcamento_crianca_adolescente";
-  return `${prefixo}_${data}.${extensao}`;
+  const comp =
+    meta.mesReferencia && meta !== metaBase
+      ? `_ate_${String(meta.mesReferencia).padStart(2, "0")}-${meta.anos[0] ?? ""}`
+      : "";
+  return `${prefixo}${comp}_${data}.${extensao}`;
 }
 
 type JsPDFWithAutoTable = {
@@ -148,6 +156,7 @@ async function carregarLogo(): Promise<string> {
 export async function exportarPDF(
   itens: OrcamentoItem[],
   locale: Locale = "pt",
+  meta: MetaBase = metaBase,
 ): Promise<void> {
   const t = MESSAGES[locale].exportar;
   const { eixoRotulo, categoriaRotulo } = MESSAGES[locale].common;
@@ -380,12 +389,13 @@ export async function exportarPDF(
   });
   d.setTextColor(0, 0, 0);
 
-  d.save(nomeArquivo("pdf", locale));
+  d.save(nomeArquivo("pdf", locale, meta));
 }
 
 export async function exportarXLSX(
   itens: OrcamentoItem[],
   locale: Locale = "pt",
+  meta: MetaBase = metaBase,
 ): Promise<void> {
   const t = MESSAGES[locale].exportar;
   const { eixoRotulo, categoriaRotulo } = MESSAGES[locale].common;
@@ -451,15 +461,15 @@ export async function exportarXLSX(
   wsFonte.getRow(1).font = { bold: true };
   for (const [campo, valor] of [
     [t.fonte, `${origemBase(MESSAGES[locale].painel)} — SEPLAN/AC`],
-    [t.arquivo, metaBase.arquivoFonte],
-    [t.dataArquivo, getFormatadores(locale).formatData(metaBase.dataArquivo)],
-    [t.acoes, String(metaBase.acoes)],
+    [t.arquivo, meta.arquivoFonte],
+    [t.dataArquivo, getFormatadores(locale).formatData(meta.dataArquivo)],
+    [t.acoes, String(meta.acoes)],
     [t.eixo, t.valorEixo],
     [t.ponderacao, MESSAGES[locale].common.ponderacao()],
     [t.colDisponivel, t.valorDisponivel],
     [
       t.linhasOrigem,
-      t.linhasOrigemValor(metaBase.linhasFonte, metaBase.acoes),
+      t.linhasOrigemValor(meta.linhasFonte, meta.acoes),
     ],
   ]) {
     wsFonte.addRow({ campo, valor });
@@ -473,7 +483,7 @@ export async function exportarXLSX(
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = nomeArquivo("xlsx", locale);
+  link.download = nomeArquivo("xlsx", locale, meta);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);

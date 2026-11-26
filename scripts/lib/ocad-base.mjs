@@ -7,7 +7,7 @@
  * metadados num único lugar.
  */
 
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import XLSX from "xlsx";
 
@@ -277,7 +277,16 @@ export function resolverEixo(chave, programaFuncional, eixoSugerido) {
  */
 export function consolidarRegistrosOcad(
   itens,
-  { ano, arquivoFonte, origem, origemTipo = "planilha", dataArquivo, atualizadoEm, linhasFonte },
+  {
+    ano,
+    arquivoFonte,
+    origem,
+    origemTipo = "planilha",
+    dataArquivo,
+    atualizadoEm,
+    linhasFonte,
+    mesReferencia,
+  },
 ) {
   if (!Array.isArray(itens) || itens.length === 0) {
     throw new Error("Nenhuma ação OCAD encontrada para consolidação.");
@@ -455,6 +464,7 @@ export function consolidarRegistrosOcad(
     dataArquivo,
     geradoEm: hojeRioBranco(),
     atualizadoEm: atualizadoEm ?? formatarIsoRioBranco(),
+    ...(Number.isInteger(mesReferencia) ? { mesReferencia } : {}),
     anos,
     linhasFonte: linhasFonte ?? totalLinhas,
     acoes: registros.length,
@@ -562,6 +572,99 @@ export async function gravarBaseSeAlterada(raiz, { registros, meta }, baseAtual)
   await writeFile(destinoDados, dadosJson, "utf8");
   await writeFile(destinoMeta, JSON.stringify(meta, null, 2), "utf8");
   return { alterado: true, destinoDados, destinoMeta };
+}
+
+export function chaveCorteMensal(ano, mes) {
+  return `${ano}-${String(mes).padStart(2, "0")}`;
+}
+
+export async function lerManifestoMeses(raiz) {
+  try {
+    const raw = await readFile(resolve(raiz, "data", "base-ocad-meses.json"), "utf8");
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (err) {
+    if (err && err.code === "ENOENT") return [];
+    throw err;
+  }
+}
+
+export async function lerCorteMensal(raiz, chave) {
+  try {
+    const raw = await readFile(resolve(raiz, "public", "data", "meses", `${chave}.json`), "utf8");
+    const parsed = JSON.parse(raw);
+    if (!parsed || !Array.isArray(parsed.registros) || !parsed.meta) return null;
+    return parsed;
+  } catch (err) {
+    if (err && err.code === "ENOENT") return null;
+    throw err;
+  }
+}
+
+/**
+ * Grava o corte mensal em `public/data/meses/<ano>-<mm>.json` e atualiza o
+ * manifesto `data/base-ocad-meses.json`, evitando reescrita quando não há
+ * mudança substantiva nos dados.
+ */
+export async function gravarCorteMensal(raiz, ano, mes, { registros, meta }) {
+  const chave = chaveCorteMensal(ano, mes);
+  const pastaMeses = resolve(raiz, "public", "data", "meses");
+  const destinoCorte = resolve(pastaMeses, `${chave}.json`);
+  const destinoManifesto = resolve(raiz, "data", "base-ocad-meses.json");
+
+  const metaCorte = { ...meta, mesReferencia: mes };
+  const corteAtual = await lerCorteMensal(raiz, chave);
+  const registrosJson = JSON.stringify(registros);
+
+  const corteIgual =
+    corteAtual &&
+    JSON.stringify(corteAtual.registros) === registrosJson &&
+    corteAtual.meta?.dataArquivo === metaCorte.dataArquivo &&
+    corteAtual.meta?.arquivoFonte === metaCorte.arquivoFonte &&
+    corteAtual.meta?.origem === metaCorte.origem &&
+    corteAtual.meta?.mesReferencia === mes;
+
+  let alterado = false;
+  if (!corteIgual) {
+    await mkdir(pastaMeses, { recursive: true });
+    await writeFile(destinoCorte, JSON.stringify({ meta: metaCorte, registros }), "utf8");
+    alterado = true;
+  }
+
+  const manifestoAtual = await lerManifestoMeses(raiz);
+  const entrada = {
+    chave,
+    ano,
+    mes,
+    dataArquivo: metaCorte.dataArquivo,
+    arquivoFonte: metaCorte.arquivoFonte,
+    origem: metaCorte.origem,
+    origemTipo: metaCorte.origemTipo ?? "sicaf",
+    atualizadoEm: metaCorte.atualizadoEm,
+    acoes: metaCorte.acoes,
+    linhasFonte: metaCorte.linhasFonte,
+    fontesDistintas: metaCorte.fontesDistintas,
+    totais: metaCorte.totais,
+  };
+
+  const manifestoNovo = [
+    ...manifestoAtual.filter((item) => item.chave !== chave),
+    entrada,
+  ].sort((a, b) => b.ano - a.ano || b.mes - a.mes);
+
+  const semTimestamp = (lista) =>
+    lista.map((item) => ({ ...item, atualizadoEm: undefined }));
+
+  if (
+    alterado ||
+    JSON.stringify(semTimestamp(manifestoAtual)) !== JSON.stringify(semTimestamp(manifestoNovo))
+  ) {
+    await mkdir(resolve(raiz, "data"), { recursive: true });
+    await writeFile(destinoManifesto, JSON.stringify(manifestoNovo, null, 2), "utf8");
+    alterado = true;
+  }
+
+  return { alterado, chave, destinoCorte, destinoManifesto };
 }
 
 export function imprimirResumo(meta, { linhasUteis } = {}) {

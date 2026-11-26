@@ -25,8 +25,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
+  OPCAO_MES_ATUAL,
   OPCAO_TODOS,
   anosDisponiveis,
+  mesesDisponiveis,
   orgaosDisponiveis,
 } from "@/data/base-ocad";
 import { EIXOS_OCAD, getEixosOcad } from "@/lib/conteudo-ocad";
@@ -34,6 +36,7 @@ import { useLocale, useT } from "@/lib/i18n";
 
 const filtrosSchema = z.object({
   ano: z.string(),
+  ateMes: z.string(),
   funcao: z.array(z.string()),
   categoriaEconomica: z.string(),
   secretaria: z.array(z.string()),
@@ -43,6 +46,7 @@ type FiltrosFormValues = z.infer<typeof filtrosSchema>;
 
 const VALORES_PADRAO: FiltrosFormValues = {
   ano: OPCAO_TODOS,
+  ateMes: OPCAO_MES_ATUAL,
   funcao: [],
   categoriaEconomica: OPCAO_TODOS,
   secretaria: [],
@@ -55,7 +59,7 @@ interface Opcao {
 
 interface CampoSimples {
   type: "single";
-  name: "ano" | "categoriaEconomica";
+  name: "ano" | "ateMes" | "categoriaEconomica";
   label: string;
   opcoes: Opcao[];
 }
@@ -84,6 +88,8 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
     defaultValues: VALORES_PADRAO,
   });
 
+  const anoSelecionado = form.watch("ano");
+
   React.useEffect(() => {
     const sub = form.watch((values) => {
       onApply(values as FiltrosOrcamento);
@@ -91,9 +97,30 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
     return () => sub.unsubscribe();
   }, [form, onApply]);
 
+  React.useEffect(() => {
+    const mesAtual = form.getValues("ateMes");
+    if (
+      anoSelecionado !== OPCAO_TODOS &&
+      mesAtual !== OPCAO_MES_ATUAL &&
+      !mesAtual.startsWith(`${anoSelecionado}-`)
+    ) {
+      form.setValue("ateMes", OPCAO_MES_ATUAL);
+    }
+  }, [anoSelecionado, form]);
+
   const limpar = () => form.reset(VALORES_PADRAO);
 
   const eixos = getEixosOcad(locale);
+  const variosAnosMeses =
+    new Set(mesesDisponiveis.map((c) => c.ano)).size > 1;
+  const formatadorMes = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat(locale === "en" ? "en-US" : "pt-BR", {
+        month: "long",
+        timeZone: "UTC",
+      }),
+    [locale],
+  );
 
   const OPCOES_ANO: Opcao[] = [
     { value: OPCAO_TODOS, label: t.tabela.todosOsAnos },
@@ -102,6 +129,27 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
       .sort((a, b) => b - a)
       .map((a) => ({ value: String(a), label: String(a) })),
   ];
+
+  const OPCOES_MES: Opcao[] = mesesDisponiveis
+    .filter(
+      (c) =>
+        anoSelecionado === OPCAO_TODOS || c.ano === Number(anoSelecionado),
+    )
+    .map((c) => {
+      const nomeMesBruto = formatadorMes.format(
+        new Date(Date.UTC(c.ano, c.mes - 1, 1)),
+      );
+      const nomeMes =
+        nomeMesBruto.charAt(0).toUpperCase() + nomeMesBruto.slice(1);
+      const prefixo = locale === "en" ? "Through" : "Até";
+      const sufixoAno =
+        variosAnosMeses && anoSelecionado === OPCAO_TODOS ? `/${c.ano}` : "";
+      const sufixoAtual = c.ehAtual ? t.tabela.mesAtualSufixo : "";
+      return {
+        value: c.chave,
+        label: `${prefixo} ${nomeMes}${sufixoAno}${sufixoAtual}`,
+      };
+    });
 
   const OPCOES_FUNCAO: Opcao[] = eixos.map((e, i) => ({
     value: EIXOS_OCAD[i].titulo,
@@ -124,6 +172,12 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
 
   const TODOS_CAMPOS: Campo[] = [
     { type: "single", name: "ano", label: t.tabela.ano, opcoes: OPCOES_ANO },
+    {
+      type: "single",
+      name: "ateMes",
+      label: t.tabela.ateMes,
+      opcoes: OPCOES_MES,
+    },
     {
       type: "multi",
       name: "funcao",
@@ -169,7 +223,7 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {campos.map((campo) => (
             <div key={campo.name} className="flex flex-col gap-1.5">
               <Label htmlFor={`filtro-${campo.name}`} className="text-foreground">{campo.label}</Label>

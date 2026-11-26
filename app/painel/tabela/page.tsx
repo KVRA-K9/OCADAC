@@ -26,17 +26,18 @@ import { toast } from "sonner";
 import { useLocale, useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
+  OPCAO_MES_ATUAL,
   OPCAO_TODOS,
   aplicarFontes,
   filtrarOrcamento,
   fontesDisponiveis,
-  orcamentoData,
   somaValores,
 } from "@/data/base-ocad";
 import { FiltroFonte } from "@/components/dashboard/filtro-fonte";
 import { FichaFonte } from "@/components/dashboard/ficha-fonte";
 import { NotaBase } from "@/components/dashboard/nota-base";
 import { TabelaOrgaos } from "@/components/dashboard/tabela-orgaos";
+import { useBaseMensal } from "@/components/dashboard/use-base-mensal";
 import { exportarPDF, exportarXLSX } from "@/lib/export";
 
 type Visao = "tabela" | "detalhado";
@@ -50,6 +51,7 @@ export default function TabelaPage() {
 
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
     ano: OPCAO_TODOS,
+    ateMes: OPCAO_MES_ATUAL,
     funcao: [],
     categoriaEconomica: OPCAO_TODOS,
     secretaria: [],
@@ -61,9 +63,14 @@ export default function TabelaPage() {
 
   const onApply = React.useCallback((f: FiltrosOrcamento) => setFiltros(f), []);
 
+  const { itens: baseItens, meta: metaAtiva, carregandoMes } = useBaseMensal(
+    filtros.ateMes,
+    t.tabela.erroCarregarMes,
+  );
+
   const filtrados = React.useMemo(
-    () => filtrarOrcamento(orcamentoData, filtros),
-    [filtros],
+    () => filtrarOrcamento(baseItens, filtros),
+    [baseItens, filtros],
   );
 
   const fontes = React.useMemo(() => fontesDisponiveis(filtrados), [filtrados]);
@@ -115,7 +122,7 @@ export default function TabelaPage() {
     }
     setExportando("pdf");
     try {
-      await exportarPDF(recorte, locale);
+      await exportarPDF(recorte, locale, metaAtiva);
       toast.success(t.tabela.pdfExportado);
     } catch {
       toast.error(t.tabela.falhaPdf);
@@ -131,7 +138,7 @@ export default function TabelaPage() {
     }
     setExportando("xlsx");
     try {
-      await exportarXLSX(recorte, locale);
+      await exportarXLSX(recorte, locale, metaAtiva);
       toast.success(t.tabela.xlsxExportado);
     } catch {
       toast.error(t.tabela.falhaXlsx);
@@ -148,6 +155,9 @@ export default function TabelaPage() {
       />
 
       <FiltersForm onApply={onApply} />
+      {carregandoMes && (
+        <p className="text-xs text-muted-foreground">{t.tabela.carregandoMes}</p>
+      )}
 
       <Card>
         <CardHeader>
@@ -254,7 +264,7 @@ export default function TabelaPage() {
               <TabelaOrgaos data={recorte} />
             )}
           </div>
-          <NotaBase />
+          <NotaBase meta={metaAtiva} />
         </CardContent>
       </Card>
     </div>

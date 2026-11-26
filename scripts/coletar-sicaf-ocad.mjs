@@ -15,7 +15,8 @@
  *   npm run dados:sicaf
  *   npm run dados:sicaf -- --dry-run
  *   npm run dados:sicaf -- --mes=11 --ano=2026 --force
- *   npm run dados:sicaf -- --aguardar-manutencao
+ *   npm run dados:sicaf -- --mes=1-10 --apenas-mes-historico
+ *   npm run dados:sicaf -- --aguardar-manutencao --fechar-mes-anterior
  */
 
 import { appendFile } from "node:fs/promises";
@@ -23,12 +24,15 @@ import { dirname, resolve } from "node:path";
 import { setTimeout as aguardarMs } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import {
+  chaveCorteMensal,
   consolidarRegistrosOcad,
   formatarIsoRioBranco,
   gravarBaseSeAlterada,
+  gravarCorteMensal,
   hojeRioBranco,
   imprimirResumo,
   lerBaseAtual,
+  lerCorteMensal,
   lerPlanilhaOcadBuffer,
   reais,
   validarSegurancaAtualizacao,
@@ -59,45 +63,79 @@ const FILTROS_WPRELOCAD = {
   vTIPOREL: "U", // Por Unidade
 };
 
-function mesAtualRioBranco() {
-  return Number(
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/Rio_Branco",
-      month: "numeric",
-    }).format(new Date()),
-  );
+function parsearListaMeses(valor) {
+  const resultado = new Set();
+  for (const parte of String(valor).split(",")) {
+    const trecho = parte.trim();
+    if (!trecho) continue;
+    const mFaixa = trecho.match(/^(\d{1,2})-(\d{1,2})$/);
+    if (mFaixa) {
+      const inicio = Number(mFaixa[1]);
+      const fim = Number(mFaixa[2]);
+      if (inicio < 1 || fim > 12 || inicio > fim) {
+        throw new Error(`Faixa de meses inválida: "${trecho}". Use valores entre 1 e 12 (ex.: 1-10).`);
+      }
+      for (let m = inicio; m <= fim; m += 1) resultado.add(m);
+      continue;
+    }
+    const m = Number(trecho);
+    if (!Number.isInteger(m) || m < 1 || m > 12) {
+      throw new Error(`Mês inválido: "${trecho}".`);
+    }
+    resultado.add(m);
+  }
+  if (resultado.size === 0) {
+    throw new Error(`Nenhum mês informado em "${valor}".`);
+  }
+  return [...resultado].sort((a, b) => a - b);
 }
 
 function lerArgs(argv) {
   const hoje = hojeRioBranco();
+  const anoAtual = Number(hoje.slice(0, 4));
+  const mesAtual = Number(hoje.slice(5, 7));
+  const diaAtual = Number(hoje.slice(8, 10));
+
   const opts = {
     dryRun: false,
     force: false,
     aguardarManutencao: false,
+    apenasMesHistorico: false,
+    fecharMesAnterior: false,
     esperaMaxMin: ESPERA_MAX_MANUTENCAO_MIN,
-    ano: Number(hoje.slice(0, 4)),
-    mes: mesAtualRioBranco(),
+    ano: anoAtual,
+    anoAtual,
+    mesAtual,
+    diaAtual,
+    meses: null,
   };
 
   for (const arg of argv) {
     if (arg === "--dry-run") opts.dryRun = true;
     else if (arg === "--force") opts.force = true;
     else if (arg === "--aguardar-manutencao") opts.aguardarManutencao = true;
+    else if (arg === "--apenas-mes-historico") opts.apenasMesHistorico = true;
+    else if (arg === "--fechar-mes-anterior") opts.fecharMesAnterior = true;
     else if (arg.startsWith("--espera-max-min=")) {
       opts.esperaMaxMin = Number(arg.slice("--espera-max-min=".length));
     } else if (arg.startsWith("--ano=")) opts.ano = Number(arg.slice("--ano=".length));
-    else if (arg.startsWith("--mes=")) opts.mes = Number(arg.slice("--mes=".length));
+    else if (arg.startsWith("--mes=")) opts.meses = parsearListaMeses(arg.slice("--mes=".length));
     else throw new Error(`Argumento desconhecido: ${arg}`);
   }
 
   if (!Number.isInteger(opts.ano) || opts.ano < 2000 || opts.ano > 2100) {
     throw new Error(`Exercício inválido: ${opts.ano}`);
   }
-  if (!Number.isInteger(opts.mes) || opts.mes < 1 || opts.mes > 12) {
-    throw new Error(`Mês inválido: ${opts.mes}`);
-  }
   if (!Number.isFinite(opts.esperaMaxMin) || opts.esperaMaxMin < 0) {
     throw new Error(`Espera máxima inválida: ${opts.esperaMaxMin}`);
+  }
+
+  if (!opts.meses) {
+    if (opts.fecharMesAnterior && opts.ano === anoAtual && diaAtual <= 5 && mesAtual > 1) {
+      opts.meses = [mesAtual - 1, mesAtual];
+    } else {
+      opts.meses = [mesAtual];
+    }
   }
 
   return opts;
@@ -375,7 +413,7 @@ async function main() {
     );
   }
 
-  console.log("3/4 Abrindo app.wprelocad e disparando exportação Excel...");
+  console.log("3/4 Abrindo app.wprelocad e validando exercício ativo...");
   const rRelGet = await requisitar("app.wprelocad", { redirect: "manual" });
   if (rRelGet.status !== 200) {
     throw new Error(
@@ -392,86 +430,110 @@ async function main() {
     );
   }
 
-  const rExcelPost = await requisitar("app.wprelocad", {
-    method: "POST",
-    redirect: "manual",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Referer: new URL("app.wprelocad", SICAF_BASE).toString(),
-    },
-    body: new URLSearchParams({
-      ...FILTROS_WPRELOCAD,
-      vMES: String(opts.mes),
-      GXState: "undefined",
-      _EventName: "E'DOEXCEL'.",
-      _EventGridId: "",
-      _EventRowId: "",
-    }).toString(),
-  });
-
-  const locExcel = rExcelPost.headers.get("location");
-  if (rExcelPost.status !== 302 || !locExcel || !/\.xls/i.test(locExcel)) {
-    const corpoExcel = await rExcelPost.text().catch(() => "");
-    verificarBloqueioWaf(corpoExcel, "exportação Excel em app.wprelocad");
-    throw new Error(
-      `Exportação Excel em app.wprelocad não retornou arquivo (HTTP ${rExcelPost.status}).`,
-    );
-  }
-
-  const { nome: arquivoFonte, dataArquivo, downloadUrl } =
-    extrairNomeEDataArquivo(locExcel);
-  console.log(`4/4 Baixando ${arquivoFonte} (mês ${opts.mes}, exercício ${opts.ano})...`);
-
-  const rDownload = await requisitar(downloadUrl);
-  if (!rDownload.ok) {
-    throw new Error(`Falha ao baixar ${arquivoFonte} (HTTP ${rDownload.status}).`);
-  }
-
-  const buffer = Buffer.from(await rDownload.arrayBuffer());
-  if (buffer.length < 1024) {
-    throw new Error(`Arquivo baixado suspeito/vazio (${buffer.length} bytes).`);
-  }
-
-  const { itens, linhasUteis } = lerPlanilhaOcadBuffer(buffer, {
-    ano: opts.ano,
-    origem: arquivoFonte,
-  });
-
-  const base = consolidarRegistrosOcad(itens, {
-    ano: opts.ano,
-    arquivoFonte,
-    origem: "SICAF/SEFAZ — Relatório OCAD (app.wprelocad)",
-    origemTipo: "sicaf",
-    dataArquivo,
-    atualizadoEm: formatarIsoRioBranco(),
-    linhasFonte: linhasUteis,
-  });
-
   const baseAtual = await lerBaseAtual(raiz);
-  validarSegurancaAtualizacao(base.registros, base.meta, baseAtual, {
-    force: opts.force,
-  });
 
-  let alterado = false;
-  if (opts.dryRun) {
-    console.log("[dry-run] Coleta e validação aprovadas. Nenhum arquivo gravado.");
-  } else {
-    ({ alterado } = await gravarBaseSeAlterada(raiz, base, baseAtual));
-    console.log(
-      alterado
-        ? "Base atualizada em data/base-ocad.json e data/base-ocad.meta.json."
-        : "Base já está atualizada — nenhuma alteração gravada.",
-    );
+  for (const mes of opts.meses) {
+    console.log(`4/4 Exportando mês ${mes}/${opts.ano} no SICAF...`);
+    const rExcelPost = await requisitar("app.wprelocad", {
+      method: "POST",
+      redirect: "manual",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Referer: new URL("app.wprelocad", SICAF_BASE).toString(),
+      },
+      body: new URLSearchParams({
+        ...FILTROS_WPRELOCAD,
+        vMES: String(mes),
+        GXState: "undefined",
+        _EventName: "E'DOEXCEL'.",
+        _EventGridId: "",
+        _EventRowId: "",
+      }).toString(),
+    });
+
+    const locExcel = rExcelPost.headers.get("location");
+    if (rExcelPost.status !== 302 || !locExcel || !/\.xls/i.test(locExcel)) {
+      const corpoExcel = await rExcelPost.text().catch(() => "");
+      verificarBloqueioWaf(corpoExcel, `exportação Excel mês ${mes} em app.wprelocad`);
+      throw new Error(
+        `Exportação Excel (mês ${mes}) em app.wprelocad não retornou arquivo (HTTP ${rExcelPost.status}).`,
+      );
+    }
+
+    const { nome: arquivoFonte, dataArquivo, downloadUrl } =
+      extrairNomeEDataArquivo(locExcel);
+    console.log(`Baixando ${arquivoFonte} (mês ${mes}, exercício ${opts.ano})...`);
+
+    const rDownload = await requisitar(downloadUrl);
+    if (!rDownload.ok) {
+      throw new Error(`Falha ao baixar ${arquivoFonte} (HTTP ${rDownload.status}).`);
+    }
+
+    const buffer = Buffer.from(await rDownload.arrayBuffer());
+    if (buffer.length < 1024) {
+      throw new Error(`Arquivo baixado suspeito/vazio (${buffer.length} bytes).`);
+    }
+
+    const { itens, linhasUteis } = lerPlanilhaOcadBuffer(buffer, {
+      ano: opts.ano,
+      origem: arquivoFonte,
+    });
+
+    const base = consolidarRegistrosOcad(itens, {
+      ano: opts.ano,
+      arquivoFonte,
+      origem: "SICAF/SEFAZ — Relatório OCAD (app.wprelocad)",
+      origemTipo: "sicaf",
+      dataArquivo,
+      atualizadoEm: formatarIsoRioBranco(),
+      linhasFonte: linhasUteis,
+      mesReferencia: mes,
+    });
+
+    const chaveMes = chaveCorteMensal(opts.ano, mes);
+    const ehBasePrincipal =
+      !opts.apenasMesHistorico && opts.ano === opts.anoAtual && mes === opts.mesAtual;
+    const referencia = ehBasePrincipal
+      ? baseAtual
+      : (await lerCorteMensal(raiz, chaveMes)) ?? baseAtual;
+
+    validarSegurancaAtualizacao(base.registros, base.meta, referencia, {
+      force: opts.force,
+    });
+
+    let alterado = false;
+    if (opts.dryRun) {
+      console.log(`[dry-run] Mês ${chaveMes}: coleta e validação aprovadas. Nenhum arquivo gravado.`);
+    } else {
+      const resCorte = await gravarCorteMensal(raiz, opts.ano, mes, base);
+      alterado = resCorte.alterado;
+
+      if (ehBasePrincipal) {
+        const resBase = await gravarBaseSeAlterada(raiz, base, baseAtual);
+        alterado = alterado || resBase.alterado;
+        console.log(
+          resBase.alterado
+            ? `Base vigente atualizada (data/base-ocad.json + corte ${chaveMes}).`
+            : `Base vigente sem alterações (corte ${chaveMes} ${resCorte.alterado ? "atualizado" : "sem alterações"}).`,
+        );
+      } else {
+        console.log(
+          resCorte.alterado
+            ? `Corte mensal ${chaveMes} gravado em public/data/meses/${chaveMes}.json.`
+            : `Corte mensal ${chaveMes} já está atualizado.`,
+        );
+      }
+    }
+
+    imprimirResumo(base.meta, { linhasUteis });
+    await registrarStepSummary({
+      meta: base.meta,
+      baseAtual: referencia,
+      alterado,
+      dryRun: opts.dryRun,
+      mes,
+    });
   }
-
-  imprimirResumo(base.meta, { linhasUteis });
-  await registrarStepSummary({
-    meta: base.meta,
-    baseAtual,
-    alterado,
-    dryRun: opts.dryRun,
-    mes: opts.mes,
-  });
 }
 
 main().catch((err) => {

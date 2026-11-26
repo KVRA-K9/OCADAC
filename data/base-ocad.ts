@@ -17,6 +17,7 @@ import { VALORES_NULOS } from "@/lib/types";
 import { rotuloUnidade } from "@/lib/estagios";
 import dadosBrutos from "@/data/base-ocad.json";
 import metaBruta from "@/data/base-ocad.meta.json";
+import manifestoMesesBruto from "@/data/base-ocad-meses.json";
 
 const EIXO_MAP: Record<string, string> = {
   EDUCACAO: "Educação",
@@ -60,6 +61,7 @@ export interface MetaBase {
   dataArquivo: string;
   geradoEm: string;
   atualizadoEm?: string;
+  mesReferencia?: number;
   anos: number[];
   linhasFonte: number;
   acoes: number;
@@ -69,7 +71,25 @@ export interface MetaBase {
   totais: ValoresOrcamentarios & { ocadEmpenhado: number; ocadPago: number };
 }
 
+export interface CorteMensalMeta {
+  chave: string;
+  ano: number;
+  mes: number;
+  dataArquivo: string;
+  arquivoFonte: string;
+  origem: string;
+  origemTipo?: "api" | "planilha" | "sicaf";
+  atualizadoEm?: string;
+  acoes: number;
+  linhasFonte: number;
+  fontesDistintas: number;
+  totais: ValoresOrcamentarios & { ocadEmpenhado: number; ocadPago: number };
+  ehAtual?: boolean;
+}
+
 export const metaBase = metaBruta as MetaBase;
+
+export const OPCAO_MES_ATUAL = "atual";
 
 /** Rótulo localizado da procedência da base vigente (planilha, SICAF ou API). */
 export function origemBase(mensagens: {
@@ -125,8 +145,8 @@ export const PONDERACAO = (() => {
   };
 })();
 
-function gerarDados(): OrcamentoItem[] {
-  return registros.map((d, i) => ({
+export function normalizarRegistros(lista: RegistroBase[]): OrcamentoItem[] {
+  return lista.map((d, i) => ({
     id: `OCAD-AC-${d.programaFuncional}-${d.unidadeCodigo}-${i}`,
     ano: d.ano,
     funcao: EIXO_MAP[d.eixo] ?? d.eixo,
@@ -151,7 +171,68 @@ function gerarDados(): OrcamentoItem[] {
   }));
 }
 
-export const orcamentoData: OrcamentoItem[] = gerarDados();
+export const orcamentoData: OrcamentoItem[] = normalizarRegistros(registros);
+
+const anoBaseAtual =
+  metaBase.anos[metaBase.anos.length - 1] ?? Number(metaBase.dataArquivo.slice(0, 4));
+const mesBaseAtual =
+  metaBase.mesReferencia ?? Number(metaBase.dataArquivo.slice(5, 7));
+
+const manifestoCortes = (manifestoMesesBruto as CorteMensalMeta[]).filter(
+  (c) => !(c.ano === anoBaseAtual && c.mes === mesBaseAtual),
+);
+
+export const mesesDisponiveis: CorteMensalMeta[] = [
+  {
+    chave: OPCAO_MES_ATUAL,
+    ano: anoBaseAtual,
+    mes: mesBaseAtual,
+    dataArquivo: metaBase.dataArquivo,
+    arquivoFonte: metaBase.arquivoFonte,
+    origem: metaBase.origem,
+    origemTipo: metaBase.origemTipo,
+    atualizadoEm: metaBase.atualizadoEm,
+    acoes: metaBase.acoes,
+    linhasFonte: metaBase.linhasFonte,
+    fontesDistintas: metaBase.fontesDistintas,
+    totais: metaBase.totais,
+    ehAtual: true,
+  },
+  ...manifestoCortes,
+].sort((a, b) => b.ano - a.ano || b.mes - a.mes);
+
+export interface BaseMensalCarregada {
+  itens: OrcamentoItem[];
+  meta: MetaBase;
+}
+
+const cacheCortesMensais = new Map<string, BaseMensalCarregada>();
+
+export async function carregarCorteMensal(
+  chaveMes: string,
+): Promise<BaseMensalCarregada> {
+  if (!chaveMes || chaveMes === OPCAO_MES_ATUAL) {
+    return { itens: orcamentoData, meta: metaBase };
+  }
+
+  const emCache = cacheCortesMensais.get(chaveMes);
+  if (emCache) return emCache;
+
+  const resp = await fetch(`/data/meses/${encodeURIComponent(chaveMes)}.json`);
+  if (!resp.ok) {
+    throw new Error(`Não foi possível carregar o corte mensal ${chaveMes} (HTTP ${resp.status}).`);
+  }
+  const payload = (await resp.json()) as {
+    meta: MetaBase;
+    registros: RegistroBase[];
+  };
+  const carregado: BaseMensalCarregada = {
+    itens: normalizarRegistros(payload.registros),
+    meta: payload.meta,
+  };
+  cacheCortesMensais.set(chaveMes, carregado);
+  return carregado;
+}
 
 export const anosDisponiveis: number[] = [
   ...new Set(orcamentoData.map((d) => d.ano)),
@@ -275,7 +356,8 @@ export interface AgregadoOrgao extends ValoresOrcamentarios {
 }
 
 export function agregarPorOrgao(itens: OrcamentoItem[]): AgregadoOrgao[] {
-  return orgaosDisponiveis
+  const orgaos = [...new Set([...orgaosDisponiveis, ...itens.map((i) => i.orgao)])];
+  return orgaos
     .map((orgao) => {
       const soma = somaValores(itens.filter((i) => i.orgao === orgao));
       return { orgao, ...soma };
@@ -569,7 +651,8 @@ export interface ContagemAcoesSecretaria {
 export function contarAcoesPorSecretaria(
   itens: OrcamentoItem[],
 ): ContagemAcoesSecretaria[] {
-  return orgaosDisponiveis
+  const orgaos = [...new Set([...orgaosDisponiveis, ...itens.map((i) => i.orgao)])];
+  return orgaos
     .map((orgao) => {
       const sub = itens.filter((i) => i.orgao === orgao);
       const exclusivo = sub.filter(

@@ -15,6 +15,8 @@ import { PageHeader } from "@/components/dashboard/page-header";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { CardsUnidade } from "@/components/dashboard/cards-unidade";
 import { FiltersForm } from "@/components/dashboard/filters-form";
+import { NotaBase } from "@/components/dashboard/nota-base";
+import { useBaseMensal } from "@/components/dashboard/use-base-mensal";
 import {
   BudgetPieChart,
   AcoesClassificacaoDonut,
@@ -37,13 +39,13 @@ import {
 import { useFormat, useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
+  OPCAO_MES_ATUAL,
   OPCAO_TODOS,
   agregarPorFuncao,
   agregarPorUnidade,
   compararCategorias,
   contarAcoesPorSecretaria,
   filtrarOrcamento,
-  orcamentoData,
   somaValores,
 } from "@/data/base-ocad";
 
@@ -58,6 +60,7 @@ export default function VisaoGeralPage() {
 
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
     ano: OPCAO_TODOS,
+    ateMes: OPCAO_MES_ATUAL,
     funcao: [],
     categoriaEconomica: OPCAO_TODOS,
     secretaria: [],
@@ -65,9 +68,14 @@ export default function VisaoGeralPage() {
 
   const onApply = React.useCallback((f: FiltrosOrcamento) => setFiltros(f), []);
 
+  const { itens: baseItens, meta: metaAtiva, carregandoMes } = useBaseMensal(
+    filtros.ateMes,
+    t.tabela.erroCarregarMes,
+  );
+
   const filtrados = React.useMemo(
-    () => filtrarOrcamento(orcamentoData, filtros),
-    [filtros],
+    () => filtrarOrcamento(baseItens, filtros),
+    [baseItens, filtros],
   );
 
   const totais = React.useMemo(() => somaValores(filtrados), [filtrados]);
@@ -117,6 +125,9 @@ export default function VisaoGeralPage() {
       />
 
       <FiltersForm onApply={onApply} />
+      {carregandoMes && (
+        <p className="text-xs text-muted-foreground">{t.tabela.carregandoMes}</p>
+      )}
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
@@ -317,6 +328,8 @@ export default function VisaoGeralPage() {
         </div>
         <CardsUnidade data={porUnidade} />
       </div>
+
+      <NotaBase meta={metaAtiva} />
     </div>
   );
 }

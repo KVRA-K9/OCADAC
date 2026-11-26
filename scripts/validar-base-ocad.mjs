@@ -13,6 +13,8 @@ import {
   centavos,
   chaveLogicaAcao,
   lerBaseAtual,
+  lerCorteMensal,
+  lerManifestoMeses,
 } from "./lib/ocad-base.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -59,20 +61,28 @@ const MetaSchema = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}([+-]\d{2}:\d{2}|Z)$/)
     .optional(),
   anos: z.array(z.number().int()).min(1),
+  mesReferencia: z.number().int().min(1).max(12).optional(),
   linhasFonte: z.number().int().positive(),
   acoes: z.number().int().positive(),
   fontesDistintas: z.number().int().positive(),
   totais: ValoresSchema,
 });
 
-async function main() {
-  const atual = await lerBaseAtual(raiz);
-  if (!atual) {
-    throw new Error("Arquivos data/base-ocad.json ou data/base-ocad.meta.json não encontrados.");
-  }
+const ManifestoEntradaSchema = z.object({
+  chave: z.string().regex(/^\d{4}-\d{2}$/),
+  ano: z.number().int().min(2000).max(2100),
+  mes: z.number().int().min(1).max(12),
+  dataArquivo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  arquivoFonte: z.string().min(1),
+  acoes: z.number().int().positive(),
+  linhasFonte: z.number().int().positive(),
+  fontesDistintas: z.number().int().positive(),
+  totais: ValoresSchema,
+});
 
-  const registros = z.array(RegistroSchema).min(1).parse(atual.registros);
-  const meta = MetaSchema.parse(atual.meta);
+function validarConjunto(rawRegistros, rawMeta, rotulo) {
+  const registros = z.array(RegistroSchema).min(1).parse(rawRegistros);
+  const meta = MetaSchema.parse(rawMeta);
 
   const chaves = new Set();
   const fontesGlobais = new Set();
@@ -84,7 +94,7 @@ async function main() {
       r.programaFuncional,
     );
     if (chaves.has(chave)) {
-      throw new Error(`Chave duplicada em base-ocad.json: ${chave}`);
+      throw new Error(`Chave duplicada em ${rotulo}: ${chave}`);
     }
     chaves.add(chave);
 
@@ -92,7 +102,7 @@ async function main() {
       Math.round(r.ocadDisponivel * 100) !==
       Math.round(centavos(r.ocadAtualizado - r.ocadLiquidado) * 100)
     ) {
-      throw new Error(`ocadDisponivel inconsistente na ação ${chave}`);
+      throw new Error(`ocadDisponivel inconsistente em ${rotulo} na ação ${chave}`);
     }
 
     for (const f of r.fontes) {
@@ -102,7 +112,7 @@ async function main() {
         Math.round(centavos(f.ocadAtualizado - f.ocadLiquidado) * 100)
       ) {
         throw new Error(
-          `ocadDisponivel inconsistente na fonte ${f.codigo} da ação ${chave}`,
+          `ocadDisponivel inconsistente em ${rotulo} na fonte ${f.codigo} da ação ${chave}`,
         );
       }
     }
@@ -114,7 +124,7 @@ async function main() {
       );
       if (Math.abs(somaFontes - Math.round(r[campo] * 100)) > r.fontes.length) {
         throw new Error(
-          `Soma das fontes diverge do total da ação em ${campo} (${chave})`,
+          `Soma das fontes diverge do total da ação em ${campo} (${rotulo}, ${chave})`,
         );
       }
     }
@@ -122,12 +132,12 @@ async function main() {
 
   if (meta.acoes !== registros.length) {
     throw new Error(
-      `meta.acoes (${meta.acoes}) ≠ quantidade de registros (${registros.length})`,
+      `meta.acoes (${meta.acoes}) ≠ quantidade de registros (${registros.length}) em ${rotulo}`,
     );
   }
   if (meta.fontesDistintas !== fontesGlobais.size) {
     throw new Error(
-      `meta.fontesDistintas (${meta.fontesDistintas}) ≠ fontes reais (${fontesGlobais.size})`,
+      `meta.fontesDistintas (${meta.fontesDistintas}) ≠ fontes reais (${fontesGlobais.size}) em ${rotulo}`,
     );
   }
 
@@ -135,13 +145,44 @@ async function main() {
     const soma = centavos(registros.reduce((t, r) => t + r[campo], 0));
     if (Math.round(soma * 100) !== Math.round(meta.totais[campo] * 100)) {
       throw new Error(
-        `meta.totais.${campo} (${meta.totais[campo]}) ≠ soma das ações (${soma})`,
+        `meta.totais.${campo} (${meta.totais[campo]}) ≠ soma das ações (${soma}) em ${rotulo}`,
       );
     }
   }
 
+  return { registros, meta, fontesGlobais };
+}
+
+async function main() {
+  const atual = await lerBaseAtual(raiz);
+  if (!atual) {
+    throw new Error("Arquivos data/base-ocad.json ou data/base-ocad.meta.json não encontrados.");
+  }
+
+  const { registros, meta, fontesGlobais } = validarConjunto(
+    atual.registros,
+    atual.meta,
+    "base-ocad.json",
+  );
+
+  const manifesto = z.array(ManifestoEntradaSchema).parse(await lerManifestoMeses(raiz));
+  for (const entrada of manifesto) {
+    const corte = await lerCorteMensal(raiz, entrada.chave);
+    if (!corte) {
+      throw new Error(`Corte mensal ausente: public/data/meses/${entrada.chave}.json`);
+    }
+    const validado = validarConjunto(
+      corte.registros,
+      corte.meta,
+      `public/data/meses/${entrada.chave}.json`,
+    );
+    if (validado.meta.acoes !== entrada.acoes) {
+      throw new Error(`Manifesto ${entrada.chave}: acoes diverge do arquivo mensal.`);
+    }
+  }
+
   console.log(
-    `OK: ${registros.length} ações, ${fontesGlobais.size} fontes distintas, corte ${meta.dataArquivo} (${meta.arquivoFonte}).`,
+    `OK: ${registros.length} ações, ${fontesGlobais.size} fontes distintas, corte ${meta.dataArquivo} (${meta.arquivoFonte}); ${manifesto.length} cortes mensais validados.`,
   );
 }
 

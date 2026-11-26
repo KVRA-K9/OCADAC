@@ -67,6 +67,7 @@ export interface OrcamentoItem {
 
 export interface FiltrosOrcamento {
   ano: string;
+  ateMes: string;
   funcao: string[];
   categoriaEconomica: string;
   secretaria: string[];
