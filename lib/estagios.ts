@@ -175,8 +175,69 @@ export function rotuloUnidade(
  */
 const UNIDADE_GENERICA = "UNIDADE GESTORA";
 
+const CORRECOES_UNIDADE: Record<string, string> = {
+  "UNIDADE GESTORA DA FOLHA DE PAGAMEN TO DE PESSOAL":
+    "UNIDADE GESTORA DA FOLHA DE PAGAMENTO DE PESSOAL",
+  "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB":
+    "FUNDO DE MANUTENÇÃO E DESENVOLVIMENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+  "FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE- FUNDHACRE":
+    "FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE - FUNDHACRE",
+  "FUNDO DE ASSITÊNCIA SOCIAL - FEAS":
+    "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS",
+};
+
+const SIGLAS_PRESERVADAS = new Set([
+  "AC",
+  "FDCA",
+  "FEAS",
+  "FEM",
+  "FUNDES",
+  "FUNDEB",
+  "FUNDHACRE",
+  "IEPTEC",
+  "ISE",
+  "SEAD",
+  "SEASDH",
+  "SEE",
+  "SEEL",
+  "SEHURB",
+  "SEJUSP",
+  "SEMULHER",
+  "SEOP",
+  "SESACRE",
+]);
+
+const PREPOSICOES_PT = new Set(["da", "das", "de", "do", "dos", "e", "em", "na", "no"]);
+
+/**
+ * Converte nomes vindos em caixa alta do SICAF para leitura natural,
+ * preservando siglas institucionais e preposições em minúsculo.
+ */
+export function formatarNomeInstituicao(bruto: string): string {
+  const limpo = bruto
+    .replace(/\s*-\s+/g, " - ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return limpo
+    .split(" ")
+    .map((palavra, idx) => {
+      if (palavra === "-" || palavra === "/") return palavra;
+      const upper = palavra.toUpperCase();
+      const semPontuacao = upper.replace(/[.,;:]+$/, "");
+      if (SIGLAS_PRESERVADAS.has(semPontuacao)) return upper;
+      const lower = palavra.toLowerCase();
+      if (idx > 0 && PREPOSICOES_PT.has(lower)) return lower;
+      return lower.charAt(0).toUpperCase() + lower.slice(1);
+    })
+    .join(" ");
+}
+
 export function nomeUnidade(unidade: string, secretaria: string): string {
-  return unidade.trim().toUpperCase() === UNIDADE_GENERICA
-    ? nomeOrgao(secretaria)
-    : unidade;
+  const normalizada = unidade.trim().toUpperCase();
+  if (normalizada === UNIDADE_GENERICA) {
+    return formatarNomeInstituicao(nomeOrgao(secretaria));
+  }
+  const corrigida = CORRECOES_UNIDADE[normalizada] ?? unidade;
+  return formatarNomeInstituicao(corrigida);
 }

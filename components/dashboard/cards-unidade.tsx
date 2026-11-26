@@ -1,127 +1,156 @@
 "use client";
 
 import * as React from "react";
+import { ChevronDown } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFormat, useLocale, useT } from "@/lib/i18n";
 import {
-  ESTAGIOS_SECRETARIA,
   SERIES_COLORS,
   corSecretaria,
   getRotulosEstagio,
   nomeUnidade,
 } from "@/lib/estagios";
 import type { AgregadoUnidade } from "@/data/base-ocad";
+import { cn } from "@/lib/utils";
 
-const FACE: React.CSSProperties = {
-  backfaceVisibility: "hidden",
-  WebkitBackfaceVisibility: "hidden",
-  // Empilha as duas faces na mesma célula do grid. Diferente de position
-  // absolute, isso deixa o card crescer conforme o conteúdo e continuar se
-  // esticando junto com os vizinhos da linha.
-  gridArea: "1 / 1",
-};
+const ESTAGIOS_EXTRA = ["ocadEmpenhado", "ocadPago"] as const;
 
 function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
   const t = useT();
   const { locale } = useLocale();
-  const { formatMoeda } = useFormat();
+  const { formatMoeda, formatPercent } = useFormat();
   const rotulosEstagio = getRotulosEstagio(locale);
-  // O card abre pelo nome: a identidade vem primeiro e os valores aparecem ao
-  // clicar.
-  const [mostrandoValores, setMostrandoValores] = React.useState(false);
-  // Tom da secretaria: unidades do mesmo órgão se reconhecem pela cor.
-  const cor = corSecretaria(dados.secretaria);
-  // Unidade principal do órgão não tem nome na planilha: mostra o da secretaria.
-  const nome = nomeUnidade(dados.unidade, dados.secretaria);
+  const [expandido, setExpandido] = React.useState(false);
 
-  // Sempre no verso: gira meia volta para ficar legível com o card virado.
-  const faceValores = (
-    <Card
-      className="h-full gap-3 overflow-hidden"
-      style={{
-        ...FACE,
-        transform: "rotateY(180deg)",
-        // Mesma tarja da frente, para as duas faces se lerem como um card só.
-        borderTop: `3px solid ${cor}`,
-      }}
-      aria-hidden={!mostrandoValores}
-    >
-      <CardHeader className="gap-0.5">
-        <CardTitle className="text-base">{dados.rotulo}</CardTitle>
-        <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-          {nome}
-        </p>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-1.5">
-        {ESTAGIOS_SECRETARIA.map((estagio) => (
-          <div key={estagio} className="flex items-baseline justify-between gap-2">
-            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <span
-                className="size-2.5 shrink-0 rounded-sm"
-                style={{ background: SERIES_COLORS[estagio] }}
-              />
-              {rotulosEstagio[estagio]}
-            </span>
-            <span className="text-sm font-semibold tabular-nums">
-              {formatMoeda(dados[estagio])}
-            </span>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
-  );
+  const cor = corSecretaria(dados.secretaria);
+  const nome = nomeUnidade(dados.unidade, dados.secretaria);
+  const pctExec =
+    dados.ocadAtualizado > 0
+      ? dados.ocadLiquidado / dados.ocadAtualizado
+      : null;
+  const larguraBarra =
+    pctExec !== null ? Math.min(Math.max(pctExec * 100, 0), 100) : 0;
 
   return (
-    <div className="relative h-full" style={{ perspective: 1200 }}>
+    <Card className="gap-3 bg-card/95 py-4 ring-1 ring-border transition-colors hover:ring-foreground/25">
       <button
         type="button"
-        onClick={() => setMostrandoValores((v) => !v)}
-        aria-pressed={mostrandoValores}
+        onClick={() => setExpandido((v) => !v)}
+        aria-expanded={expandido}
         aria-label={
-          mostrandoValores
+          expandido
             ? t.painel.mostrarNome(dados.rotulo)
             : t.painel.mostrarValores(dados.rotulo)
         }
-        className="relative grid h-full w-full cursor-pointer rounded-xl text-left transition-transform duration-500 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none motion-reduce:transition-none"
-        style={{
-          transformStyle: "preserve-3d",
-          transform: mostrandoValores ? "rotateY(180deg)" : undefined,
-        }}
+        className="flex w-full cursor-pointer flex-col gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
       >
-        <Card
-          className="h-full min-h-36 gap-3 overflow-hidden"
-          style={{
-            ...FACE,
-            // Tom da secretaria diluído no fundo do card: forte o bastante para
-            // separar um órgão do outro, fraco o bastante para o texto seguir
-            // legível nos dois temas.
-            background: `color-mix(in oklab, ${cor} 18%, var(--card))`,
-            borderTop: `3px solid ${cor}`,
-          }}
-          aria-hidden={mostrandoValores}
-        >
-          <CardContent className="flex h-full w-full flex-col items-center justify-center gap-1.5 text-center">
-            <span className="text-lg font-semibold tracking-tight text-balance">
-              {dados.rotulo}
+        <CardHeader className="w-full gap-1.5 px-4 py-0">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <span
+                aria-hidden
+                className="size-2 shrink-0 rounded-full"
+                style={{ backgroundColor: cor }}
+              />
+              <CardTitle className="truncate text-[13px] font-semibold tracking-tight">
+                {dados.rotulo}
+              </CardTitle>
+            </div>
+            <span
+              title={t.painel.executadoAteAgora}
+              className="shrink-0 rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground tabular-nums"
+            >
+              {pctExec === null ? "—" : formatPercent(pctExec)}
             </span>
-            <span className="line-clamp-3 text-xs leading-snug text-balance text-muted-foreground">
-              {nome}
-            </span>
-          </CardContent>
-        </Card>
+          </div>
 
-        {faceValores}
+          <p className="line-clamp-2 min-h-[2rem] text-xs leading-snug text-muted-foreground">
+            {nome}
+          </p>
+        </CardHeader>
+
+        <CardContent className="mt-auto flex w-full flex-col gap-2.5 px-4 py-0">
+          <div className="flex flex-col gap-1 text-xs">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-muted-foreground">
+                {rotulosEstagio.ocadAtualizado}
+              </span>
+              <span className="font-medium text-foreground tabular-nums">
+                {formatMoeda(dados.ocadAtualizado)}
+              </span>
+            </div>
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <span
+                  aria-hidden
+                  className="size-1.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: SERIES_COLORS.ocadLiquidado }}
+                />
+                {rotulosEstagio.ocadLiquidado}
+              </span>
+              <span className="font-semibold text-foreground tabular-nums">
+                {formatMoeda(dados.ocadLiquidado)}
+              </span>
+            </div>
+          </div>
+
+          <div
+            aria-hidden
+            className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
+          >
+            <div
+              className="h-full rounded-full transition-[width] duration-500 ease-out"
+              style={{
+                width: `${larguraBarra}%`,
+                backgroundColor: SERIES_COLORS.ocadLiquidado,
+              }}
+            />
+          </div>
+
+          {expandido && (
+            <div className="flex flex-col gap-1 border-t border-border/70 pt-2 text-xs">
+              {ESTAGIOS_EXTRA.map((estagio) => (
+                <div
+                  key={estagio}
+                  className="flex items-baseline justify-between gap-2"
+                >
+                  <span className="flex items-center gap-1.5 text-muted-foreground">
+                    <span
+                      aria-hidden
+                      className="size-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: SERIES_COLORS[estagio] }}
+                    />
+                    {rotulosEstagio[estagio]}
+                  </span>
+                  <span className="font-medium text-foreground tabular-nums">
+                    {formatMoeda(dados[estagio])}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center justify-between pt-0.5 text-[11px] text-muted-foreground">
+            <span>{t.painel.acoes(dados.acoes)}</span>
+            <ChevronDown
+              className={cn(
+                "size-3.5 transition-transform duration-200",
+                expandido && "rotate-180",
+              )}
+            />
+          </div>
+        </CardContent>
       </button>
-    </div>
+    </Card>
   );
 }
 
 /**
  * Um card por unidade orçamentária, no mesmo recorte que o BI usa nos filtros —
  * um órgão aparece em mais de um card quando executa por fundos distintos.
- * Cada card abre pelo nome, no tom da secretaria, e vira ao clique para
- * mostrar os valores.
+ * Exibe de frente os valores atualizado e liquidado com barra de execução, e
+ * expande ao clique para mostrar empenhado e pago.
  */
 export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
   const t = useT();
@@ -135,7 +164,7 @@ export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-1 items-start gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {data.map((d) => (
         <CardUnidade key={d.chave} dados={d} />
       ))}
