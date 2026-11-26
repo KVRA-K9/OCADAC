@@ -248,9 +248,10 @@ function extrairEstadoBloqueioSicaf(html) {
     }
   }
 
-  const bloqueadoFlag = Boolean(sdt?.SistemaBloqueado);
-  const bloqueadoTexto = /MANUTEN[ÇC][ÃA]O PROGRAMADA/i.test(html);
-  if (!bloqueadoFlag && !bloqueadoTexto) {
+  const bloqueado = sdt
+    ? Boolean(sdt.SistemaBloqueado)
+    : /MANUTEN[ÇC][ÃA]O PROGRAMADA/i.test(html);
+  if (!bloqueado) {
     return { bloqueado: false, mensagem: "", previsaoMs: null, previsaoTexto: null };
   }
 
