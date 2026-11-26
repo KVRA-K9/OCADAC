@@ -2,8 +2,8 @@ name: Coletar base do OCAD no SICAF (app.wprelocad)
 
 on:
   schedule:
-    # 07:15 no horário de Brasília (UTC-3 = 10:15 UTC), de segunda a sexta.
-    - cron: "15 10 * * 1-5"
+    # 09:30 no horário de Brasília (UTC-3) / 07:30 no Acre (UTC-5) = 12:30 UTC, de segunda a sexta.
+    - cron: "30 12 * * 1-5"
   workflow_dispatch:
     inputs:
       mes:
