@@ -6,6 +6,7 @@ import {
   CheckCircle2,
   FileSignature,
   FileText,
+  Gauge,
   Info,
   PiggyBank,
   Wallet,
@@ -126,6 +127,11 @@ export default function VisaoGeralPage() {
   const doAtualizado = (v: number) =>
     totais.ocadAtualizado > 0 ? formatPercent(v / totais.ocadAtualizado) : "—";
 
+  const pctExecutado =
+    !semDados && totais.ocadAtualizado > 0
+      ? (totais.ocadLiquidado / totais.ocadAtualizado) * 100
+      : null;
+
   return (
     <div className="flex flex-col gap-6">
       <PageHeader
@@ -140,6 +146,25 @@ export default function VisaoGeralPage() {
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <KpiCard
+          className="col-span-full"
+          titulo={t.painel.executadoAteAgora}
+          valor={
+            pctExecutado === null
+              ? "—"
+              : formatPercent(pctExecutado / 100)
+          }
+          progressoPct={pctExecutado ?? 0}
+          dica={
+            semDados
+              ? t.common.semDados
+              : t.painel.executadoResumo(
+                  formatMoeda(totais.ocadLiquidado),
+                  formatMoeda(totais.ocadAtualizado),
+                )
+          }
+          icone={Gauge}
+        />
         <KpiCard
           titulo={t.painel.orcamentoInicial}
           valor={semDados ? "—" : formatMoeda(totais.ocadInicial)}

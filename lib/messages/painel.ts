@@ -8,6 +8,9 @@ export const pt = {
   liquidado: "Liquidado",
   pago: "Pago",
   disponivel: "Disponível",
+  executadoAteAgora: "Executado até agora",
+  executadoResumo: (liquidado: string, atualizado: string) =>
+    `${liquidado} liquidados de ${atualizado} atualizados`,
   acoes: (n: number) => `${n} ações`,
   variacaoSobreInicial: (variacao: string, delta: string) =>
     `${variacao} sobre o inicial · ${delta}`,
@@ -53,6 +56,9 @@ export const en: typeof pt = {
   liquidado: "Settled",
   pago: "Paid",
   disponivel: "Available",
+  executadoAteAgora: "Executed so far",
+  executadoResumo: (liquidado: string, atualizado: string) =>
+    `${liquidado} settled of ${atualizado} updated`,
   acoes: (n: number) => `${n} ${n === 1 ? "action" : "actions"}`,
   variacaoSobreInicial: (variacao: string, delta: string) =>
     `${variacao} vs. initial · ${delta}`,
