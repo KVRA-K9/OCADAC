@@ -7,13 +7,16 @@ import {
   OPCAO_MES_ATUAL,
   carregarCorteMensal,
   metaBase,
+  obterCorteMensalEmCache,
   orcamentoData,
+  precarregarCortesMensais,
   type BaseMensalCarregada,
 } from "@/data/base-ocad";
 
 /**
  * Carrega sob demanda o corte mensal selecionado no filtro "Execução até",
- * mantendo a base vigente em memória sem requisições extras na carga inicial.
+ * lendo diretamente do cache em memória quando já disponível para evitar
+ * qualquer frame intermediário ou piscadela na troca de mês.
  */
 export function useBaseMensal(ateMes: string, erroMensagem: string) {
   const [carregado, setCarregado] = React.useState<{
@@ -22,23 +25,28 @@ export function useBaseMensal(ateMes: string, erroMensagem: string) {
   } | null>(null);
   const [falhaChave, setFalhaChave] = React.useState<string | null>(null);
 
-  const ehAtual = !ateMes || ateMes === OPCAO_MES_ATUAL;
-  const precisaBuscar = !ehAtual && carregado?.chave !== ateMes;
+  React.useEffect(() => {
+    precarregarCortesMensais();
+  }, []);
+
+  const chaveAlvo = ateMes || OPCAO_MES_ATUAL;
+  const emCache = obterCorteMensalEmCache(chaveAlvo);
+  const precisaBuscar = emCache === null && carregado?.chave !== chaveAlvo;
 
   React.useEffect(() => {
     if (!precisaBuscar) return;
 
     let cancelado = false;
-    carregarCorteMensal(ateMes)
+    carregarCorteMensal(chaveAlvo)
       .then((base) => {
         if (!cancelado) {
           setFalhaChave(null);
-          setCarregado({ chave: ateMes, base });
+          setCarregado({ chave: chaveAlvo, base });
         }
       })
       .catch(() => {
         if (!cancelado) {
-          setFalhaChave(ateMes);
+          setFalhaChave(chaveAlvo);
           toast.error(erroMensagem);
         }
       });
@@ -46,15 +54,15 @@ export function useBaseMensal(ateMes: string, erroMensagem: string) {
     return () => {
       cancelado = true;
     };
-  }, [ateMes, erroMensagem, precisaBuscar]);
+  }, [chaveAlvo, erroMensagem, precisaBuscar]);
 
-  const baseAtiva = ehAtual
-    ? { itens: orcamentoData, meta: metaBase }
-    : carregado?.chave === ateMes
+  const baseAtiva =
+    emCache ??
+    (carregado?.chave === chaveAlvo
       ? carregado.base
-      : (carregado?.base ?? { itens: orcamentoData, meta: metaBase });
+      : (carregado?.base ?? { itens: orcamentoData, meta: metaBase }));
 
-  const carregandoMes = precisaBuscar && falhaChave !== ateMes;
+  const carregandoMes = precisaBuscar && falhaChave !== chaveAlvo;
 
   return { ...baseAtiva, carregandoMes };
 }

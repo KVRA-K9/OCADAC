@@ -207,31 +207,74 @@ export interface BaseMensalCarregada {
 }
 
 const cacheCortesMensais = new Map<string, BaseMensalCarregada>();
+const requisicoesEmCurso = new Map<string, Promise<BaseMensalCarregada>>();
+
+export function obterCorteMensalEmCache(
+  chaveMes: string,
+): BaseMensalCarregada | null {
+  if (!chaveMes || chaveMes === OPCAO_MES_ATUAL) {
+    return { itens: orcamentoData, meta: metaBase };
+  }
+  return cacheCortesMensais.get(chaveMes) ?? null;
+}
 
 export async function carregarCorteMensal(
   chaveMes: string,
 ): Promise<BaseMensalCarregada> {
-  if (!chaveMes || chaveMes === OPCAO_MES_ATUAL) {
-    return { itens: orcamentoData, meta: metaBase };
-  }
-
-  const emCache = cacheCortesMensais.get(chaveMes);
+  const emCache = obterCorteMensalEmCache(chaveMes);
   if (emCache) return emCache;
 
-  const resp = await fetch(`/data/meses/${encodeURIComponent(chaveMes)}.json`);
-  if (!resp.ok) {
-    throw new Error(`Não foi possível carregar o corte mensal ${chaveMes} (HTTP ${resp.status}).`);
+  const emCurso = requisicoesEmCurso.get(chaveMes);
+  if (emCurso) return emCurso;
+
+  const promessa = fetch(`/data/meses/${encodeURIComponent(chaveMes)}.json`)
+    .then(async (resp) => {
+      if (!resp.ok) {
+        throw new Error(
+          `Não foi possível carregar o corte mensal ${chaveMes} (HTTP ${resp.status}).`,
+        );
+      }
+      const payload = (await resp.json()) as {
+        meta: MetaBase;
+        registros: RegistroBase[];
+      };
+      const carregado: BaseMensalCarregada = {
+        itens: normalizarRegistros(payload.registros),
+        meta: payload.meta,
+      };
+      cacheCortesMensais.set(chaveMes, carregado);
+      return carregado;
+    })
+    .finally(() => {
+      requisicoesEmCurso.delete(chaveMes);
+    });
+
+  requisicoesEmCurso.set(chaveMes, promessa);
+  return promessa;
+}
+
+let precarregamentoIniciado = false;
+
+/** Pré-carrega em segundo plano os cortes anteriores para troca instantânea. */
+export function precarregarCortesMensais(): void {
+  if (precarregamentoIniciado || typeof window === "undefined") return;
+  precarregamentoIniciado = true;
+
+  const pendentes = mesesDisponiveis
+    .filter((m) => !m.ehAtual && !cacheCortesMensais.has(m.chave))
+    .map((m) => m.chave);
+
+  if (pendentes.length === 0) return;
+
+  const disparar = () => {
+    void Promise.allSettled(pendentes.map((chave) => carregarCorteMensal(chave)));
+  };
+
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(disparar, { timeout: 1500 });
+  } else {
+    setTimeout(disparar, 300);
   }
-  const payload = (await resp.json()) as {
-    meta: MetaBase;
-    registros: RegistroBase[];
-  };
-  const carregado: BaseMensalCarregada = {
-    itens: normalizarRegistros(payload.registros),
-    meta: payload.meta,
-  };
-  cacheCortesMensais.set(chaveMes, carregado);
-  return carregado;
 }
 
 export const anosDisponiveis: number[] = [

@@ -4,7 +4,7 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Filter, RotateCcw } from "lucide-react";
+import { Filter, Loader2, RotateCcw } from "lucide-react";
 
 import {
   Card,
@@ -77,9 +77,14 @@ type Campo = CampoSimples | CampoMulti;
 interface FiltersFormProps {
   onApply: (filtros: FiltrosOrcamento) => void;
   ocultar?: (keyof FiltrosOrcamento)[];
+  carregando?: boolean;
 }
 
-export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
+export function FiltersForm({
+  onApply,
+  ocultar = [],
+  carregando = false,
+}: FiltersFormProps) {
   const t = useT();
   const { locale } = useLocale();
 
@@ -208,6 +213,12 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
         <CardTitle className="flex items-center gap-2 text-sm text-foreground">
           <Filter className="size-4" />
           {t.tabela.filtros}
+          <Loader2
+            aria-hidden={!carregando}
+            className={`size-3.5 animate-spin text-muted-foreground transition-opacity duration-200 ${
+              carregando ? "opacity-100" : "opacity-0"
+            }`}
+          />
         </CardTitle>
         <CardAction>
           <Button
@@ -223,7 +234,7 @@ export function FiltersForm({ onApply, ocultar = [] }: FiltersFormProps) {
         </CardAction>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {campos.map((campo) => (
             <div key={campo.name} className="flex flex-col gap-1.5">
               <Label htmlFor={`filtro-${campo.name}`} className="text-foreground">{campo.label}</Label>

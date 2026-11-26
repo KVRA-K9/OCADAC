@@ -154,10 +154,7 @@ export default function TabelaPage() {
         descricao={t.tabela.descricao}
       />
 
-      <FiltersForm onApply={onApply} />
-      {carregandoMes && (
-        <p className="text-xs text-muted-foreground">{t.tabela.carregandoMes}</p>
-      )}
+      <FiltersForm onApply={onApply} carregando={carregandoMes} />
 
       <Card>
         <CardHeader>
