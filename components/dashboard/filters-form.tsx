@@ -27,6 +27,7 @@ import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_MES_ATUAL,
   OPCAO_TODOS,
+  anoPadrao,
   anosDisponiveis,
   mesesDisponiveis,
   orgaosDisponiveis,
@@ -45,7 +46,7 @@ const filtrosSchema = z.object({
 type FiltrosFormValues = z.infer<typeof filtrosSchema>;
 
 const VALORES_PADRAO: FiltrosFormValues = {
-  ano: OPCAO_TODOS,
+  ano: anoPadrao,
   ateMes: OPCAO_MES_ATUAL,
   funcao: [],
   categoriaEconomica: OPCAO_TODOS,
@@ -78,12 +79,14 @@ interface FiltersFormProps {
   onApply: (filtros: FiltrosOrcamento) => void;
   ocultar?: (keyof FiltrosOrcamento)[];
   carregando?: boolean;
+  orgaos?: string[];
 }
 
 export function FiltersForm({
   onApply,
   ocultar = [],
   carregando = false,
+  orgaos = orgaosDisponiveis,
 }: FiltersFormProps) {
   const t = useT();
   const { locale } = useLocale();
@@ -102,22 +105,9 @@ export function FiltersForm({
     return () => sub.unsubscribe();
   }, [form, onApply]);
 
-  React.useEffect(() => {
-    const mesAtual = form.getValues("ateMes");
-    if (
-      anoSelecionado !== OPCAO_TODOS &&
-      mesAtual !== OPCAO_MES_ATUAL &&
-      !mesAtual.startsWith(`${anoSelecionado}-`)
-    ) {
-      form.setValue("ateMes", OPCAO_MES_ATUAL);
-    }
-  }, [anoSelecionado, form]);
-
   const limpar = () => form.reset(VALORES_PADRAO);
 
   const eixos = getEixosOcad(locale);
-  const variosAnosMeses =
-    new Set(mesesDisponiveis.map((c) => c.ano)).size > 1;
   const formatadorMes = React.useMemo(
     () =>
       new Intl.DateTimeFormat(locale === "en" ? "en-US" : "pt-BR", {
@@ -127,19 +117,13 @@ export function FiltersForm({
     [locale],
   );
 
-  const OPCOES_ANO: Opcao[] = [
-    { value: OPCAO_TODOS, label: t.tabela.todosOsAnos },
-    ...anosDisponiveis
-      .slice()
-      .sort((a, b) => b - a)
-      .map((a) => ({ value: String(a), label: String(a) })),
-  ];
+  const OPCOES_ANO: Opcao[] = anosDisponiveis
+    .slice()
+    .sort((a, b) => b - a)
+    .map((a) => ({ value: String(a), label: String(a) }));
 
   const OPCOES_MES: Opcao[] = mesesDisponiveis
-    .filter(
-      (c) =>
-        anoSelecionado === OPCAO_TODOS || c.ano === Number(anoSelecionado),
-    )
+    .filter((c) => c.ano === Number(anoSelecionado))
     .map((c) => {
       const nomeMesBruto = formatadorMes.format(
         new Date(Date.UTC(c.ano, c.mes - 1, 1)),
@@ -147,12 +131,10 @@ export function FiltersForm({
       const nomeMes =
         nomeMesBruto.charAt(0).toUpperCase() + nomeMesBruto.slice(1);
       const prefixo = locale === "en" ? "Through" : "Até";
-      const sufixoAno =
-        variosAnosMeses && anoSelecionado === OPCAO_TODOS ? `/${c.ano}` : "";
       const sufixoAtual = c.ehAtual ? t.tabela.mesAtualSufixo : "";
       return {
         value: c.chave,
-        label: `${prefixo} ${nomeMes}${sufixoAno}${sufixoAtual}`,
+        label: `${prefixo} ${nomeMes}${sufixoAtual}`,
       };
     });
 
@@ -170,10 +152,25 @@ export function FiltersForm({
     },
   ];
 
-  const OPCOES_SECRETARIA: Opcao[] = orgaosDisponiveis.map((s) => ({
+  const OPCOES_SECRETARIA: Opcao[] = orgaos.map((s) => ({
     value: s,
     label: s,
   }));
+
+  const aoMudarSelect = (name: CampoSimples["name"], valor: string) => {
+    if (name === "ano") {
+      const mesMaisRecenteDoAno = mesesDisponiveis.find(
+        (c) => c.ano === Number(valor),
+      );
+      form.reset({
+        ...form.getValues(),
+        ano: valor,
+        ateMes: mesMaisRecenteDoAno?.chave ?? OPCAO_MES_ATUAL,
+      });
+      return;
+    }
+    form.setValue(name, valor);
+  };
 
   const TODOS_CAMPOS: Campo[] = [
     { type: "single", name: "ano", label: t.tabela.ano, opcoes: OPCOES_ANO },
@@ -243,7 +240,10 @@ export function FiltersForm({
                   control={form.control}
                   name={campo.name}
                   render={({ field }) => (
-                    <Select value={field.value} onValueChange={field.onChange}>
+                    <Select
+                      value={field.value}
+                      onValueChange={(v) => aoMudarSelect(campo.name, v)}
+                    >
                       <SelectTrigger id={`filtro-${campo.name}`} className="w-full">
                         <SelectValue placeholder={campo.label} />
                       </SelectTrigger>

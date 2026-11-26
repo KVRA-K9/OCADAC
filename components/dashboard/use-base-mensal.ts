@@ -18,7 +18,11 @@ import {
  * lendo diretamente do cache em memória quando já disponível para evitar
  * qualquer frame intermediário ou piscadela na troca de mês.
  */
-export function useBaseMensal(ateMes: string, erroMensagem: string) {
+export function useBaseMensal(
+  ateMes: string,
+  ano: string,
+  erroMensagem: string,
+) {
   const [carregado, setCarregado] = React.useState<{
     chave: string;
     base: BaseMensalCarregada;
@@ -26,8 +30,9 @@ export function useBaseMensal(ateMes: string, erroMensagem: string) {
   const [falhaChave, setFalhaChave] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    precarregarCortesMensais();
-  }, []);
+    const anoNum = Number(ano);
+    precarregarCortesMensais(Number.isFinite(anoNum) ? anoNum : undefined);
+  }, [ano]);
 
   const chaveAlvo = ateMes || OPCAO_MES_ATUAL;
   const emCache = obterCorteMensalEmCache(chaveAlvo);

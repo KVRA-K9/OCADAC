@@ -10,6 +10,7 @@
     "dados": "node scripts/gerar-base-ocad.mjs",
     "dados:api": "node scripts/sincronizar-api-ocad.mjs",
     "dados:sicaf": "node scripts/coletar-sicaf-ocad.mjs",
+    "dados:pasta": "node scripts/importar-meses-pasta.mjs",
     "dados:validar": "node scripts/validar-base-ocad.mjs",
     "dados:historico": "node scripts/gerar-historico-pond.mjs",
     "historico:leis": "node scripts/gerar-historico-leis.mjs"

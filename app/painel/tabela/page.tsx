@@ -28,6 +28,7 @@ import type { FiltrosOrcamento } from "@/lib/types";
 import {
   OPCAO_MES_ATUAL,
   OPCAO_TODOS,
+  anoPadrao,
   aplicarFontes,
   filtrarOrcamento,
   fontesDisponiveis,
@@ -50,7 +51,7 @@ export default function TabelaPage() {
   const { locale } = useLocale();
 
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
-    ano: OPCAO_TODOS,
+    ano: anoPadrao,
     ateMes: OPCAO_MES_ATUAL,
     funcao: [],
     categoriaEconomica: OPCAO_TODOS,
@@ -65,13 +66,21 @@ export default function TabelaPage() {
 
   const { itens: baseItens, meta: metaAtiva, carregandoMes } = useBaseMensal(
     filtros.ateMes,
+    filtros.ano,
     t.tabela.erroCarregarMes,
   );
 
-  const filtrados = React.useMemo(
-    () => filtrarOrcamento(baseItens, filtros),
-    [baseItens, filtros],
+  const orgaosDoCorte = React.useMemo(
+    () => [...new Set(baseItens.map((i) => i.orgao))].sort(),
+    [baseItens],
   );
+
+  const filtrados = React.useMemo(() => {
+    const filtrosAtivos = carregandoMes
+      ? { ...filtros, ano: String(metaAtiva.anos[0] ?? filtros.ano) }
+      : filtros;
+    return filtrarOrcamento(baseItens, filtrosAtivos);
+  }, [baseItens, carregandoMes, filtros, metaAtiva.anos]);
 
   const fontes = React.useMemo(() => fontesDisponiveis(filtrados), [filtrados]);
 
@@ -154,7 +163,11 @@ export default function TabelaPage() {
         descricao={t.tabela.descricao}
       />
 
-      <FiltersForm onApply={onApply} carregando={carregandoMes} />
+      <FiltersForm
+        onApply={onApply}
+        carregando={carregandoMes}
+        orgaos={orgaosDoCorte}
+      />
 
       <Card>
         <CardHeader>

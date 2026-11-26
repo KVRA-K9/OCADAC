@@ -178,6 +178,8 @@ const anoBaseAtual =
 const mesBaseAtual =
   metaBase.mesReferencia ?? Number(metaBase.dataArquivo.slice(5, 7));
 
+export const anoPadrao = String(anoBaseAtual);
+
 const manifestoCortes = (manifestoMesesBruto as CorteMensalMeta[]).filter(
   (c) => !(c.ano === anoBaseAtual && c.mes === mesBaseAtual),
 );
@@ -253,15 +255,15 @@ export async function carregarCorteMensal(
   return promessa;
 }
 
-let precarregamentoIniciado = false;
+const anosPrecarregados = new Set<number>();
 
-/** Pré-carrega em segundo plano os cortes anteriores para troca instantânea. */
-export function precarregarCortesMensais(): void {
-  if (precarregamentoIniciado || typeof window === "undefined") return;
-  precarregamentoIniciado = true;
+/** Pré-carrega em segundo plano os cortes do exercício para troca instantânea. */
+export function precarregarCortesMensais(ano: number = anoBaseAtual): void {
+  if (typeof window === "undefined" || anosPrecarregados.has(ano)) return;
+  anosPrecarregados.add(ano);
 
   const pendentes = mesesDisponiveis
-    .filter((m) => !m.ehAtual && !cacheCortesMensais.has(m.chave))
+    .filter((m) => m.ano === ano && !m.ehAtual && !cacheCortesMensais.has(m.chave))
     .map((m) => m.chave);
 
   if (pendentes.length === 0) return;
@@ -278,7 +280,10 @@ export function precarregarCortesMensais(): void {
 }
 
 export const anosDisponiveis: number[] = [
-  ...new Set(orcamentoData.map((d) => d.ano)),
+  ...new Set([
+    ...orcamentoData.map((d) => d.ano),
+    ...mesesDisponiveis.map((m) => m.ano),
+  ]),
 ].sort((a, b) => a - b);
 
 export const funcoesDisponiveis: string[] = [...FUNCOES];

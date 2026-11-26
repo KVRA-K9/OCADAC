@@ -43,6 +43,7 @@ import {
   OPCAO_TODOS,
   agregarPorFuncao,
   agregarPorUnidade,
+  anoPadrao,
   compararCategorias,
   contarAcoesPorSecretaria,
   filtrarOrcamento,
@@ -59,7 +60,7 @@ export default function VisaoGeralPage() {
   } = useFormat();
 
   const [filtros, setFiltros] = React.useState<FiltrosOrcamento>({
-    ano: OPCAO_TODOS,
+    ano: anoPadrao,
     ateMes: OPCAO_MES_ATUAL,
     funcao: [],
     categoriaEconomica: OPCAO_TODOS,
@@ -70,13 +71,21 @@ export default function VisaoGeralPage() {
 
   const { itens: baseItens, meta: metaAtiva, carregandoMes } = useBaseMensal(
     filtros.ateMes,
+    filtros.ano,
     t.tabela.erroCarregarMes,
   );
 
-  const filtrados = React.useMemo(
-    () => filtrarOrcamento(baseItens, filtros),
-    [baseItens, filtros],
+  const orgaosDoCorte = React.useMemo(
+    () => [...new Set(baseItens.map((i) => i.orgao))].sort(),
+    [baseItens],
   );
+
+  const filtrados = React.useMemo(() => {
+    const filtrosAtivos = carregandoMes
+      ? { ...filtros, ano: String(metaAtiva.anos[0] ?? filtros.ano) }
+      : filtros;
+    return filtrarOrcamento(baseItens, filtrosAtivos);
+  }, [baseItens, carregandoMes, filtros, metaAtiva.anos]);
 
   const totais = React.useMemo(() => somaValores(filtrados), [filtrados]);
   const porUnidade = React.useMemo(
@@ -124,7 +133,11 @@ export default function VisaoGeralPage() {
         descricao={t.painel.descricao}
       />
 
-      <FiltersForm onApply={onApply} carregando={carregandoMes} />
+      <FiltersForm
+        onApply={onApply}
+        carregando={carregandoMes}
+        orgaos={orgaosDoCorte}
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
