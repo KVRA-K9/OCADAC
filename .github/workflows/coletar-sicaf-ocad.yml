@@ -20,6 +20,11 @@ on:
         type: boolean
         required: false
         default: false
+      aguardar_manutencao:
+        description: "Aguardar término de manutenção programada do SICAF"
+        type: boolean
+        required: false
+        default: true
 
 permissions:
   contents: write
@@ -32,6 +37,7 @@ jobs:
   coletar:
     name: Coletar OCAD (app.wprelocad)
     runs-on: [self-hosted, seplan-sicaf]
+    timeout-minutes: 270
     defaults:
       run:
         shell: bash
@@ -66,6 +72,7 @@ jobs:
           INPUT_MES: ${{ inputs.mes }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
           INPUT_FORCE: ${{ inputs.force }}
+          INPUT_AGUARDAR_MANUTENCAO: ${{ github.event_name != 'workflow_dispatch' || inputs.aguardar_manutencao }}
         run: |
           ARGS=()
           if [ -n "$INPUT_MES" ]; then
@@ -76,6 +83,9 @@ jobs:
           fi
           if [ "$INPUT_FORCE" = "true" ]; then
             ARGS+=("--force")
+          fi
+          if [ "$INPUT_AGUARDAR_MANUTENCAO" = "true" ]; then
+            ARGS+=("--aguardar-manutencao")
           fi
           npm run dados:sicaf -- "${ARGS[@]}"
 

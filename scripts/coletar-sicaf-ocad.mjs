@@ -15,10 +15,12 @@
  *   npm run dados:sicaf
  *   npm run dados:sicaf -- --dry-run
  *   npm run dados:sicaf -- --mes=11 --ano=2026 --force
+ *   npm run dados:sicaf -- --aguardar-manutencao
  */
 
 import { appendFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { setTimeout as aguardarMs } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
 import {
   consolidarRegistrosOcad,
@@ -37,6 +39,8 @@ const raiz = resolve(__dirname, "..");
 
 const SICAF_BASE = "https://sicaf.sefaz.ac.gov.br/sicaf/";
 const TIMEOUT_MS = 30_000;
+const INTERVALO_MANUTENCAO_MS = 5 * 60_000;
+const ESPERA_MAX_MANUTENCAO_MIN = 240;
 
 /**
  * Filtros fixos de `app.wprelocad` ("Emitir Relatório do Orçamento Criança e
@@ -69,6 +73,8 @@ function lerArgs(argv) {
   const opts = {
     dryRun: false,
     force: false,
+    aguardarManutencao: false,
+    esperaMaxMin: ESPERA_MAX_MANUTENCAO_MIN,
     ano: Number(hoje.slice(0, 4)),
     mes: mesAtualRioBranco(),
   };
@@ -76,7 +82,10 @@ function lerArgs(argv) {
   for (const arg of argv) {
     if (arg === "--dry-run") opts.dryRun = true;
     else if (arg === "--force") opts.force = true;
-    else if (arg.startsWith("--ano=")) opts.ano = Number(arg.slice("--ano=".length));
+    else if (arg === "--aguardar-manutencao") opts.aguardarManutencao = true;
+    else if (arg.startsWith("--espera-max-min=")) {
+      opts.esperaMaxMin = Number(arg.slice("--espera-max-min=".length));
+    } else if (arg.startsWith("--ano=")) opts.ano = Number(arg.slice("--ano=".length));
     else if (arg.startsWith("--mes=")) opts.mes = Number(arg.slice("--mes=".length));
     else throw new Error(`Argumento desconhecido: ${arg}`);
   }
@@ -86,6 +95,9 @@ function lerArgs(argv) {
   }
   if (!Number.isInteger(opts.mes) || opts.mes < 1 || opts.mes > 12) {
     throw new Error(`Mês inválido: ${opts.mes}`);
+  }
+  if (!Number.isFinite(opts.esperaMaxMin) || opts.esperaMaxMin < 0) {
+    throw new Error(`Espera máxima inválida: ${opts.esperaMaxMin}`);
   }
 
   return opts;
@@ -149,6 +161,131 @@ function verificarBloqueioWaf(html, etapa) {
   }
 }
 
+function decodificarEntidadesHtml(texto) {
+  return texto
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;|&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#(\d+);/g, (_, cod) => String.fromCodePoint(Number(cod)))
+    .replace(/&amp;/g, "&");
+}
+
+function extrairPrevisaoRioBranco(textoLimpo) {
+  const m =
+    textoLimpo.match(/PREVIS[ÃA]O DE RESTABELECIMENTO\s*:?\s*(\d{1,2})\s*[:hH]\s*(\d{2})?/i) ??
+    textoLimpo.match(/(?:at[eé]|[àa]s)\s*(\d{1,2})\s*[:hH]\s*(\d{2})?/i);
+  if (!m) return { previsaoMs: null, previsaoTexto: null };
+
+  const hora = Number(m[1]);
+  const minuto = m[2] ? Number(m[2]) : 0;
+  if (!Number.isInteger(hora) || hora < 0 || hora > 23 || !Number.isInteger(minuto) || minuto < 0 || minuto > 59) {
+    return { previsaoMs: null, previsaoTexto: null };
+  }
+
+  const hh = String(hora).padStart(2, "0");
+  const mm = String(minuto).padStart(2, "0");
+  // America/Rio_Branco possui fuso fixo UTC-5 (sem horário de verão).
+  const dataHojeAc = hojeRioBranco();
+  const previsaoMs = Date.parse(`${dataHojeAc}T${hh}:${mm}:00-05:00`);
+  if (!Number.isFinite(previsaoMs)) {
+    return { previsaoMs: null, previsaoTexto: null };
+  }
+  return { previsaoMs, previsaoTexto: `${hh}:${mm}` };
+}
+
+function extrairEstadoBloqueioSicaf(html) {
+  const mGx =
+    html.match(/name="GXState"\s+value='([^']+)'/i) ??
+    html.match(/name="GXState"\s+value="([^"]+)"/i);
+
+  let sdt = null;
+  if (mGx) {
+    try {
+      const gx = JSON.parse(decodificarEntidadesHtml(mGx[1]));
+      sdt = gx?.vSDTSISTEMA ?? null;
+    } catch {
+      sdt = null;
+    }
+  }
+
+  const bloqueadoFlag = Boolean(sdt?.SistemaBloqueado);
+  const bloqueadoTexto = /MANUTEN[ÇC][ÃA]O PROGRAMADA/i.test(html);
+  if (!bloqueadoFlag && !bloqueadoTexto) {
+    return { bloqueado: false, mensagem: "", previsaoMs: null, previsaoTexto: null };
+  }
+
+  const htmlMsg = String(sdt?.SistemaMensagemBloqueio ?? "");
+  const textoLimpo = decodificarEntidadesHtml(htmlMsg)
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const mensagem = textoLimpo || "SICAF temporariamente indisponível para manutenção programada.";
+  const { previsaoMs, previsaoTexto } = extrairPrevisaoRioBranco(mensagem);
+  return { bloqueado: true, mensagem, previsaoMs, previsaoTexto };
+}
+
+async function abrirLoginSicafAguardandoManutencao(opts) {
+  const inicio = Date.now();
+  const limiteMs = inicio + opts.esperaMaxMin * 60_000;
+
+  while (true) {
+    const requisitar = criarSessaoHttp();
+    const rLoginGet = await requisitar("app.sicaf");
+    const htmlLogin = await rLoginGet.text();
+    verificarBloqueioWaf(htmlLogin, "abertura do login");
+
+    const estado =
+      rLoginGet.status === 502 || rLoginGet.status === 503 || rLoginGet.status === 504
+        ? {
+            bloqueado: true,
+            mensagem: `SICAF temporariamente indisponível (HTTP ${rLoginGet.status}).`,
+            previsaoMs: null,
+            previsaoTexto: null,
+          }
+        : extrairEstadoBloqueioSicaf(htmlLogin);
+    if (!estado.bloqueado) {
+      if (Date.now() - inicio > 5_000) {
+        console.log("SICAF restabelecido! Prosseguindo com a autenticação...");
+      }
+      return requisitar;
+    }
+
+    if (!opts.aguardarManutencao) {
+      throw new Error(`SICAF em manutenção/bloqueado: ${estado.mensagem}`);
+    }
+
+    const agora = Date.now();
+    if (agora >= limiteMs) {
+      throw new Error(
+        `SICAF permaneceu em manutenção após ${opts.esperaMaxMin} min: ${estado.mensagem}`,
+      );
+    }
+
+    // Verifica a cada 5 min e também logo após o horário previsto de restabelecimento.
+    const alvoPrevisao =
+      estado.previsaoMs && estado.previsaoMs > agora ? estado.previsaoMs + 30_000 : null;
+    const proximoCheck = Math.min(
+      limiteMs,
+      alvoPrevisao ? Math.min(agora + INTERVALO_MANUTENCAO_MS, alvoPrevisao) : agora + INTERVALO_MANUTENCAO_MS,
+    );
+    const esperaMs = Math.max(15_000, proximoCheck - agora);
+    const esperaMin = (esperaMs / 60_000).toFixed(1).replace(/\.0$/, "");
+    const horaAc = new Intl.DateTimeFormat("pt-BR", {
+      timeZone: "America/Rio_Branco",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(agora));
+
+    console.log(
+      `[${horaAc} AC] SICAF em manutenção programada${estado.previsaoTexto ? ` (previsão: ${estado.previsaoTexto} AC)` : ""}. Nova verificação em ${esperaMin} min...`,
+    );
+    await aguardarMs(esperaMs);
+  }
+}
+
 function extrairNomeEDataArquivo(location) {
   const url = new URL(location, SICAF_BASE);
   const queryBruta = url.search.replace(/^\?/, "");
@@ -200,12 +337,9 @@ async function main() {
   }
 
   const opts = lerArgs(process.argv.slice(2));
-  const requisitar = criarSessaoHttp();
 
   console.log("1/4 Abrindo página de login do SICAF...");
-  const rLoginGet = await requisitar("app.sicaf");
-  const htmlLogin = await rLoginGet.text();
-  verificarBloqueioWaf(htmlLogin, "abertura do login");
+  const requisitar = await abrirLoginSicafAguardandoManutencao(opts);
 
   console.log("2/4 Autenticando sessão no SICAF...");
   const rLoginPost = await requisitar("app.sicaf", {
@@ -232,6 +366,10 @@ async function main() {
   if (rLoginPost.status !== 302 || !destinoLogin || /app\.sicaf$/i.test(destinoLogin)) {
     const corpoErro = await rLoginPost.text().catch(() => "");
     verificarBloqueioWaf(corpoErro, "autenticação");
+    const estado = extrairEstadoBloqueioSicaf(corpoErro);
+    if (estado.bloqueado) {
+      throw new Error(`SICAF em manutenção/bloqueado: ${estado.mensagem}`);
+    }
     throw new Error(
       `Falha na autenticação do SICAF (HTTP ${rLoginPost.status}). Verifique SICAF_CPF e SICAF_SENHA.`,
     );
