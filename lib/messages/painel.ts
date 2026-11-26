@@ -34,9 +34,10 @@ export const pt = {
     "Clique em uma barra para ver o detalhamento das ações que compõem aquele intervalo de valor liquidado, dentro do eixo correspondente.",
   execucaoUnidadeTitulo: "Execução por unidade orçamentária",
   execucaoUnidadeDica:
-    "Mesmo recorte usado nos filtros do BI: um órgão aparece em mais de um card quando executa por fundos distintos. Clique em uma unidade para expandir Empenhado e Pago.",
+    "Mesmo recorte usado nos filtros do BI: um órgão aparece em mais de um card quando executa por fundos distintos. Clique em uma unidade para ver Empenhado, Pago e as ações.",
   nenhumaUnidade: "Nenhuma unidade corresponde aos filtros selecionados.",
   executadoCurto: "exec.",
+  acoesListaTitulo: "Ações",
   mostrarNome: (rotulo: string) => `Recolher detalhes de ${rotulo}`,
   mostrarValores: (rotulo: string) => `Expandir estágios de ${rotulo}`,
   fonte: "Fonte",
@@ -83,9 +84,10 @@ export const en: typeof pt = {
     "Click a bar to see the breakdown of actions comprising that settled expenditure range within the corresponding axis.",
   execucaoUnidadeTitulo: "Execution by budget unit",
   execucaoUnidadeDica:
-    "Same breakdown used in the BI filters: an agency appears in more than one card when executing through different funds. Click a unit to expand Committed and Paid.",
+    "Same breakdown used in the BI filters: an agency appears in more than one card when executing through different funds. Click a unit to see Committed, Paid, and its actions.",
   nenhumaUnidade: "No budget unit matches the selected filters.",
   executadoCurto: "exec.",
+  acoesListaTitulo: "Actions",
   mostrarNome: (rotulo: string) => `Collapse details of ${rotulo}`,
   mostrarValores: (rotulo: string) => `Expand stages of ${rotulo}`,
   fonte: "Source",

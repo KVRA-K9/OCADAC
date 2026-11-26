@@ -37,6 +37,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { SERIES_COLORS } from "@/lib/estagios";
 import { useFormat, useT } from "@/lib/i18n";
 import type { FiltrosOrcamento } from "@/lib/types";
 import {
@@ -147,6 +148,7 @@ export default function VisaoGeralPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
+          destaque
           className="col-span-full"
           titulo={t.painel.executadoAteAgora}
           valor={
@@ -166,12 +168,14 @@ export default function VisaoGeralPage() {
           icone={Gauge}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadInicial}
           titulo={t.painel.orcamentoInicial}
           valor={semDados ? "—" : formatMoeda(totais.ocadInicial)}
           dica={semDados ? t.common.semDados : t.painel.acoes(filtrados.length)}
           icone={Wallet}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadAtualizado}
           titulo={t.painel.orcamentoAtualizado}
           valor={semDados ? "—" : formatMoeda(totais.ocadAtualizado)}
           dica={
@@ -185,24 +189,28 @@ export default function VisaoGeralPage() {
           icone={FileText}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadEmpenhado}
           titulo={t.painel.empenhado}
           valor={semDados ? "—" : formatMoeda(totais.ocadEmpenhado)}
           dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadEmpenhado))}
           icone={FileSignature}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadLiquidado}
           titulo={t.painel.liquidado}
           valor={semDados ? "—" : formatMoeda(totais.ocadLiquidado)}
           dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadLiquidado))}
           icone={CheckCircle2}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadPago}
           titulo={t.painel.pago}
           valor={semDados ? "—" : formatMoeda(totais.ocadPago)}
           dica={t.painel.pctDoAtualizado(doAtualizado(totais.ocadPago))}
           icone={Banknote}
         />
         <KpiCard
+          corIndicador={SERIES_COLORS.ocadDisponivel}
           titulo={t.painel.disponivel}
           valor={semDados ? "—" : formatMoeda(totais.ocadDisponivel)}
           dica={t.painel.pctDoAtualizadoNaoLiquidado(
@@ -212,7 +220,7 @@ export default function VisaoGeralPage() {
         />
       </div>
 
-      <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+      <Card>
         <CardHeader>
           <CardTitle className="text-base">
             {t.painel.cadeiaExecucaoTitulo}
@@ -242,7 +250,7 @@ export default function VisaoGeralPage() {
       </Card>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Card className="flex flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+        <Card className="flex flex-col">
           <CardHeader>
             <CardTitle className="text-base">
               {t.painel.distribuicaoEixoTitulo}
@@ -271,7 +279,7 @@ export default function VisaoGeralPage() {
           </CardContent>
         </Card>
 
-        <Card className="flex flex-1 flex-col transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+        <Card className="flex flex-1 flex-col">
           <CardHeader>
             <CardTitle className="text-base">
               {t.painel.composicaoOcadTitulo}
@@ -301,7 +309,7 @@ export default function VisaoGeralPage() {
         </Card>
       </div>
 
-      <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+      <Card>
         <CardHeader>
           <CardTitle className="text-base">
             {t.painel.exclusivoPorEixoTitulo}
@@ -314,7 +322,7 @@ export default function VisaoGeralPage() {
         </CardContent>
       </Card>
 
-      <Card className="transition-transform duration-200 hover:scale-[1.01] active:scale-[0.99]">
+      <Card>
         <CardHeader>
           <CardTitle className="text-base">
             {t.painel.execucaoEixoTitulo}

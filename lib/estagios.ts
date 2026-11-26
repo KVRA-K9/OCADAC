@@ -67,23 +67,28 @@ export const SIGLAS_ORGAOS: Record<string, string> = {
   "SECRETARIA DE ESTADO DA MULHER - SEMULHER": "SEMULHER",
   "SECRETARIA DE ESTADO DE OBRAS PÚBLICAS - SEOP": "SEOP",
   "SECRETARIA EXTRAORDINÁRIA DE ESPOR- TE E LAZER - SEEL": "SEEL",
+  "SECRETARIA EXTRAORDINÁRIA DE ESPORTE E LAZER - SEEL": "SEEL",
   "SECRETARIA DE ESTADO DE HABITAÇÃO E URBANISMO - SEHURB": "SEHURB",
 };
 
 /**
- * Nomes que a planilha grava com quebra de palavra no meio. Um mapa explícito,
- * e não uma regra do tipo "hífen seguido de espaço": a unidade
- * `FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE- FUNDHACRE` tem a mesma forma sem ser
- * quebra, e viraria uma palavra só.
+ * Corrige quebras de hifenização e erros de digitação vindos diretamente do
+ * cadastro do SICAF (ex.: `PAGAMEN TO`, `DESENVOLVI - MENTO`, `ESPOR- TE`).
  */
-export const NOMES_ORGAOS: Record<string, string> = {
-  "SECRETARIA EXTRAORDINÁRIA DE ESPOR- TE E LAZER - SEEL":
-    "SECRETARIA EXTRAORDINÁRIA DE ESPORTE E LAZER - SEEL",
-};
+export function higienizarTextoSicaf(bruto: string): string {
+  return bruto
+    .replace(/PAGAMEN\s+TO/gi, "PAGAMENTO")
+    .replace(/DESENVOLVI\s*-\s*MENTO/gi, "DESENVOLVIMENTO")
+    .replace(/ESPOR\s*-\s*TE/gi, "ESPORTE")
+    .replace(/ASSIT[ÊE]NCIA/gi, "ASSISTÊNCIA")
+    .replace(/ACRE\s*-\s*FUNDHACRE/gi, "ACRE - FUNDHACRE")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 /** Nome do órgão como vai para a tela. */
 export function nomeOrgao(nome: string): string {
-  return NOMES_ORGAOS[nome] ?? nome;
+  return higienizarTextoSicaf(nome);
 }
 
 /**
@@ -175,17 +180,6 @@ export function rotuloUnidade(
  */
 const UNIDADE_GENERICA = "UNIDADE GESTORA";
 
-const CORRECOES_UNIDADE: Record<string, string> = {
-  "UNIDADE GESTORA DA FOLHA DE PAGAMEN TO DE PESSOAL":
-    "UNIDADE GESTORA DA FOLHA DE PAGAMENTO DE PESSOAL",
-  "FUNDO DE MANUTENÇÃO E DESENVOLVI - MENTO DA EDUCAÇÃO BÁSICA - FUNDEB":
-    "FUNDO DE MANUTENÇÃO E DESENVOLVIMENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
-  "FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE- FUNDHACRE":
-    "FUNDAÇÃO HOSPITAL ESTADUAL DO ACRE - FUNDHACRE",
-  "FUNDO DE ASSITÊNCIA SOCIAL - FEAS":
-    "FUNDO DE ASSISTÊNCIA SOCIAL - FEAS",
-};
-
 const SIGLAS_PRESERVADAS = new Set([
   "AC",
   "FDCA",
@@ -234,10 +228,9 @@ export function formatarNomeInstituicao(bruto: string): string {
 }
 
 export function nomeUnidade(unidade: string, secretaria: string): string {
-  const normalizada = unidade.trim().toUpperCase();
+  const normalizada = higienizarTextoSicaf(unidade).toUpperCase();
   if (normalizada === UNIDADE_GENERICA) {
     return formatarNomeInstituicao(nomeOrgao(secretaria));
   }
-  const corrigida = CORRECOES_UNIDADE[normalizada] ?? unidade;
-  return formatarNomeInstituicao(corrigida);
+  return formatarNomeInstituicao(higienizarTextoSicaf(unidade));
 }

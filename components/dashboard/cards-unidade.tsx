@@ -33,7 +33,13 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
     pctExec !== null ? Math.min(Math.max(pctExec * 100, 0), 100) : 0;
 
   return (
-    <Card className="gap-3 bg-card/95 py-4 ring-1 ring-border transition-colors hover:ring-foreground/25">
+    <Card
+      className="gap-3 py-3.5 ring-1 ring-foreground/10 transition-colors hover:ring-foreground/25"
+      style={{
+        borderTop: `3px solid ${cor}`,
+        backgroundColor: `color-mix(in oklab, ${cor} 26%, var(--card))`,
+      }}
+    >
       <button
         type="button"
         onClick={() => setExpandido((v) => !v)}
@@ -45,21 +51,14 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
         }
         className="flex w-full cursor-pointer flex-col gap-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
       >
-        <CardHeader className="w-full gap-1.5 px-4 py-0">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex min-w-0 items-center gap-2">
-              <span
-                aria-hidden
-                className="size-2 shrink-0 rounded-full"
-                style={{ backgroundColor: cor }}
-              />
-              <CardTitle className="truncate text-[13px] font-semibold tracking-tight">
-                {dados.rotulo}
-              </CardTitle>
-            </div>
+        <CardHeader className="w-full gap-1 px-4 py-0">
+          <div className="flex items-baseline justify-between gap-2">
+            <CardTitle className="truncate text-[13px] font-semibold tracking-tight text-foreground">
+              {dados.rotulo}
+            </CardTitle>
             <span
               title={t.painel.executadoAteAgora}
-              className="shrink-0 rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-foreground tabular-nums"
+              className="shrink-0 text-xs font-semibold text-foreground tabular-nums"
             >
               {pctExec === null ? "—" : formatPercent(pctExec)}
             </span>
@@ -70,7 +69,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
           </p>
         </CardHeader>
 
-        <CardContent className="mt-auto flex w-full flex-col gap-2.5 px-4 py-0">
+        <CardContent className="mt-auto flex w-full flex-col gap-2 px-4 py-0">
           <div className="flex flex-col gap-1 text-xs">
             <div className="flex items-baseline justify-between gap-2">
               <span className="text-muted-foreground">
@@ -81,12 +80,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
               </span>
             </div>
             <div className="flex items-baseline justify-between gap-2">
-              <span className="flex items-center gap-1.5 text-muted-foreground">
-                <span
-                  aria-hidden
-                  className="size-1.5 shrink-0 rounded-full"
-                  style={{ backgroundColor: SERIES_COLORS.ocadLiquidado }}
-                />
+              <span className="text-muted-foreground">
                 {rotulosEstagio.ocadLiquidado}
               </span>
               <span className="font-semibold text-foreground tabular-nums">
@@ -97,7 +91,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
 
           <div
             aria-hidden
-            className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
+            className="h-1 w-full overflow-hidden rounded-full bg-foreground/10"
           >
             <div
               className="h-full rounded-full transition-[width] duration-500 ease-out"
@@ -107,29 +101,6 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
               }}
             />
           </div>
-
-          {expandido && (
-            <div className="flex flex-col gap-1 border-t border-border/70 pt-2 text-xs">
-              {ESTAGIOS_EXTRA.map((estagio) => (
-                <div
-                  key={estagio}
-                  className="flex items-baseline justify-between gap-2"
-                >
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <span
-                      aria-hidden
-                      className="size-1.5 shrink-0 rounded-full"
-                      style={{ backgroundColor: SERIES_COLORS[estagio] }}
-                    />
-                    {rotulosEstagio[estagio]}
-                  </span>
-                  <span className="font-medium text-foreground tabular-nums">
-                    {formatMoeda(dados[estagio])}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
 
           <div className="flex items-center justify-between pt-0.5 text-[11px] text-muted-foreground">
             <span>{t.painel.acoes(dados.acoes)}</span>
@@ -142,6 +113,61 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
           </div>
         </CardContent>
       </button>
+
+      {expandido && (
+        <div className="flex flex-col gap-2.5 border-t border-foreground/10 px-4 pt-2.5 text-xs">
+          <div className="flex flex-col gap-1">
+            {ESTAGIOS_EXTRA.map((estagio) => (
+              <div
+                key={estagio}
+                className="flex items-baseline justify-between gap-2"
+              >
+                <span className="text-muted-foreground">
+                  {rotulosEstagio[estagio]}
+                </span>
+                <span className="font-medium text-foreground tabular-nums">
+                  {formatMoeda(dados[estagio])}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {dados.listaAcoes.length > 0 && (
+            <div className="flex flex-col gap-1.5 border-t border-foreground/10 pt-2">
+              <span className="text-[11px] font-medium text-muted-foreground">
+                {t.painel.acoesListaTitulo}
+              </span>
+              <ul className="flex max-h-56 flex-col divide-y divide-foreground/10 overflow-y-auto pr-1">
+                {dados.listaAcoes.map((acao) => {
+                  const pctAcao =
+                    acao.ocadAtualizado > 0
+                      ? acao.ocadLiquidado / acao.ocadAtualizado
+                      : null;
+                  return (
+                    <li key={acao.id} className="py-1.5 first:pt-0 last:pb-0">
+                      <p className="text-[11px] leading-snug text-foreground">
+                        <span className="text-muted-foreground tabular-nums">
+                          {acao.codigo}
+                        </span>{" "}
+                        {acao.nome}
+                      </p>
+                      <div className="mt-0.5 flex items-baseline justify-between gap-2 text-[11px] text-muted-foreground tabular-nums">
+                        <span>
+                          {formatMoeda(acao.ocadLiquidado)} /{" "}
+                          {formatMoeda(acao.ocadAtualizado)}
+                        </span>
+                        <span className="shrink-0 font-medium text-foreground/80">
+                          {pctAcao === null ? "—" : formatPercent(pctAcao)}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
     </Card>
   );
 }
@@ -150,7 +176,7 @@ function CardUnidade({ dados }: { dados: AgregadoUnidade }) {
  * Um card por unidade orçamentária, no mesmo recorte que o BI usa nos filtros —
  * um órgão aparece em mais de um card quando executa por fundos distintos.
  * Exibe de frente os valores atualizado e liquidado com barra de execução, e
- * expande ao clique para mostrar empenhado e pago.
+ * expande ao clique para mostrar empenhado, pago e a lista de ações da unidade.
  */
 export function CardsUnidade({ data }: { data: AgregadoUnidade[] }) {
   const t = useT();

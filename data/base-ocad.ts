@@ -14,7 +14,7 @@ import type {
   ValoresOrcamentarios,
 } from "@/lib/types";
 import { VALORES_NULOS } from "@/lib/types";
-import { rotuloUnidade } from "@/lib/estagios";
+import { higienizarTextoSicaf, rotuloUnidade } from "@/lib/estagios";
 import dadosBrutos from "@/data/base-ocad.json";
 import metaBruta from "@/data/base-ocad.meta.json";
 import manifestoMesesBruto from "@/data/base-ocad-meses.json";
@@ -152,10 +152,10 @@ export function normalizarRegistros(lista: RegistroBase[]): OrcamentoItem[] {
     funcao: EIXO_MAP[d.eixo] ?? d.eixo,
     programa: d.programaFuncional,
     acaoCodigo: d.acaoCodigo,
-    acao: d.acao,
-    orgao: d.secretariaNome,
+    acao: higienizarTextoSicaf(d.acao),
+    orgao: higienizarTextoSicaf(d.secretariaNome),
     orgaoCodigo: d.secretariaCodigo,
-    unidadeGestora: d.unidadeNome,
+    unidadeGestora: higienizarTextoSicaf(d.unidadeNome),
     unidadeCodigo: d.unidadeCodigo,
     categoriaEconomica: CLASSIFICACAO_MAP[d.classificacao] ?? "Não Exclusivo",
     valores: {
@@ -462,6 +462,14 @@ export function agregarOrgaos(itens: OrcamentoItem[]): LinhaOrgao[] {
     .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado);
 }
 
+export interface AcaoUnidade {
+  id: string;
+  codigo: string;
+  nome: string;
+  ocadAtualizado: number;
+  ocadLiquidado: number;
+}
+
 export interface AgregadoUnidade extends ValoresOrcamentarios {
   /** `códigoDoÓrgão/códigoDaUnidade`. */
   chave: string;
@@ -471,6 +479,7 @@ export interface AgregadoUnidade extends ValoresOrcamentarios {
   orgaoCodigo: string;
   unidade: string;
   acoes: number;
+  listaAcoes: AcaoUnidade[];
 }
 
 /**
@@ -492,6 +501,15 @@ export function agregarPorUnidade(itens: OrcamentoItem[]): AgregadoUnidade[] {
       orgaoCodigo: sub[0].orgaoCodigo,
       unidade: sub[0].unidadeGestora,
       acoes: sub.length,
+      listaAcoes: sub
+        .map((item) => ({
+          id: item.id,
+          codigo: item.acaoCodigo,
+          nome: item.acao,
+          ocadAtualizado: item.valores.ocadAtualizado,
+          ocadLiquidado: item.valores.ocadLiquidado,
+        }))
+        .sort((a, b) => b.ocadAtualizado - a.ocadAtualizado),
       ...somaValores(sub),
     }))
     .filter((d) => d.ocadInicial > 0);
