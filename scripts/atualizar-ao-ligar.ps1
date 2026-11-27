@@ -40,6 +40,21 @@ function Write-Log {
   Write-Host $line
 }
 
+function Invoke-Git {
+  param([Parameter(ValueFromRemainingArguments = $true)][string[]]$GitArgs)
+  $prevPref = $ErrorActionPreference
+  $ErrorActionPreference = "Continue"
+  try {
+    $out = & git @GitArgs 2>&1 | ForEach-Object { "$_" }
+    if ($LASTEXITCODE -ne 0) {
+      throw "git $($GitArgs -join ' ') falhou (exit $LASTEXITCODE): $($out -join ' | ')"
+    }
+    return $out
+  } finally {
+    $ErrorActionPreference = $prevPref
+  }
+}
+
 # Limita o tamanho do log a ~1 MB
 if ((Test-Path $LogFile) -and ((Get-Item $LogFile).Length -gt 1MB)) {
   $tail = Get-Content -Path $LogFile -Tail 500
@@ -197,12 +212,12 @@ try {
   if (Test-Path $RepoDir) {
     Push-Location $RepoDir
     try {
-      & git fetch origin main 2>&1 | Out-Null
-      $dirty = & git status --porcelain
+      Invoke-Git fetch origin main | Out-Null
+      $dirty = Invoke-Git status --porcelain
       if ($dirty) {
         Write-Log "Repositorio local com alteracoes nao commitadas; git pull ignorado para nao sobrescrever trabalho local."
       } else {
-        $pullOut = & git pull --ff-only origin main 2>&1
+        $pullOut = Invoke-Git pull --ff-only origin main
         Write-Log "Repositorio local atualizado: $($pullOut -join ' | ')"
       }
     } finally {
