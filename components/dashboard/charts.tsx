@@ -462,10 +462,11 @@ function HistogramaEixo({
   eixo: string;
 }) {
   const t = useT();
-  const { formatMoeda } = useFormat();
+  const { formatMoeda, formatPercent } = useFormat();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const balloonRef = React.useRef<HTMLDivElement>(null);
   const [selecionado, setSelecionado] = React.useState<SelecionadoHistograma>(null);
+  const corEixo = CORES_EIXO[eixo] ?? "var(--primary)";
 
   const faixas = t.evolucao.faixas;
   const dados = React.useMemo(
@@ -510,6 +511,7 @@ function HistogramaEixo({
           (i) => binIndex(i.valores.ocadLiquidado) === selecionado.binIndex,
         )
         .map((i) => ({
+          id: i.id,
           acao: i.acao,
           liquidado: i.valores.ocadLiquidado,
           categoriaEconomica: i.categoriaEconomica,
@@ -519,25 +521,30 @@ function HistogramaEixo({
         .sort((a, b) => b.liquidado - a.liquidado)
     : [];
   const totalLiquidadoFaixa = detalhe.reduce((acc, d) => acc + d.liquidado, 0);
+  const exclusivosCount = detalhe.filter(
+    (d) => d.categoriaEconomica === "Exclusivo",
+  ).length;
+  const naoExclusivosCount = detalhe.length - exclusivosCount;
 
-  const BALLOON_W = 320;
-  const BALLOON_H = 440;
-  const MARGIN = 8;
+  const BALLOON_W = 440;
+  const BALLOON_H = 480;
+  const MARGIN = 12;
 
   const pos = selecionado
     ? (() => {
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-        let left = selecionado.x - BALLOON_W / 2;
+        const largura = Math.min(BALLOON_W, vw - MARGIN * 2);
+        let left = selecionado.x - largura / 2;
         const placeBelow = selecionado.y - BALLOON_H - MARGIN < 0;
         let top = placeBelow
           ? selecionado.y + MARGIN
           : selecionado.y - BALLOON_H - MARGIN;
         if (left < MARGIN) left = MARGIN;
-        if (left + BALLOON_W > vw - MARGIN) left = vw - BALLOON_W - MARGIN;
+        if (left + largura > vw - MARGIN) left = vw - largura - MARGIN;
         if (top + BALLOON_H > vh - MARGIN) top = vh - BALLOON_H - MARGIN;
         if (top < MARGIN) top = MARGIN;
-        return { left, top };
+        return { left, top, largura };
       })()
     : null;
 
@@ -553,7 +560,7 @@ function HistogramaEixo({
         <BarChart
           data={dados}
           margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
-          barCategoryGap="8%"
+          barCategoryGap="16%"
           className="cursor-pointer"
           onClick={(state, e) => {
             if (!state || state.activeTooltipIndex == null) return;
@@ -592,7 +599,7 @@ function HistogramaEixo({
             dataKey="Exclusivo"
             name={t.common.categoriaRotulo("Exclusivo")}
             stackId="a"
-            maxBarSize={8}
+            maxBarSize={24}
             background={{ fill: "transparent" }}
             isAnimationActive
             animationDuration={700}
@@ -610,7 +617,7 @@ function HistogramaEixo({
             name={t.common.categoriaRotulo("Não Exclusivo")}
             stackId="a"
             radius={[4, 4, 0, 0]}
-            maxBarSize={8}
+            maxBarSize={24}
             background={{ fill: "transparent" }}
             isAnimationActive
             animationDuration={700}
@@ -637,79 +644,135 @@ function HistogramaEixo({
               faixaLabel,
               t.common.eixoRotulo(eixo),
             )}
-            className="fixed z-50 flex w-80 max-h-[440px] flex-col rounded-lg border bg-popover p-3 text-xs shadow-md ring-1 ring-foreground/10"
-            style={{ left: pos.left, top: pos.top }}
+            className="animate-in fade-in-0 zoom-in-95 fixed z-50 flex max-h-[min(480px,calc(100vh-1.5rem))] flex-col overflow-hidden rounded-xl border bg-popover/95 text-xs shadow-xl ring-1 ring-foreground/10 backdrop-blur-sm duration-150"
+            style={{
+              left: pos.left,
+              top: pos.top,
+              width: pos.largura,
+              borderTop: `3px solid ${corEixo}`,
+            }}
           >
-            <div className="mb-1 flex items-center gap-2">
-              <span className="font-medium text-foreground">
-                {t.common.eixoRotulo(eixo)}
-              </span>
-              <span className="text-muted-foreground">· {faixaLabel}</span>
+            <div
+              className="flex items-center justify-between gap-2 border-b border-foreground/10 px-3.5 py-2.5"
+              style={{
+                backgroundColor: `color-mix(in oklab, ${corEixo} 22%, var(--popover))`,
+              }}
+            >
+              <div className="flex min-w-0 items-center gap-2">
+                <span className="truncate text-sm font-semibold text-foreground">
+                  {t.common.eixoRotulo(eixo)}
+                </span>
+                <span className="shrink-0 rounded-full bg-background/80 px-2 py-0.5 text-[11px] font-medium text-foreground ring-1 ring-foreground/10 tabular-nums">
+                  {faixaLabel}
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={() => setSelecionado(null)}
-                className="ml-auto rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                className="shrink-0 cursor-pointer rounded-md p-1 text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground"
                 aria-label={t.evolucao.fechar}
               >
                 <X className="size-3.5" />
               </button>
             </div>
-            <div className="mb-2 flex items-center gap-3 text-[10px] text-muted-foreground">
-              <span className="inline-flex items-center gap-1">
-                <span
-                  className="size-2 rounded-sm"
-                  style={{ background: CLASSIFICACAO_HIST_COLORS.Exclusivo }}
-                />
-                {t.common.categoriaRotulo("Exclusivo")}
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <span
-                  className="size-2 rounded-sm"
-                  style={{ background: CLASSIFICACAO_HIST_COLORS["Não Exclusivo"] }}
-                />
-                {t.common.categoriaRotulo("Não Exclusivo")}
+
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/35 px-3.5 py-2 text-[11px]">
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5">
+                  <span
+                    className="size-2.5 rounded-sm"
+                    style={{ background: CLASSIFICACAO_HIST_COLORS.Exclusivo }}
+                  />
+                  <span>{t.common.categoriaRotulo("Exclusivo")}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    ({exclusivosCount})
+                  </span>
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span
+                    className="size-2.5 rounded-sm"
+                    style={{
+                      background: CLASSIFICACAO_HIST_COLORS["Não Exclusivo"],
+                    }}
+                  />
+                  <span>{t.common.categoriaRotulo("Não Exclusivo")}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    ({naoExclusivosCount})
+                  </span>
+                </span>
+              </div>
+              <span className="font-semibold text-foreground tabular-nums">
+                {formatMoeda(totalLiquidadoFaixa)}
               </span>
             </div>
-            <div className="flex flex-col gap-1 overflow-y-auto pr-1">
+
+            <div className="flex flex-col divide-y divide-border/50 overflow-y-auto">
               {detalhe.length === 0 ? (
-                <p className="text-muted-foreground">
+                <p className="px-3.5 py-6 text-center text-muted-foreground">
                   {t.evolucao.semAcoesFaixa}
                 </p>
               ) : (
-                detalhe.map((d) => (
-                  <div
-                    key={`${d.acao}-${d.orgao}-${d.categoriaEconomica}`}
-                    className="flex items-start justify-between gap-2 border-b border-border/40 pb-1 last:border-b-0"
-                  >
-                    <div className="min-w-0 flex flex-col">
-                      <span className="flex items-start gap-1.5 font-medium text-foreground leading-tight">
-                        <span
-                          className="mt-0.5 size-2 shrink-0 rounded-sm"
-                          style={{
-                            background: CLASSIFICACAO_HIST_COLORS[d.categoriaEconomica],
-                          }}
-                        />
-                        <span className="break-words">{d.acao}</span>
-                      </span>
-                      <span className="text-[10px] text-muted-foreground break-words leading-tight pl-3.5">
-                        {d.orgaoCurto}
-                      </span>
+                detalhe.map((d) => {
+                  const pctFaixa =
+                    totalLiquidadoFaixa > 0
+                      ? d.liquidado / totalLiquidadoFaixa
+                      : null;
+                  return (
+                    <div
+                      key={d.id}
+                      className="flex items-start justify-between gap-3 px-3.5 py-2.5 transition-colors hover:bg-muted/40"
+                    >
+                      <div className="min-w-0 flex-1 space-y-1">
+                        <p className="text-xs font-medium leading-snug text-foreground break-words">
+                          {d.acao}
+                        </p>
+                        <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
+                          <span className="rounded bg-muted px-1.5 py-0.5 font-medium text-foreground/80">
+                            {d.orgaoCurto}
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded bg-muted/60 px-1.5 py-0.5 text-muted-foreground">
+                            <span
+                              className="size-1.5 rounded-full"
+                              style={{
+                                background:
+                                  CLASSIFICACAO_HIST_COLORS[
+                                    d.categoriaEconomica
+                                  ],
+                              }}
+                            />
+                            {t.common.categoriaRotulo(d.categoriaEconomica)}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="shrink-0 text-right tabular-nums">
+                        <p className="text-xs font-semibold text-foreground">
+                          {formatMoeda(d.liquidado)}
+                        </p>
+                        {pctFaixa !== null && (
+                          <p className="text-[10px] text-muted-foreground">
+                            {formatPercent(pctFaixa)}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                    <span className="whitespace-nowrap font-medium text-foreground tabular-nums">
-                      {formatMoeda(d.liquidado)}
-                    </span>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
-            <div className="mt-2 border-t pt-1 text-muted-foreground">
-              {t.evolucao.totalLiquidado}{" "}
-              <span className="font-medium text-foreground tabular-nums">
-                {formatMoeda(totalLiquidadoFaixa)}
+
+            <div className="flex items-center justify-between border-t bg-muted/30 px-3.5 py-2 text-[11px] text-muted-foreground">
+              <span>
+                <span className="font-semibold text-foreground tabular-nums">
+                  {detalhe.length}
+                </span>{" "}
+                {t.evolucao.acoesLabel}
               </span>
-              {" · "}
-              <span className="font-medium text-foreground tabular-nums">{detalhe.length}</span>{" "}
-              {t.evolucao.acoesLabel}
+              <span>
+                {t.evolucao.totalLiquidado}{" "}
+                <span className="font-semibold text-foreground tabular-nums">
+                  {formatMoeda(totalLiquidadoFaixa)}
+                </span>
+              </span>
             </div>
           </div>,
           document.body,
@@ -785,18 +848,19 @@ export function AcoesClassificacaoBar({
           allowDecimals={false}
           tickLine={false}
           axisLine={false}
+          width={32}
           fontSize={12}
           stroke="var(--muted-foreground)"
         />
         <Tooltip
-          content={<ChartTooltip format={(v) => String(v)} />}
+          content={<ChartTooltip format={(v) => t.evolucao.acoes(v)} />}
           cursor={{ fill: "var(--muted)", opacity: 0.4 }}
         />
         <Legend
           formatter={(value) => <span className="text-xs text-muted-foreground">{value}</span>}
         />
-        <Bar dataKey="Exclusivo" name={t.common.categoriaRotulo("Exclusivo")} fill="var(--chart-1)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} />
-        <Bar dataKey="Não Exclusivo" name={t.common.categoriaRotulo("Não Exclusivo")} fill="var(--chart-3)" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
+        <Bar dataKey="Exclusivo" name={t.common.categoriaRotulo("Exclusivo")} fill="#e3d49c" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} />
+        <Bar dataKey="Não Exclusivo" name={t.common.categoriaRotulo("Não Exclusivo")} fill="#766862" radius={[4, 4, 0, 0]} maxBarSize={28} isAnimationActive animationDuration={900} animationBegin={150} />
       </BarChart>
     </ResponsiveContainer>
   );

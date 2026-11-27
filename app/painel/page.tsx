@@ -20,7 +20,7 @@ import { NotaBase } from "@/components/dashboard/nota-base";
 import { useBaseMensal } from "@/components/dashboard/use-base-mensal";
 import {
   BudgetPieChart,
-  AcoesClassificacaoDonut,
+  AcoesClassificacaoBar,
   BudgetStackedBar,
   CadeiaExecucaoChart,
   ExecucaoClassificacaoBar,
@@ -301,9 +301,9 @@ export default function VisaoGeralPage() {
               </Tooltip>
             </CardAction>
           </CardHeader>
-          <CardContent className="flex flex-1 min-h-0 items-center justify-center">
-            <div className="h-full w-full">
-              <AcoesClassificacaoDonut data={porAcaoSecretaria} />
+          <CardContent className="flex flex-1 items-center justify-center">
+            <div className="h-[300px] w-full">
+              <AcoesClassificacaoBar data={porAcaoSecretaria} />
             </div>
           </CardContent>
         </Card>
@@ -324,25 +324,12 @@ export default function VisaoGeralPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">
-            {t.painel.execucaoEixoTitulo}
+          <CardTitle className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-base">
+            <span>{t.painel.execucaoEixoTitulo}</span>
+            <span className="text-xs font-normal text-muted-foreground">
+              ({t.painel.execucaoEixoDica})
+            </span>
           </CardTitle>
-          <CardAction>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground"
-                  aria-label={t.painel.infoGrafico}
-                >
-                  <Info className="size-4" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent className="max-w-[240px]">
-                {t.painel.execucaoEixoDica}
-              </TooltipContent>
-            </Tooltip>
-          </CardAction>
         </CardHeader>
         <CardContent>
           <ExecucaoClassificacaoBar data={filtrados} />
